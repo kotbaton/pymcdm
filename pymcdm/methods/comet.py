@@ -261,3 +261,15 @@ class COMET(MCDA_method):
             return topsis(co, weights, types)
 
         return topsis_rate
+
+    @staticmethod
+    def make_cvalues(matrix, numbers_of_cvalues=3):
+        return_dtype = 'object'
+        if isinstance(numbers_of_cvalues, int):
+            numbers_of_cvalues = [numbers_of_cvalues] * matrix.shape[1]
+            return_dtype = 'float64'
+
+        return np.array([
+            np.linspace(np.min(col), np.max(col), noc)
+            for noc, col in zip(numbers_of_cvalues, matrix.T)
+        ], dtype=return_dtype)

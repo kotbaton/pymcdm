@@ -89,3 +89,10 @@ class SPOTIS(MCDA_method):
         # Distances to ISP (smaller means better alt)
         raw_scores = np.sum(nmatrix * weights, axis=1)
         return raw_scores
+
+    @staticmethod
+    def make_bounds(matrix):
+        return np.hstack((
+            np.min(matrix, axis=0).reshape(-1, 1),
+            np.max(matrix, axis=0).reshape(-1, 1)
+        ))
