@@ -198,3 +198,47 @@ Returns
             return topsis(co, weights, types)
         return topsis_rate
 
+    @staticmethod
+    def make_cvalues(matrix, numbers_of_cvalues=3):
+        """ Returns characteristic values matrix with `nubmers_of_cvalues` cvalues for each criterion. Characteristic values are generated equally from min to max.
+
+            Parameters
+            ----------
+                matrix : ndarray
+                    Decision matrix.
+                    Alternatives are in rows and Criteria are in columns.
+                numbers_of_cvalues : int, optional
+                    Number of characteristic value for each criterion. Default value is 3.
+
+            Returns
+            -------
+                cvalues : ndarray
+                    Characteristic values for COMET method.
+
+            Examples
+            --------
+            >>> import numpy as np
+            >>> from pymcdm.methods import COMET
+            >>> matrix = np.array([[ 96, 145, 200],
+                                   [100, 145, 200],
+                                   [120, 170,  80],
+                                   [140, 180, 140],
+                                   [100, 110,  30]])
+            >>> types = np.ones(3)
+            >>> weights = np.ones(3)/3
+            >>> cvalues = COMET.make_cvalues(matrix)
+            >>> body = COMET(cvalues, COMET.topsis_rate_function(weights, types))
+            >>> preferences = body(matrix)
+            >>> np.round(preferences, 4)
+            array([0.5   , 0.5455, 0.5902, 0.9118, 0.0227])
+        """
+        return_dtype = 'object'
+        if isinstance(numbers_of_cvalues, int):
+            numbers_of_cvalues = [numbers_of_cvalues] * matrix.shape[1]
+            return_dtype = 'float64'
+
+        return np.array([
+            np.linspace(np.min(col), np.max(col), noc)
+            for noc, col in zip(numbers_of_cvalues, matrix.T)
+        ], dtype=return_dtype)
+
