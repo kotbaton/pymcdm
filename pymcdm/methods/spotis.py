@@ -58,6 +58,35 @@ Returns
 
     @staticmethod
     def make_bounds(matrix):
+        """ Returns bounds matrix for each criterion, e.g. extract min and max for each criterion values.
+
+            Parameters
+            ----------
+                matrix : ndarray
+                    Decision matrix.
+                    Alternatives are in rows and Criteria are in columns.
+
+            Returns
+            -------
+                bounds : ndarray
+                    Min and max values (bounds) for each criterion.
+
+            Examples
+            --------
+            >>> import numpy as np
+            >>> from pymcdm.methods import SPOTIS
+            >>> matrix = np.array([[ 96, 145, 200],
+                                   [100, 145, 200],
+                                   [120, 170,  80],
+                                   [140, 180, 140],
+                                   [100, 110,  30]])
+            >>> types = np.ones(3)
+            >>> weights = np.ones(3)/3
+            >>> body = SPOTIS()
+            >>> preferences = body(matrix, weights, types, bounds=bounds)
+            >>> np.round(preferences, 4)
+            array([0.5   , 0.4697, 0.4344, 0.1176, 0.9697])
+            """
         return np.hstack((
             np.min(matrix, axis=0).reshape(-1, 1),
             np.max(matrix, axis=0).reshape(-1, 1)
