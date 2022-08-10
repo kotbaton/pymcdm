@@ -614,7 +614,7 @@ according to the formulas (:eq:`equ:trpr`) and (:eq:`equ:trcs`).
     \end{equation}
     :label: equ:trcs
 
-**Step 5.** Calculating the total gap matrix ($G$) by taking the difference between the theoretical grade matrix
+**Step 5.** Calculating the total gap matrix (:math:`G`) by taking the difference between the theoretical grade matrix
 (:math:`Tp`) and the actual grade matrix (:math:`Tr`) using the formula (:eq:`equ:gap`).
 
 .. math::
@@ -642,14 +642,186 @@ the rows of the gap matrix (:math:`G`) using the formula (:eq:`equ:qima`). The a
 MARCOS
 =======================
 
+
+**Step 1.**  Based on the decision matrix, create an augmented decision matrix with the ideal solution (AI) defined in
+the last row and the anti-ideal (AAI) solution defined in the first row. This can be represented by the Equation (:eq:`equ:extdecmat`).
+
+.. math::
+    \begin{equation}
+        M = \left[\begin{array}{cccc}
+                  x_{aa1} & x_{aa2} & \dots & x_{aan} \cr
+                   x_{11} & x_{12} & \dots & x_{1n} \cr
+                  x_{21} & x_{22} & \dots & x_{2n} \cr
+                   \dots & \dots & \dots & \dots \cr
+                   x_{m1} & x_{m2} & \dots & x_{mn} \cr
+                   x_{ai1} & x_{ai2} & \dots & x_{ain} \end{array}\right]
+    \end{equation}
+    :label: equ:extdecmat
+
+The ideal and anti-ideal solution values for the cost (C) and benefit (B) criteria are defined as follows:
+
+.. math::
+    \begin{equation}
+      AAI = \left  \{ \begin{array}{cc}
+            \min_i x_{ij} &  if \quad j \in B\\
+           \max_i x_{ij}  & if \quad j \in C
+        \end{array} \right .
+    \end{equation}
+    :label: equ:aai
+
+.. math::
+    \begin{equation}
+      AI = \left  \{ \begin{array}{cc}
+            \max_i x_{ij} &  if \quad j \in B\\
+           \min_i x_{ij}  & if \quad j \in C
+        \end{array} \right .
+    \end{equation}
+    :label: equ:ai
+
+**Step 2.** Normalization of the extended decision matrix using Equation (:eq:`equ:normext`).
+
+.. math::
+    \begin{equation}
+        n_{ij} = \left  \{
+        \begin{array}{cc}
+         \frac{x_{ai}}{x_{ij}} & if \quad j \in C \\
+         \frac{x_{x_{ij}}}{x_{ai}} & if \quad j \in B
+        \end{array}\right .
+    \end{equation}
+    :label: equ:normext
+
+**Step 3.** Create a weighted matrix based on the values from the normalized extended matrix according to the formula
+(:eq:`equ:wema`).
+
+.. math::
+    \begin{equation}
+    v_{i j}=w_{i} \cdot\left(n_{i j}+1\right)
+    \end{equation}
+    :label: equ:wema
+
+
+**Step 4.** Calculating the degrees of utility of alternatives Ki relative to the ideal and anti-ideal solution using
+Equations (:eq:`equ:kiplu`), (:eq:`equ:kimin`).
+
+
+.. math::
+    \begin{equation}
+        K_{i}^{+} = \frac{S_i}{S_{ai}}
+    \end{equation}
+    :label: equ:kiplu
+
+.. math::
+    \begin{equation}
+        K_{i}^{-} = \frac{S_i}{S_{aai}}
+    \end{equation}
+    :label: equ:kimin
+
+where :math:`S_i` :math:`(i=1,2,\dots,m)` represents the sum of the elements of weighted matrix $V$, Equation
+(:eq:`equ:summ`).
+
+.. math::
+    \begin{equation}
+        S_i = \sum_{i=1}^n v_{ij}
+    \end{equation}
+    :label: equ:summ
+
+**Step 5.** Determination of the utility function for the decision options considered according to (:eq:`equ:utilll`).
+
+.. math::
+    \begin{equation}
+    f\left(K_{i}\right)=\frac{K_{i}^{+}+K_{i}^{-}}{1+\frac{1-f\left(K_{i}^{+}\right)}{f\left(K_{i}^{+}\right)}+\frac{1-f\left(K_{i}^{-}\right)}{f\left(K_{i}^{-}\right)}}
+    \end{equation}
+    :label: equ:utilll
+
+where :math:`f(K_{i}^{-})` denotes the utility function relative to the anti-ideal solution, while
+:math:`f(K_{i}^{+})` denotes the utility function relative to the ideal solution, which can be determined using
+the Equations respectively (:eq:`equ:kmf`) and (:eq:`equ:kpf`).
+
+.. math::
+    \begin{equation}
+    f\left(K_{i}^{-}\right)=\frac{K_{i}^{+}}{K_{i}^{+}+K_{i}^{-}}
+    \end{equation}
+    :label: equ:kmf
+
+.. math::
+    \begin{equation}
+    f\left(K_{i}^{+}\right)=\frac{K_{i}^{-}}{K_{i}^{+}+K_{i}^{-}}
+    \end{equation}
+    :label: equ:kpf
+
 MOORA
 =======================
+
+**Step 1.** Normalize the decision matrix based on the Equation (:eq:`normm`).
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{x_{ij}}{\sqrt{\sum_{i=1}^{m}{x_{ij}^2}}}
+    \end{equation}
+    :label: normm
+
+where :math:`x_{ij}` can be called the value of the :math:`i-th` alternative for the :math:`j-th` criterion.
+
+**Step 2.** Determine weighted normalized decision matrix based on Equation (:eq:`weigh`).
+
+.. math::
+    \begin{equation}
+        v_{ij} =  r_{ij} w_{j}
+    \end{equation}
+    :label: weigh
+
+where :math:`w_j` can be called the weight for :math:`j-th` criterion.
+
+**Step 3.** Calculate the value of :math:`y_i` based on the values from the normalized weighted decision matrix :math:`v_{ij}`
+by using Equation (:eq:`yii`).
+
+.. math::
+    \begin{equation}
+        y_i = \sum_{j=1}^g v_{ij} - \sum_{j=g+1}^n v_{ij}
+    \end{equation}
+    :label: yii
+
+where type of beneficial and cost criteria are represented as follows :math:`j = 1, 2, \dots, g` and :math:`j = g + 1, g + 2,\dots,n`.
 
 OCRA
 =======================
 
 SPOTIS
 =======================
+
+**Step 1.** Define the bounds of the problem - min and max bounds of classical MCDM problem must be defined to transform
+MCDM problem form ill-defined to well-defined.
+
+.. math::
+    \begin{equation}
+    \left[S_{n}^{\min }, S_{n}^{\max }\right]=\left[x_{1}, x_{2}\right]
+    \end{equation}
+
+where, $n$ - criterion number, $x_1$ - min bound, $x_2$ - max bound.
+
+**Step 2.** Define the ideal solution point - define vector which includes maximum or minimum from bounds for specific
+criterion depending on criterion type. For profit type, the max value should be taken, for cost type, min value.
+
+.. math::
+    \begin{equation}
+    S^{\star}=\left(S_{1}^{\star}, S_{2}^{\star}, S_{3}^{\star}\right)
+    \end{equation}
+
+**Step 3.** Compute normalized distance matrix - for each alternative :math:`A_{i}` (i= 1, :math:`\ldots` , M),compute
+its normalized distance with respect to ideal solution for each criteria :math:`C_{j}` (j= 1, :math:`\ldots` , N ).
+
+.. math::
+    \begin{equation}
+    d_{i j}=\frac{\left|A_{i j}-S_{j}^{*}\right|}{\left|S_{j}^{\max }-S_{j}^{\min }\right|}
+    \end{equation}
+
+**Step 4.** Compute normalized averaged distance - for each criteria :math:`C_{j}` (j= 1, :math:`\ldots` , N ) take into
+account its weight and calculate final preference by executing following Equation.
+
+.. math::
+    \begin{equation}
+    \bar{p}_{j}=\sum_{j=1}^{N} w_{j} d_{i j}
+    \end{equation}
 
 TOPSIS
 =======================
@@ -673,13 +845,13 @@ normalized using the (:eq:`sumProfit`) formula, while the values of cost type cr
     :label: sumCost
 
 **Step 2.** Building a decision matrix :math:`v_{ij}` subjected to a weighting and normalization process using the
-Equation (:eq:`weighted`).
+Equation (:eq:`weightedsds`).
 
 .. math::
     \begin{equation}
-        v_{ij} = w_{j}r_{ij} \label{weighted}
+        v_{ij} = w_{j}r_{ij}
     \end{equation}
-    :label: weighted
+    :label: weightedsds
 
 **Step 3.** Derive a positive ideal solution :math:`PIS` and a negative ideal solution :math:`NIS`. The ideal positive
 solution is calculated as the maximum value for each criterion (:eq:`pis`), while the ideal negative solution is
@@ -714,3 +886,59 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
 
 VIKOR
 =======================
+
+**Step 1.** Determinate the best :math:`f_{j}^{*}` and the worst :math:`f_{j}^{-}` value for the function of a particular
+criterion. For profit criteria, the Equation is used (:eq:`VikorBestProfit`).
+
+.. math::
+    \begin{equation}
+        f_{j}^{*} = \max_i f_{ij},\; \; \;  f_{j}^{-} = \min_i f_{ij}
+    \end{equation}
+    :label: VikorBestProfit
+
+where in the case of the cost criteria, the following Equation is used (:eq:`VikorBestCost`).
+
+.. math::
+    \begin{equation}
+        f_{j}^{*} = \min_i f_{ij},\; \; \;  f_{j}^{-} = \max_i f_{ij}
+    \end{equation}
+    :label: VikorBestCost
+
+**Step 2.** Calculate :math:`S_{i}` and :math:`R_{i}` with using Equations (:eq:`VikorSi`) and (:eq:`VikorRi`).
+
+.. math::
+    \begin{equation}
+        S_{i} = \sum_{j=1}^{n}w_{j}(f_{j}^{*}-f_{ij})/(f_{j}^{*}-f_{j}^{-})
+    \end{equation}
+    :label: VikorSi
+
+.. math::
+    \begin{equation}
+        R_{i} = \max_j \left [
+    w_{j}(f_{j}^{*}-f_{ij})/(f_{j}^{*}-f_{j}^{-})
+    \right ]
+    \end{equation}
+    :label: VikorRi
+
+**Step 3.** Calculate :math:`Q_{i}` with using Equation (:eq:`VikorQi`).
+
+.. math::
+    \begin{equation}
+        Q_{i} = v(S_{i}-S^{*}) / (S^{-}-S^{*}) + (1 - v)(R_{i}-R^{*}) / (R^{-}-R^{*}) \label{VikorQi}
+    \end{equation}
+    :label: VikorQi
+
+where:
+
+:math:`S^{*} = min_{i} S_{i},\; \; \; S^{-} = max_{i} S_{i}`,
+
+:math:`R^{*} = min_{i} R_{i},\; \; \; R^{-} = max_{i} R_{i}`,
+
+:math:`v` means the weight adopted for the strategy of ''most criteria''.
+
+**Step 4.** Ranked alternatives :math:`S`, :math:`R` and :math:`Q` are ordered in ascending order. Three ranked
+lists are the outcome.
+
+**Step 5.** A compromise solution is proposed considering the conditions of good advantage and acceptable stability
+within the three vectors obtained in the previous step. The best alternative is the one with the lowest value and the
+leading position in the ranking :math:`Q`.
