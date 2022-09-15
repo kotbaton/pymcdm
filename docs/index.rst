@@ -6,6 +6,8 @@
 Welcome to pymcdm's documentation!
 ==================================
 
+``pymcdm`` is a universal tool for solving multi-criteria problems related to operations research. It has a comprehensive set of methods for evaluating decision options and determining the relevance of attributes or normalization. In addition, this library has a flexible module for visualization of the obtained results.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

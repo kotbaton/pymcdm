@@ -1,15 +1,4 @@
-Base class
-======================
-
-pymcdm.methods.mcda_method
-----------------------------------
-
-.. automodule:: pymcdm.methods.mcda_method
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-MCDM methods
+pymcdm.methods package
 ======================
 
 pymcdm.methods.aras
@@ -84,6 +73,14 @@ pymcdm.methods.marcos
    :undoc-members:
    :show-inheritance:
 
+pymcdm.methods.mcda_method
+----------------------------------
+
+.. automodule:: pymcdm.methods.mcda_method
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pymcdm.methods.moora
 ---------------------------
 
@@ -116,7 +113,7 @@ pymcdm.methods.spotis
    :undoc-members:
    :show-inheritance:
 
-TOPSIS
+pymcdm.methods.topsis
 ----------------------------
 
 .. automodule:: pymcdm.methods.topsis

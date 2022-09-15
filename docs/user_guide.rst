@@ -16,5 +16,5 @@ User Guide
     weights.rst
     normalizations.rst
     correlations.rst
-    helpers.rst
+
 

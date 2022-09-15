@@ -5,4 +5,4 @@ Examples
    :maxdepth: 2
    :caption: Contents
 
-   exampless
+   example/Example

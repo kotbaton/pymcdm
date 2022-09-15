@@ -9,6 +9,8 @@ Rule based
 COMET
 =======================
 
+:class:`COMET` is designed to evaluate decision alternatives according to the following steps:
+
 
 **Step 1.** Definition of the space of the problem - the expert determines the dimensionality of the problem by selecting
 :math:`r` criteria, :math:`C_{1}, C_{2}, \ldots, C_{r}`. Then, a set of fuzzy numbers is selected for each criterion

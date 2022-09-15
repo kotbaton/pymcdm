@@ -59,7 +59,7 @@ Standard deviation method
 The standard deviation weighting method is based on the statistical measure of standard deviation. It assigns small weights
 to a criterion that has similar values across variants. This method can be presented in two steps:
 
-**Step 1.** Calculate the standard deviation measure for all criteria according to the Equatione (:eq:`equ:odchylenie`).
+**Step 1.** Calculate the standard deviation measure for all criteria according to the Equation (:eq:`equ:odchylenie`).
 
 .. math::
     \begin{equation}

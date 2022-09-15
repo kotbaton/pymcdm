@@ -1,6 +1,3 @@
-pymcdm package
-==============
-
 Subpackages
 -----------
 
@@ -8,10 +5,15 @@ Subpackages
    :maxdepth: 2
 
    pymcdm.methods
+   pymcdm.visuals
 
 Submodules
 ----------
+.. toctree::
+   :maxdepth: 2
 
+
+--------------------------
 pymcdm.correlations module
 --------------------------
 
@@ -20,6 +22,7 @@ pymcdm.correlations module
    :undoc-members:
    :show-inheritance:
 
+---------------------
 pymcdm.helpers module
 ---------------------
 
@@ -28,6 +31,7 @@ pymcdm.helpers module
    :undoc-members:
    :show-inheritance:
 
+----------------------------
 pymcdm.normalizations module
 ----------------------------
 
@@ -36,6 +40,7 @@ pymcdm.normalizations module
    :undoc-members:
    :show-inheritance:
 
+---------------------
 pymcdm.weights module
 ---------------------
 

@@ -642,6 +642,7 @@ the rows of the gap matrix (:math:`G`) using the formula (:eq:`equ:qima`). The a
 MARCOS
 =======================
 
+:class:`MARCOS` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.**  Based on the decision matrix, create an augmented decision matrix with the ideal solution (AI) defined in
 the last row and the anti-ideal (AAI) solution defined in the first row. This can be represented by the Equation (:eq:`equ:extdecmat`).
@@ -752,6 +753,8 @@ the Equations respectively (:eq:`equ:kmf`) and (:eq:`equ:kpf`).
 MOORA
 =======================
 
+:class:`MOORA` is designed to evaluate decision alternatives according to the following steps:
+
 **Step 1.** Normalize the decision matrix based on the Equation (:eq:`normm`).
 
 .. math::
@@ -786,8 +789,45 @@ where type of beneficial and cost criteria are represented as follows :math:`j =
 OCRA
 =======================
 
+:class:`OCRA` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the min-max method.
+
+**Step 3.** Create normalized weighted decision matrix.
+
+**Step 4.** Determination of preferences for cost-type and profit-type criteria sequentially according to the Equations
+(:eq:`costI`),(:eq:`profO`).
+
+.. math::
+    \begin{equation}
+    \overline{\bar{I}}_{i}=\bar{I}_{i}-\min \left(\bar{I}_{i}\right)
+    \end{equation}
+    :label: costI
+
+.. math::
+    \begin{equation}
+    \overline{\overline{O_{i}}}={\overline{O_{i}}}^{-} \min \left(\bar{O}_{i}\right)
+    \end{equation}
+    :label: profO
+
+where :math:`\bar{I}_{i}` is a measure of relative performance for the :math:`i-th` alternative and cost-type criteria,
+and :math:`\bar{O}_{i}` is a measure of of relative performance for the :math:`i-th` alternative and profit-type criteria.
+
+**Step 5.** Determine the overall preference of the considered alternatives using the Equation (:eq:`ocrapref`).
+
+.. math::
+    \begin{equation}
+    P_i = \overline{\bar{I}}_{i} + \overline{\overline{O_{i}}} - \min \left ( \overline{\bar{I}}_{i} + \overline{\overline{O_{i}}}\right )
+    \end{equation}
+    :label: ocrapref
+
+
 SPOTIS
 =======================
+
+:class:`SPOTIS` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define the bounds of the problem - min and max bounds of classical MCDM problem must be defined to transform
 MCDM problem form ill-defined to well-defined.
@@ -886,6 +926,8 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
 
 VIKOR
 =======================
+
+:class:`VIKOR` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Determinate the best :math:`f_{j}^{*}` and the worst :math:`f_{j}^{-}` value for the function of a particular
 criterion. For profit criteria, the Equation is used (:eq:`VikorBestProfit`).
