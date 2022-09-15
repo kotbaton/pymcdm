@@ -36,6 +36,7 @@ class SPOTIS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
         [0.1989, 0.3705, 0.3063, 0.7491]
     """
+    reverse_ranking = False
 
     def __init__(self):
         pass

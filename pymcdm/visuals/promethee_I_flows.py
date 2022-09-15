@@ -1,3 +1,6 @@
+# Copyright (c) 2022 Bartłomiej Kizielewicz
+# Copyright (c) 2022 Andrii Shekhovtsov
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -39,12 +42,15 @@ def promethee_I_flows(Fp, Fm,
         >>> Fm = np.random.rand(N)
         >>> promethee_I_flows(Fp, Fm)
         >>> plt.show()
+
         >>> fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
         >>> promethee_I_flows(Fp, Fm, ax=ax)
         >>> plt.show()
+
         >>> fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
         >>> promethee_I_flows(Fp, Fm, colors=['red', 'blue', 'green'], ax=ax)
         >>> plt.show()
+
         >>> fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
         >>> promethee_I_flows(Fp, Fm, text_kwargs=dict(fontsize=14), ax=ax)
         >>> plt.show()

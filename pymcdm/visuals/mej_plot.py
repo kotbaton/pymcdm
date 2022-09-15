@@ -1,45 +1,47 @@
+# Copyright (c) 2022 Bartłomiej Kizielewicz
+# Copyright (c) 2022 Andrii Shekhovtsov
+
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.colors import ListedColormap
 
-
 def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
     """ Draw MEJ extracted from COMET object.
 
-    Parameters
-    ----------
-        mej : ndarray
-            MEJ matrix extracted from COMET object.
+        Parameters
+        ----------
+            mej : ndarray
+                MEJ matrix extracted from COMET object.
 
-        grid_width : float
-            Width of the grid lines. Default is 2.
+            grid_width : float
+                Width of the grid lines. Default is 2.
 
-        cmap : str or Colormap
-            Colormap used for imshow function, could be any colormap acceptable by matplotlib. If None then Green - Blue - Red custom colormap is used.
+            cmap : str or Colormap
+                Colormap used for imshow function, could be any colormap acceptable by matplotlib. If None then Green - Blue - Red custom colormap is used.
 
-        colorbar : bool
-            If colorbar should be added to plot. Default is False.
+            colorbar : bool
+                If colorbar should be added to plot. Default is False.
 
-        ax : Axes
-            Axes object to draw on.
+            ax : Axes
+                Axes object to draw on.
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import matplotlib.pyplot as plt
-    >>> from pymcdm.methods import COMET
-    >>> from pymcdm.visuals import mej_plot
-    >>> cvalues = np.array([
-    ...     [1, 2],
-    ...     [3, 4],
-    ... ], dtype='float')
-    >>> n = len(cvalues)
-    >>> weights = np.ones(n) / n
-    >>> types = np.ones(n)
-    >>> comet = COMET(cvalues, rate_function=COMET.topsis_rate_function(weights, types))
-    >>> mej_plot(comet.get_MEJ(), grid_width=4)
-    >>> plt.show()
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import matplotlib.pyplot as plt
+        >>> from pymcdm.methods import COMET
+        >>> from pymcdm.visuals import mej_plot
+        >>> cvalues = np.array([
+        ...     [1, 2],
+        ...     [3, 4],
+        ... ], dtype='float')
+        >>> n = len(cvalues)
+        >>> weights = np.ones(n) / n
+        >>> types = np.ones(n)
+        >>> comet = COMET(cvalues, rate_function=COMET.topsis_rate_function(weights, types))
+        >>> mej_plot(comet.get_MEJ(), grid_width=4)
+        >>> plt.show()
     """
     if ax is None:
         ax = plt.gca()

@@ -62,7 +62,7 @@ def comet_contourf(comet,
         >>> c = COMET(w, rate_function=COMET.topsis_rate_function(np.ones(2)/2, np.ones(2)))
         >>> comet_contourf(c, a, 10)
         >>> plt.show()
-    """ 
+    """
     if ax is None:
         ax = plt.gca()
 

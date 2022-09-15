@@ -3,7 +3,6 @@ from .promethee_I_graph import promethee_I_graph
 from .ranking_flows import ranking_flows
 from .ranking_bar import ranking_bar
 from .ranking_scatter import ranking_scatter
-from .ranking_grid import ranking_grid
 from .mej_plot import mej_plot
 from .correlation_heatmap import correlation_heatmap
 from .boxplot import boxplot
