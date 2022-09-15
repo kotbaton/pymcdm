@@ -2,9 +2,10 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
 
 import numpy as np
-from .normalizations import minmax_normalization, sum_normalization, linear_normalization, normalize_matrix
-from .correlations import correlation_matrix, pearson
+from .normalizations import minmax_normalization, sum_normalization, linear_normalization
+from .correlations import pearson
 from scipy.linalg import null_space
+from .helpers import correlation_matrix, normalize_matrix
 
 __all__ = [
     'equal_weights',
@@ -28,36 +29,36 @@ def _fake_normalization(x, cost=False):
 
 
 def equal_weights(matrix, *args, **kwargs):
-    """Calculate equal weights for given `matrix`.
+    """ Calculate equal weights for given `matrix`.
 
-Parameters
-----------
-    matrix : ndarray
-        Decision matrix / alternatives data.
-        Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-Returns
--------
-    ndarray
-        Vector of weights.
-"""
+        Returns
+        -------
+            ndarray
+                Vector of weights.
+    """
     N = matrix.shape[1]
     return np.ones(N) / N
 
 
 def entropy_weights(matrix, *args, **kwargs):
-    """Calculate weights for given `matrix` using entropy method.
+    """ Calculate weights for given `matrix` using entropy method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     m, n = matrix.shape
     nmatrix = normalize_matrix(matrix, sum_normalization, None)
@@ -75,39 +76,39 @@ def entropy_weights(matrix, *args, **kwargs):
 
 
 def standard_deviation_weights(matrix, *args, **kwargs):
-    """Calculate weights for given `matrix` using std method.
+    """ Calculate weights for given `matrix` using std method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     std = np.std(matrix, axis=0, ddof=1)
     return std / np.sum(std)
 
 
 def merec_weights(matrix, types, *args, **kwargs):
-    """Calculate weights for given `matrix` using MEREC method.
+    """ Calculate weights for given `matrix` using MEREC method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
-        types : ndarray
-            Array with definitions of criteria types:
-            1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
+            types : ndarray
+                Array with definitions of criteria types:
+                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     n, m = matrix.shape
     nmatrix = normalize_matrix(matrix, linear_normalization, -types)
@@ -121,18 +122,18 @@ def merec_weights(matrix, types, *args, **kwargs):
 
 
 def critic_weights(matrix, *args, **kwargs):
-    """Calculate weights for given `matrix` using CRITIC method.
+    """ Calculate weights for given `matrix` using CRITIC method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     nmatrix = normalize_matrix(matrix, minmax_normalization, None)
     std = np.std(nmatrix, axis=0, ddof=1)
@@ -142,21 +143,21 @@ def critic_weights(matrix, *args, **kwargs):
 
 
 def cilos_weights(matrix, types, *args, **kwargs):
-    """Calculate weights for given `matrix` using CILOS method.
+    """ Calculate weights for given `matrix` using CILOS method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
-        types : ndarray
-            Array with definitions of criteria types:
-            1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
+            types : ndarray
+                Array with definitions of criteria types:
+                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     nmatrix = normalize_matrix(matrix, _fake_normalization, types)
     nmatrix = normalize_matrix(nmatrix, sum_normalization, None)
@@ -168,21 +169,21 @@ def cilos_weights(matrix, types, *args, **kwargs):
 
 
 def idocriw_weights(matrix, types, *args, **kwargs):
-    """Calculate weights for given `matrix` using IDOCRIW method.
+    """ Calculate weights for given `matrix` using IDOCRIW method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
-        types : ndarray
-            Array with definitions of criteria types:
-            1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
+            types : ndarray
+                Array with definitions of criteria types:
+                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     W = entropy_weights(matrix)
     q = cilos_weights(matrix, types)
@@ -190,18 +191,18 @@ def idocriw_weights(matrix, types, *args, **kwargs):
 
 
 def angle_weights(matrix, *args, **kwargs):
-    """Calculate weights for given `matrix` using angle method.
+    """ Calculate weights for given `matrix` using angle method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     nmatrix = normalize_matrix(matrix, sum_normalization, None)
     n, m = nmatrix.shape
@@ -213,18 +214,18 @@ def angle_weights(matrix, *args, **kwargs):
 
 
 def gini_weights(matrix, *args, **kwargs):
-    """Calculate weights for given `matrix` using gini method.
+    """ Calculate weights for given `matrix` using gini method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     n, m = matrix.shape
     weights = np.zeros(m)
@@ -237,18 +238,18 @@ def gini_weights(matrix, *args, **kwargs):
 
 
 def variance_weights(matrix, *args, **kwargs):
-    """Calculate weights for given `matrix` using std method.
+    """ Calculate weights for given `matrix` using std method.
 
-    Parameters
-    ----------
-        matrix : ndarray
-            Decision matrix / alternatives data.
-            Alternatives are in rows and Criteria are in columns.
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
 
-    Returns
-    -------
-        ndarray
-            Vector of weights.
+        Returns
+        -------
+            ndarray
+                Vector of weights.
     """
     nmatrix = normalize_matrix(matrix, minmax_normalization, None)
     var = np.var(nmatrix, axis=0, ddof=1)

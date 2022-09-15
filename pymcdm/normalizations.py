@@ -8,16 +8,31 @@ __all__ = [
     'max_normalization',
     'sum_normalization',
     'vector_normalization',
-    'logaritmic_normalization',
+    'logarithmic_normalization',
     'linear_normalization',
     'nonlinear_normalization',
     'enhanced_accuracy_normalization',
-    'normalize_matrix'
+    'zavadskas_turskis_normalization'
 ]
 
 
 def minmax_normalization(x, cost=False):
-    if np.min(x) == np.max(x): # If all values are equal
+    """Calculate the normalized vector using the min-max method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
+    if np.min(x) == np.max(x):  # If all values are equal
         return np.ones(x.shape)
 
     if cost:
@@ -26,24 +41,84 @@ def minmax_normalization(x, cost=False):
 
 
 def max_normalization(x, cost=False):
+    """Calculate the normalized vector using the max method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     if cost:
-        return 1 - x/np.max(x)
+        return 1 - x / np.max(x)
     return x / np.max(x)
 
 
 def sum_normalization(x, cost=False):
+    """Calculate the normalized vector using the sum method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     if cost:
-        return (1/x) / np.sum(1/x)
+        return (1 / x) / np.sum(1 / x)
     return x / np.sum(x)
 
 
 def vector_normalization(x, cost=False):
+    """Calculate the normalized vector using the vector method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     if cost:
         return 1 - (x / np.sqrt(sum(x ** 2)))
     return x / np.sqrt(np.sum(x ** 2))
 
 
-def logaritmic_normalization(x, cost=False):
+def logarithmic_normalization(x, cost=False):
+    """Calculate the normalized vector using the logarithmic method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     prod = np.prod(x)
     if cost:
         return (1 - (np.log(x) / np.log(prod))) / (x.shape[0] - 1)
@@ -51,65 +126,84 @@ def logaritmic_normalization(x, cost=False):
 
 
 def linear_normalization(x, cost=False):
+    """Calculate the normalized vector using the linear method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     if cost:
         return np.min(x) / x
     return x / np.max(x)
 
 
 def nonlinear_normalization(x, cost=False):
+    """Calculate the normalized vector using the nonlinear method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     if cost:
         return (np.min(x) / x) ** 3
     return (x / np.max(x)) ** 2
 
 
 def enhanced_accuracy_normalization(x, cost=False):
+    """Calculate the normalized vector using the enhanced accuracy method.
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
     if cost:
         return 1 - (x - np.min(x)) / np.sum(x - np.min(x))
     return 1 - (np.max(x) - x) / np.sum(np.max(x) - x)
 
 
-def normalize_matrix(matrix, method, criteria_types):
-    """Normalize each column in `matrix`, using `normalization` function according `criteria_types`.
+def zavadskas_turskis_normalization(x, cost=False):
+    """Calculate the normalized vector using the Zavadskas-Turskis method.
 
-Parameters
-----------
-    matrix : ndarray
-        Decision matrix representation.
-        The rows are considered as alternatives and the columns are considered as criteria.
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized
 
-    normalization : callable
-        Function which should be used for normalize `matrix` columns.
-        It should match signature `foo(x, cost)`, where `x` is a vector which would be normalized and `cost` is a bool variable which says if `x` is a cost or profit criteria.
+        cost : bool, optional
+            Vector type. Default profit type.
 
-    criteria_types : None or ndarray
-        Describes criteria types.
-        1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-        If None all criteria are considered as profit
-
-Returns
--------
-    ndarray
-        Normalized copy of the input matrix.
-
-Raises
-------
-    ValueError
-        If `criteria_types` and `matrix` has different number of criteria.
-"""
-    if criteria_types is None:
-        nmatrix = matrix.astype('float')
-        for i in range(matrix.shape[1]):
-            nmatrix[:,i] = method(matrix[:,i], cost=False)
-        return nmatrix
-
-    if matrix.shape[1] != len(criteria_types):
-        raise ValueError(f'Matrix has {matrix.shape[1]} criteria and criteria_types has {len(criteria_types)}. This values must be equal.')
-
-    nmatrix = matrix.astype('float')
-    for i, type in enumerate(criteria_types):
-        if type == 1: # If profit
-            nmatrix[:,i] = method(matrix[:,i], cost=False)
-        else:
-            nmatrix[:,i] = method(matrix[:,i], cost=True)
-    return nmatrix
-
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+    """
+    if cost:
+        return 1 - np.abs((np.max(x) - x) / np.max(x))
+    return 1 - np.abs((np.min(x) - x) / np.min(x))

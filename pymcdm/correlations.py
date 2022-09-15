@@ -10,8 +10,7 @@ __all__ = [
     'weighted_spearman',
     'rank_similarity_coef',
     'kendall_tau',
-    'goodman_kruskal_gamma',
-    'correlation_matrix'
+    'goodman_kruskal_gamma'
 ]
 
 
@@ -151,33 +150,3 @@ def goodman_kruskal_gamma(x, y):
         if sign:
             den += 1
     return num / float(den)
-
-
-def correlation_matrix(rankings, method, columns=False):
-    """Creates a correlation matrix for given vectors from the numpy array.
-
-    Parameters
-    ----------
-        rankings : ndarray
-            Vectors for which the correlation matrix is to be calculated.
-
-        method : callable
-            Function to calculate the correlation matrix.
-
-        columns: bool
-            If the column value is set to true then the correlation matrix will be calculated for the columns.
-            Otherwise the matrix will be calculated for the rows.
-
-    Returns
-    -------
-        ndarray
-            Correlation between two rankings vectors.
-    """
-    if columns:
-        rankings = rankings.T
-    n = rankings.shape[0]
-    corr = np.zeros((n, n))
-    for i in range(n):
-        for j in range(n):
-            corr[i, j] = method(rankings[i], rankings[j])
-    return corr
