@@ -1,8 +1,12 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020,2022 Andrii Shekhovtsov
 
 from abc import ABC
+from ..helpers import rankdata
+
 
 class MCDA_method(ABC):
+    reverse_ranking = True
+
     def __call__(self, matrix, weights, types, *args, **kwargs):
         """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
 
@@ -29,3 +33,7 @@ class MCDA_method(ABC):
     def _validate_input_data(matrix, weights, types):
         if matrix.shape[1] != weights.shape[0] and weights.shape[0] != len(types):
             raise ValueError(f'Number of criteria should be same as number of weights and number of types')
+
+    def rank(self, a):
+        return rankdata(a, reverse=self.reverse_ranking)
+

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pymcdm",
-    version="1.0.5",
+    version="1.1.0",
     author="Andrii Shekhovtsov, Bartłomiej Kizielewicz",
     author_email="andrii-shekhovtsov@zut.edu.pl, bartlomiej-kizielewicz@zut.edu.pl",
     description="Python library for Multi-Criteria Decision-Making",
@@ -18,7 +18,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[
         'numpy',
         'scipy',

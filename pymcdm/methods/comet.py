@@ -260,6 +260,8 @@ class COMET(MCDA_method):
         def topsis_rate(co):
             return topsis(co, weights, types)
 
+        return topsis_rate
+
     @staticmethod
     def make_cvalues(matrix, numbers_of_cvalues=3):
         """ Returns characteristic values matrix with `nubmers_of_cvalues` cvalues for each criterion. Characteristic values are generated equally from min to max.
@@ -303,4 +305,3 @@ class COMET(MCDA_method):
             np.linspace(np.min(col), np.max(col), noc)
             for noc, col in zip(numbers_of_cvalues, matrix.T)
         ], dtype=return_dtype)
-

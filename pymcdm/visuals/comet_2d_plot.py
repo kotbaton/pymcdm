@@ -10,7 +10,7 @@ def comet_2d_plot(cvalues,
                   scatter_kwargs = dict(),
                   plot_kwargs=dict(),
                   ax=None):
-    """ Visualise characteristic objects and criteria for two criteria.
+    """ Visualise characteristic objects and alternatives for two criteria.
 
         Parameters
         ----------

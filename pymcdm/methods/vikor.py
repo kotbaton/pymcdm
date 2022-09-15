@@ -45,6 +45,7 @@ class VIKOR(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.5679, 0.7667, 1, 0.7493, 0]
     """
+    reverse_ranking = False
 
     def __init__(self, normalization_function=None):
         if normalization_function is None:
