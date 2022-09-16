@@ -28,7 +28,7 @@ author = 'shekhand & kiziub'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'nbsphinx',
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'myst_parser', 'nbsphinx',
               'IPython.sphinxext.ipython_console_highlighting',
               ]
 
