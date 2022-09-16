@@ -12,7 +12,8 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/shekhand/mcda",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(where="pymcdm"),
+    package_dir={"": "pymcdm"},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
