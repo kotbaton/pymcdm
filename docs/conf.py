@@ -35,7 +35,8 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx_rtd_theme', '
 # DOBRE BYLO
 source_suffix = {
     '.rst': 'restructuredtext',
-    '.txt': 'markdown'
+    '.txt': 'markdown',
+    '.md': 'markdown',
 }
 
 # source_suffix = ['.rst', '.md']
