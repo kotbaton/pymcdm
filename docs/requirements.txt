@@ -3,3 +3,5 @@ nbsphinx
 IPython
 myst_parser
 numpy
+scipy
+matplotlib
