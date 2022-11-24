@@ -13,3 +13,4 @@ from .mairca import MAIRCA
 from .marcos import MARCOS
 from .ocra import OCRA
 from .moora import MOORA
+from .rim import RIM
