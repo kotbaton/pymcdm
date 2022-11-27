@@ -82,6 +82,16 @@ class RIM(MCDA_method):
     """
 
     def __init__(self, bounds, ref_ideal=None):
+        """ Create RIM method object.
+
+        Parameters
+        ----------
+            bounds : ndarray
+                Decision problem bounds / criteria bounds. Should be two dimensional array with [min, max] value for in criterion in rows.
+
+            ref_ideal : ndarray or None
+                Reference ideal for alternatives evaluation. Should be two dimensional array with interval ideal value for each criterion. If None, reference ideal will be calculated based on bounds and criteria types.
+        """
         bounds = np.array(bounds)
         if ref_ideal is not None:
             ref_ideal = np.array(ref_ideal)
