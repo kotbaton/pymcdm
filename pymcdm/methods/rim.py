@@ -109,7 +109,7 @@ class RIM(MCDA_method):
         self.ref_ideal = ref_ideal
 
     def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
+        """ Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
 
             Parameters
             ----------
