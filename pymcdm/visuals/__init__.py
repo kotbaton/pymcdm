@@ -5,6 +5,7 @@ from .ranking_bar import ranking_bar
 from .ranking_scatter import ranking_scatter
 from .mej_plot import mej_plot
 from .correlation_heatmap import correlation_heatmap
+from .correlation_plot import correlation_plot
 from .boxplot import boxplot
 from .violin import violin
 from .polar_plot import polar_plot
