@@ -416,6 +416,8 @@ class TestVIKOR(unittest.TestCase):
 class TestRIM(unittest.TestCase):
     """ Test output method with reference:
     [1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
+
+    Note: The paper [1] which introduces the method has an error in the final results. The authors of the method confirm that result should be as the one we have obtained.
     """
     def test_output(self):
         matrix = np.array([
@@ -450,7 +452,7 @@ class TestRIM(unittest.TestCase):
         output_method = pr(matrix, weights, None)
 
         output_method = list(np.round(output_method, 5))
-        output = [0.58663, 0.51883, 0.10031, 0.17556, 0.49475]
+        output = [0.58663, 0.75584, 0.37163, 0.46658, 0.74015]
 
         self.assertListEqual(output, output_method)
 

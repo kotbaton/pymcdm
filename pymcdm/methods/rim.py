@@ -7,11 +7,12 @@ from .mcda_method import MCDA_method
 
 
 def _dmin(x, c, d):
+    """ Helper for the RIM normalization function."""
     return min(abs(x - c), abs(x - d))
 
 
 def _f(x, a, b, c, d):
-    """ Rim normalization function.
+    """ RIM normalization function.
 
     Parameters
     ----------
@@ -38,7 +39,9 @@ def _f(x, a, b, c, d):
 class RIM(MCDA_method):
     """ Reference Ideal Method
 
-    RIM is an MCDA method which uses criteria bounds and reference ideal to
+    RIM is an MCDA method which uses criteria bounds and reference ideal to evaluate alternatives.
+
+    Note: The paper [1] which introduces the method has an error in the final results. The authors of the method confirm that result should be as the one we have obtained.
 
     References
     ----------
@@ -153,17 +156,10 @@ class RIM(MCDA_method):
             for j in range(matrix.shape[1]):
                 nmatrix[i, j] = _f(matrix[i, j], *range_t[j], *ref_ideal_s[j])
 
-        print(nmatrix)
-
         wnmatrix = nmatrix * weights
-
-        print(wnmatrix)
 
         i_plus = np.sqrt(np.sum((wnmatrix - weights) ** 2, axis=1))
         i_minus = np.sqrt(np.sum(wnmatrix ** 2, axis=1))
-
-        print(i_plus)
-        print(i_minus)
 
         r = i_minus / (i_plus + i_minus)
 
