@@ -95,10 +95,10 @@ class PROBID(MCDA_method):
         Si_average = np.sqrt(np.sum((wnmatrix - average_pis)**2, axis=1))
 
         m = wnmatrix.shape[0]
-        if not sPROBID:
-            Si_pos_ideal = np.zeros(wnmatrix.shape[0])
-            Si_neg_ideal = np.zeros(wnmatrix.shape[0])
 
+        Si_pos_ideal = np.zeros(m)
+        Si_neg_ideal = np.zeros(m)
+        if not sPROBID:
             if m % 2 == 1:
                 lim = (m + 1) // 2
             else:
@@ -114,14 +114,10 @@ class PROBID(MCDA_method):
             return 1 / (1 + Ri**2) + Si_average
 
         else:
-            Si_pos_ideal = np.zeros(wnmatrix.shape[0])
-            Si_neg_ideal = np.zeros(wnmatrix.shape[0])
-
             if m >= 4:
                 for k in range(1, m // 4 + 1):
                     Si_pos_ideal += Si[:, k - 1] / k
 
-                print(m + 1 - (m // 4))
                 for k in range(m + 1 - (m // 4), m + 1):
                     Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
 

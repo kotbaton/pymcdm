@@ -161,6 +161,4 @@ class RIM(MCDA_method):
         i_plus = np.sqrt(np.sum((wnmatrix - weights) ** 2, axis=1))
         i_minus = np.sqrt(np.sum(wnmatrix ** 2, axis=1))
 
-        r = i_minus / (i_plus + i_minus)
-
-        return r
+        return i_minus / (i_plus + i_minus)
