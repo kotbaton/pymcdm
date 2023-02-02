@@ -125,6 +125,4 @@ class ERVD(MCDA_method):
         S_plus = np.sum(weights * np.abs(vnmatrix - v_plus), axis=1)
         S_minus = np.sum(weights * np.abs(vnmatrix - v_minus), axis=1)
 
-        phi = S_minus / (S_plus + S_minus)
-
-        return phi
+        return S_minus / (S_plus + S_minus)
