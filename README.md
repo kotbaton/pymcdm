@@ -2,6 +2,8 @@
 
 Python 3 library for solving multi-criteria decision-making (MCDM) problems.
 
+Documentation is avaliable on [readthedocs](https://pymcdm.readthedocs.io/en/master/).
+
 ___
 
 # Installation
@@ -37,6 +39,9 @@ The library contains:
 |  MARCOS             	|  Measurement Alternatives and Ranking according to COmpromise Solution         	|        [[17]](#c17),[[18]](#c18)       	|
 |  OCRA               	|  Operational Competitiveness Ratings                                           	|        [[19]](#c19),[[20]](#c20)       	|
 |  MOORA              	|  Multi-Objective Optimization Method by Ratio Analysis                         	|        [[21]](#c21),[[22]](#c22)       	|
+|  RIM               	|  Reference Ideal Method                                                           |               [[48]](#c48)               	|
+|  ERVD               	|  Election Based on relative Value Distances                                       |               [[49]](#c49)               	|
+|  PROBID               |  Preference Ranking On the Basis of Ideal-average Distance                        |               [[50]](#c50)               	|
 
 * Weighting methods:
 
@@ -83,7 +88,7 @@ The library contains:
 * Helpers
     * rankdata
     * rrankdata
-  
+
 
 ___
 # Usage example
@@ -224,3 +229,8 @@ And the output of this example (numbers are rounded):
 
 <a name="c47">**[47]**</a> Goodman, L. A., & Kruskal, W. H. (1979). Measures of association for cross classifications. Measures of association for cross classifications, 2-34.
 
+<a name="c48">**[48]**</a> Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
+
+<a name="c49">**[49]**</a> Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+
+<a name="c50">**[50]**</a> Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
