@@ -84,6 +84,7 @@ The library contains:
 | Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
 
+* Helpers
 
 | Helpers submodule     | Description                                                                                                      |
 |---------------------  |------------                                                                                                      |
