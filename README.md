@@ -85,9 +85,12 @@ The library contains:
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
 
 
-* Helpers
-    * rankdata
-    * rrankdata
+| Helpers submodule     | Description                                                                                                      |
+|---------------------  |------------                                                                                                      |
+| `rankdata`            | Create ranking vector from the preference vector. Smaller preference values has higher positions in the ranking. |
+| `rrankdata`           | Alias to the `rankdata` which reverse the sorting order.                                                         |
+| `correlation_matrix`  | Create the correlation matrix for given coefficient from several the several rankings.                           |
+| `normalize_matrix`    | Normalize decision matrix column by column using given normalization and criteria types.                         |
 
 
 ___
