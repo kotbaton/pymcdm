@@ -41,6 +41,7 @@ class MAIRCA(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.0332, 0.1122, 0.0654, 0.1304, 0.1498]
     """
+    reverse_ranking = False
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):
         self.normalization = normalization_function
