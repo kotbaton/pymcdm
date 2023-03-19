@@ -144,6 +144,9 @@ class ManualExpert:
 
     def _show_separator(self):
         q_info = f' {self.q} / {self.max_q} '
-        cols = os.get_terminal_size().columns
+        try:
+            cols = os.get_terminal_size().columns
+        except OSError:
+            cols = 80
         first = (cols - len(q_info) - 2) // 2
         print(f'\n{"="*first}{q_info}{"="*(cols - first - len(q_info))}')
