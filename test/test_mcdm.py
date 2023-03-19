@@ -3,6 +3,7 @@ import numpy as np
 
 from pymcdm import methods
 from pymcdm.methods.mcda_method import MCDA_method
+from pymcdm.comet_tools import MethodExpert
 
 
 class TestMCDA(unittest.TestCase):
@@ -118,7 +119,7 @@ class TestCOMET(unittest.TestCase):
         types = np.array([1, 1, 1, 1, 1, -1, 1, 1, -1])
         weights = np.array([1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9])
 
-        body = methods.COMET(cvalues, methods.COMET.topsis_rate_function(weights, types))
+        body = methods.COMET(cvalues, MethodExpert(methods.TOPSIS(), weights, types))
 
         output = [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
         output_method = [round(preference, 4) for preference in body(matrix)]

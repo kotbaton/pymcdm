@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020-2023 Andrii Shekhovtsov
 
 from itertools import product
 from functools import reduce
@@ -6,7 +6,6 @@ from functools import reduce
 import numpy as np
 
 from .mcda_method import MCDA_method
-from .topsis import TOPSIS
 
 
 def _TFN(a, m, b):
@@ -38,22 +37,18 @@ class COMET(MCDA_method):
            cvalues : ndarray or list of lists
                Each row represent characteristic values for each criteria.
 
-           rate_function : callable
-               Function to rate CO without creating MEJ. Matrix with CO as rows is passed as an argument Vector with
-               rates should be retrurn. Better CO should has higher values.
+           expert_function : callable
+               Function to rate CO. Matrix with CO as rows is passed as
+               an argument. Function should return vector which will be used 
+               as SJ and the MEJ matrix.
+               If MEJ was not build None should be returned.
 
                Signature of the function should be as followed:
-                   rate_function(co: np.array) -> np.array
+                   rate_function(co: np.array) -> np.array, np.array or None
 
-           expert_function : callable
-               Function which would be used to compare CO on MEJ creation.
-               It should fulfill this requirments:
-                  CO to compare are passed as arguments (a, b)
-                  if a is better then b return 1,
-                  if b is better then a return 0,
-                  if this CO are equaly prefered return 0.5
-
-           If both ranking_method and expert_function are provided, expert_function is preffered.
+               Please, see the implementation of ManualExpert and MethodExpert
+               in the pymcdm.comet_tools submodule if you want to create your
+               own custom expert_function.
 
         References
         ----------
@@ -62,7 +57,8 @@ class COMET(MCDA_method):
 
         Examples
         --------
-        >>> from pymcdm.methods import COMET
+        >>> from pymcdm.methods import COMET, TOPSIS
+        >>> from pymcdm.comet_tools import MethodExpert
         >>> import numpy as np
         >>> matrix = np.array([[64, 128, 2.9, 4.3, 3.2, 280, 495, 24763, 3990],
         ...                    [28, 56, 3.1, 3.8, 3.8, 255, 417, 12975, 2999],
@@ -82,12 +78,13 @@ class COMET(MCDA_method):
         ... )).T
         >>> types = np.array([1, 1, 1, 1, 1, -1, 1, 1, -1])
         >>> weights = np.array([1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9])
-        >>> body = COMET(cvalues, COMET.topsis_rate_function(weights, types))
+        >>> body = COMET(cvalues, MethodExpert(TOPSIS(), weights, types))
+
         >>> [round(preference, 4) for preference in body(matrix)]
         [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
     """
 
-    def __init__(self, cvalues, rate_function=None, expert_function=None):
+    def __init__(self, cvalues, expert_function):
         # Validate input
         for i, cv in enumerate(cvalues):
             if len(cv) < 2:
@@ -106,19 +103,15 @@ class COMET(MCDA_method):
         co = np.array(list(co))
 
         # Determine how MEJ and SJ is calculated
-        if expert_function is not None:
-            self.mej = COMET._build_mej(co, expert_function)
-            sj = np.sum(self.mej, axis=1)
-        elif rate_function is not None:
-            self.mej = None
-            sj = rate_function(co)
-            if sj.shape[0] != co.shape[0]:
-                raise ValueError(
-                    f'Rate function must returns vector with same length as number of characteristic objects. '
+        sj, mej = expert_function(co)
+        self.mej = mej
+        if sj.shape[0] != co.shape[0] or (mej is not None and not mej.shape[0] == mej.shape[1] == co.shape[0]):
+            raise ValueError(
+                    'Expert function must returns vector with same length as number of characteristic objects. '
+                    'And the None or MEJ matrix which is square matrix with same size as lenght of characteriscit objects.'
                     f'Expected length: {co.shape[0]}, but returned vector has length {sj.shape[0]}. '
-                )
-        else:
-            raise ValueError('rate_function or expert_function should be provided.')
+                    f'Expected MEJ shape {(co.shape[0], co.shape[0])}, but returned matrix has shape {mej.shape}.'
+                    )
 
         k = np.unique(sj).shape[0]
 
@@ -167,17 +160,6 @@ class COMET(MCDA_method):
                           for p, co_values in zip(self.p, tfns_values_product))
         return sum(multiplayed_co)
 
-    @staticmethod
-    def _build_mej(co, expert_function):
-        # Initiate MEJ with diagonal with 0.5 values
-        mej = np.diag(np.ones(co.shape[0]) * 0.5)
-        for i in range(mej.shape[0]):
-            for j in range(i + 1, mej.shape[0]):
-                v = expert_function(co[i], co[j])
-                mej[i, j] = v
-                mej[j, i] = 1 - v
-        return mej
-
     def get_MEJ(self):
         """ Return the Matrix Expert Judgment (MEJ) generated from the feature object comparisons. """
         if self.mej is not None:
@@ -217,52 +199,6 @@ class COMET(MCDA_method):
         return tfns
 
     @staticmethod
-    def manual_expert(criteria_names):
-        """Returns function for manual rating characteristic objects.
-
-            Parameters
-            ----------
-                criteria_names: list
-                    List of type names of criteria to be compared.
-        """
-
-        def manual(a, b):
-            # Print CO data
-            print(f'{" " * 15} | {"a":>9} | {"b":>9}')
-            for name, va, vb in zip(criteria_names, a, b):
-                print(f'{name[:15]:>15s} | {va:>9} | {vb:>9}')
-
-            # Input from expert
-            print('Which one is better?')
-            options = {'a': 1.0, 'b': 0.0, '': 0.5}
-            inp = None
-            while inp not in options:
-                inp = input('Input "a", "b" or leave empty if a i b are equaly prefered.\n>>> ')
-            return options[inp]
-
-        return manual
-
-    @staticmethod
-    def topsis_rate_function(weights, types):
-        """ Returns function to rate characteristic objects with TOPSIS
-
-            Parameters
-            ----------
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-        """
-        topsis = TOPSIS()
-
-        def topsis_rate(co):
-            return topsis(co, weights, types)
-
-        return topsis_rate
-
-    @staticmethod
     def make_cvalues(matrix, numbers_of_cvalues=3):
         """ Returns characteristic values matrix with `nubmers_of_cvalues` cvalues for each criterion. Characteristic values are generated equally from min to max.
 
@@ -282,7 +218,8 @@ class COMET(MCDA_method):
             Examples
             --------
             >>> import numpy as np
-            >>> from pymcdm.methods import COMET
+            >>> from pymcdm.methods import COMET, TOPSIS
+            >>> from pymcdm.comet_tools import MethodExpert
             >>> matrix = np.array([[ 96, 145, 200],
                                    [100, 145, 200],
                                    [120, 170,  80],
@@ -290,8 +227,9 @@ class COMET(MCDA_method):
                                    [100, 110,  30]])
             >>> types = np.ones(3)
             >>> weights = np.ones(3)/3
-            >>> cvalues = COMET.make_cvalues(matrix)
-            >>> body = COMET(cvalues, COMET.topsis_rate_function(weights, types))
+            >>> body = COMET(cvalues,
+                             MethodExpert(TOPSIS(), weights, types))
+
             >>> preferences = body(matrix)
             >>> np.round(preferences, 4)
             array([0.5   , 0.5455, 0.5902, 0.9118, 0.0227])
