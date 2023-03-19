@@ -411,3 +411,118 @@ class TestVIKOR(unittest.TestCase):
         output_method = list(body(matrix, weights, types))
 
         self.assertListEqual(output, output_method)
+
+
+class TestRIM(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
+
+    Note: The paper [1] which introduces the method has an error in the final results. The authors of the method confirm that result should be as the one we have obtained.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [30,  0, 2, 3, 3, 2],
+            [40,  9, 1, 3, 2, 2],
+            [25,  0, 3, 1, 3, 2],
+            [27,  0, 5, 3, 3, 1],
+            [45, 15, 2, 2, 3, 4]
+        ])
+
+        weights = np.array([0.2262, 0.2143, 0.1786, 0.1429, 0.1190, 0.1190])
+
+        range_t = np.array([
+            [23, 60],
+            [0, 15],
+            [0, 10],
+            [1, 3],
+            [1, 3],
+            [1, 5]
+        ])
+
+        ref_s = [
+            [30, 35],
+            [10, 15],
+            [0, 0],
+            [3, 3],
+            [3, 3],
+            [4, 5]
+        ]
+
+        pr = methods.RIM(range_t, ref_s)
+        output_method = pr(matrix, weights, None)
+
+        output_method = list(np.round(output_method, 5))
+        output = [0.58663, 0.75584, 0.37163, 0.46658, 0.74015]
+
+        self.assertListEqual(output, output_method)
+
+
+class TestERVD(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [80, 70, 87, 77, 76, 80, 75],
+            [85, 65, 76, 80, 75, 65, 75],
+            [78, 90, 72, 80, 85, 90, 85],
+            [75, 84, 69, 85, 65, 65, 70],
+            [84, 67, 60, 75, 85, 75, 80],
+            [85, 78, 82, 81, 79, 80, 80],
+            [77, 83, 74, 70, 71, 65, 70],
+            [78, 82, 72, 80, 78, 70, 60],
+            [85, 90, 80, 88, 90, 80, 85],
+            [89, 75, 79, 67, 77, 70, 75],
+            [65, 55, 68, 62, 70, 50, 60],
+            [70, 64, 65, 65, 60, 60, 65],
+            [95, 80, 70, 75, 70, 75, 75],
+            [70, 80, 79, 80, 85, 80, 70],
+            [60, 78, 87, 70, 66, 70, 65],
+            [92, 85, 88, 90, 85, 90, 95],
+            [86, 87, 80, 70, 72, 80, 85]
+        ])
+
+        weights = np.array([0.066, 0.196, 0.066, 0.130, 0.130, 0.216, 0.196])
+        types = np.ones(7)
+
+        ref = np.ones(7) * 80
+
+        ervd = methods.ERVD(ref_point=ref)
+        output_method = list(np.round(ervd(matrix, weights, types), 3))
+        output = [0.660, 0.503, 0.885, 0.521, 0.610, 0.796, 0.498, 0.549, 0.908, 0.565, 0.070, 0.199, 0.632, 0.716, 0.438, 0.972, 0.767]
+
+        self.assertListEqual(output, output_method)
+
+
+class TestPROBID(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [1.679 * 10**6, 1.525 * 10**(-7), 3.747 * 10**(-5), 0.251, 2.917],
+            [2.213 * 10**6, 1.304 * 10**(-7), 3.250 * 10**(-5), 0.218, 6.633],
+            [2.461 * 10**6, 1.445 * 10**(-7), 3.854 * 10**(-5), 0.259, 0.553],
+            [2.854 * 10**6, 1.540 * 10**(-7), 3.970 * 10**(-5), 0.266, 1.597],
+            [3.107 * 10**6, 1.522 * 10**(-7), 3.779 * 10**(-5), 0.254, 2.905],
+            [3.574 * 10**6, 1.469 * 10**(-7), 3.297 * 10**(-5), 0.221, 6.378],
+            [3.932 * 10**6, 1.977 * 10**(-7), 3.129 * 10**(-5), 0.210, 11.381],
+            [4.383 * 10**6, 1.292 * 10**(-7), 3.142 * 10**(-5), 0.211, 9.929],
+            [4.988 * 10**6, 1.690 * 10**(-7), 3.767 * 10**(-5), 0.253, 8.459],
+            [5.497 * 10**6, 5.703 * 10**(-7), 3.012 * 10**(-5), 0.200, 18.918],
+            [5.751 * 10**6, 4.653 * 10**(-7), 3.017 * 10**(-5), 0.201, 17.517],
+        ])
+
+        weights = np.array([0.1819, 0.2131, 0.1838, 0.1832, 0.2379])
+        types = np.array([1, -1, -1, -1, -1])
+
+        pr = methods.PROBID()
+        output_method = list(np.round(pr(matrix, weights, types), 4))
+        output = [0.8568, 0.7826, 0.9362, 0.9369, 0.9379, 0.8716, 0.5489, 0.7231, 0.7792, 0.3331, 0.3387]
+        self.assertListEqual(output, output_method)
+
+        # Example is slightly modified to eliminate rounding errors
+        pr = methods.PROBID(sPROBID=True)
+        output_method = list(np.round(pr(matrix, weights, types), 4))
+        output = [2.4246, 2.0596, 3.2806, 3.3702, 3.4374, 2.6435, 1.2628, 1.8158, 2.0885, 0.3399, 0.4279]
+        self.assertListEqual(output, output_method)
