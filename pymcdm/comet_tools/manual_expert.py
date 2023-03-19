@@ -1,3 +1,5 @@
+# Copyright (c) 2023 Andrii Shekhovtsov
+
 import os
 import numpy as np
 from tabulate import tabulate

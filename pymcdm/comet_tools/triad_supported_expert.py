@@ -1,3 +1,5 @@
+# Copyright (c) 2023 Andrii Shekhovtsov
+
 import numpy as np
 
 from .triads_consistency import T_con_rules

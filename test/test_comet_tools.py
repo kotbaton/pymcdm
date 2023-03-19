@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023 Bartłomiej Kizielewicz
+
 import unittest
 
 import numpy as np
