@@ -3,8 +3,35 @@ import numpy as np
 from ..methods import COMET
 
 class Submodel:
+    """ Create object of the COMET submodel. This class is mostly for internal
+        use in the StructuralCOMET class or for creating StructuralCOMET
+        object.
+
+        Parameters
+        ----------
+            structure : tuple or int
+                Structure of the submodel. Refer to the single criteria by
+                names (str) or by indexes (int). If structure is more complex
+                use defined names or nested structures. See example use of
+                StructuralCOMET for more infomation.
+
+            cvalues : list or None
+                Cvalues for output of this submodel. Pass None if it is a final
+                model to be evaluated.
+
+            expert_function : Callable or None
+                Expert function to evaluate characteristic objects in
+                the submodel. See COMET documentation for more information.
+                None is reserved for internal use in StructuralCOMET class.
+
+            name : str or None
+                Name (alias) of the Submodel. If name is not None Submodel
+                could be reffered by it in another Submodel in one
+                StructuralCOMET model.
+    """
+
     def __init__(self,
-                 structure, # Should be a value
+                 structure,
                  cvalues, # Could be None if it is final submodel
                  expert_function, # Could be None if structure is int
                  name, # If we do not provide name we should put in some generic one
@@ -53,6 +80,28 @@ Output cvalues: {self.cvalues}
 
 
 class StructuralCOMET:
+    """ Create Structural COMET model with defined structure.
+
+        Parameters
+        ----------
+            submodels : list of Submodel objects
+                List of the submodels which defines structure of the model.
+                See example for more details.
+
+            cvalues : list of lists
+                Characteristic values for criteria.
+
+            criteria_names : list or None
+                Names of the criteria
+
+        References
+        ----------
+        .. [1] Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
+
+        Examples
+        --------
+        See examples/structural_comet_example.py for example with explanation.
+    """
     def __init__(self,
                  submodels,
                  cvalues,

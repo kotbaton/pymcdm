@@ -14,6 +14,12 @@ You can download and install `pymcdm` library using pip:
 pip install pymcdm
 ```
 
+You can run all tests with following command from the root of the project:
+
+```Bash
+python -m unittest -v
+```
+
 ___
 
 # Available methods
@@ -92,6 +98,17 @@ The library contains:
 | `rrankdata`           | Alias to the `rankdata` which reverse the sorting order.                                                         |
 | `correlation_matrix`  | Create the correlation matrix for given coefficient from several the several rankings.                           |
 | `normalize_matrix`    | Normalize decision matrix column by column using given normalization and criteria types.                         |
+
+* Comet Tools
+
+| Class/Function       | Description                                                                                        |
+|----------------------|----------------------------------------------------------------------------------------------------|
+| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  |
+| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       |
+| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       |
+| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         |
+| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            |
+| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. |
 
 
 ___

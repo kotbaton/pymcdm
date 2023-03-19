@@ -8,7 +8,6 @@ from ..methods import COMET
 import numpy as np
 
 T_con_rules = (
-#    aij  ajk  aik
     (1.0, 1.0, 1.0),
     (1.0, 0.5, 1.0),
     (0.5, 1.0, 1.0),

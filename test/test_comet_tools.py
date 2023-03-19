@@ -3,8 +3,9 @@ import unittest
 import numpy as np
 import pandas as pd
 
-import pymcdm as pm
-from pymcdm.comet_tools import MethodExpert, Submodel, StructuralCOMET
+from pymcdm.methods import TOPSIS, COMET
+from pymcdm.comet_tools import (MethodExpert, Submodel,
+                                StructuralCOMET, triads_consistency)
 
 
 class TestStructuralCOMET(unittest.TestCase):
@@ -47,25 +48,25 @@ class TestStructuralCOMET(unittest.TestCase):
                     Submodel((0, 1, 2),
                              [8.24041444e-02, 4.53869580e-01, 7.85105159e-01],
                              MethodExpert(
-                                 pm.methods.TOPSIS(),
+                                 TOPSIS(),
                                  np.ones(3)/3, [1, 1, 1]),
                              'P_1'),
                     Submodel((3, 4),
                              [0.00000000e+00, 4.43071484e-01, 1.00000000e+00],
                              MethodExpert(
-                                 pm.methods.TOPSIS(),
+                                 TOPSIS(),
                                  np.ones(2)/2, [1, 1]),
                              'P_2'),
                     Submodel((5, 6, 7),
                              [1.49566750e-01, 4.81255932e-01, 7.15106856e-01],
                              MethodExpert(
-                                 pm.methods.TOPSIS(),
+                                 TOPSIS(),
                                  np.ones(3)/3, [-1, -1, 1]),
                              'P_3'),
                     Submodel(('P_1', 'P_3', 'P_2', 'C_9'),
                              None,
                              MethodExpert(
-                                 pm.methods.TOPSIS(),
+                                 TOPSIS(),
                                  np.ones(4)/4, [1, 1, 1, -1]),
                              'P Final')
                     ],
@@ -76,14 +77,69 @@ class TestStructuralCOMET(unittest.TestCase):
         res = model(matrix, True, True)
 
         reference = {
-                'P_1': ... #TODO
+            'P_1': [0.7851, 0.6136, 0.5950, 0.7187, 0.1378,
+                    0.0917, 0.3298, 0.5354, 0.6491, 0.0824],
+            'P_2': [1.0000, 1.0000, 0.3492, 0.6850, 0.1715,
+                    0.1715, 0.1715, 0.2110, 0.6709, 0.0000],
+            'P_3': [0.3684, 0.3684, 0.7151, 0.3927, 0.6439,
+                    0.6439, 0.4342, 0.4062, 0.6901, 0.1496],
+            'P Final': [0.5732, 0.5972, 0.7718, 0.6996, 0.4911,
+                        0.4619, 0.4595, 0.5138, 0.8374, 0.1512]
         }
 
-        # p1_res = np.round(res['P_1'], 4)
-        # p2_res = np.round(res['P_2'], 4)
-        # p3_res = np.round(res['P_3'], 4)
-        # p_final_res = np.round(res['P Final'], 4)
-        #
-        # print(p1_res, p2_res, p3_res, p_final_res, sep='\n')
+        for key in reference:
+            self.assertListEqual(list(np.round(res[key], 4)), reference[key])
 
-        # self.assertListEqual(output, output_method)
+
+class TestTriadsConsistency_MEJ(unittest.TestCase):
+    """ Test output of the triads_consistency coefficient.
+    Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new
+    consistency coefficient in the multi-criteria decision analysis domain.
+    In Computational Science–ICCS 2021: 21st International Conference, Krakow,
+    Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727).
+    Cham: Springer International Publishing.
+    """
+    def test_output(self):
+        mej = np.array([
+            [0.5,   0,   0,   0,   0,   0],
+            [  1, 0.5,   0,   0,   0,   0],
+            [  1,   1, 0.5,   0,   0,   0],
+            [  1,   1,   1, 0.5,   0,   0],
+            [  1,   1,   1,   1, 0.5,   0],
+            [  1,   1,   1,   1,   1, 0.5]
+        ])
+
+        self.assertEqual(triads_consistency(mej), 1.0)
+
+        mej = np.array([
+            [0.5,   0,   0,   0,   0,   1],
+            [  1, 0.5,   0,   0,   0,   0],
+            [  1,   1, 0.5,   0,   0,   0],
+            [  1,   1,   1, 0.5,   0,   0],
+            [  1,   1,   1,   1, 0.5,   0],
+            [  0,   1,   1,   1,   1, 0.5]
+        ])
+
+        self.assertEqual(triads_consistency(mej), 0.8)
+
+        mej = np.array([
+            [0.5,   0,   0,   1,   0,   1],
+            [  1, 0.5,   0,   0,   0,   0],
+            [  1,   1, 0.5,   0,   0,   0],
+            [  0,   1,   1, 0.5,   0,   0],
+            [  1,   1,   1,   1, 0.5,   0],
+            [  0,   1,   1,   1,   1, 0.5]
+        ])
+
+        self.assertEqual(triads_consistency(mej), 0.75)
+
+class TestTriadsConsistency_COMET(unittest.TestCase):
+    """ Test output of the triads_consistency coefficient."""
+    def test_output(self):
+        cvalues = [
+                [1, 3, 5],
+                [1, 3, 5]
+                ]
+        comet = COMET(cvalues, MethodExpert(TOPSIS(), np.ones(2)/2, [1, -1]))
+
+        self.assertEqual(triads_consistency(comet), 1.0)
