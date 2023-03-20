@@ -17,8 +17,11 @@ def check_pref(fp1, fm1, fp2, fm2):
         return -1
 
 
-def promethee_I_graph(Fp, Fm,
+def promethee_I_graph(Fp,
+                      Fm,
                       start_angle=0.5*np.pi,
+                      colors=None,
+                      disable_colors=False,
                       circle_kwargs=dict(),
                       arrow_kwargs=dict(),
                       ax=None):
@@ -35,6 +38,15 @@ def promethee_I_graph(Fp, Fm,
 
         start_angle : floar
             Start angle in radians (where to place first alternative).
+
+        colors : Iterable or None
+            Colors for bars. If there are less colors then criteria,
+            then colors will be cycled. Default is None.
+
+        disable_colors : bool
+            Force disable colors. In this case colors from circle_kwargs and
+            arrow_kwargs will be used. If there are no provided colors then
+            default ones will be used. Default is False.
 
         circle_kwargs : dict
             Keyword arguments for matploglib's Circle polygon.
@@ -59,6 +71,10 @@ def promethee_I_graph(Fp, Fm,
     if ax is None:
         ax = plt.gca()
 
+    if colors is None:
+        prop_cycle = plt.rcParams['axes.prop_cycle']
+        colors = prop_cycle.by_key()['color']
+
     ax.set_xlim(-1.2, 1.2)
     ax.set_ylim(-1.2, 1.2)
     ax.axis('off')
@@ -74,10 +90,12 @@ def promethee_I_graph(Fp, Fm,
         edgecolor='k',
         alpha=0.4,
     ) | circle_kwargs
-    # ax.scatter(x, y, **scatter_kwargs)
 
     for i, (xi, yi) in enumerate(zip(x, y)):
         ax.text(xi, yi, f'$A_{{{i + 1}}}$', ha='center', va='center')
+        if not disable_colors:
+            circle_kwargs['facecolor'] = colors[i % len(colors)]
+            circle_kwargs['edgecolor'] = colors[i % len(colors)]
         c = Circle((xi, yi), **circle_kwargs)
         ax.add_patch(c)
 
@@ -87,6 +105,7 @@ def promethee_I_graph(Fp, Fm,
         head_width=0.05,
         facecolor='k'
     ) | arrow_kwargs
+
     for i in range(len(Fp)):
         for j in range(len(Fp)):
             if check_pref(Fp[i], Fm[i], Fp[j], Fm[j]) == 1:
@@ -98,7 +117,8 @@ def promethee_I_graph(Fp, Fm,
                 ddx = np.cos(alpha) * circle_kwargs['radius']
                 ddy = np.sin(alpha) * circle_kwargs['radius']
 
+                if not disable_colors:
+                    arrow_kwargs['facecolor'] = colors[i % len(colors)]
+                    arrow_kwargs['edgecolor'] = colors[i % len(colors)]
                 ax.arrow(x[i] + ddx, y[i] + ddy,
                          dx - 2*ddx, dy - 2*ddy, **arrow_kwargs)
-
-    plt.tight_layout()
