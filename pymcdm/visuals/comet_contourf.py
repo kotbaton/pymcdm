@@ -24,6 +24,7 @@ def comet_contourf(comet,
 
             alternatives : ndarray
                 Alternatives to draw. Alternatives are in rows and criteria are in columns.
+
             num : int
                 Number of points in meshgrid (num argument for linspace function).
 
