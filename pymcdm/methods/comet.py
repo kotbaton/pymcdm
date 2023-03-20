@@ -165,8 +165,6 @@ class COMET(MCDA_method):
         if self.mej is not None:
             return self.mej
 
-        # If there's no MEJ then rate_function was used to create SJ and P
-        # Now we can create MEJ using P to compare CO.
         p = self.p
         lenp = len(p)
         mej = np.diag(np.ones(lenp) / 2)

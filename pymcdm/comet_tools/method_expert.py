@@ -39,7 +39,7 @@ class MethodExpert:
 
             Parameters
             ----------
-            characteristic_objects : np.array
+            co : np.array
                 Characteristic objects which should be compared.
 
             Returns
