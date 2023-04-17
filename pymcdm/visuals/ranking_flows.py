@@ -64,6 +64,11 @@ def ranking_flows(rankings,
         ax : Axes or None
             Axes object to draw on. If None current Axes will be used.
 
+    Returns
+    -------
+        ax : Axes
+            Axes object on which plot were drawn.
+
     Examples
     --------
     >>> import numpy as np
@@ -91,6 +96,8 @@ def ranking_flows(rankings,
     """
     if ax is None:
         ax = plt.gca()
+
+    rankings = np.array(rankings)
 
     # If colors list is not provided, use default matplotlib colors
     if colors is None:
@@ -190,7 +197,7 @@ def ranking_flows(rankings,
         xlim=(-0.5, rankings.shape[0] - 0.5),
         ylabel='Position in ranking',
         yticks=range(1, rankings.shape[1] + 1),
-        ylim=(0.75, rankings.shape[1] + 0.25)
+        ylim=(0.5, rankings.shape[1] + 0.5)
     )
 
     if better_grid:
@@ -201,3 +208,5 @@ def ranking_flows(rankings,
                      linestyle='--', alpha=0.5, zorder=-1, color='#CCCCCC')
     else:
         ax.grid(alpha=0.5, linestyle='--')
+
+    return ax

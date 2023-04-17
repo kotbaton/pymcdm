@@ -1,5 +1,6 @@
 from .promethee_I_flows import promethee_I_flows
 from .promethee_I_graph import promethee_I_graph
+from .rankings_flow_correlation import rankings_flow_correlation
 from .ranking_flows import ranking_flows
 from .ranking_bar import ranking_bar
 from .ranking_scatter import ranking_scatter

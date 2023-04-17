@@ -32,6 +32,11 @@ def ranking_scatter(r1, r2, draw_labels=True, text_offset=0.05, scatter_kwargs=d
 
             ax : Axes
                 Axes object to draw on.
+
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
     """
     if ax is None:
         ax = plt.gca()
@@ -67,3 +72,5 @@ def ranking_scatter(r1, r2, draw_labels=True, text_offset=0.05, scatter_kwargs=d
 
     ax.set_ylabel('Ranking 2')
     ax.set_yticks(range(1, m + 1))
+
+    return ax

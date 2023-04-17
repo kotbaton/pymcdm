@@ -26,6 +26,15 @@ def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
             ax : Axes
                 Axes object to draw on.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
+            cax : Axes
+                Only if colorbar=True.
+                Axes object on which colorbar were drawn.
+
         Examples
         --------
         >>> import numpy as np
@@ -69,3 +78,6 @@ def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
         cax = divider.append_axes('right', size="5%", pad=0.05)
         cbar = plt.colorbar(im, cax=cax)
         cbar.set_ticks([0, 0.5, 1])
+        return ax, cax
+
+    return ax

@@ -39,6 +39,11 @@ def correlation_plot(cors,
             ax : Axes
                 Axes object to draw on.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
         >>> import numpy as np
@@ -86,3 +91,5 @@ def correlation_plot(cors,
     ax.set_axisbelow(True)
 
     ax.set_xticks(range(len(labels)), labels=labels)
+
+    return ax

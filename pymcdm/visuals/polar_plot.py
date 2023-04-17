@@ -46,6 +46,11 @@ def polar_plot(rankings,
         ax : Axes
             Axes object to draw on. Should be created with `projection='polar'` argument.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
     Examples
     --------
     >>> import numpy as np
@@ -114,4 +119,4 @@ def polar_plot(rankings,
     ) | rgrid_kwargs
     ax.set_rgrids(np.arange(1, m), **rgrid_kwargs)
 
-    plt.tight_layout()
+    return ax

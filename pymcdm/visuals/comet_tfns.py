@@ -45,6 +45,11 @@ def comet_tfns(comet,
             ax : Axes or None
                 Axes object to draw on. Default is None.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
             >>> import numpy as np
@@ -96,3 +101,5 @@ def comet_tfns(comet,
 
     ax.grid(linestyle='--', alpha=0.5)
     ax.set_axisbelow(True)
+
+    return ax

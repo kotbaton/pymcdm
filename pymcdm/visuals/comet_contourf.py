@@ -43,6 +43,15 @@ def comet_contourf(comet,
             ax : Axes
                 Axes object to draw on.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
+            cax : Axes
+                Only if colorbar=True.
+                Axes object on which colorbar were drawn.
+
         Examples
         --------
         >>> import numpy as np
@@ -90,3 +99,6 @@ def comet_contourf(comet,
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.05)
         cbar = plt.colorbar(contourf, cax=cax)
+        return ax, cax
+
+    return ax

@@ -57,6 +57,11 @@ def promethee_I_graph(Fp,
         ax : Axes
             Axes object to draw on. If None current Axes object will be used.
 
+    Returns
+    -------
+        ax : Axes
+            Axes object on which plot were drawn.
+
     Examples
     --------
         >>> import numpy as np
@@ -122,3 +127,5 @@ def promethee_I_graph(Fp,
                     arrow_kwargs['edgecolor'] = colors[i % len(colors)]
                 ax.arrow(x[i] + ddx, y[i] + ddy,
                          dx - 2*ddx, dy - 2*ddy, **arrow_kwargs)
+
+    return ax
