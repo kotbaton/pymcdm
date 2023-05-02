@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020-2023 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
@@ -8,22 +8,20 @@ from .mcda_method import MCDA_method
 class SPOTIS(MCDA_method):
     """ Stable Preference Ordering Towards Ideal Solution (SPOTIS) method.
 
-        The SPOTIS method is based on an approach in which it evaluates given decision alternatives using the distance
-        from the best ideal solution. [1].
+        The SPOTIS method is based on an approach in which it evaluates
+        given decision alternatives using the distance from the best
+        ideal solution. [1].
 
         Read more in the :ref:`User Guide <SPOTIS>`.
 
         References
         ----------
-        .. [1] Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The SPOTIS rank reversal free method for
-               multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion
-               (FUSION) (pp. 1-8). IEEE.
+        .. [1] Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The SPOTIS rank reversal free method for multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION) (pp. 1-8). IEEE.
 
         Examples
         --------
         >>> from pymcdm.methods import SPOTIS
         >>> import numpy as np
-        >>> body = SPOTIS()
         >>> matrix = np.array([[10.5, -3.1, 1.7],
         ...                    [-4.7, 0, 3.4],
         ...                    [8.1, 0.3, 1.3],
@@ -33,15 +31,39 @@ class SPOTIS(MCDA_method):
         ...                    [-8, 5]], dtype=float)
         >>> weights = np.array([0.2, 0.3, 0.5])
         >>> types = np.array([1, -1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
+        >>> body = SPOTIS(bounds)
+        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.1989, 0.3705, 0.3063, 0.7491]
     """
     reverse_ranking = False
 
-    def __init__(self):
-        pass
+    def __init__(self, bounds, esp=None):
+        """ Create SPOTIS method object.
 
-    def __call__(self, matrix, weights, types, bounds, *args, **kwargs):
+        Parameters
+        ----------
+            bounds : ndarray
+                Decision problem bounds / criteria bounds. Should be two dimensional array with [min, max] value for in criterion in rows.
+
+            esp : ndarray or None
+                Expected Solution Point for alternatives evaluation. Should be array with ideal (expected) value for each criterion. If None, ESP will be calculated based on bounds and criteria types. Default is None.
+        """
+        self.bounds = bounds
+        self.esp = esp
+        if np.any(bounds[:, 0] == bounds[:, 1]):
+            eq = np.arange(bounds.shape[0])[bounds[:, 0] == bounds[:, 1]]
+            raise ValueError(
+                    f'Bounds for criteria {eq} are equal. Consider changing'
+                    f'min and max values for this criterion, '
+                    f'delete this criterion or use another MCDA method.'
+                )
+        if esp is not None and bounds.shape[0] != esp.shape[0]:
+            raise ValueError(
+                    'Bounds and ESP should describe the same number of'
+                    'criteria, i.e. bounds.shape[0] should be equal to esp.shape[0].'
+                )
+
+    def __call__(self, matrix, weights, types, *args, **kwargs):
         """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
 
             Parameters
@@ -57,9 +79,6 @@ class SPOTIS(MCDA_method):
                     Array with definitions of criteria types:
                     1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
 
-                bounds : ndarray
-                    Each row should contain min and max values for each criterion. Min and max should be different values!
-
                 *args: is necessary for methods which reqiure some additional data.
 
                 **kwargs: is necessary for methods which reqiure some additional data.
@@ -70,22 +89,20 @@ class SPOTIS(MCDA_method):
                     Preference values for alternatives. Better alternatives have smaller values.
         """
         SPOTIS._validate_input_data(matrix, weights, types)
-        if np.any(bounds[:, 0] == bounds[:, 1]):
-            eq = np.arange(bounds.shape[0])[bounds[:, 0] == bounds[:, 1]]
-            raise ValueError(
-                    f'Bounds for criteria {eq} are equal. Consider changing min and max values for this criterion, '
-                    f'delete this criterion or use another MCDA method.'
-                )
+        bounds = self.bounds
+        esp = self.esp
 
-        # Determine Ideal Solution Point based on criteria bounds
-        isp = bounds[np.arange(bounds.shape[0]), ((types+1)//2).astype('int')]
-        return SPOTIS._spotis(matrix, weights, isp, bounds)
+        if esp is None:
+            # Determine ESP based on criteria bounds. In this case ESP == ISP.
+            esp = bounds[np.arange(bounds.shape[0]), ((types+1)//2).astype('int')]
+
+        return SPOTIS._spotis(matrix, weights, esp, bounds)
 
     @staticmethod
-    def _spotis(matrix, weights, isp, bounds):
+    def _spotis(matrix, weights, esp, bounds):
         nmatrix = matrix.astype(float)
         # Normalized distances matrix (d_{ij})
-        nmatrix = np.abs((nmatrix - isp)/
+        nmatrix = np.abs((nmatrix - esp)/
                          (bounds[:,0] - bounds[:,1]))
         # Distances to ISP (smaller means better alt)
         raw_scores = np.sum(nmatrix * weights, axis=1)

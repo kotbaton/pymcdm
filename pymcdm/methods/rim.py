@@ -1,3 +1,5 @@
+# Copyright (c) 2023 Andrii Shekhovtsov
+
 import numpy as np
 
 from pymcdm import helpers
@@ -49,6 +51,7 @@ class RIM(MCDA_method):
 
     Examples
     --------
+    >>> import numpy as np
     >>> from pymcdm.methods import RIM
     >>> matrix = np.array([
     ...     [30,  0, 2, 3, 3, 2],
