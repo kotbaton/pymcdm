@@ -32,6 +32,11 @@ def comet_2d_plot(cvalues,
             ax : Axes
                 Axes object to draw on.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
             >>> import numpy as np
@@ -110,4 +115,4 @@ def comet_2d_plot(cvalues,
     ax.grid(alpha=0.5, linestyle='--')
     ax.set_axisbelow(True)
 
-    plt.tight_layout()
+    return ax

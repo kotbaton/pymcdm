@@ -32,6 +32,11 @@ def polar_weights(weights,
             ax : Axes or None
                 Axes object to dwaw on.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
             >>> import numpy as np
@@ -83,4 +88,4 @@ def polar_weights(weights,
     ax.legend(bbox_to_anchor=(0., 1.1, 1., .11), loc='lower left',
               ncol=legend_ncol, mode="expand", borderaxespad=0.)
 
-    plt.tight_layout()
+    return ax
