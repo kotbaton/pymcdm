@@ -89,6 +89,9 @@ The library contains:
 | Rank Similarity Coefficient                        	|        [[45]](#c45)       	|
 | Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
+| Drastic Weighted Similarity (draWS)                   |        TODO               	|
+| Weights Similarity Coefficient (WSC)                  |        TODO               	|
+| Weights Similarity Coefficient 2 (WSC2)               |        TODO               	|
 
 * Helpers
 
@@ -106,6 +109,7 @@ The library contains:
 | `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  |
 | `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       |
 | `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              |
+| `CompromiseExpert` | Class which allows to evaluate CO in COMET using compromise between several different methods.     |
 | `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       |
 | `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         |
 | `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            |
