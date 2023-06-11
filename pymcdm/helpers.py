@@ -8,7 +8,8 @@ __all__ = [
     'rankdata',
     'rrankdata',
     'correlation_matrix',
-    'normalize_matrix'
+    'normalize_matrix',
+    'leave_one_out_rr'
 ]
 
 
@@ -221,7 +222,7 @@ def leave_one_out_rr(method, matrix, weights, types,
         >>> topsis = pm.methods.TOPSIS()
         >>> weights = np.ones(5)/5
         >>> types = np.ones(5)
-        >>> labels, cors, rankings = leave_one_out_rr(
+        >>> rankings, cors, labels = leave_one_out_rr(
         ...         topsis,
         ...         matrix,
         ...         weights,
