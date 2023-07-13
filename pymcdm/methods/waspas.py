@@ -1,4 +1,5 @@
 # Copyright (c) 2023 Bartłomiej Kizielewicz
+# Copyright (c) 2023 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
@@ -80,10 +81,10 @@ class WASPAS(MCDA_method):
             nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
         else:
             nmatrix = helpers.normalize_matrix(matrix, normalizations.linear_normalization, types)
-        return WASPAS._waspas(nmatrix, weights)
+        return WASPAS._waspas(nmatrix, weights, l)
 
     @staticmethod
-    def _wsm(nmatrix, weights):
+    def _waspas(nmatrix, weights, l):
 
         q_sum = np.sum(nmatrix * weights, axis=1)
         q_prod = np.prod(nmatrix ** weights, axis=1)

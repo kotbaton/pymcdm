@@ -612,7 +612,7 @@ class TestWASPAS(unittest.TestCase):
     5-22.
     """
     def test_output(self):
-        body = WASPAS()
+        body = methods.WASPAS()
         matrix = np.array([[30, 23, 5, 0.745, 0.745, 1500, 5000],
                            [18, 13, 15, 0.745, 0.745, 1300, 6000],
                            [15, 12, 10, 0.500, 0.500, 950, 7000],
