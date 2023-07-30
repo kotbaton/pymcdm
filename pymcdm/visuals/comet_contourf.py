@@ -89,3 +89,6 @@ def comet_contourf(comet,
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.05)
         cbar = plt.colorbar(contourf, cax=cax)
+        return ax, cax
+
+    return ax
