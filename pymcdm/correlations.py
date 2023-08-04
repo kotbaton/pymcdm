@@ -192,10 +192,10 @@ def wsc(w0, w1):
     Parameters
     ----------
         w0 : ndarray
-            First vector of ranks.
+            First vector of weights.
 
         w1 : ndarray
-            Second vector of ranks.
+            Second vector of weights.
 
     Returns
     -------
@@ -214,10 +214,10 @@ def wsc2(w0, w1):
     Parameters
     ----------
         w0 : ndarray
-            First vector of ranks.
+            First vector of weights.
 
         w1 : ndarray
-            Second vector of ranks.
+            Second vector of weights.
 
     Returns
     -------
