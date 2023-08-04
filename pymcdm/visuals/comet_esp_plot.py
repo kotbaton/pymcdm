@@ -8,6 +8,63 @@ def comet_esp_plot(comet,
                    bounds,
                    alternatives=None,
                    ax=None):
+    """ Visualize the COMET preference function for the 2d case using
+        pymcdm.visuals.comet_contourf, as well as provided ESPs.
+
+        Parameters
+        ----------
+            comet : pymcdm.methods.COMET
+                Identified COMET method.
+
+            esps : ndarray
+                Numpy 2d matrix which defines chosed Expected Solution Points.
+                Each row should define one ESP, number of the colums should be
+                equal to the number of criteria.
+
+            bounds : ndarray
+                Each row should contain min and max values for each criterion.
+                Min and max should be different values!
+
+            alternatives : ndarray or None
+                If necessary, alternatives also can be visualized.
+                Each alternative should be represented by one row with same
+                number of columns as esps.
+
+            ax : Axis or None
+                Matplotlib Axis to draw on. If None, current axis is used.
+
+        Returns
+        -------
+            ax : Axis
+                Matplotlib Axis on which plot was drawn.
+
+            cax : Axis
+                Matplotlib Axis for the colorbar.
+
+        Examples
+        --------
+            >>> import numpy as np
+            >>> import matplotlib.pyplot as plt
+            >>> import pymcdm as pm
+            >>> # Define criteria bounds for the decision problem
+            >>> bounds = np.array([[0, 1]] * 2, dtype=float)
+            >>> # Define the Expected Solution Point (or Points) for this problem
+            >>> esps = np.array([[0.4, 0.4]])
+            >>> # Create the expert function using ESPExpert class
+            >>> expert = pm.comet_tools.ESPExpert(esps,
+            ...                                   bounds,
+            ...                                   cvalues_psi=0.2)
+            >>> # Generate ESP-guided cvalues based on provided ESP and psi
+            >>> cvalues = expert.make_cvalues()
+            >>> # Create and identify COMET model
+            >>> comet = pm.methods.COMET(cvalues, expert)
+            >>> # Create a visualization of the characteriscic values,
+            >>> # ESP and preference function
+            >>> fig, ax = plt.subplots(figsize=(4, 3.5), dpi=200)
+            >>> ax, cax = pm.visuals.comet_esp_plot(comet, esps, bounds)
+            >>> plt.tight_layout()
+            >>> plt.show()
+    """
     if alternatives is None:
         alternatives = np.array([[], []]).T
 
