@@ -85,7 +85,7 @@ class MABAC(MCDA_method):
         weighted_matrix = (nmatrix + 1) * weights
 
         # Determining the border approximation area matrix
-        G = np.product(weighted_matrix, axis=0) ** (1 / n)
+        G = np.prod(weighted_matrix, axis=0) ** (1 / n)
 
         # Calculation of the distance border approximation area
         Q = weighted_matrix - G
