@@ -113,13 +113,9 @@ class COMET(MCDA_method):
                     f'Expected MEJ shape {(co.shape[0], co.shape[0])}, but returned matrix has shape {mej.shape}.'
                     )
 
-        k = np.unique(sj).shape[0]
-
-        p = np.zeros(sj.shape[0], dtype=float)
-        for i in range(1, k):
-            ind = sj == np.max(sj)
-            p[ind] = (k - i) / (k - 1)
-            sj[ind] = 0
+        uniq, idx, counts = np.unique(sj, return_counts=True, return_inverse=True)
+        k = uniq.shape[0]
+        p = (np.arange(k) / (k - 1))[idx]
 
         self.criterion_number = len(cvalues)
         self.cvalues = cvalues
