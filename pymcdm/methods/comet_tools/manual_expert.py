@@ -23,6 +23,11 @@ class ManualExpert:
                 documentation for more info.
                 Default is 'simple_grid'.
 
+            filename : str or None
+                Path to the file in which identified save should be saved.
+                If None, MEJ will be not saved. If file exists, MEJ will be
+                loaded from this file. Default is 'mej.csv'.
+
         Examples
         --------
         >>> import numpy as np
@@ -40,10 +45,12 @@ class ManualExpert:
         >>> comet = COMET(cvalues, expert_function)
     """
 
-    def __init__(self, criteria_names, show_MEJ=False, tablefmt='simple_grid'):
+    def __init__(self, criteria_names, show_MEJ=False,
+                 tablefmt='simple_grid', filename='mej.csv'):
         self.criteria_names = criteria_names
         self.show_MEJ = show_MEJ
         self.tablefmt = tablefmt
+        self.filename = filename
         self.co_names = None
 
         self.q = None
@@ -68,6 +75,16 @@ class ManualExpert:
                     MEJ matrix created by comparisons
                     (see the COMET procedure for more info).
         """
+        if self.filename is None or not os.path.isfile(self.filename):
+            return self._identify_manually(characteristic_objects)
+        else:
+            result = self._load_from_file(characteristic_objects)
+            if result is None:
+                return self._identify_manually(characteristic_objects)
+            else:
+                return result
+
+    def _identify_manually(self, characteristic_objects):
         n = len(characteristic_objects)
         mej = -np.ones((n, n)) + 1.5 * np.eye(n)
 
@@ -96,7 +113,52 @@ class ManualExpert:
         self._show_mej(mej)
         print('\n')
 
+        if self.filename is not None:
+            np.savetxt(self.filename, mej,
+                       fmt='%.1f', delimiter=',')
+            print(f'Identified MEJ was written to "{self.filename}".')
+
         return mej.sum(axis=1), mej
+
+    def _load_from_file(self, characteristic_objects):
+        mej = np.loadtxt(self.filename, delimiter=',')
+        n, m = mej.shape
+        mej_uniq = np.unique(mej)
+        if n != m:
+            raise ValueError('MEJ loaded from file is not square matrix '
+                             'and therefore is not valid MEJ!')
+        elif np.any(mej[np.tril_indices(n, -1)] != 1 - mej.T[np.tril_indices(n, -1)]):
+            raise ValueError('MEJ loaded from file is not valid! '
+                             'Some values in upper and lower triangle sub-'
+                             'matrices are wrong.')
+        elif len(mej_uniq) != 3 or np.any(mej_uniq != np.array([0, 0.5, 1])):
+            raise ValueError('MEJ loaded from file is not valid! '
+                             'There are values other than [0, 0.5, 1].')
+        elif len(np.unique(np.diag(mej))) != 1:
+            raise ValueError('MEJ loaded from file is not valid! '
+                             'There are different values on diagonal.')
+        elif len(characteristic_objects) != n:
+            raise ValueError('MEJ loaded from file is not valid! '
+                             'Number of the characteristic objects in this'
+                             'MEJ is different from the one provided in '
+                             'arguments.')
+
+        print(f'\nMEJ from the file ({self.filename}):')
+        self.co_names = [self._co_name(i) for i in range(1, n + 1)]
+        self._show_mej(mej)
+        print('\n')
+
+        print('Do you want to use this MEJ? [Y/n]')
+        ans = input('>>> ').strip().lower()
+        while ans not in ('', 'n', 'y'):
+            ans = input('>>> ').strip().lower()
+        print('\n')
+
+        if ans == '' or ans == 'y':
+            return mej.sum(axis=1), mej
+        else:
+            return None # Explicitely return None, matrix will be re-identified
+
 
     def _query_helper(self, i, j):
         self.q += 1

@@ -31,6 +31,11 @@ class TriadSupportExpert(ManualExpert):
                 documentation for more info.
                 Default is 'simple_grid'.
 
+            filename : str or None
+                Path to the file in which identified save should be saved.
+                If None, MEJ will be not saved. If file exists, MEJ will be
+                loaded from this file. Default is 'mej.csv'.
+
         Examples
         --------
         >>> import numpy as np
@@ -48,24 +53,7 @@ class TriadSupportExpert(ManualExpert):
         >>> # other CO will be completed using consistent triads.
         >>> comet = COMET(cvalues, expert_function)
     """
-    def __call__(self, characteristic_objects):
-        """ Evaluate characteristic objects by asking pairwise comparison
-            questions.
-
-            Parameters
-            ----------
-            characteristic_objects : np.array
-                Characteristic objects which should be compared.
-
-            Returns
-            -------
-                sj : np.array
-                    SJ vector (see the COMET procedure for more info).
-
-                mej : np.array
-                    MEJ matrix created by comparisons
-                    (see the COMET procedure for more info).
-        """
+    def _identify_manually(self, characteristic_objects):
         n = len(characteristic_objects)
         mej = - np.ones((n, n)) + 1.5 * np.eye(n)
 
