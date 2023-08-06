@@ -12,6 +12,9 @@
 * RIM
 * ERVD
 * PROBID
+* WSM
+* WPM
+* WASPAS
 
 ## Visualization changes
 
@@ -24,4 +27,3 @@
 * Add colors argument to `polar_plot`
 * Improve `promethee_I_graph` visualization
 * Refactor and improve `ranking_flows` function
-
