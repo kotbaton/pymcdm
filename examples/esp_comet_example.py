@@ -7,9 +7,9 @@ bounds = np.array([[0, 1]] * 2, dtype=float)
 # Define the Expected Solution Point (or Points) for this problem
 esps = np.array([[0.4, 0.4]])
 # Create the expert function using ESPExpert class
-expert = pm.comet_tools.ESPExpert(esps,
-                                  bounds,
-                                  cvalues_psi=0.2)
+expert = pm.methods.comet_tools.ESPExpert(esps,
+                                          bounds,
+                                          cvalues_psi=0.2)
 # Generate ESP-guided cvalues based on provided ESP and psi
 cvalues = expert.make_cvalues()
 # Create and identify COMET model

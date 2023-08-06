@@ -3,7 +3,7 @@
 import numpy as np
 
 from pymcdm.methods import TOPSIS
-from pymcdm.comet_tools import StructuralCOMET, Submodel, MethodExpert
+from pymcdm.methods.comet_tools import StructuralCOMET, Submodel, MethodExpert
 
 # This is simplified example from the followed paper:
 # Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model

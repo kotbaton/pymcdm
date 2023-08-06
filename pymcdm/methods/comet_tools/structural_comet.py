@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from ..methods import COMET
+from ..comet import COMET
 
 class Submodel:
     """ Create object of the COMET submodel. This class is mostly for internal

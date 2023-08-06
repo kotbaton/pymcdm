@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 
 from pymcdm.methods import TOPSIS, COMET
-from pymcdm.comet_tools import (MethodExpert, Submodel,
-                                StructuralCOMET, triads_consistency)
+from pymcdm.methods.comet_tools import (MethodExpert, Submodel,
+                                        StructuralCOMET, triads_consistency)
 
 
 class TestStructuralCOMET(unittest.TestCase):

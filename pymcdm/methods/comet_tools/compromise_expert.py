@@ -24,7 +24,7 @@ class CompromiseExpert:
         >>> # Compromise solution for 3 different weights vectors
         >>> import numpy as np
         >>> from pymcdm.methods import COMET, TOPSIS
-        >>> from pymcdm.comet_tools import CompromiseExpert
+        >>> from pymcdm.methods.comet_tools import CompromiseExpert
         >>> cvalues = [
         ...         [0, 500, 1000],
         ...         [1, 5],

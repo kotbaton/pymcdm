@@ -35,7 +35,7 @@ class TriadSupportExpert(ManualExpert):
         --------
         >>> import numpy as np
         >>> from pymcdm.methods import COMET
-        >>> from pymcdm.comet_tools import TriadSupportExpert
+        >>> from pymcdm.methods.comet_tools import TriadSupportExpert
         >>> cvalues = [
         ...     [0, 500, 1000],
         ...     [1, 5]

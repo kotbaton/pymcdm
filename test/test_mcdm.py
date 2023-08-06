@@ -3,7 +3,7 @@ import numpy as np
 
 from pymcdm import methods
 from pymcdm.methods.mcda_method import MCDA_method
-from pymcdm.comet_tools import MethodExpert
+from pymcdm.methods.comet_tools import MethodExpert
 
 
 class TestMCDA(unittest.TestCase):

@@ -27,7 +27,7 @@ class ManualExpert:
         --------
         >>> import numpy as np
         >>> from pymcdm.methods import COMET
-        >>> from pymcdm.comet_tools import ManualExpert
+        >>> from pymcdm.methods.comet_tools import ManualExpert
         >>> cvalues = [
         ...     [0, 500, 1000],
         ...     [1, 5]

@@ -19,7 +19,7 @@ class MethodExpert:
         --------
         >>> import numpy as np
         >>> from pymcdm.methods import COMET, TOPSIS
-        >>> from pymcdm.comet_tools import MethodExpert
+        >>> from pymcdm.methods.comet_tools import MethodExpert
         >>> cvalues = [
         ...     [0, 500, 1000],
         ...     [1, 5]

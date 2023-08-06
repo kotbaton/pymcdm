@@ -3,7 +3,7 @@
 from itertools import combinations
 from math import factorial
 
-from ..methods import COMET
+from ..comet import COMET
 
 import numpy as np
 
@@ -65,7 +65,7 @@ def triads_consistency(comet_or_mej):
         Examples
         --------
         >>> import numpy as np
-        >>> from pymcdm.comet_tools import triads_consistency
+        >>> from pymcdm.methods.comet_tools import triads_consistency
         >>> mej = np.array([
         ...     [0.5, 0.0, 0.0, 1.0, 0.0, 1.0],
         ...     [1.0, 0.5, 0.0, 0.0, 0.0, 0.0],
