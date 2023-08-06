@@ -109,8 +109,9 @@ The library contains:
 | `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  |
 | `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       |
 | `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              |
-| `CompromiseExpert` | Class which allows to evaluate CO in COMET using compromise between several different methods.     |
+| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     |
 | `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       |
+| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  |
 | `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         |
 | `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            |
 | `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. |
