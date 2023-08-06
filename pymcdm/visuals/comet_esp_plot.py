@@ -7,6 +7,10 @@ def comet_esp_plot(comet,
                    esps,
                    bounds,
                    alternatives=None,
+                   comet_contourf_kwargs=dict(),
+                   contourf_kwargs=dict(),
+                   scatter_kwargs=dict(),
+                   text_kwargs=dict(),
                    ax=None):
     """ Visualize the COMET preference function for the 2d case using
         pymcdm.visuals.comet_contourf, as well as provided ESPs.
@@ -29,6 +33,18 @@ def comet_esp_plot(comet,
                 If necessary, alternatives also can be visualized.
                 Each alternative should be represented by one row with same
                 number of columns as esps.
+
+            comet_contourf_kwargs : dict
+                kwargs passed to comet_contourf function.
+
+            contourf_kwargs : dict
+                kwargs passed to contourf function used in comet_contourf.
+
+            scatter_kwargs : dict
+                kwargs passed to scatter function which draws ESP points.
+
+            text_kwargs : dict
+                kwargs passed to text function which draws lables for ESPs.
 
             ax : Axis or None
                 Matplotlib Axis to draw on. If None, current axis is used.
@@ -71,17 +87,21 @@ def comet_esp_plot(comet,
     if ax is None:
         ax = plt.gca()
 
-    ax, cax = comet_contourf(
-            comet, alternatives,
-            num=200, colorbar=True, ax=ax,
-            contourf_kwargs=dict(levels=14, vmin=0, vmax=1))
+    contourf_kwargs = dict(levels=14, vmin=0, vmax=1) | contourf_kwargs
+    comet_contourf_kwargs = dict(num=100, colorbar=True,
+                                 contourf_kwargs=contourf_kwargs)
+    comet_contourf_kwargs |= comet_contourf_kwargs
 
-    ax.scatter(esps[:, 0], esps[:, 1], c='orange', marker='*', s=120)
+    ax, cax = comet_contourf(comet, alternatives,
+                             **comet_contourf_kwargs, ax=ax)
 
+    scatter_kwargs = dict(c='orange', marker='*', s=120) | scatter_kwargs
+    ax.scatter(esps[:, 0], esps[:, 1], **scatter_kwargs)
+
+    text_kwargs = dict(color='orange', fontweight='bold', fontsize=12)
     for k, (x, y) in enumerate(zip(esps[:, 0], esps[:, 1]), 1):
         ax.text(x + (comet.cvalues[0][-1] - comet.cvalues[0][0]) * 0.03,
-                y, f'$ESP_{{{k}}}$',
-                color='orange', fontweight='bold', fontsize=12)
+                y, f'$ESP_{{{k}}}$', **text_kwargs)
 
     ax.set_xlabel('$C_1$')
     ax.set_ylabel('$C_2$')
