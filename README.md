@@ -14,6 +14,12 @@ You can download and install `pymcdm` library using pip:
 pip install pymcdm
 ```
 
+You can run all tests with following command from the root of the project:
+
+```Bash
+python -m unittest -v
+```
+
 ___
 
 # Available methods
@@ -86,6 +92,9 @@ The library contains:
 | Rank Similarity Coefficient                        	|        [[45]](#c45)       	|
 | Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
+| Drastic Weighted Similarity (draWS)                   |        In Press           	|
+| Weights Similarity Coefficient (WSC)                  |        In Press           	|
+| Weights Similarity Coefficient 2 (WSC2)               |        In Press           	|
 
 * Helpers
 
@@ -95,6 +104,20 @@ The library contains:
 | `rrankdata`           | Alias to the `rankdata` which reverse the sorting order.                                                         |
 | `correlation_matrix`  | Create the correlation matrix for given coefficient from several the several rankings.                           |
 | `normalize_matrix`    | Normalize decision matrix column by column using given normalization and criteria types.                         |
+
+* COMET Tools
+
+| Class/Function       | Description                                                                                        | Reference     |
+|----------------------|----------------------------------------------------------------------------------------------------|:-------------:|
+| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  | [[56]](#c56)  |
+| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       | [[57]](#c57)  |
+| `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              | [[58]](#c58)  |
+| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     | -             |
+| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       | In Press      |
+| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | In Press      |
+| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         | [[55]](#c55)  |
+| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            | [[54]](#c54)  |
+| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. | [[54]](#c54)  |
 
 
 ___
@@ -247,3 +270,13 @@ And the output of this example (numbers are rounded):
 <a name="c52">**[52]**</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
 
 <a name="c53">**[53]**</a> Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
+
+<a name="c54">**[54]**</a> Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
+
+<a name="c55">**[55]**</a> Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
+
+<a name="c56">**[56]**</a> Paradowski, B., Bączkiewicz, A., & Watrąbski, J. (2021). Towards proper consumer choices-MCDM based product selection. Procedia Computer Science, 192, 1347-1358.
+
+<a name="c57">**[57]**</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
+
+<a name="c58">**[58]**</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571.

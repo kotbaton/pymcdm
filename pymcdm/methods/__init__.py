@@ -19,3 +19,4 @@ from .probid import PROBID
 from .wsm import WSM
 from .wpm import WPM
 from .waspas import WASPAS
+from . import comet_tools
