@@ -43,8 +43,6 @@ class CompromiseExpert:
     def __init__(self, evaluation_functions, vote_limit=None):
         self.evaluation_functions = evaluation_functions
 
-        # Vote limit ustawia próg przy głosowaniu CO_i > CO_j
-        # Jeżeli liczba głosów większa niż prób to CO_i > CO_j, inaczej CO_i < CO_j
         if vote_limit is None:
             vote_limit = len(evaluation_functions) / 2
 

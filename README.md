@@ -89,9 +89,9 @@ The library contains:
 | Rank Similarity Coefficient                        	|        [[45]](#c45)       	|
 | Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
-| Drastic Weighted Similarity (draWS)                   |        TODO               	|
-| Weights Similarity Coefficient (WSC)                  |        TODO               	|
-| Weights Similarity Coefficient 2 (WSC2)               |        TODO               	|
+| Drastic Weighted Similarity (draWS)                   |        In Press           	|
+| Weights Similarity Coefficient (WSC)                  |        In Press           	|
+| Weights Similarity Coefficient 2 (WSC2)               |        In Press           	|
 
 * Helpers
 
@@ -102,19 +102,19 @@ The library contains:
 | `correlation_matrix`  | Create the correlation matrix for given coefficient from several the several rankings.                           |
 | `normalize_matrix`    | Normalize decision matrix column by column using given normalization and criteria types.                         |
 
-* Comet Tools
+* COMET Tools
 
-| Class/Function       | Description                                                                                        |
-|----------------------|----------------------------------------------------------------------------------------------------|
-| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  |
-| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       |
-| `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              |
-| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     |
-| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       |
-| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  |
-| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         |
-| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            |
-| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. |
+| Class/Function       | Description                                                                                        | Reference     |
+|----------------------|----------------------------------------------------------------------------------------------------|:-------------:|
+| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  | [[56]](#c56)  |
+| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       | [[57]](#c57)  |
+| `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              | [[58]](#c58)  |
+| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     | -             |
+| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       | In Press      |
+| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | In Press      |
+| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         | [[55]](#c55)  |
+| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            | [[54]](#c54)  |
+| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. | [[54]](#c54)  |
 
 
 ___
@@ -261,3 +261,15 @@ And the output of this example (numbers are rounded):
 <a name="c49">**[49]**</a> Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
 
 <a name="c50">**[50]**</a> Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
+
+<a name="c54">**[54]**</a> Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
+
+<a name="c55">**[55]**</a> Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
+
+<a name="c56">**[56]**</a> Paradowski, B., Bączkiewicz, A., & Watrąbski, J. (2021). Towards proper consumer choices-MCDM based product selection. Procedia Computer Science, 192, 1347-1358.
+
+<a name="c57">**[57]**</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
+
+<a name="c58">**[58]**</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571.
+<a name="c59">**[59]**</a>
+
