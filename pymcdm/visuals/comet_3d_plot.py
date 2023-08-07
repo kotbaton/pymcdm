@@ -4,7 +4,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def comet_3d_plot(cvalues,
                   alternatives=None,
                   alternatives_labels=False,
@@ -33,6 +32,11 @@ def comet_3d_plot(cvalues,
 
             ax : Axes
                 Axes object to draw on.
+
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
 
         Examples
         --------
@@ -132,4 +136,4 @@ def comet_3d_plot(cvalues,
 
     ax.set_facecolor('white')
 
-    plt.tight_layout()
+    return ax

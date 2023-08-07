@@ -20,11 +20,19 @@ __all__ = [
     'wsc2'
 ]
 
+def _correlation_decorator(func):
+    def wrapped(x, y):
+        x = np.array(x)
+        y = np.array(y)
+        return func(x, y)
+    return wrapped
+
 
 def _cov(x, y):
     return np.cov(x, y, bias=True)[0][1]
 
 
+@_correlation_decorator
 def spearman(x, y):
     """Calculate Spearman correlation between two rankings vectors.
 
@@ -45,6 +53,7 @@ def spearman(x, y):
 rs = spearman
 
 
+@_correlation_decorator
 def pearson(x, y):
     """Calculate Pearson correlation between two raw vectors.
 
@@ -65,6 +74,7 @@ def pearson(x, y):
 r = pearson
 
 
+@_correlation_decorator
 def weighted_spearman(x, y):
     """Calculate Weighted Spearman correlation between two rankings vectors.
 
@@ -88,6 +98,7 @@ def weighted_spearman(x, y):
 rw = weighted_spearman
 
 
+@_correlation_decorator
 def rank_similarity_coef(x, y):
     """Calculate Rank Similarity Coefficient (WS) between two rankings vectors.
 
@@ -111,6 +122,7 @@ def rank_similarity_coef(x, y):
 ws = rank_similarity_coef
 
 
+@_correlation_decorator
 def kendall_tau(x, y):
     """Calculate Kendall Tau correlation between two rankings vectors.
 
@@ -135,6 +147,7 @@ def kendall_tau(x, y):
     return 2/(n*(n-1)) * res
 
 
+@_correlation_decorator
 def goodman_kruskal_gamma(x, y):
     """Calculate Goodman's and Kruskal's Gamma correlation between two rankings vectors.
 

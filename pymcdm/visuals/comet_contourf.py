@@ -24,6 +24,7 @@ def comet_contourf(comet,
 
             alternatives : ndarray
                 Alternatives to draw. Alternatives are in rows and criteria are in columns.
+
             num : int
                 Number of points in meshgrid (num argument for linspace function).
 
@@ -41,6 +42,15 @@ def comet_contourf(comet,
 
             ax : Axes
                 Axes object to draw on.
+
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
+            cax : Axes
+                Only if colorbar=True.
+                Axes object on which colorbar were drawn.
 
         Examples
         --------

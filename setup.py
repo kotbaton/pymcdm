@@ -5,15 +5,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pymcdm",
-    version="1.1.0",
+    version="1.1.1",
     author="Andrii Shekhovtsov, Bartłomiej Kizielewicz",
     author_email="andrii-shekhovtsov@zut.edu.pl, bartlomiej-kizielewicz@zut.edu.pl",
     description="Python library for Multi-Criteria Decision-Making",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/shekhand/mcda",
-    packages=setuptools.find_packages(where="pymcdm"),
-    package_dir={"": "pymcdm"},
+    packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

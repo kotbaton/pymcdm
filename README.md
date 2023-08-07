@@ -45,9 +45,12 @@ The library contains:
 |  MARCOS             	|  Measurement Alternatives and Ranking according to COmpromise Solution         	|        [[17]](#c17),[[18]](#c18)       	|
 |  OCRA               	|  Operational Competitiveness Ratings                                           	|        [[19]](#c19),[[20]](#c20)       	|
 |  MOORA              	|  Multi-Objective Optimization Method by Ratio Analysis                         	|        [[21]](#c21),[[22]](#c22)       	|
-|  RIM               	|  Reference Ideal Method                                                           |               [[48]](#c48)               	|
+|  RIM                	|  Reference Ideal Method                                                           |               [[48]](#c48)               	|
 |  ERVD               	|  Election Based on relative Value Distances                                       |               [[49]](#c49)               	|
 |  PROBID               |  Preference Ranking On the Basis of Ideal-average Distance                        |               [[50]](#c50)               	|
+|  WSM                  |  Weighted Sum Model                                                               |               [[51]](#c51)               	|
+|  WPM                  |  Weighted Product Model                                                           |               [[52]](#c52)               	|
+|  WASPAS               |  Weighted Aggregated Sum Product ASSessment                                       |               [[53]](#c53)               	|
 
 * Weighting methods:
 
@@ -262,6 +265,12 @@ And the output of this example (numbers are rounded):
 
 <a name="c50">**[50]**</a> Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
 
+<a name="c51">**[51]**</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+
+<a name="c52">**[52]**</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+
+<a name="c53">**[53]**</a> Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
+
 <a name="c54">**[54]**</a> Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
 
 <a name="c55">**[55]**</a> Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
@@ -271,5 +280,3 @@ And the output of this example (numbers are rounded):
 <a name="c57">**[57]**</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
 
 <a name="c58">**[58]**</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571.
-<a name="c59">**[59]**</a>
-

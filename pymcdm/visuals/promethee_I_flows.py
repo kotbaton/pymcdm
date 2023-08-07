@@ -32,6 +32,11 @@ def promethee_I_flows(Fp, Fm,
             ax : Axes or None
                 Axes object to draw on. If None current Axes object will be used.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
         >>> import numpy as np
@@ -93,4 +98,5 @@ def promethee_I_flows(Fp, Fm,
 
     ax.legend(bbox_to_anchor=(0., 1.05, 1., .105), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0.)
-    plt.tight_layout()
+
+    return ax
