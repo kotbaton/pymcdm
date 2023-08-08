@@ -6,7 +6,19 @@ Subpackages
 
    pymcdm.methods
    pymcdm.visuals
-   pymcdm.methods.comet_tools
+
+
+Subpackages tools
+------------------------
+
+--------------------------
+pymcdm.methods.comet_tools
+--------------------------
+
+.. automodule:: pymcdm.methods.comet_tools
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------

@@ -111,3 +111,35 @@ In this way, a complete fuzzy rule base is obtained.
 :math:`A_{i} = \{\alpha_{i1},\alpha_{i2},\alpha_{ri}\}`$`. This set corresponds to the criteria :math:`C_{1}, C_{2}, \ldots, C_{r}`$`.
 Mamdani’s fuzzy inference method is used to compute the preference of the :math:`i - th` alternative. The rule base
 guarantees that the obtained results are unequivocal. The bijection makes the COMET completely rank reversal free.
+
+Compromise COMET
+----------------
+TODO
+
+ESP Expert COMET
+----------------
+TODO
+
+Function Expert COMET
+---------------------
+TODO
+
+Manual Expert COMET
+-------------------
+TODO
+
+Method Expert COMET
+-------------------
+TODO
+
+Structural COMET
+-------------------
+TODO
+
+Triad Supported COMET
+---------------------
+TODO
+
+Triads Consistency for MEJ
+--------------------------
+TODO
