@@ -6,9 +6,11 @@ Subpackages
 
    pymcdm.methods
    pymcdm.visuals
+   pymcdm.methods.comet_tools
 
 Submodules
 ----------
+
 .. toctree::
    :maxdepth: 2
 

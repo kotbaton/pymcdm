@@ -56,7 +56,7 @@ def triads_consistency(comet_or_mej):
 
         Returns
         -------
-            Consistency coefficient value. See [1] for details.
+            Consistency coefficient value. See reference for details.
 
         References
         ----------
