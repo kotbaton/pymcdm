@@ -18,7 +18,7 @@ pymcdm.correlations module
 --------------------------
 
 .. automodule:: pymcdm.correlations
-   :members:
+   :members: spearman, pearson, weighted_spearman, rank_similarity_coef, kendall_tau, goodman_kruskal_gamma, draws, wsc, wsc2, rs, rw, r, ws
    :undoc-members:
    :show-inheritance:
 

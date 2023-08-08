@@ -49,6 +49,14 @@ pymcdm.methods.edas
    :undoc-members:
    :show-inheritance:
 
+pymcdm.methods.ervd
+--------------------------
+
+.. automodule:: pymcdm.methods.ervd
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pymcdm.methods.mabac
 ---------------------------
 
@@ -97,10 +105,26 @@ pymcdm.methods.ocra
    :undoc-members:
    :show-inheritance:
 
+pymcdm.methods.probid
+--------------------------
+
+.. automodule:: pymcdm.methods.probid
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pymcdm.methods.promethee
 -------------------------------
 
 .. automodule:: pymcdm.methods.promethee
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.methods.rim
+--------------------------
+
+.. automodule:: pymcdm.methods.rim
    :members:
    :undoc-members:
    :show-inheritance:
@@ -125,6 +149,30 @@ pymcdm.methods.vikor
 ---------------------------
 
 .. automodule:: pymcdm.methods.vikor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.methods.waspas
+---------------------------
+
+.. automodule:: pymcdm.methods.waspas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.methods.wpm
+---------------------------
+
+.. automodule:: pymcdm.methods.wpm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.methods.wsm
+---------------------------
+
+.. automodule:: pymcdm.methods.wsm
    :members:
    :undoc-members:
    :show-inheritance:
