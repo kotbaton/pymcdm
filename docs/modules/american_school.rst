@@ -1282,3 +1282,21 @@ WPM
 where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
 the normalized decision matrix.
 
+WSM
+=======================
+
+:class:`WPM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the sum method.
+
+**Step 3.** Calculate WSM as follow:
+
+.. math::
+    \begin{equation}
+    W S M=\sum_{j=1}^n \bar{x}_{i j} w_j
+    \end{equation}
+
+where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+the normalized decision matrix.
