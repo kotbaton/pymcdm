@@ -412,6 +412,72 @@ point value determines a higher ranking alternative.
     \end{equation}
     :label: equ:as
 
+ERVD
+=======================
+:class:`ERVD` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Define reference points :math:`\mu, j=1,\ldots,n` for each decision criterion.
+
+**Step 3.** Normalize the decision matrix using the sum method.
+
+**Step 4.** Transform the reference points into the normalized scale:
+
+.. math::
+    \begin{equation}
+    \varphi_j=\frac{\mu_j}{\sum_{i=1}^m d_{i j}}
+    \end{equation}
+
+**Step 5.** Calculate the value of alternative :math:`A_i` according to criterion :math:`C_j` by increasing value function
+(for benefit criteria):
+
+.. math::
+    \begin{equation}
+    v_{i j}=\left\{\begin{array}{l}
+    \left(r_{i j}-\varphi_j\right)^\alpha \quad \text { if } r_{i j}>\varphi_j \\
+    -\lambda\left(\varphi_j-r_{i j}\right)^\alpha \text { otherwise }
+    \end{array}\right.
+    \end{equation}
+
+and decreasing value function (for cost criteria):
+
+.. math::
+    \begin{equation}
+    v_{i j}=\left\{\begin{array}{l}
+    \left(\varphi_j-r_{i j}\right)^\alpha \quad \text { if } r_{i j}<\varphi_j \\
+    -\lambda\left(r_{i j}-\varphi_j\right)^\alpha \text { otherwise }
+    \end{array}\right.
+    \end{equation}
+
+**Step 6.** Determine the ideal and negative ideal solutions :math:`A^+` (PIS) and :math:`A^-` (NIS), respectively:
+
+.. math::
+    \begin{equation}
+    A^{+}=\left\{v_1^{+}, \cdots v_n^{+}\right\}, A^{-}=\left\{v_1^{-}, \cdots v_n^{-}\right\}
+    \end{equation}
+
+where :math:`v_j^{+}=\max _i v_{i j}` and :math:`v_j^{-}=\min v_{i \vec{j}}`.
+
+**Step 7.** Calculate the separation measures from PIS and NIS individually with help Minkowski metric:
+
+.. math::
+    \begin{equation}
+    S_i^{+}=\sum_{j=1}^n w_j \cdot\left|v_{i j}-v_j^{+}\right|, \text {for alternative } i, i=1 \ldots m
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_i^{-}=\sum_{j=1}^n w_j \cdot\left|v_{i j}-v_j^{-}\right|, \text {for alternative } i, i=1 \ldots m
+    \end{equation}
+
+**Step 8.** Calculate the relative closeness of each alternative to the ideal solution:
+
+.. math::
+    \begin{equation}
+    \phi_i=\frac{S_i^{-}}{S_i^{+}+S_i^{-}}, i=1, \ldots, m
+    \end{equation}
+
 MABAC
 =======================
 :class:`MABAC` is designed to evaluate decision alternatives according to the following steps:
