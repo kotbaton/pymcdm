@@ -717,7 +717,7 @@ Equations (:eq:`equ:kiplu`), (:eq:`equ:kimin`).
     \end{equation}
     :label: equ:kimin
 
-where :math:`S_i` :math:`(i=1,2,\dots,m)` represents the sum of the elements of weighted matrix $V$, Equation
+where :math:`S_i` :math:`(i=1,2,\dots,m)` represents the sum of the elements of weighted matrix :math:`V`, Equation
 (:eq:`equ:summ`).
 
 .. math::
@@ -823,6 +823,109 @@ and :math:`\bar{O}_{i}` is a measure of of relative performance for the :math:`i
     \end{equation}
     :label: ocrapref
 
+PROBID
+=======================
+:class:`PROBID` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the vector method.
+
+**Step 3.** Create normalized weighted decision matrix.
+
+**Step 4.** Sort the normalized weighted decision matrix by criteria taking into account their type. This will a matrix
+of successively Positive Ideal Solutions (1st, 2cd, ..., mth PIS) will be formed. It can be presented by using the
+following formula:
+
+.. math::
+    \begin{equation}
+    \begin{aligned}
+    A_{(k)} & =\left\{\left(\operatorname{Large}\left(v_j, k\right) \mid j \in J\right),\left(\operatorname{Small}\left(v_j, k\right) \mid j \in J^{\prime}\right)\right\} \\
+    & =\left\{v_{(k) 1}, v_{(k) 2}, v_{(k) 3}, \ldots, v_{(k) j}, \ldots, v_{(k) n}\right\}
+    \end{aligned}
+    \end{equation}
+
+where :math:`k \in \{1,2, \ldots, m\}`, :math:`J` is the set of benefit criteria and :math:`J^{\prime}` is the set of cost
+criteria.
+
+Then, find the average value of each objective column as follow:
+
+.. math::
+    \begin{equation}
+    \bar{v}_j=\frac{\sum_{k=1}^m v_{(k) j}}{m} \quad \text { for } j \in\{1,2, \ldots, n\}
+    \end{equation}
+
+The average solution is then given by
+
+.. math::
+    \begin{equation}
+    \bar{A}=\left\{\bar{v}_1, \bar{v}_2, \bar{v}_3, \ldots, \bar{v}_j, \ldots, \bar{v}_n\right\}
+    \end{equation}
+
+**Step 5.** Iteratively calculate the Euclidean distance of each solution to each of the m ideal solutions as well as to
+the average solution. The distance to ideal solutions is found as:
+
+.. math::
+    \begin{equation}
+    S_{i(k)}=\sqrt{\sum_{j=1}^n\left(v_{i j}-v_{(k) j}\right)^2}
+    \end{equation}
+
+**Step 6.** Determine the overall positive-ideal distance and negative-ideal distance as follow:
+
+.. math::
+    \begin{equation}
+    S_{i(\text { pos-ideal })}=\left\{\begin{array}{l}
+    \sum_{k=1}^{(m+1) / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \\
+    \text { is an odd number } \\
+    \sum_{k=1}^{m / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \\
+    \text { is an even number }
+    \end{array}\right.
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_{i(\text { neg-ideal })}
+    \quad=\left\{\begin{array}{l}
+    \sum_{k=(m+1) / 2}^m \frac{1}{m-k+1} S_{i(k)} \\
+    i \in\{1,2, \ldots, m\} \text { when } m \text { is an odd number } \\
+    \sum_{k=m / 2+1}^m \frac{1}{m-k+1} S_{i(k)} \\
+    i \in\{1,2, \ldots, m\} \text { when } m \text { is an even number }
+    \end{array}\right.
+    \end{equation}
+
+Positive-ideal distance and negative-ideal distance for sPROBID:
+
+
+.. math::
+    \begin{equation}
+    S_{i(\text { pos-ideal })}=\left\{\begin{array}{l}
+    \sum_{k=1}^{m \backslash 4} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \geq 4 \\
+    S_{i(1)} \quad i \in\{1,2, \ldots, m\} \text { when } 0<m<4
+    \end{array}\right.
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_{i(\text { neg-ideal })}=\left\{\begin{array}{l}
+    \sum_{k=m+1-(m \ 4)}^m \frac{1}{m-k+1} S_{i(k)} \\
+    \quad i \in\{1,2, \ldots, m\} \text { when } m \geq 4 \\
+    S_{i(m)} \quad i \in\{1,2, \ldots, m\} \text { when } 0<m<4
+    \end{array}\right.
+    \end{equation}
+
+**Step 7.** Calculate the pos-ideal/neg-ideal ratio (:math:`R_i`) and then the performance score (:math:`P_i`) of each
+solution as follows:
+
+.. math::
+    \begin{equation}
+    R_i=\frac{S_{i(\text { pos-ideal })}}{S_{i(\text { neg-ideal })}}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    P_i=\frac{1}{1+R_i^2}+S_{i(\mathrm{avg})}
+    \end{equation}
+
 
 SPOTIS
 =======================
@@ -837,7 +940,7 @@ MCDM problem form ill-defined to well-defined.
     \left[S_{n}^{\min }, S_{n}^{\max }\right]=\left[x_{1}, x_{2}\right]
     \end{equation}
 
-where, $n$ - criterion number, $x_1$ - min bound, $x_2$ - max bound.
+where, :math:`n` - criterion number, :math:`x_1` - min bound, :math:`x_2` - max bound.
 
 **Step 2.** Define the ideal solution point - define vector which includes maximum or minimum from bounds for specific
 criterion depending on criterion type. For profit type, the max value should be taken, for cost type, min value.
