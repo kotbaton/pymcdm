@@ -1230,3 +1230,34 @@ lists are the outcome.
 **Step 5.** A compromise solution is proposed considering the conditions of good advantage and acceptable stability
 within the three vectors obtained in the previous step. The best alternative is the one with the lowest value and the
 leading position in the ranking :math:`Q`.
+
+WASPAS
+=======================
+
+:class:`WASPAS` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the max method.
+
+**Step 3.** Calculate WSM and WPM as follow:
+
+.. math::
+    \begin{equation}
+    W S M=\sum_{j=1}^n \bar{x}_{i j} w_j
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    W P M=\prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    \end{equation}
+
+where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+the normalized decision matrix.
+
+**Step 4.** Calculation of total relative importance for each alternative as follow:
+
+.. math::
+    \begin{equation}
+    Q_i=\lambda WSM+(1-\lambda) WPM=\lambda \sum_{j=1}^n \bar{x}_{i j} w_j+(1-\lambda) \prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    \end{equation}
