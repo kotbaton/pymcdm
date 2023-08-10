@@ -992,6 +992,83 @@ solution as follows:
     P_i=\frac{1}{1+R_i^2}+S_{i(\mathrm{avg})}
     \end{equation}
 
+RIM
+=======================
+
+:class:`RIM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Define the following values, which determine the problem's context and the problem itself.
+
+- Criteria weights: :math:`w_j, j \in \{1, 2, \ldots N\}` and the sum of the criteria weights should be equal to one: :math:`\sum^N_{j = 1} w_j = 1`.
+
+- Decision matrix: :math:`X = [ x_{ij} ]_{M \times N}` which contains information about :math:`M` alternatives evaluated under :math:`N` criteria.
+
+- The Criteria Range: :math:`t_j = [t_{j}^{(min)}, t_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}` which defines the arbitrary chosen bounds of the criteria.
+
+- The Reference Ideal: :math:`s_j = [s_{j}^{(min)}, s_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}$ and $[s_{j}^{(min)}, s_{j}^{(max)}] \subset [t_{j}^{(min)}, t_{j}^{(max)}]`. Reference Ideal define most preferred interval of values for each criterion. It can be either derived from criteria range, or define expected outcome of decision process.
+
+
+**Step 2.** After defining the problem we should normalize the decision matrix :math:`X` using the RIM normalization function :math:`f(x,[A, B],[C, D])` defined as (:eq:`eq:rmnorm`). This normalization requires a definition of the criteria range :math:`[A. B]` and the reference ideal :math:`[C, D]`.
+
+.. math::
+    \begin{equation}
+    f(\ldots) = \left\{\begin{array}{lll}
+    1 &\textit{IF}& x \in[C, D] \\
+    1-\frac{d_{\min }(x,[C, D])}{|A-C|} &\textit{IF}& x \in[A, C] \wedge A \neq C \\
+    1-\frac{d_{\min }(x,[C, D])}{|D-B|} &\textit{IF}& x \in[D, B] \wedge D \neq B
+    \end{array}\right.,
+    \end{equation}
+    :label: eq:rmnorm
+
+where :math:`[A, B]` is range of criteria, :math:`[C, D]` is the reference ideal, and :math:`x \in [A, B]`, :math:`[C, D] \subset [A, B]`. Function :math:`d_{min}(x, [C, D])` is defined as (:eq:`eq:d_min`).
+
+.. math::
+    \begin{equation}
+        d_{min}(x, [C, D]) = min(|x - C|, |x - D|)
+    \end{equation}
+    :label: eq:d_min
+
+This normalization allows to map value :math:`x` to range :math:`[0, 1]` in the criteria domain with regard to the ideal reference interval. The normalization process is defined as follows (:eq:`eq:rim_nmatrix`).
+
+.. math::
+    \begin{equation}
+    Y = [ y_{ij} ]_{M \times N} = [ f(x_{ij}, t_j, s_j) ]_{M \times N}
+    \end{equation}
+    :label: eq:rim_nmatrix
+
+**Step 3.** Calculate the weighted normalized matrix :math:`Y^\prime` using (:eq:`eq:rim_wnmatrix`).
+
+.. math::
+    \begin{equation}
+        Y^\prime = Y \otimes W = [ y_{ij} \cdot w_{j} ]_{M \times N}
+    \end{equation}
+    :label: eq:rim_wnmatrix
+
+**Step 4.** Compute the variation to the normalized reference ideal for each alternative :math:`A_i` using Equations (:eq:`eq:rim_iplus`) and (:eq:`eq:rim_iminus`).
+
+.. math::
+    \begin{equation}
+        I_i^{+}=\sqrt{\sum_{j=1}^n\left(y^{\prime}{ }_{i j}-w_j\right)^2}% \quad i \in \{1, 2, \ldots M\}, \quad j \in \{1, 2, \ldots N\}
+    \end{equation}
+    :label: eq:rim_iplus
+
+.. math::
+    \begin{equation}
+        I_i^{-}=\sqrt{\sum_{j=1}^n\left(y^{\prime}\right)^2}% \quad i \in \{1, 2, \ldots M\}, \quad j \in \{1, 2, \ldots N\}
+    \end{equation}
+    :label: eq:rim_iminus
+
+**Step 5.** Calculate the relative index of each alternative :math:`A_i`, using the Equation (:eq:`eq:rim_r`).
+
+.. math::
+    \begin{equation}
+        R_i = \frac{I_i^-}{I_i^+ + I_i^-} %\quad i \in \{1, 2, \ldots M\}
+    \end{equation}
+    :label: eq:rim_r
+
+Order the alternative :math:`A_i` in descending order with regard to :math:`R_i`. The alternatives with the bigger value
+of :math:`R_i` are more preferred ones.
+
 
 SPOTIS
 =======================
