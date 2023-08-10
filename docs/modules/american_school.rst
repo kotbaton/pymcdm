@@ -1261,3 +1261,24 @@ the normalized decision matrix.
     \begin{equation}
     Q_i=\lambda WSM+(1-\lambda) WPM=\lambda \sum_{j=1}^n \bar{x}_{i j} w_j+(1-\lambda) \prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
     \end{equation}
+
+
+WPM
+=======================
+
+:class:`WPM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the sum method.
+
+**Step 3.** Calculate WPM as follow:
+
+.. math::
+    \begin{equation}
+    W P M=\prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    \end{equation}
+
+where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+the normalized decision matrix.
+
