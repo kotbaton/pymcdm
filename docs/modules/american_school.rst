@@ -1285,7 +1285,7 @@ the normalized decision matrix.
 WSM
 =======================
 
-:class:`WPM` is designed to evaluate decision alternatives according to the following steps:
+:class:`WSM` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 
