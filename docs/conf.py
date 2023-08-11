@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pymcdm'
-copyright = '2021, shekhand & kiziub'
+copyright = '2023, shekhand & kiziub'
 author = 'shekhand & kiziub'
 
 # -- General configuration ---------------------------------------------------
@@ -74,7 +74,9 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
+exclude_patterns = ['_build', 'Thumbs.db',
+                    '.DS_Store', '**.ipynb_checkpoints',
+                    'requirements.txt']
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -90,4 +92,4 @@ html_static_path = ['_static']
 
 
 def setup(app):
-    app.add_stylesheet('css/custom.css')
+    app.add_css_file('css/custom.css')

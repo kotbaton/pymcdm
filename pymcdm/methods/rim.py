@@ -43,8 +43,6 @@ class RIM(MCDA_method):
 
     RIM is an MCDA method which uses criteria bounds and reference ideal to evaluate alternatives.
 
-    Note: The paper [1] which introduces the method has an error in the final results. The authors of the method confirm that result should be as the one we have obtained.
-
     References
     ----------
     .. [1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
