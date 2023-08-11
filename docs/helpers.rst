@@ -1,5 +1,5 @@
 Helpers module
-------------
+--------------
 
 .. toctree::
     :maxdepth: 2

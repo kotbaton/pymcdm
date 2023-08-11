@@ -8,6 +8,7 @@ import matplotlib.projections.polar as polar
 
 def polar_plot(rankings,
                labels=None,
+               colors=None,
                fill=True,
                legend_ncol=5,
                rgrid_kwargs=dict(),
@@ -23,6 +24,9 @@ def polar_plot(rankings,
 
         labels : list of str or None
             Labels or name for rankings. If None, the rankings would be named R1, R2, etc.
+
+        colors : Iterable or None
+            List or tuple of acceptable for matplolib colors. Will be used as a bar face color. If the list is smaller than number of rankings, then it will cycled.
 
         fill : bool
             Filling the inside of the rankings function.
@@ -41,6 +45,11 @@ def polar_plot(rankings,
 
         ax : Axes
             Axes object to draw on. Should be created with `projection='polar'` argument.
+
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
 
     Examples
     --------
@@ -84,6 +93,10 @@ def polar_plot(rankings,
     ) | fill_kwargs
 
     for i in range(len(labels)):
+        if colors is not None:
+            plot_kwargs['color'] = colors[i % len(colors)]
+            fill_kwargs['color'] = colors[i % len(colors)]
+
         ax.plot(theta, rankings[i, :], '-o', label=labels[i], **plot_kwargs)
         if fill:
             ax.fill(theta, rankings[i, :], label='_nolegend_', **fill_kwargs)
@@ -106,4 +119,4 @@ def polar_plot(rankings,
     ) | rgrid_kwargs
     ax.set_rgrids(np.arange(1, m), **rgrid_kwargs)
 
-    plt.tight_layout()
+    return ax

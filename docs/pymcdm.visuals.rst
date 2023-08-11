@@ -25,10 +25,42 @@ pymcdm.visuals.comet\_3d\_plot module
    :undoc-members:
    :show-inheritance:
 
+pymcdm.visuals.comet\_contourf module
+-------------------------------------
+
+.. automodule:: pymcdm.visuals.comet_contourf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.visuals.comet\_esp\_plot module
+--------------------------------------
+
+.. automodule:: pymcdm.visuals.comet_esp_plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.visuals.comet\_tfns module
+---------------------------------
+
+.. automodule:: pymcdm.visuals.comet_tfns
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pymcdm.visuals.correlation\_heatmap module
 ------------------------------------------
 
 .. automodule:: pymcdm.visuals.correlation_heatmap
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.visuals.correlation_plot module
+--------------------------------------
+
+.. automodule:: pymcdm.visuals.correlation_plot
    :members:
    :undoc-members:
    :show-inheritance:
@@ -89,18 +121,18 @@ pymcdm.visuals.ranking\_flows module
    :undoc-members:
    :show-inheritance:
 
-pymcdm.visuals.ranking\_grid module
------------------------------------
-
-.. automodule:: pymcdm.visuals.ranking_grid
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pymcdm.visuals.ranking\_scatter module
 --------------------------------------
 
 .. automodule:: pymcdm.visuals.ranking_scatter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pymcdm.visuals.rankings\_flow\_correlation module
+-------------------------------------------------
+
+.. automodule:: pymcdm.visuals.rankings_flow_correlation
    :members:
    :undoc-members:
    :show-inheritance:

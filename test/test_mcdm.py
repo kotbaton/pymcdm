@@ -1,8 +1,12 @@
+# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2022 Bartłomiej Kizielewicz
+
 import unittest
 import numpy as np
 
 from pymcdm import methods
 from pymcdm.methods.mcda_method import MCDA_method
+from pymcdm.methods.comet_tools import MethodExpert
 
 
 class TestMCDA(unittest.TestCase):
@@ -118,7 +122,7 @@ class TestCOMET(unittest.TestCase):
         types = np.array([1, 1, 1, 1, 1, -1, 1, 1, -1])
         weights = np.array([1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9])
 
-        body = methods.COMET(cvalues, methods.COMET.topsis_rate_function(weights, types))
+        body = methods.COMET(cvalues, MethodExpert(methods.TOPSIS(), weights, types))
 
         output = [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
         output_method = [round(preference, 4) for preference in body(matrix)]
@@ -329,8 +333,6 @@ class TestSPOTIS(unittest.TestCase):
     """
 
     def test_output(self):
-        body = methods.SPOTIS()
-
         matrix = np.array([[10.5, -3.1, 1.7],
                            [-4.7, 0, 3.4],
                            [8.1, 0.3, 1.3],
@@ -342,7 +344,41 @@ class TestSPOTIS(unittest.TestCase):
 
         types = np.array([1, -1, 1])
 
+        body = methods.SPOTIS(bounds)
         output = [0.1989, 0.3705, 0.3063, 0.7491]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
+
+        self.assertListEqual(output, output_method)
+
+class TestSPOTIS2(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The spotis rank reversal free method for
+    multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION)
+    (pp. 1-8). IEEE.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [15000, 4.3, 99, 42, 737],
+            [15290, 5.0, 116, 42, 892],
+            [15350, 5.0, 114, 45, 952],
+            [15490, 5.3, 123, 45, 1120],
+            ], dtype='float')
+        bounds = np.array([
+            [14000, 16000],
+            [3, 8],
+            [80, 140],
+            [35, 60],
+            [650, 1300]
+            ])
+        weights = np.array([0.2941, 0.2353, 0.2353, 0.0588, 0.1765])
+
+        types = np.array([-1, -1, -1, 1, 1])
+
+        esp = np.array([15300, 4, 115, 50, 900])
+
+        body = methods.SPOTIS(bounds, esp)
+        output = [0.1841, 0.0734, 0.0842, 0.1920]
         output_method = [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
 
         self.assertListEqual(output, output_method)
@@ -409,5 +445,186 @@ class TestVIKOR(unittest.TestCase):
 
         output = [1, 0, 1]
         output_method = list(body(matrix, weights, types))
+
+        self.assertListEqual(output, output_method)
+
+
+class TestRIM(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision
+    making. Information Sciences, 337, 1-10.
+
+    Note: The paper [1] which introduces the method has an error in the final results. The authors of the method confirm
+    that result should be as the one we have obtained.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [30,  0, 2, 3, 3, 2],
+            [40,  9, 1, 3, 2, 2],
+            [25,  0, 3, 1, 3, 2],
+            [27,  0, 5, 3, 3, 1],
+            [45, 15, 2, 2, 3, 4]
+        ])
+
+        weights = np.array([0.2262, 0.2143, 0.1786, 0.1429, 0.1190, 0.1190])
+
+        range_t = np.array([
+            [23, 60],
+            [0, 15],
+            [0, 10],
+            [1, 3],
+            [1, 3],
+            [1, 5]
+        ])
+
+        ref_s = [
+            [30, 35],
+            [10, 15],
+            [0, 0],
+            [3, 3],
+            [3, 3],
+            [4, 5]
+        ]
+
+        pr = methods.RIM(range_t, ref_s)
+        output_method = pr(matrix, weights, None)
+
+        output_method = list(np.round(output_method, 5))
+        output = [0.58663, 0.75584, 0.37163, 0.46658, 0.74015]
+
+        self.assertListEqual(output, output_method)
+
+
+class TestERVD(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on
+    relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [80, 70, 87, 77, 76, 80, 75],
+            [85, 65, 76, 80, 75, 65, 75],
+            [78, 90, 72, 80, 85, 90, 85],
+            [75, 84, 69, 85, 65, 65, 70],
+            [84, 67, 60, 75, 85, 75, 80],
+            [85, 78, 82, 81, 79, 80, 80],
+            [77, 83, 74, 70, 71, 65, 70],
+            [78, 82, 72, 80, 78, 70, 60],
+            [85, 90, 80, 88, 90, 80, 85],
+            [89, 75, 79, 67, 77, 70, 75],
+            [65, 55, 68, 62, 70, 50, 60],
+            [70, 64, 65, 65, 60, 60, 65],
+            [95, 80, 70, 75, 70, 75, 75],
+            [70, 80, 79, 80, 85, 80, 70],
+            [60, 78, 87, 70, 66, 70, 65],
+            [92, 85, 88, 90, 85, 90, 95],
+            [86, 87, 80, 70, 72, 80, 85]
+        ])
+
+        weights = np.array([0.066, 0.196, 0.066, 0.130, 0.130, 0.216, 0.196])
+        types = np.ones(7)
+
+        ref = np.ones(7) * 80
+
+        ervd = methods.ERVD(ref_point=ref)
+        output_method = list(np.round(ervd(matrix, weights, types), 3))
+        output = [0.660, 0.503, 0.885, 0.521, 0.610, 0.796, 0.498, 0.549, 0.908, 0.565, 0.070, 0.199, 0.632, 0.716, 0.438, 0.972, 0.767]
+
+        self.assertListEqual(output, output_method)
+
+
+class TestPROBID(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method
+    for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [1.679 * 10**6, 1.525 * 10**(-7), 3.747 * 10**(-5), 0.251, 2.917],
+            [2.213 * 10**6, 1.304 * 10**(-7), 3.250 * 10**(-5), 0.218, 6.633],
+            [2.461 * 10**6, 1.445 * 10**(-7), 3.854 * 10**(-5), 0.259, 0.553],
+            [2.854 * 10**6, 1.540 * 10**(-7), 3.970 * 10**(-5), 0.266, 1.597],
+            [3.107 * 10**6, 1.522 * 10**(-7), 3.779 * 10**(-5), 0.254, 2.905],
+            [3.574 * 10**6, 1.469 * 10**(-7), 3.297 * 10**(-5), 0.221, 6.378],
+            [3.932 * 10**6, 1.977 * 10**(-7), 3.129 * 10**(-5), 0.210, 11.381],
+            [4.383 * 10**6, 1.292 * 10**(-7), 3.142 * 10**(-5), 0.211, 9.929],
+            [4.988 * 10**6, 1.690 * 10**(-7), 3.767 * 10**(-5), 0.253, 8.459],
+            [5.497 * 10**6, 5.703 * 10**(-7), 3.012 * 10**(-5), 0.200, 18.918],
+            [5.751 * 10**6, 4.653 * 10**(-7), 3.017 * 10**(-5), 0.201, 17.517],
+        ])
+
+        weights = np.array([0.1819, 0.2131, 0.1838, 0.1832, 0.2379])
+        types = np.array([1, -1, -1, -1, -1])
+
+        pr = methods.PROBID()
+        output_method = list(np.round(pr(matrix, weights, types), 4))
+        output = [0.8568, 0.7826, 0.9362, 0.9369, 0.9379, 0.8716, 0.5489, 0.7231, 0.7792, 0.3331, 0.3387]
+        self.assertListEqual(output, output_method)
+
+        # Example is slightly modified to eliminate rounding errors
+        pr = methods.PROBID(sPROBID=True)
+        output_method = list(np.round(pr(matrix, weights, types), 4))
+        output = [2.4246, 2.0596, 3.2806, 3.3702, 3.4374, 2.6435, 1.2628, 1.8158, 2.0885, 0.3399, 0.4279]
+        self.assertListEqual(output, output_method)
+
+
+class TestWSM(unittest.TestCase):
+    """ Test output method with reference:
+    Self-reference
+    """
+    def test_output(self):
+        body = methods.WSM()
+        matrix = np.array([[96, 83, 75, 7],
+                            [63, 5, 56, 9],
+                            [72, 30, 32, 48],
+                            [11, 4, 27, 9],
+                            [77, 21, 17, 11]])
+        weights = np.array([8 / 13, 5 / 13, 6 / 13, 7 / 13])
+        types = np.array([1, 1, -1, -1])
+        output_method = list(np.round(body(matrix, weights, types), 3))
+        output = [0.609, 0.313, 0.334, 0.265, 0.479]
+
+        self.assertListEqual(output, output_method)
+
+
+class TestWPM(unittest.TestCase):
+    """ Test output method with reference:
+    Self-reference
+    """
+    def test_output(self):
+        body = methods.WPM()
+        matrix = np.array([[96, 83, 75, 7],
+                            [63, 5, 56, 9],
+                            [72, 30, 32, 48],
+                            [11, 4, 27, 9],
+                            [77, 21, 17, 11]])
+        weights = np.array([8 / 13, 5 / 13, 6 / 13, 7 / 13])
+        types = np.array([1, 1, -1, -1])
+        output_method = list(np.round(body(matrix, weights, types), 3))
+        output = [0.065, 0.017, 0.019, 0.007, 0.052]
+
+        self.assertListEqual(output, output_method)
+
+
+class TestWASPAS(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Chakraborty, S., Zavadskas, E. K., & Antucheviciene, J. (2015). Applications of WASPAS method as a
+    multi-criteria  decision-making tool. Economic Computation and Economic Cybernetics Studies and Research, 49(1),
+    5-22.
+    """
+    def test_output(self):
+        body = methods.WASPAS()
+        matrix = np.array([[30, 23, 5, 0.745, 0.745, 1500, 5000],
+                           [18, 13, 15, 0.745, 0.745, 1300, 6000],
+                           [15, 12, 10, 0.500, 0.500, 950, 7000],
+                           [25, 20, 13, 0.745, 0.745, 1200, 4000],
+                           [14, 18, 14, 0.255, 0.745, 950, 3500],
+                           [17, 15, 9, 0.745, 0.500, 1250, 5250],
+                           [23, 18, 20, 0.500, 0.745, 1100, 3000],
+                           [16, 8, 14, 0.255, 0.500, 1500, 3000]])
+        weights = np.array([0.1181, 0.1181, 0.0445, 0.1181, 0.2861, 0.2861, 0.0445])
+        types = np.array([1, 1, 1, 1, 1, -1, -1])
+        output_method = list(np.round(body(matrix, weights, types), 4))
+        output = [0.8329, 0.7884, 0.6987, 0.8831, 0.7971, 0.7036, 0.8728, 0.5749]
 
         self.assertListEqual(output, output_method)

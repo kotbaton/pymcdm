@@ -30,6 +30,11 @@ def ranking_bar(rankings, labels=None, colors=None, spacing=0.1, legend_ncol=5, 
             ax : Axes or None
                 Axes object to drawn on. If None current Axes will be used.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
             >>> import numpy as np
@@ -83,3 +88,5 @@ def ranking_bar(rankings, labels=None, colors=None, spacing=0.1, legend_ncol=5, 
 
     high = int(np.ceil(np.max(rankings)))
     ax.set_yticks(range(1, high + 1))
+
+    return ax

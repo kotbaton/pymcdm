@@ -7,8 +7,22 @@ Subpackages
    pymcdm.methods
    pymcdm.visuals
 
+
+Subpackages tools
+------------------------
+
+--------------------------
+pymcdm.methods.comet_tools
+--------------------------
+
+.. automodule:: pymcdm.methods.comet_tools
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
+
 .. toctree::
    :maxdepth: 2
 
@@ -18,7 +32,7 @@ pymcdm.correlations module
 --------------------------
 
 .. automodule:: pymcdm.correlations
-   :members:
+   :members: spearman, pearson, weighted_spearman, rank_similarity_coef, kendall_tau, goodman_kruskal_gamma, draws, wsc, wsc2, rs, rw, r, ws
    :undoc-members:
    :show-inheritance:
 
