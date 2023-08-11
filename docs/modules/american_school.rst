@@ -412,6 +412,72 @@ point value determines a higher ranking alternative.
     \end{equation}
     :label: equ:as
 
+ERVD
+=======================
+:class:`ERVD` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Define reference points :math:`\mu, j=1,\ldots,n` for each decision criterion.
+
+**Step 3.** Normalize the decision matrix using the sum method.
+
+**Step 4.** Transform the reference points into the normalized scale:
+
+.. math::
+    \begin{equation}
+    \varphi_j=\frac{\mu_j}{\sum_{i=1}^m d_{i j}}
+    \end{equation}
+
+**Step 5.** Calculate the value of alternative :math:`A_i` according to criterion :math:`C_j` by increasing value function
+(for benefit criteria):
+
+.. math::
+    \begin{equation}
+    v_{i j}=\left\{\begin{array}{l}
+    \left(r_{i j}-\varphi_j\right)^\alpha \quad \text { if } r_{i j}>\varphi_j \\
+    -\lambda\left(\varphi_j-r_{i j}\right)^\alpha \text { otherwise }
+    \end{array}\right.
+    \end{equation}
+
+and decreasing value function (for cost criteria):
+
+.. math::
+    \begin{equation}
+    v_{i j}=\left\{\begin{array}{l}
+    \left(\varphi_j-r_{i j}\right)^\alpha \quad \text { if } r_{i j}<\varphi_j \\
+    -\lambda\left(r_{i j}-\varphi_j\right)^\alpha \text { otherwise }
+    \end{array}\right.
+    \end{equation}
+
+**Step 6.** Determine the ideal and negative ideal solutions :math:`A^+` (PIS) and :math:`A^-` (NIS), respectively:
+
+.. math::
+    \begin{equation}
+    A^{+}=\left\{v_1^{+}, \cdots v_n^{+}\right\}, A^{-}=\left\{v_1^{-}, \cdots v_n^{-}\right\}
+    \end{equation}
+
+where :math:`v_j^{+}=\max _i v_{i j}` and :math:`v_j^{-}=\min v_{i \vec{j}}`.
+
+**Step 7.** Calculate the separation measures from PIS and NIS individually with help Minkowski metric:
+
+.. math::
+    \begin{equation}
+    S_i^{+}=\sum_{j=1}^n w_j \cdot\left|v_{i j}-v_j^{+}\right|, \text {for alternative } i, i=1 \ldots m
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_i^{-}=\sum_{j=1}^n w_j \cdot\left|v_{i j}-v_j^{-}\right|, \text {for alternative } i, i=1 \ldots m
+    \end{equation}
+
+**Step 8.** Calculate the relative closeness of each alternative to the ideal solution:
+
+.. math::
+    \begin{equation}
+    \phi_i=\frac{S_i^{-}}{S_i^{+}+S_i^{-}}, i=1, \ldots, m
+    \end{equation}
+
 MABAC
 =======================
 :class:`MABAC` is designed to evaluate decision alternatives according to the following steps:
@@ -717,7 +783,7 @@ Equations (:eq:`equ:kiplu`), (:eq:`equ:kimin`).
     \end{equation}
     :label: equ:kimin
 
-where :math:`S_i` :math:`(i=1,2,\dots,m)` represents the sum of the elements of weighted matrix $V$, Equation
+where :math:`S_i` :math:`(i=1,2,\dots,m)` represents the sum of the elements of weighted matrix :math:`V`, Equation
 (:eq:`equ:summ`).
 
 .. math::
@@ -823,6 +889,186 @@ and :math:`\bar{O}_{i}` is a measure of of relative performance for the :math:`i
     \end{equation}
     :label: ocrapref
 
+PROBID
+=======================
+:class:`PROBID` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the vector method.
+
+**Step 3.** Create normalized weighted decision matrix.
+
+**Step 4.** Sort the normalized weighted decision matrix by criteria taking into account their type. This will a matrix
+of successively Positive Ideal Solutions (1st, 2cd, ..., mth PIS) will be formed. It can be presented by using the
+following formula:
+
+.. math::
+    \begin{equation}
+    \begin{aligned}
+    A_{(k)} & =\left\{\left(\operatorname{Large}\left(v_j, k\right) \mid j \in J\right),\left(\operatorname{Small}\left(v_j, k\right) \mid j \in J^{\prime}\right)\right\} \\
+    & =\left\{v_{(k) 1}, v_{(k) 2}, v_{(k) 3}, \ldots, v_{(k) j}, \ldots, v_{(k) n}\right\}
+    \end{aligned}
+    \end{equation}
+
+where :math:`k \in \{1,2, \ldots, m\}`, :math:`J` is the set of benefit criteria and :math:`J^{\prime}` is the set of cost
+criteria.
+
+Then, find the average value of each objective column as follow:
+
+.. math::
+    \begin{equation}
+    \bar{v}_j=\frac{\sum_{k=1}^m v_{(k) j}}{m} \quad \text { for } j \in\{1,2, \ldots, n\}
+    \end{equation}
+
+The average solution is then given by
+
+.. math::
+    \begin{equation}
+    \bar{A}=\left\{\bar{v}_1, \bar{v}_2, \bar{v}_3, \ldots, \bar{v}_j, \ldots, \bar{v}_n\right\}
+    \end{equation}
+
+**Step 5.** Iteratively calculate the Euclidean distance of each solution to each of the m ideal solutions as well as to
+the average solution. The distance to ideal solutions is found as:
+
+.. math::
+    \begin{equation}
+    S_{i(k)}=\sqrt{\sum_{j=1}^n\left(v_{i j}-v_{(k) j}\right)^2}
+    \end{equation}
+
+**Step 6.** Determine the overall positive-ideal distance and negative-ideal distance as follow:
+
+.. math::
+    \begin{equation}
+    S_{i(\text { pos-ideal })}=\left\{\begin{array}{l}
+    \sum_{k=1}^{(m+1) / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \\
+    \text { is an odd number } \\
+    \sum_{k=1}^{m / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \\
+    \text { is an even number }
+    \end{array}\right.
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_{i(\text { neg-ideal })}
+    \quad=\left\{\begin{array}{l}
+    \sum_{k=(m+1) / 2}^m \frac{1}{m-k+1} S_{i(k)} \\
+    i \in\{1,2, \ldots, m\} \text { when } m \text { is an odd number } \\
+    \sum_{k=m / 2+1}^m \frac{1}{m-k+1} S_{i(k)} \\
+    i \in\{1,2, \ldots, m\} \text { when } m \text { is an even number }
+    \end{array}\right.
+    \end{equation}
+
+Positive-ideal distance and negative-ideal distance for sPROBID:
+
+
+.. math::
+    \begin{equation}
+    S_{i(\text { pos-ideal })}=\left\{\begin{array}{l}
+    \sum_{k=1}^{m \backslash 4} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \geq 4 \\
+    S_{i(1)} \quad i \in\{1,2, \ldots, m\} \text { when } 0<m<4
+    \end{array}\right.
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_{i(\text { neg-ideal })}=\left\{\begin{array}{l}
+    \sum_{k=m+1-(m \ 4)}^m \frac{1}{m-k+1} S_{i(k)} \\
+    \quad i \in\{1,2, \ldots, m\} \text { when } m \geq 4 \\
+    S_{i(m)} \quad i \in\{1,2, \ldots, m\} \text { when } 0<m<4
+    \end{array}\right.
+    \end{equation}
+
+**Step 7.** Calculate the pos-ideal/neg-ideal ratio (:math:`R_i`) and then the performance score (:math:`P_i`) of each
+solution as follows:
+
+.. math::
+    \begin{equation}
+    R_i=\frac{S_{i(\text { pos-ideal })}}{S_{i(\text { neg-ideal })}}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    P_i=\frac{1}{1+R_i^2}+S_{i(\mathrm{avg})}
+    \end{equation}
+
+RIM
+=======================
+
+:class:`RIM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Define the following values, which determine the problem's context and the problem itself.
+
+- Criteria weights: :math:`w_j, j \in \{1, 2, \ldots N\}` and the sum of the criteria weights should be equal to one: :math:`\sum^N_{j = 1} w_j = 1`.
+
+- Decision matrix: :math:`X = [ x_{ij} ]_{M \times N}` which contains information about :math:`M` alternatives evaluated under :math:`N` criteria.
+
+- The Criteria Range: :math:`t_j = [t_{j}^{(min)}, t_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}` which defines the arbitrary chosen bounds of the criteria.
+
+- The Reference Ideal: :math:`s_j = [s_{j}^{(min)}, s_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}$ and $[s_{j}^{(min)}, s_{j}^{(max)}] \subset [t_{j}^{(min)}, t_{j}^{(max)}]`. Reference Ideal define most preferred interval of values for each criterion. It can be either derived from criteria range, or define expected outcome of decision process.
+
+
+**Step 2.** After defining the problem we should normalize the decision matrix :math:`X` using the RIM normalization function :math:`f(x,[A, B],[C, D])` defined as (:eq:`eq:rmnorm`). This normalization requires a definition of the criteria range :math:`[A. B]` and the reference ideal :math:`[C, D]`.
+
+.. math::
+    \begin{equation}
+    f(\ldots) = \left\{\begin{array}{lll}
+    1 &\textit{IF}& x \in[C, D] \\
+    1-\frac{d_{\min }(x,[C, D])}{|A-C|} &\textit{IF}& x \in[A, C] \wedge A \neq C \\
+    1-\frac{d_{\min }(x,[C, D])}{|D-B|} &\textit{IF}& x \in[D, B] \wedge D \neq B
+    \end{array}\right.,
+    \end{equation}
+    :label: eq:rmnorm
+
+where :math:`[A, B]` is range of criteria, :math:`[C, D]` is the reference ideal, and :math:`x \in [A, B]`, :math:`[C, D] \subset [A, B]`. Function :math:`d_{min}(x, [C, D])` is defined as (:eq:`eq:d_min`).
+
+.. math::
+    \begin{equation}
+        d_{min}(x, [C, D]) = min(|x - C|, |x - D|)
+    \end{equation}
+    :label: eq:d_min
+
+This normalization allows to map value :math:`x` to range :math:`[0, 1]` in the criteria domain with regard to the ideal reference interval. The normalization process is defined as follows (:eq:`eq:rim_nmatrix`).
+
+.. math::
+    \begin{equation}
+    Y = [ y_{ij} ]_{M \times N} = [ f(x_{ij}, t_j, s_j) ]_{M \times N}
+    \end{equation}
+    :label: eq:rim_nmatrix
+
+**Step 3.** Calculate the weighted normalized matrix :math:`Y^\prime` using (:eq:`eq:rim_wnmatrix`).
+
+.. math::
+    \begin{equation}
+        Y^\prime = Y \otimes W = [ y_{ij} \cdot w_{j} ]_{M \times N}
+    \end{equation}
+    :label: eq:rim_wnmatrix
+
+**Step 4.** Compute the variation to the normalized reference ideal for each alternative :math:`A_i` using Equations (:eq:`eq:rim_iplus`) and (:eq:`eq:rim_iminus`).
+
+.. math::
+    \begin{equation}
+        I_i^{+}=\sqrt{\sum_{j=1}^n\left(y^{\prime}{ }_{i j}-w_j\right)^2}% \quad i \in \{1, 2, \ldots M\}, \quad j \in \{1, 2, \ldots N\}
+    \end{equation}
+    :label: eq:rim_iplus
+
+.. math::
+    \begin{equation}
+        I_i^{-}=\sqrt{\sum_{j=1}^n\left(y^{\prime}\right)^2}% \quad i \in \{1, 2, \ldots M\}, \quad j \in \{1, 2, \ldots N\}
+    \end{equation}
+    :label: eq:rim_iminus
+
+**Step 5.** Calculate the relative index of each alternative :math:`A_i`, using the Equation (:eq:`eq:rim_r`).
+
+.. math::
+    \begin{equation}
+        R_i = \frac{I_i^-}{I_i^+ + I_i^-} %\quad i \in \{1, 2, \ldots M\}
+    \end{equation}
+    :label: eq:rim_r
+
+Order the alternative :math:`A_i` in descending order with regard to :math:`R_i`. The alternatives with the bigger value
+of :math:`R_i` are more preferred ones.
+
 
 SPOTIS
 =======================
@@ -837,7 +1083,7 @@ MCDM problem form ill-defined to well-defined.
     \left[S_{n}^{\min }, S_{n}^{\max }\right]=\left[x_{1}, x_{2}\right]
     \end{equation}
 
-where, $n$ - criterion number, $x_1$ - min bound, $x_2$ - max bound.
+where, :math:`n` - criterion number, :math:`x_1` - min bound, :math:`x_2` - max bound.
 
 **Step 2.** Define the ideal solution point - define vector which includes maximum or minimum from bounds for specific
 criterion depending on criterion type. For profit type, the max value should be taken, for cost type, min value.
@@ -984,3 +1230,73 @@ lists are the outcome.
 **Step 5.** A compromise solution is proposed considering the conditions of good advantage and acceptable stability
 within the three vectors obtained in the previous step. The best alternative is the one with the lowest value and the
 leading position in the ranking :math:`Q`.
+
+WASPAS
+=======================
+
+:class:`WASPAS` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the max method.
+
+**Step 3.** Calculate WSM and WPM as follow:
+
+.. math::
+    \begin{equation}
+    W S M=\sum_{j=1}^n \bar{x}_{i j} w_j
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    W P M=\prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    \end{equation}
+
+where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+the normalized decision matrix.
+
+**Step 4.** Calculation of total relative importance for each alternative as follow:
+
+.. math::
+    \begin{equation}
+    Q_i=\lambda WSM+(1-\lambda) WPM=\lambda \sum_{j=1}^n \bar{x}_{i j} w_j+(1-\lambda) \prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    \end{equation}
+
+
+WPM
+=======================
+
+:class:`WPM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the sum method.
+
+**Step 3.** Calculate WPM as follow:
+
+.. math::
+    \begin{equation}
+    W P M=\prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    \end{equation}
+
+where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+the normalized decision matrix.
+
+WSM
+=======================
+
+:class:`WSM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the sum method.
+
+**Step 3.** Calculate WSM as follow:
+
+.. math::
+    \begin{equation}
+    W S M=\sum_{j=1}^n \bar{x}_{i j} w_j
+    \end{equation}
+
+where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+the normalized decision matrix.

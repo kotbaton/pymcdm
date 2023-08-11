@@ -64,6 +64,15 @@ def correlation_heatmap(corr_matrix,
 
             ax : Axes
                 Axes object to draw on.
+
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
+            cax : Axes
+                Only if colorbar=True.
+                Axes object on which colorbar were drawn.
     """
     corr_matrix = np.asarray(corr_matrix)
 
@@ -124,3 +133,6 @@ def correlation_heatmap(corr_matrix,
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.05)
         cbar = plt.colorbar(im, cax=cax)
+        return ax, cax
+
+    return ax

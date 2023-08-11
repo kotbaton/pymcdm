@@ -21,6 +21,11 @@ def boxplot(data, labels=None, boxplot_kwargs=dict(), ax=None):
             ax : Axes or None
                 Axes object to draw on. If None, then current axes is used.
 
+        Returns
+        -------
+            ax : Axes
+                Axes object on which plot were drawn.
+
         Examples
         --------
             >>> import numpy as np
@@ -42,3 +47,5 @@ def boxplot(data, labels=None, boxplot_kwargs=dict(), ax=None):
     ax.set_xticks(range(1, len(labels) + 1), labels=labels)
 
     ax.grid(linestyle='--', alpha=0.5)
+
+    return ax

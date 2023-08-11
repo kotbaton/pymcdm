@@ -2,15 +2,47 @@
 
 Python 3 library for solving multi-criteria decision-making (MCDM) problems.
 
+Documentation is avaliable on [readthedocs](https://pymcdm.readthedocs.io/en/master/).
+
 ___
 
 # Installation
 
 You can download and install `pymcdm` library using pip:
 
-```Bash 
+```Bash
 pip install pymcdm
 ```
+
+You can run all tests with following command from the root of the project:
+
+```Bash
+python -m unittest -v
+```
+
+___
+
+# Citing pymcdm
+
+If usage of the pymcdm library lead to a scientific publication, please 
+acknowledge this fact by citing "[_Kizielewicz, B., Shekhovtsov, A., 
+& Sałabun, W. (2023). pymcdm—The universal library for solving multi-criteria 
+decision-making problems. SoftwareX, 22, 101368._](https://doi.org/10.1016/j.softx.2023.101368)"
+
+Or using BibTex:
+```bibtex
+@article{kizielewicz2023pymcdm,
+  title={pymcdm—The universal library for solving multi-criteria decision-making problems},
+  author={Kizielewicz, Bart{\l}omiej and Shekhovtsov, Andrii and Sa{\l}abun, Wojciech},
+  journal={SoftwareX},
+  volume={22},
+  pages={101368},
+  year={2023},
+  publisher={Elsevier}
+}
+```
+
+DOI: [https://doi.org/10.1016/j.softx.2023.101368](https://doi.org/10.1016/j.softx.2023.101368)
 
 ___
 
@@ -37,6 +69,12 @@ The library contains:
 |  MARCOS             	|  Measurement Alternatives and Ranking according to COmpromise Solution         	|        [[17]](#c17),[[18]](#c18)       	|
 |  OCRA               	|  Operational Competitiveness Ratings                                           	|        [[19]](#c19),[[20]](#c20)       	|
 |  MOORA              	|  Multi-Objective Optimization Method by Ratio Analysis                         	|        [[21]](#c21),[[22]](#c22)       	|
+|  RIM                	|  Reference Ideal Method                                                           |               [[48]](#c48)               	|
+|  ERVD               	|  Election Based on relative Value Distances                                       |               [[49]](#c49)               	|
+|  PROBID               |  Preference Ranking On the Basis of Ideal-average Distance                        |               [[50]](#c50)               	|
+|  WSM                  |  Weighted Sum Model                                                               |               [[51]](#c51)               	|
+|  WPM                  |  Weighted Product Model                                                           |               [[52]](#c52)               	|
+|  WASPAS               |  Weighted Aggregated Sum Product ASSessment                                       |               [[53]](#c53)               	|
 
 * Weighting methods:
 
@@ -78,12 +116,33 @@ The library contains:
 | Rank Similarity Coefficient                        	|        [[45]](#c45)       	|
 | Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
-
+| Drastic Weighted Similarity (draWS)                   |        In Press           	|
+| Weights Similarity Coefficient (WSC)                  |        In Press           	|
+| Weights Similarity Coefficient 2 (WSC2)               |        In Press           	|
 
 * Helpers
-    * rankdata
-    * rrankdata
-  
+
+| Helpers submodule     | Description                                                                                                      |
+|---------------------  |------------                                                                                                      |
+| `rankdata`            | Create ranking vector from the preference vector. Smaller preference values has higher positions in the ranking. |
+| `rrankdata`           | Alias to the `rankdata` which reverse the sorting order.                                                         |
+| `correlation_matrix`  | Create the correlation matrix for given coefficient from several the several rankings.                           |
+| `normalize_matrix`    | Normalize decision matrix column by column using given normalization and criteria types.                         |
+
+* COMET Tools
+
+| Class/Function       | Description                                                                                        | Reference     |
+|----------------------|----------------------------------------------------------------------------------------------------|:-------------:|
+| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  | [[56]](#c56)  |
+| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       | [[57]](#c57)  |
+| `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              | [[58]](#c58)  |
+| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     | -             |
+| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       | In Press      |
+| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | In Press      |
+| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         | [[55]](#c55)  |
+| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            | [[54]](#c54)  |
+| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. | [[54]](#c54)  |
+
 
 ___
 # Usage example
@@ -224,3 +283,24 @@ And the output of this example (numbers are rounded):
 
 <a name="c47">**[47]**</a> Goodman, L. A., & Kruskal, W. H. (1979). Measures of association for cross classifications. Measures of association for cross classifications, 2-34.
 
+<a name="c48">**[48]**</a> Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
+
+<a name="c49">**[49]**</a> Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+
+<a name="c50">**[50]**</a> Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
+
+<a name="c51">**[51]**</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+
+<a name="c52">**[52]**</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+
+<a name="c53">**[53]**</a> Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
+
+<a name="c54">**[54]**</a> Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
+
+<a name="c55">**[55]**</a> Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
+
+<a name="c56">**[56]**</a> Paradowski, B., Bączkiewicz, A., & Watrąbski, J. (2021). Towards proper consumer choices-MCDM based product selection. Procedia Computer Science, 192, 1347-1358.
+
+<a name="c57">**[57]**</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
+
+<a name="c58">**[58]**</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571.

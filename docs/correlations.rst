@@ -93,13 +93,13 @@ Pearson’s correlation coefficient
 =================================
 The Pearson correlation coefficient compares two data sets using covariance and standard deviation.
 Its value ranges from $-$1 to 1. The smaller the Pearson correlation coefficient value, the less correlation between the
-data, while the more significant the value, the greater the correlation. Equation (\ref{eq:pearson}) can represent it.
+data, while the more significant the value, the greater the correlation. Equation (:eq:`equ:pearson`) can represent it.
 
 .. math::
     \begin{equation}
     r(x, y)=\frac{\sum_{i=1}^{N}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sqrt{\sum_{i=1}^{N}\left(x_{i}-\bar{x}\right)^{2}} \sqrt{\sum_{i=1}^{N}\left(y_{i}-\bar{y}\right)^{2}}}
-    \label{eq:pearson}
     \end{equation}
+    :label: equ:pearson
 
 where :math:`N` is the number of samples and :math:`x` and :math:`y` are vectors of values.
 
@@ -116,3 +116,29 @@ The values of this measure are in the range [-1,1] and can be represented as fol
     \end{equation}
 
 where :math:`N_s` is the number of compatible pairs and :math:`N_d` is the number of non-compliant pairs.
+
+Weighted Similarity Coefficient
+=======================================
+
+Weighted Similarity Coefficient was created because of the difficulty involved in determining the similarity of two
+criterion weight vectors. For this purpose, the knowledge that the sum of the weights should be equal to one was used,
+providing a normalized version of this equation. In addition, it was based on the Manhattan distance metric and can be
+represented as follows:
+
+.. math::
+    \begin{equation} \label{eq:wsc}
+    WSC = 1 - \frac{d_1(\mathbf{w},\mathbf{v})}{2 \cdot (1 - min(\mathbf{w}))} = 1 - \frac{\sum_{i=1}^N |w_i - v_i|}{2 \cdot (1 - {min}_{i} w_i)}
+    \end{equation}
+
+where :math:`w_i` and :math:`v_i` are the criterion weights.
+
+However, if we deal with the decision problems with a small number of criteria, such as 2, 3, and 4, it can be observed
+that the differences between weights values are naturally bigger in this case. That means that the possibility of
+achieving maximum distance 2 is different for weight vectors of different lengths. Therefore, the better way to normalize
+the distance is based on the minimum value on one of the weight vectors (:eq:`equ:wsc2`).
+
+.. math::
+    \begin{equation} \label{eq:wsc2}
+    \textit{WSC}_2 = 1 - \frac{d_1(\mathbf{w},\mathbf{v})}{2} = 1 - \frac{\sum_{i=1}^N |w_i - v_i|}{2}
+    \end{equation}
+    :label: equ:wsc2
