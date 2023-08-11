@@ -7,22 +7,24 @@ from .mcda_method import MCDA_method
 
 
 class TOPSIS(MCDA_method):
-    """ Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS).
+    """ Technique for Order of Preference by Similarity to
+        Ideal Solution (TOPSIS).
 
         The TOPSIS method is based on an approach in which it evaluates alternatives to a positive ideal solution and a
         negative ideal solution [#topsis1]_.
 
         Parameters
         ----------
-           normalization_function : callable
-               Function which should be used to normalize `matrix` columns. It should match signature `foo(x, cost)`,
-               where `x` is a vector which should be normalized and `cost` is a bool variable which says if `x` is a
-               cost or profit criterion.
+           normalization_function : Callable
+               Function which should be used to normalize `matrix` columns.
+               It should match signature `foo(x, cost)`, where `x` is a vector
+               which should be normalized and `cost` is a bool variable which
+               says if `x` is a cost or profit criterion.
 
         References
         ----------
         .. [#topsis1] Hwang, C. L., & Yoon, K. (1981). Methods for multiple attribute decision making. In Multiple attribute
-               decision making (pp. 58-191). Springer, Berlin, Heidelberg.
+           decision making (pp. 58-191). Springer, Berlin, Heidelberg.
 
         Examples
         --------
@@ -40,40 +42,9 @@ class TOPSIS(MCDA_method):
     def __init__(self, normalization_function=normalizations.minmax_normalization):
         self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
+    def _method(self, matrix, weights, types):
+        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
 
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        TOPSIS._validate_input_data(matrix, weights, types)
-        if self.normalization is not None:
-            nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
-        else:
-            nmatrix = helpers.normalize_matrix(matrix, normalizations.minmax_normalization, types)
-        return TOPSIS._topsis(nmatrix, weights)
-
-    @staticmethod
-    def _topsis(nmatrix, weights):
         # Every row of nmatrix is multiplayed by weights
         weighted_matrix = nmatrix * weights
 
@@ -85,5 +56,75 @@ class TOPSIS(MCDA_method):
         Dp = np.sqrt(np.sum((weighted_matrix - pis) ** 2, axis=1))
         Dm = np.sqrt(np.sum((weighted_matrix - nis) ** 2, axis=1))
 
-        return Dm / (Dm + Dp)
+        p = Dm / (Dm + Dp)
 
+        return (nmatrix, weighted_matrix, pis, nis, Dp, Dm, p)
+
+    def _method_explained(self, matrix, weights, types):
+        return [
+            (
+                'Normalized decision matrix.',
+                (nmatrix := helpers.normalize_matrix(matrix, self.normalization, types))
+            ),
+            (
+                'Weighted normalized decision matrix.',
+                (wnmatrix := nmatrix * weights)
+            ),
+            (
+                'Positive Ideal Solution',
+                (pis := np.max(wnmatrix, axis=0))
+            ),
+            (
+                'Negative Ideal Solution',
+                (nis := np.min(wnmatrix, axis=0))
+            ),
+            (
+                '?? Chuj wie jak to szło $D^+$',
+                (Dp := np.sqrt(np.sum((wnmatrix - pis) ** 2, axis=1)))
+            ),
+            (
+                '?? Chuj wie jak to szło $D^-$',
+                (Dm := np.sqrt(np.sum((wnmatrix - nis) ** 2, axis=1)))
+            ),
+            (
+                'Final preference values ($P_i$).',
+                Dm / (Dm + Dp)
+            )
+        ]
+
+    def _method_explained(self, matrix, weights, types):
+        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
+        wnmatrix = nmatrix * weights
+
+        pis = np.max(wnmatrix, axis=0)
+        nis = np.min(wnmatrix, axis=0)
+
+        Dp = np.sqrt(np.sum((wnmatrix - pis) ** 2, axis=1))
+        Dm = np.sqrt(np.sum((wnmatrix - nis) ** 2, axis=1))
+
+        p = Dm / (Dm + Dp)
+
+        return (
+                ('Normalized decision matrix.', nmatrix),
+                ('Weighted normalized decision matrix.', wnmatrix),
+                ('Positive Ideal Solution', pis),
+                ('Negative Ideal Solution', nis),
+                ('?? Chuj wie jak to szło $D^+$', Dp),
+                ('?? Chuj wie jak to szło $D^-$', Dm),
+                ('Final preference values ($P_i$).', p)
+                )
+
+    def _method_explained(self, matrix, weights, types):
+        captions = [
+                'Normalized decision matrix.',
+                'Weighted normalized decision matrix.',
+                'Positive Ideal Solution',
+                'Negative Ideal Solution',
+                '?? Chuj wie jak to szło $D^+$',
+                '?? Chuj wie jak to szło $D^-$',
+                'Final preference values ($P_i$).'
+                ]
+        return tuple(zip(
+            self._method(matrix, weights, types),
+            captions
+            ))
