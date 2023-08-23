@@ -45,71 +45,33 @@ class VIKOR(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.5679, 0.7667, 1, 0.7493, 0]
     """
-    reverse_ranking = False
+    _reverse_ranking = False
+    _captions = [
+        'Normalized decision matrix.',
+        'Best values of all criterion functions.',
+        'Worst values of all criterion functions.',
+        'Vector of $S_i$ values.',
+        'Vector of $R_i$ values.',
+        'Vector of $Q_i$ values.'
+    ]
 
-    def __init__(self, normalization_function=None):
+    def __init__(self, normalization_function=None, v=0.5):
         if normalization_function is None:
             self.normalization = _fake_normalization
         else:
             self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, v=0.5, return_all=False, **kwargs):
-        """ Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                v : float
-                    Weight of the strategy (see VIKOR algorithm explanation).
-
-                return_all : bool
-                    If True, all three ranking (S, R, Q) would be returned.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                if `return_all` is False
-                ndarray
-                    Q preference values for alternatives. Better alternatives have smaller values.
-
-                if `reeturn_all` is True
-                ndarray, ndarray, ndarray
-                    S, R, Q preference values (see VIKOR algorithm explanation).
-        """
-        VIKOR._validate_input_data(matrix, weights, types)
-        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
-        S, R, Q = VIKOR._vikor(nmatrix, weights, v)
-        if return_all:
-            return S, R, Q
+        if 0 <= v <= 1:
+            self.v = v
         else:
-            return Q
+            raise ValueError('v should be in range [0, 1].')
 
-    @staticmethod
-    def _vikor(matrix, weights, v=0.5):
-        """ VIKOR MCDM method
+    def _method(self, matrix, weights, types):
+        v = self.v
+        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
 
-            Arguments:
-                matrix: Decision matrix.
-                        Alternative are in rows and Criteria are in columns.
-                weights: Weights to criteria
-            Returns:
-                S, R, Q: Ranking lists
-        """
-        fstar = np.max(matrix, axis=0)
-        fminus = np.min(matrix, axis=0)
+        fstar = np.max(nmatrix, axis=0)
+        fminus = np.min(nmatrix, axis=0)
 
         if np.any(fstar == fminus):
             eq = np.arange(fstar.shape[0])[fstar == fminus]
@@ -119,7 +81,7 @@ class VIKOR(MCDA_method):
                 f'MCDA method.'
             )
 
-        weighted_ff = weights * ((fstar - matrix)/(fstar - fminus))
+        weighted_ff = weights * ((fstar - nmatrix)/(fstar - fminus))
         S = np.sum(weighted_ff, axis=1)
         R = np.max(weighted_ff, axis=1)
 
@@ -131,4 +93,4 @@ class VIKOR(MCDA_method):
         Q = v * (S - Sstar)/(Sminus - Sstar)\
           + (1 - v) * (R - Rstar)/(Rminus - Rstar)
 
-        return S, R, Q
+        return (nmatrix, fstar, fminus, S, R, Q)
