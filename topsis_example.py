@@ -15,5 +15,16 @@ output_method = [round(preference, 3) for preference in body(matrix, weights, ty
 
 res = body(matrix, weights, types, explained_call=True)
 
-for name, array in res:
+# for name, array in res:
+#     print(name, '\n', array, '\n')
+
+bounds = [
+        [1, 5],
+        [1000, 5000]
+        ]
+
+body = methods.SPOTIS(bounds=bounds)
+print(body(matrix, weights, types))
+
+for name, array in body(matrix, weights, types, explained_call=True):
     print(name, '\n', array, '\n')

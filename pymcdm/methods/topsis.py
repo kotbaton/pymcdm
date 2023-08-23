@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020-2023 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
@@ -39,7 +39,16 @@ class TOPSIS(MCDA_method):
         >>> types = np.array([-1, 1])
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.500, 0.617, 0.500]
-   """
+    """
+    _captions = [
+            'Normalized decision matrix.',
+            'Weighted normalized decision matrix.',
+            'Positive Ideal Solution (PIS).',
+            'Negative Ideal Solution (NIS).',
+            'Distance from PIS $D^+$.',
+            'Distance from NIS $D^-$.',
+            'Final preference values ($P_i$).'
+            ]
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):
         self.normalization = normalization_function
@@ -62,71 +71,3 @@ class TOPSIS(MCDA_method):
 
         return (nmatrix, weighted_matrix, pis, nis, Dp, Dm, p)
 
-    def _method_explained(self, matrix, weights, types):
-        return [
-            (
-                'Normalized decision matrix.',
-                (nmatrix := helpers.normalize_matrix(matrix, self.normalization, types))
-            ),
-            (
-                'Weighted normalized decision matrix.',
-                (wnmatrix := nmatrix * weights)
-            ),
-            (
-                'Positive Ideal Solution',
-                (pis := np.max(wnmatrix, axis=0))
-            ),
-            (
-                'Negative Ideal Solution',
-                (nis := np.min(wnmatrix, axis=0))
-            ),
-            (
-                '?? Chuj wie jak to szło $D^+$',
-                (Dp := np.sqrt(np.sum((wnmatrix - pis) ** 2, axis=1)))
-            ),
-            (
-                '?? Chuj wie jak to szło $D^-$',
-                (Dm := np.sqrt(np.sum((wnmatrix - nis) ** 2, axis=1)))
-            ),
-            (
-                'Final preference values ($P_i$).',
-                Dm / (Dm + Dp)
-            )
-        ]
-
-    def _method_explained(self, matrix, weights, types):
-        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
-        wnmatrix = nmatrix * weights
-
-        pis = np.max(wnmatrix, axis=0)
-        nis = np.min(wnmatrix, axis=0)
-
-        Dp = np.sqrt(np.sum((wnmatrix - pis) ** 2, axis=1))
-        Dm = np.sqrt(np.sum((wnmatrix - nis) ** 2, axis=1))
-
-        p = Dm / (Dm + Dp)
-
-        return (
-                ('Normalized decision matrix.', nmatrix),
-                ('Weighted normalized decision matrix.', wnmatrix),
-                ('Positive Ideal Solution', pis),
-                ('Negative Ideal Solution', nis),
-                ('?? Chuj wie jak to szło $D^+$', Dp),
-                ('?? Chuj wie jak to szło $D^-$', Dm),
-                ('Final preference values ($P_i$).', p)
-                )
-
-    def _method_explained(self, matrix, weights, types):
-        captions = [
-                'Normalized decision matrix.',
-                'Weighted normalized decision matrix.',
-                'Positive Ideal Solution',
-                'Negative Ideal Solution',
-                '?? Chuj wie jak to szło $D^+$',
-                '?? Chuj wie jak to szło $D^-$',
-                'Final preference values ($P_i$).'
-                ]
-        return tuple(zip(
-            self._method(matrix, weights, types),
-            captions
-            ))

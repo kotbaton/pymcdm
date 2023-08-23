@@ -346,7 +346,7 @@ class TestSPOTIS(unittest.TestCase):
 
         body = methods.SPOTIS(bounds)
         output = [0.1989, 0.3705, 0.3063, 0.7491]
-        output_method = [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
 
         self.assertListEqual(output, output_method)
 
@@ -379,7 +379,7 @@ class TestSPOTIS2(unittest.TestCase):
 
         body = methods.SPOTIS(bounds, esp)
         output = [0.1841, 0.0734, 0.0842, 0.1920]
-        output_method = [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
 
         self.assertListEqual(output, output_method)
 

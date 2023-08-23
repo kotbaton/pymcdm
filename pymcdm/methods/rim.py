@@ -107,10 +107,6 @@ class RIM(MCDA_method):
             if ref_ideal.shape != bounds.shape:
                 raise ValueError('Bounds and ref_ideal should have equal shapes.')
 
-        if np.any(bounds[:, 0] >= bounds[:, 1]):
-            eq = np.arange(bounds.shape[0])[bounds[:, 0] >= bounds[:, 1]]
-            raise ValueError(f'Lower bound of criteria {eq} is bigger or equal to upper bound.')
-
         self.bounds = bounds
         self.ref_ideal = ref_ideal
 
