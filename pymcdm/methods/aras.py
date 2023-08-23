@@ -42,40 +42,18 @@ class ARAS(MCDA_method):
         >>> [round(preference, 2) for preference in body(matrix, weights, types)]
         [0.74, 0.86, 0.78, 0.86]
     """
+    _captions = [
+        'Extended decision matrix.',
+        'Normalized extended decision matrix.',
+        'Weighted normalized extended decision matrix.',
+        'Values of optimality function.',
+        'Final preference values (Utility degree).'
+    ]
 
     def __init__(self, normalization_function=normalizations.sum_normalization):
         self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-        Parameters
-        ----------
-            matrix : ndarray
-                Decision matrix / alternatives data.
-                Alternatives are in rows and Criteria are in columns.
-
-            weights : ndarray
-                Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-            types : ndarray
-                Array with definitions of criteria types:
-                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-            *args: is necessary for methods which reqiure some additional data.
-
-            **kwargs: is necessary for methods which reqiure some additional data.
-
-        Returns
-        -------
-            ndarray
-                Preference values for alternatives. Better alternatives have higher values.
-        """
-        ARAS._validate_input_data(matrix, weights, types)
-        return ARAS._aras(matrix, weights, types, self.normalization)
-
-    @staticmethod
-    def _aras(matrix, weights, types, normalization):
+    def _method(self, matrix, weights, types):
         n, m = matrix.shape
 
         # Extended initial decision matrix
@@ -89,7 +67,7 @@ class ARAS(MCDA_method):
                 exmatrix[0, i] = np.min(matrix[:, i])
 
         # Every row of nmatrix is multiplayed by weights
-        nmatrix = helpers.normalize_matrix(exmatrix, normalization, types)
+        nmatrix = helpers.normalize_matrix(exmatrix, self.normalization, types)
         weighted_matrix = nmatrix * weights
 
         # Values of optimality function
@@ -98,4 +76,4 @@ class ARAS(MCDA_method):
         # Utility degree
         K = S[1:] / S[0]
 
-        return K
+        return (exmatrix, nmatrix, weighted_matrix, S, K)

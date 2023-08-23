@@ -45,9 +45,9 @@ class TOPSIS(MCDA_method):
             'Weighted normalized decision matrix.',
             'Positive Ideal Solution (PIS).',
             'Negative Ideal Solution (NIS).',
-            'Distance from PIS $D^+$.',
-            'Distance from NIS $D^-$.',
-            'Final preference values ($P_i$).'
+            'Distance from PIS.',
+            'Distance from NIS.',
+            'Final preference values.'
             ]
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):

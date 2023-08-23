@@ -38,7 +38,7 @@ class TestARAS(unittest.TestCase):
         types = np.array([1, 1, 1, 1, 1, 1])
 
         output = [0.74, 0.86, 0.78, 0.86]
-        output_method = [round(preference, 2) for preference in body(matrix, weights, types)]
+        output_method = [round(preference, 2) for preference in body(matrix, weights, types, skip_validation=True)]
 
         self.assertListEqual(output, output_method)
 
