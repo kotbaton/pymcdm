@@ -6,7 +6,7 @@ from ..helpers import rankdata
 
 class MCDA_method(ABC):
     _reverse_ranking = True
-    _captions = []
+    _captions = None
 
     def __call__(self, matrix, weights, types,
                  skip_validation=False,

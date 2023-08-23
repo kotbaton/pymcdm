@@ -37,9 +37,9 @@ class SPOTIS(MCDA_method):
     """
     _reverse_ranking = False
     _captions = [
-        'Ideal Solution Point (ISP) $S_j^*$.',
-        'Normalized distances from ISP $d_{ij}(A_i, s_j^*)$.',
-        'Weighted average distance from ISP $d(A_i, s^*)$.'
+        'Ideal Solution Point (ISP).',
+        'Normalized distances from ISP.',
+        'Weighted average distance from ISP.'
     ]
 
     def __init__(self, bounds, esp=None):
