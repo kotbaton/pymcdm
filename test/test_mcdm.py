@@ -520,7 +520,7 @@ class TestRIM(unittest.TestCase):
         ]
 
         pr = methods.RIM(range_t, ref_s)
-        output_method = pr(matrix, weights, None)
+        output_method = pr(matrix, weights, None, skip_validation=True)
 
         output_method = list(np.round(output_method, 5))
         output = [0.58663, 0.75584, 0.37163, 0.46658, 0.74015]
@@ -649,7 +649,7 @@ class TestWSM(unittest.TestCase):
                             [77, 21, 17, 11]])
         weights = np.array([8 / 13, 5 / 13, 6 / 13, 7 / 13])
         types = np.array([1, 1, -1, -1])
-        output_method = list(np.round(body(matrix, weights, types), 3))
+        output_method = list(np.round(body(matrix, weights, types, skip_validation=True), 3))
         output = [0.609, 0.313, 0.334, 0.265, 0.479]
 
         self.assertListEqual(output, output_method)
@@ -668,7 +668,7 @@ class TestWPM(unittest.TestCase):
                             [77, 21, 17, 11]])
         weights = np.array([8 / 13, 5 / 13, 6 / 13, 7 / 13])
         types = np.array([1, 1, -1, -1])
-        output_method = list(np.round(body(matrix, weights, types), 3))
+        output_method = list(np.round(body(matrix, weights, types, skip_validation=True), 3))
         output = [0.065, 0.017, 0.019, 0.007, 0.052]
 
         self.assertListEqual(output, output_method)
@@ -692,7 +692,7 @@ class TestWASPAS(unittest.TestCase):
                            [16, 8, 14, 0.255, 0.500, 1500, 3000]])
         weights = np.array([0.1181, 0.1181, 0.0445, 0.1181, 0.2861, 0.2861, 0.0445])
         types = np.array([1, 1, 1, 1, 1, -1, -1])
-        output_method = list(np.round(body(matrix, weights, types), 4))
+        output_method = list(np.round(body(matrix, weights, types, skip_validation=True), 4))
         output = [0.8329, 0.7884, 0.6987, 0.8831, 0.7971, 0.7036, 0.8728, 0.5749]
 
         self.assertListEqual(output, output_method)

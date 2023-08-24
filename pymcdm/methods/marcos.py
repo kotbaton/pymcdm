@@ -49,40 +49,21 @@ class MARCOS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.5649, 0.5543, 0.6410, 0.6174, 0.6016, 0.5453, 0.6282, 0.6543]
     """
+    _captions = [
+        'Extended decision matrix.',
+        'Normalized extended decision matrix.',
+        'Weighted normalized extended decision matrix.',
+        'Utility degree in relation to anti-ideal solution.',
+        'Utility degree in relation to ideal solution.',
+        'Utility function in relation to anti-ideal solution.',
+        'Utility function in relation to ideal solution.',
+        'Final preference score.'
+    ]
 
     def __init__(self, normalization_function=_marcos_normalization):
         self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        MARCOS._validate_input_data(matrix, weights, types)
-        return MARCOS._marcos(matrix, weights, types, self.normalization)
-
-    @staticmethod
-    def _marcos(matrix, weights, types, normalization):
+    def _method(self, matrix, weights, types):
         n, m = matrix.shape
 
         # Extended initial decision matrix
@@ -101,7 +82,8 @@ class MARCOS(MCDA_method):
                 exmatrix[-1, i] = max_maxes[i]
 
         # Normalization
-        n_exmatrix = helpers.normalize_matrix(exmatrix, normalization, types)
+        n_exmatrix = helpers.normalize_matrix(exmatrix,
+                                              self.normalization, types)
 
         # Weighting
         weighted_matrix = n_exmatrix * weights
@@ -116,4 +98,5 @@ class MARCOS(MCDA_method):
         f_k_neg = k_pos / (k_pos + k_neg)
         f_k = (k_pos + k_neg) / (1 + (1 - f_k_pos) / f_k_pos + (1 - f_k_neg) / f_k_neg)
 
-        return f_k
+        return (exmatrix, n_exmatrix, weighted_matrix,
+                k_neg, k_pos, f_k_neg, f_k_pos, f_k)

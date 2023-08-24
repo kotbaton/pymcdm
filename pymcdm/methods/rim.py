@@ -84,6 +84,14 @@ class RIM(MCDA_method):
     >>>  print(rank)
     ...  [3. 1. 5. 4. 2.]
     """
+    _captions = [
+        'Reference ideal.',
+        'Normalized decision matrix.',
+        'Weighted normalized decision matrix.',
+        'Variation to the normalized reference ideal $I_i^+$.',
+        'Variation to the normalized reference ideal $I_i^-$.',
+        'Final preferece values.'
+    ]
 
     def __init__(self, bounds, ref_ideal=None):
         """ Create RIM method object.
@@ -100,53 +108,28 @@ class RIM(MCDA_method):
         if ref_ideal is not None:
             ref_ideal = np.array(ref_ideal)
             if ref_ideal.shape[1] != 2:
-                raise ValueError('Shape of the ref_ideal should be (M, 2), where M is a number of critria. Single values should be provided duplicated, e.g. 0 should be added as [0, 0].')
+                raise ValueError('Shape of the ref_ideal should be (M, 2),'
+                                 ' where M is a number of critria. Single'
+                                 ' values should be provided duplicated, e.g.'                                 ' 0 should be added as [0, 0].')
 
             if ref_ideal.shape != bounds.shape:
-                raise ValueError('Bounds and ref_ideal should have equal shapes.')
+                raise ValueError('Bounds and ref_ideal should have equal'
+                                 ' shapes.')
 
         self.bounds = bounds
         self.ref_ideal = ref_ideal
-
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """ Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        RIM._validate_input_data(matrix, weights, types)
-        # Build ref ideal from the bounds if None
-        ref_ideal = self.ref_ideal
-        if ref_ideal is None:
-            ref_ideal = self.get_ideal_from_bounds(self.bounds, types)
-        return RIM._rim(matrix, weights, self.bounds, ref_ideal)
 
     def get_ideal_from_bounds(self, bounds, types):
         ind = [0 if t == -1 else 1 for t in types]
         ref_ideal = bounds[range(len(ind)), ind]
         return np.array([ref_ideal, ref_ideal]).T
 
-    @staticmethod
-    def _rim(matrix, weights, range_t, ref_ideal_s):
+    def _method(self, matrix, weights, types):
+        ref_ideal_s = self.ref_ideal
+        range_t = self.bounds
+        if ref_ideal_s is None:
+            ref_ideal_s = self.get_ideal_from_bounds(self.bounds, types)
+
         nmatrix = matrix.astype('float')
 
         for i in range(matrix.shape[0]):
@@ -158,4 +141,6 @@ class RIM(MCDA_method):
         i_plus = np.sqrt(np.sum((wnmatrix - weights) ** 2, axis=1))
         i_minus = np.sqrt(np.sum(wnmatrix ** 2, axis=1))
 
-        return i_minus / (i_plus + i_minus)
+        p = i_minus / (i_plus + i_minus)
+
+        return (ref_ideal_s, nmatrix, wnmatrix, i_plus, i_minus, p)
