@@ -46,54 +46,34 @@ class OCRA(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.143, 0.210, 0.164, 0.167, 0, 0.112]
     """
+    _captions = [
+        'The aggregate performance of $i^{th}$ alternative with respect to '
+        'all non-beneficial criteria.',
+        'Linear preference rating for the non-beneficial criteria.',
+        'The preference ratings with respect to the beneficial criteria.',
+        'Linear preference rating for the beneficial criteria.',
+        'Overall preference rating.'
+    ]
 
     def __init__(self, normalization_function=_ocra_normalization):
         self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        OCRA._validate_input_data(matrix, weights, types)
-        return OCRA._ocra(matrix, weights, types, self.normalization)
-
-    @staticmethod
-    def _ocra(martrix, weights, types, normalization):
-        n, m = martrix.shape
+    def _method(self, matrix, weights, types):
+        n, m = matrix.shape
 
         # Calculate preference ratings for cost and profit criteria
         I = np.zeros(n)
         O = np.zeros(n)
         for j in range(m):
             if types[j] == -1:
-                I += weights[j] * normalization(martrix[:, j], cost=True)
+                I += weights[j] * self.normalization(matrix[:, j], cost=True)
             else:
-                O += weights[j] * normalization(martrix[:, j], cost=False)
+                O += weights[j] * self.normalization(matrix[:, j], cost=False)
 
         # Calculate linear preference ratings for cost and profit criteria
-        I -= np.min(I)
-        O -= np.min(O)
+        Il = I - np.min(I)
+        Ol = O - np.min(O)
 
         # Calculate overall preference rating
-        return (I + O) - np.min(I + O)
+        P = (Il + Ol) - np.min(Il + Ol)
+        return (I, Il, O, Ol, P)

@@ -44,7 +44,19 @@ class ERVD(MCDA_method):
     >>> print(rank)
     [ 7. 13.  3. 12.  9.  4. 14. 11.  2. 10. 17. 16.  8.  6. 15.  1.  5.]
     """
-    def __init__(self, ref_point=None, lam=2.25, alpha=0.88):
+    _captions = [
+        'Reference point for alternatives evaluation.',
+        'Normalized decision matrix.',
+        'Normalized reference point.',
+        'Matrix of relative performance of alternatives.',
+        'Positive ideal solution (PIS).',
+        'Negative ideal solution (NIS).',
+        'Individual separation measures from the PIS.',
+        'Individual separation measures from the NIS.',
+        'Final preference values.'
+    ]
+
+    def __init__(self, ref_point=None, lambd=2.25, alpha=0.88):
         """ Create ERVD method object.
 
         Parameters
@@ -63,61 +75,34 @@ class ERVD(MCDA_method):
         .. [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
         """
         self.ref_point = ref_point
-        self.lam = lam
+        self.lambd = lambd
         self.alpha = alpha
         if ref_point is not None:
             self.ref_point = np.array(ref_point)
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        ERVD._validate_input_data(matrix, weights, types)
-
+    def _method(self, matrix, weights, types):
         if self.ref_point is not None:
             if self.ref_point.shape[0] != matrix.shape[1]:
                 raise ValueError(f'Len of the ref_point {self.ref_point.shape[0]} should be the same as number of the criteria {matrix.shape[1]}.')
+            ref = self.ref_point
         else:
-            self.ref_point = np.mean(matrix, axis=0)
+            ref = np.mean(matrix, axis=0)
+        lambd = self.lambd
+        alpha = self.alpha
 
-        return ERVD._ervd(matrix, weights, types, self.ref_point, self.lam, self.alpha)
-
-    @staticmethod
-    def _ervd(matrix, weights, types, ref, lambd, alpha):
         nmatrix = helpers.normalize_matrix(matrix, normalizations.sum_normalization, None)
-        ref = ref / matrix.sum(axis=0)
+        nref = ref / matrix.sum(axis=0)
 
         vnmatrix = nmatrix.copy()
         for j in range(nmatrix.shape[1]):
             if types[j] == 1:
-                ind = (nmatrix[:, j] > ref[j])
-                vnmatrix[ind, j] = (nmatrix[ind, j] - ref[j]) ** alpha
-                vnmatrix[~ind, j] = - lambd * (ref[j] - nmatrix[~ind, j]) ** alpha
+                ind = (nmatrix[:, j] > nref[j])
+                vnmatrix[ind, j] = (nmatrix[ind, j] - nref[j]) ** alpha
+                vnmatrix[~ind, j] = - lambd * (nref[j] - nmatrix[~ind, j]) ** alpha
             else:
-                ind = (nmatrix[:, j] < ref[j])
-                vnmatrix[ind, j] = (ref[j] - nmatrix[ind, j]) ** alpha
-                vnmatrix[~ind, j] = - lambd * (nmatrix[~ind, j] - ref[j]) ** alpha
+                ind = (nmatrix[:, j] < nref[j])
+                vnmatrix[ind, j] = (nref[j] - nmatrix[ind, j]) ** alpha
+                vnmatrix[~ind, j] = - lambd * (nmatrix[~ind, j] - nref[j]) ** alpha
 
         v_plus = np.max(vnmatrix, axis=0)
         v_minus = np.min(vnmatrix, axis=0)
@@ -125,4 +110,5 @@ class ERVD(MCDA_method):
         S_plus = np.sum(weights * np.abs(vnmatrix - v_plus), axis=1)
         S_minus = np.sum(weights * np.abs(vnmatrix - v_minus), axis=1)
 
-        return S_minus / (S_plus + S_minus)
+        p = S_minus / (S_plus + S_minus)
+        return (ref, nmatrix, nref, vnmatrix, v_plus, v_minus, S_plus, S_minus, p)

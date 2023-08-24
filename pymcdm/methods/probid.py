@@ -45,36 +45,7 @@ class PROBID(MCDA_method):
         """
         self.sPROBID = sPROBID
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """ Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        PROBID._validate_input_data(matrix, weights, types)
-        return PROBID._probid(matrix, weights, types, self.sPROBID)
-
-    @staticmethod
-    def _probid(matrix, weights, types, sPROBID):
+    def _method(self, matrix, weights, types, sPROBID):
         nmatrix = helpers.normalize_matrix(matrix, normalizations.vector_normalization, None)
 
         wnmatrix = nmatrix * weights
