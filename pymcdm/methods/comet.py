@@ -79,7 +79,6 @@ class COMET(MCDA_method):
         >>> types = np.array([1, 1, 1, 1, 1, -1, 1, 1, -1])
         >>> weights = np.array([1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9])
         >>> body = COMET(cvalues, MethodExpert(TOPSIS(), weights, types))
-
         >>> [round(preference, 4) for preference in body(matrix)]
         [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
     """
@@ -108,7 +107,7 @@ class COMET(MCDA_method):
         if sj.shape[0] != co.shape[0] or (mej is not None and not mej.shape[0] == mej.shape[1] == co.shape[0]):
             raise ValueError(
                     'Expert function must returns vector with same length as number of characteristic objects. '
-                    'And the None or MEJ matrix which is square matrix with same size as lenght of characteriscit objects.'
+                    'And the None or MEJ matrix which is square matrix with same size as lenght of characteriscit objects. '
                     f'Expected length: {co.shape[0]}, but returned vector has length {sj.shape[0]}. '
                     f'Expected MEJ shape {(co.shape[0], co.shape[0])}, but returned matrix has shape {mej.shape}.'
                     )
@@ -122,34 +121,43 @@ class COMET(MCDA_method):
         self.p = p
         self.tfns = [COMET._make_tfns(chv) for chv in cvalues]
 
-    def __call__(self, alts, *args, **kwargs):
-        """Rank alternatives from decision matrix `alts`, with criteria weights `weights` and criteria types `types`.
+    def __call__(self, matrix,
+                 weights=None,
+                 types=None,
+                 skip_validation=False,
+                 explained_call=False):
+        """Rank alternatives from decision matrix `matrix`.
 
             Parameters
             ----------
-                alts : ndarray
+                matrix : ndarray
                     Decision matrix / alternatives data.
                     Alternatives are in rows and Criteria are in columns.
 
-                *args: is necessary for methods which reqiure some additional data.
+                weights : None
+                    Not used in the COMET method.
 
-                **kwargs: is necessary for methods which reqiure some additional data.
+                types : None
+                    Not used in the COMET method.
 
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
+                skip_validation : bool
+                    Not used in the COMET method.
+
+                explained_call : bool
+                    Not used in the COMET method.
         """
-        if self.criterion_number != alts.shape[1]:
+        if self.criterion_number != matrix.shape[1]:
             raise ValueError(
                 'Number of criteria in decision matrix must be equal to number of criteria in characteristic '
                 'values. '
             )
+        return self._method(matrix, weights, types)
 
+    def _method(self, matrix, weights, types):
         tfns = self.tfns
 
-        pref_level_vectors = ((lambda tfns_icrit=tfns_icrit, values=values: (tfn(values) for tfn in tfns_icrit))()
-                              for values, tfns_icrit in zip(alts.T, tfns))
+        pref_level_vectors = [[tfn(values) for tfn in tfns_icrit]
+                              for values, tfns_icrit in zip(matrix.T, tfns)]
 
         tfns_values_product = product(*pref_level_vectors)
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
