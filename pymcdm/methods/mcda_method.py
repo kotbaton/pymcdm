@@ -1,4 +1,4 @@
-# Copyright (c) 2020,2022 Andrii Shekhovtsov
+# Copyright (c) 2020-2023 Andrii Shekhovtsov
 
 from abc import ABC, abstractmethod
 import numpy as np
