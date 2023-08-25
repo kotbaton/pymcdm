@@ -148,8 +148,8 @@ class COMET(MCDA_method):
 
         tfns = self.tfns
 
-        pref_level_vectors = [[tfn(values) for tfn in tfns_icrit]
-                              for values, tfns_icrit in zip(alts.T, tfns)]
+        pref_level_vectors = ((lambda tfns_icrit=tfns_icrit, values=values: (tfn(values) for tfn in tfns_icrit))()
+                              for values, tfns_icrit in zip(alts.T, tfns))
 
         tfns_values_product = product(*pref_level_vectors)
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
