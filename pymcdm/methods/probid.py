@@ -34,19 +34,23 @@ class PROBID(MCDA_method):
     >>> print(pref)
     [0.8568, 0.7826, 0.9362, 0.9369, 0.9379, 0.8716, 0.5489, 0.7231, 0.7792, 0.3331, 0.3387]
     """
+    _captions = [
+        'Normalized decision matrix.',
+        'Weighted normalized decision matrix.',
+        'Matrix of ideal solutions.',
+        'Average ideal solution.',
+        'Euclidean distances between ideal solutions and alternatives.',
+        'Average Euclidean distance.',
+        'Overall positive-ideal distance.',
+        'Overall negative-ideal distance.',
+        'Vector of pos-ideal/neg-ideal ratio.',
+        'Final preference values.'
+    ]
 
-    def __init__(self, sPROBID=False):
-        """ Creates a PROBID method object.
-
-        Parameters
-        ----------
-            sPROBID : bool
-                Determine if sPROBID variation should be used. Default is False, therefore the full procedure of the PROBID method is used.
-        """
-        self.sPROBID = sPROBID
-
-    def _method(self, matrix, weights, types, sPROBID):
-        nmatrix = helpers.normalize_matrix(matrix, normalizations.vector_normalization, None)
+    def _method(self, matrix, weights, types):
+        nmatrix = helpers.normalize_matrix(matrix,
+                                           normalizations.vector_normalization,
+                                           None)
 
         wnmatrix = nmatrix * weights
 
@@ -65,35 +69,32 @@ class PROBID(MCDA_method):
 
         Si_average = np.sqrt(np.sum((wnmatrix - average_pis)**2, axis=1))
 
-        m = wnmatrix.shape[0]
+        return (nmatrix,
+                wnmatrix,
+                pis_matrix,
+                average_pis,
+                Si,
+                Si_average,
+                *self._final_preference_calculation(Si, Si_average))
+
+    def _final_preference_calculation(self, Si, Si_average):
+        m = Si.shape[0]
 
         Si_pos_ideal = np.zeros(m)
         Si_neg_ideal = np.zeros(m)
-        if not sPROBID:
-            if m % 2 == 1:
-                lim = (m + 1) // 2
-            else:
-                lim = m // 2
 
-            for k in range(1, lim + 1):
-                Si_pos_ideal += Si[:, k - 1] / k
-
-            for k in range(lim, m + 1):
-                Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
-
-            Ri = Si_pos_ideal / Si_neg_ideal
-            return 1 / (1 + Ri**2) + Si_average
-
+        if m % 2 == 1:
+            lim = (m + 1) // 2
         else:
-            if m >= 4:
-                for k in range(1, m // 4 + 1):
-                    Si_pos_ideal += Si[:, k - 1] / k
+            lim = m // 2
 
-                for k in range(m + 1 - (m // 4), m + 1):
-                    Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
+        for k in range(1, lim + 1):
+            Si_pos_ideal += Si[:, k - 1] / k
 
-            else:
-                Si_pos_ideal = Si[0]
-                Si_neg_ideal = Si[-1]
+        for k in range(lim, m + 1):
+            Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
 
-            return Si_neg_ideal / Si_pos_ideal
+        Ri = Si_pos_ideal / Si_neg_ideal
+
+        p = 1 / (1 + Ri**2) + Si_average
+        return (Si_pos_ideal, Si_neg_ideal, Ri, p)

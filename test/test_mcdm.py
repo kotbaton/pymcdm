@@ -630,7 +630,7 @@ class TestPROBID(unittest.TestCase):
         self.assertListEqual(output, output_method)
 
         # Example is slightly modified to eliminate rounding errors
-        pr = methods.PROBID(sPROBID=True)
+        pr = methods.SPROBID()
         output_method = list(np.round(pr(matrix, weights, types), 4))
         output = [2.4246, 2.0596, 3.2806, 3.3702, 3.4374, 2.6435, 1.2628, 1.8158, 2.0885, 0.3399, 0.4279]
         self.assertListEqual(output, output_method)

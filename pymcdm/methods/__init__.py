@@ -17,6 +17,7 @@ from .rim import RIM
 from .ram import RAM
 from .ervd import ERVD
 from .probid import PROBID
+from .sprobid import SPROBID
 from .wsm import WSM
 from .wpm import WPM
 from .waspas import WASPAS
