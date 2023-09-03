@@ -37,7 +37,9 @@ class PROMETHEE_II(PROMETHEE_I):
         >>> [round(preference, 2) for preference in body(matrix, weights, types)]
         [0.1, -0.3, 0.2]
     """
-    _captions = PROMETHEE_I._captions + [
+    _captions = PROMETHEE_I._captions[:-1] + [
+        'Positive outrankig flows.',
+        'Negative outrankig flows.',
         'Global preference net flows.'
     ]
 
