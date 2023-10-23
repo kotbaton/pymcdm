@@ -15,5 +15,6 @@ from .weights_plot import weights_plot
 from .comet_2d_plot import comet_2d_plot
 from .comet_3d_plot import comet_3d_plot
 from .comet_contourf import comet_contourf
-from .comet_esp_plot import comet_esp_plot
+from .comet_2d_esp_plot import comet_2d_esp_plot
+from .comet_3d_esp_plot import comet_3d_esp_plot
 from .comet_tfns import comet_tfns
