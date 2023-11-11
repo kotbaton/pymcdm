@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from .comet_contourf import comet_contourf
 
-def comet_esp_plot(comet,
+def comet_2d_esp_plot(comet,
                    esps,
                    bounds,
                    alternatives=None,
@@ -77,7 +77,7 @@ def comet_esp_plot(comet,
             >>> # Create a visualization of the characteriscic values,
             >>> # ESP and preference function
             >>> fig, ax = plt.subplots(figsize=(4, 3.5), dpi=200)
-            >>> ax, cax = pm.visuals.comet_esp_plot(comet, esps, bounds)
+            >>> ax, cax = pm.visuals.comet_2d_esp_plot(comet, esps, bounds)
             >>> plt.tight_layout()
             >>> plt.show()
     """
