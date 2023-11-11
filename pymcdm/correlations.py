@@ -9,11 +9,11 @@ __all__ = [
     'spearman',
     'rs',
     'pearson',
-    'r'
+    'r',
     'weighted_spearman',
-    'rw'
+    'rw',
     'rank_similarity_coef',
-    'ws'
+    'ws',
     'kendall_tau',
     'goodman_kruskal_gamma',
     'draws',
