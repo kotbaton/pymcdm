@@ -88,6 +88,7 @@ def correlation_matrix(rankings, method, columns=False):
             ndarray
                 Correlation between two rankings vectors.
     """
+    rankings = np.array(rankings)
     if columns:
         rankings = rankings.T
     n = rankings.shape[0]
