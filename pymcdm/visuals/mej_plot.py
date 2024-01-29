@@ -57,7 +57,7 @@ def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
 
     if cmap is None:
         cmap = ListedColormap(['tab:red', 'tab:blue', 'tab:green'])
-    im = ax.imshow(mej, cmap=cmap)
+    im = ax.imshow(mej, cmap=cmap, aspect='auto')
 
     for edge, spine in ax.spines.items():
         spine.set_visible(False)
