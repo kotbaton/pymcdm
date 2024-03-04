@@ -76,8 +76,6 @@ def comet_3d_plot(cvalues,
     if ax is None:
         ax = plt.axes(projection='3d')
 
-    alternatives = np.array(alternatives)
-
     plot_kwargs = dict(
         marker='x',
         linestyle='-',
@@ -106,7 +104,8 @@ def comet_3d_plot(cvalues,
         zorder=2
     ) | scatter_kwargs
 
-    ax.scatter3D(alternatives[:, 0], alternatives[:, 1], alternatives[:, 2], **scatter_kwargs)
+    if alternatives is not None:
+        ax.scatter3D(alternatives[:, 0], alternatives[:, 1], alternatives[:, 2], **scatter_kwargs)
 
     if alternatives_labels:
         labels = ['$A_{' + str(i) + '}$' for i in range(1, alternatives.shape[0] + 1)]
