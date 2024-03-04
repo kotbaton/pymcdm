@@ -132,27 +132,60 @@ class TestCOMET(unittest.TestCase):
 
 class TestCOPRAS(unittest.TestCase):
     """ Test output method with reference:
-    [1] Kundakcı, N., & Işık, A. (2016). Integration of MACBETH and COPRAS
-    methods to select air compressor for a textile company. Decision Science Letters, 5(3), 381-394.
+    [1] Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis, Z. (2007).
+    Multi-attribute assessment of road design solutions by using the COPRAS
+    method. The Baltic journal of Road and Bridge engineering, 2(4), 195-203.
     """
 
     def test_output(self):
         body = methods.COPRAS()
-        matrix = np.array([[1543, 2000, 39000, 15, 13.76, 3.86, 5, 3, 5000],
-                           [1496, 3600, 43000, 14, 14, 2.5, 4, 4, 4000],
-                           [1584, 3100, 24500, 10, 13.1, 3.7, 2, 2, 3500],
-                           [1560, 2700, 36000, 12, 13.2, 3.2, 3, 3, 3500],
-                           [1572, 2500, 31500, 13, 13.3, 3.4, 3, 2, 3500],
-                           [1580, 2400, 20000, 12, 12.8, 3.9, 2, 2, 3000]])
 
-        types = np.array([-1, -1, -1, 1, 1, -1, 1, 1, 1])
-        weights = np.array([0.2027, 0.1757, 0.1622, 0.1351, 0.1081, 0.0946, 0.0676, 0.0405, 0.0135])
+        # The alternatives are in columns in the referenced paper,
+        # so we transpose the matrix to fit the pymcdm input format.
+        matrix = np.array([
+                [30, 20, 27, 18, 24, 16],
+                [12.487, 12.372, 11.096, 10.982, 11.017, 10.903],
+                [6.261, 5.961, 6.262, 5.962, 6.283, 5.983],
+                [10.880, 10.880, 9.920, 9.920, 9.980, 9.980],
+                [7.610, 7.460, 6.690, 6.540, 7.000, 6.850]
+            ]).T
 
-        output = [1, 0.9167, 0.8675, 0.9084, 0.9315, 0.9486]
+        types = np.array([1, -1, -1, -1, -1])
+        weights = np.array([0.5300, 0.1175, 0.1175, 0.1175, 0.1175])
+
+        output = [1.0, 0.797, 0.9078, 0.7243, 0.8537, 0.6898]
         output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
 
         self.assertListEqual(output, output_method)
 
+
+class TestCOPRAS2(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis, Z. (2007).
+    Multi-attribute assessment of road design solutions by using the COPRAS
+    method. The Baltic journal of Road and Bridge engineering, 2(4), 195-203.
+    """
+
+    def test_output(self):
+        body = methods.COPRAS()
+
+        # The alternatives are in columns in the referenced paper,
+        # so we transpose the matrix to fit the pymcdm input format.
+        matrix = np.array([
+                [30, 20, 27, 18, 24, 16],
+                [12.487, 12.372, 11.096, 10.982, 11.017, 10.903],
+                [6.261, 5.961, 6.262, 5.962, 6.283, 5.983],
+                [10.880, 10.880, 9.920, 9.920, 9.980, 9.980],
+                [7.610, 7.460, 6.690, 6.540, 7.000, 6.850]
+            ]).T
+
+        types = np.array([1, -1, -1, -1, -1])
+        weights = np.array([0.075, 0.700, 0.075, 0.075, 0.075])
+
+        output = [1.0, 0.9585, 0.8984, 0.86, 0.8886, 0.8532]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
+
+        self.assertListEqual(output, output_method)
 
 class TestEDAS(unittest.TestCase):
     """ Test output method with reference:
