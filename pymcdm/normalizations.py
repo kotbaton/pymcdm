@@ -205,5 +205,5 @@ def zavadskas_turskis_normalization(x, cost=False):
             One-dimensional numpy array of normalized values.
     """
     if cost:
-        return 1 - np.abs((np.max(x) - x) / np.max(x))
-    return 1 - np.abs((np.min(x) - x) / np.min(x))
+        return 1 - np.abs((np.min(x) - x) / np.min(x))
+    return 1 - np.abs((np.max(x) - x) / np.max(x))

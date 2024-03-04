@@ -180,9 +180,29 @@ class TestZTNormalization(unittest.TestCase):
                            [74, 59, 140]])
 
         types = np.array([-1, -1, 1])
-        output = [0.69473684, 0.94915254, 1.0, 0.64210526, 0.93220339, 0.25263158, 0.68421053, 0.83050847, 0.81052632,
-                  1.0, 0.94915254, 0.95789474, 0.66315789, 0.72881356, 0.12631579, 0.77894737, 1.0, 0.52631579]
+        output = [0.91803279, 0.69767442, 0.53370787,
+                  1.0, 0.72093023, 0.93258427,
+                  0.93442623, 0.86046512, 0.63483146,
+                  0.44262295, 0.69767442, 0.55617978,
+                  0.96721311, 1.0, 1.0,
+                  0.78688525, 0.62790698, 0.78651685]
 
         output_method = helpers.normalize_matrix(matrix, norm.zavadskas_turskis_normalization, types).reshape(-1)
         output_method = [round(val, 8) for val in output_method]
+        self.assertListEqual(output, output_method)
+
+class TestZTNormalization2(unittest.TestCase):
+    """ [1] Jahan, A., & Edwards, K. L. (2015). A state-of-the-art survey on the influence of normalization techniques in ranking: Improving the materials selection process in engineering design. Materials & Design (1980-2015), 65, 335-342. """
+
+    def test_output(self):
+        matrix = np.array([[1, 6],
+                           [2, 7],
+                           [5, 10]])
+
+        types = np.array([1, 1])
+
+        output = [0.2, 0.6, 0.4, 0.7, 1.0, 1.0]
+
+        output_method = helpers.normalize_matrix(matrix, norm.zavadskas_turskis_normalization, types).reshape(-1)
+        output_method = [round(val, 1) for val in output_method]
         self.assertListEqual(output, output_method)
