@@ -206,3 +206,56 @@ class TestZTNormalization2(unittest.TestCase):
         output_method = helpers.normalize_matrix(matrix, norm.zavadskas_turskis_normalization, types).reshape(-1)
         output_method = [round(val, 1) for val in output_method]
         self.assertListEqual(output, output_method)
+
+
+class TestNormalizeMatrix(unittest.TestCase):
+    """ Test output method without reference """
+    def setUp(self):
+        self.matrix = np.array([[10, 3],
+                                [4, 2],
+                                [6, 5]])
+        self.good_types = np.array([1, 1])
+        self.bad_types = np.array([1, 1, -1])
+        self.bad_types1 = np.array([0, 1])
+        self.one_method = norm.max_normalization
+        self.two_methods = [norm.max_normalization, norm.sum_normalization]
+        self.wrong_methods = [norm.max_normalization]
+
+    def test_correct_data1(self):
+        output = list(helpers.normalize_matrix(self.matrix,
+                                               self.one_method,
+                                               self.good_types).T.reshape(-1))
+        self.assertListEqual(output, [1, 0.4, 0.6, 0.6, 0.4, 1.0])
+
+    def test_correct_data2(self):
+        output = list(helpers.normalize_matrix(self.matrix,
+                                               self.two_methods,
+                                               self.good_types).T.reshape(-1))
+        self.assertListEqual(output, [1, 0.4, 0.6, 0.3, 0.2, 0.5])
+
+    def test_wrong_data1(self):
+        self.assertRaises(
+                ValueError,
+                helpers.normalize_matrix,
+                self.matrix,
+                self.wrong_methods,
+                self.good_types
+                )
+
+    def test_wrong_data2(self):
+        self.assertRaises(
+                ValueError,
+                helpers.normalize_matrix,
+                self.matrix,
+                self.one_method,
+                self.bad_types
+                )
+
+    def test_wrong_data3(self):
+        self.assertRaises(
+                ValueError,
+                helpers.normalize_matrix,
+                self.matrix,
+                self.one_method,
+                self.bad_types1
+                )
