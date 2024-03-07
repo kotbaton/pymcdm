@@ -14,6 +14,7 @@ from .marcos import MARCOS
 from .ocra import OCRA
 from .moora import MOORA
 from .rim import RIM
+from .ram import RAM
 from .ervd import ERVD
 from .probid import PROBID
 from .wsm import WSM
