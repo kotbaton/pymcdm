@@ -119,6 +119,11 @@ class TriadSupportExpert(ManualExpert):
         print(f'Answered by the expert: {user_q}')
         print(f'Completed by the triads: {triads_q}')
 
+        if self.filename is not None:
+            np.savetxt(self.filename, mej,
+                       fmt='%.1f', delimiter=',')
+            print(f'Identified MEJ was written to "{self.filename}".')
+
         return mej.sum(axis=1), mej
 
     def _triad_support_message(self, mej, i, j, k):

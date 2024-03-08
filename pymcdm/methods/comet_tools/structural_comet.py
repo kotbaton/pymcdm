@@ -3,6 +3,7 @@
 import numpy as np
 
 from ..comet import COMET
+from ..mcda_method import MCDA_method
 
 class Submodel:
     """ Create object of the COMET submodel. This class is mostly for internal
@@ -81,7 +82,7 @@ Output cvalues: {self.cvalues}
         raise ValueError('Model is not build!')
 
 
-class StructuralCOMET:
+class StructuralCOMET(MCDA_method):
     """ Create Structural COMET model with defined structure.
 
         Parameters
@@ -111,6 +112,7 @@ class StructuralCOMET:
         if criteria_names is not None and len(cvalues) != len(criteria_names):
             raise ValueError('Length of cvalues and cvalues_names should be equal')
 
+        self.cvalues = cvalues
         # This dict will be used to map name
         # to structure and other way around
         self._name_struct_mapper = {}
