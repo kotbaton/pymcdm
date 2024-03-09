@@ -6,3 +6,4 @@ numpy
 scipy
 matplotlib
 sphinx-rtd-theme
+recommonmark
