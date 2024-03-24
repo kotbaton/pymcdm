@@ -4,7 +4,6 @@
 import unittest
 
 import numpy as np
-import pandas as pd
 
 from pymcdm.methods import TOPSIS, COMET
 from pymcdm.methods.comet_tools import (MethodExpert, Submodel,
