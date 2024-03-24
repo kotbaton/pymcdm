@@ -1,4 +1,16 @@
-# Version X
+# Version 1.2.1
+
+* Add `comet_3d_esp_plot` visualization function
+* Rename `comet_esp_plot` to `comet_2d_esp_plot`
+* Improve `normalize_matrix` helper function
+* Add `RAM` method and documentation for it
+* Add `get_local_weights` function
+* Fix bug with file writing in `manual_expert` and `triad_supported_expert`
+* Improve behaviour of `StructuralCOMET` class
+* Fix calculation on final stage of the `COPRAS` method and improve tests accordingly
+* Fix bug with `zavadsks_turkish_normalization` function
+
+# Version 1.2.0
 
 ## General changes
 
