@@ -8,7 +8,7 @@ class COPRAS(MCDA_method):
     """ COmplex PRoportional ASsessment (COPRAS) method.
 
         COPRAS is used to assess the maximizing and minimizing index values, and the effect of maximizing and minimizing
-        indexes of attributes on the results assessment is considered separately [1].
+        indexes of attributes on the results assessment is considered separately [1,2].
 
         Read more in the User Guide.
 
