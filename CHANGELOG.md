@@ -9,6 +9,7 @@
 * Improve behaviour of `StructuralCOMET` class
 * Fix calculation on final stage of the `COPRAS` method and improve tests accordingly
 * Fix bug with `zavadsks_turkish_normalization` function
+* Update references in README.md
 
 # Version 1.2.0
 

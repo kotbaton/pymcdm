@@ -116,9 +116,9 @@ The library contains:
 | Rank Similarity Coefficient                        	|        [[45]](#c45)       	|
 | Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
 | Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
-| Drastic Weighted Similarity (draWS)                   |        In Press           	|
-| Weights Similarity Coefficient (WSC)                  |        In Press           	|
-| Weights Similarity Coefficient 2 (WSC2)               |        In Press           	|
+| Drastic Weighted Similarity (draWS)                   |        [[59]](#c59)       	|
+| Weights Similarity Coefficient (WSC)                  |        [[60]](#c60)       	|
+| Weights Similarity Coefficient 2 (WSC2)               |        [[60]](#c60)       	|
 
 * Helpers
 
@@ -138,7 +138,7 @@ The library contains:
 | `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              | [[58]](#c58)  |
 | `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     | -             |
 | `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       | In Press      |
-| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | In Press      |
+| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | [[61]](#c61)  |
 | `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         | [[55]](#c55)  |
 | `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            | [[54]](#c54)  |
 | `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. | [[54]](#c54)  |
@@ -304,3 +304,9 @@ And the output of this example (numbers are rounded):
 <a name="c57">**[57]**</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
 
 <a name="c58">**[58]**</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571.
+
+<a name="c59">**[59]**</a> Sałabun, W., & Shekhovtsov, A. (2023, September). An Innovative Drastic Metric for Ranking Similarity in Decision-Making Problems. In 2023 18th Conference on Computer Science and Intelligence Systems (FedCSIS) (pp. 731-738). IEEE.
+
+<a name="c60">**[60]**</a> Shekhovtsov, A. (2023). Evaluating the Performance of Subjective Weighting Methods for Multi-Criteria Decision-Making using a novel Weights Similarity Coefficient. Procedia Computer Science, 225, 4785-4794.
+
+<a name="c61">**[61]**</a> Shekhovtsov, A., Kizielewicz, B., & Sałabun, W. (2023). Advancing individual decision-making: An extension of the characteristic objects method using expected solution point. Information Sciences, 647, 119456.
