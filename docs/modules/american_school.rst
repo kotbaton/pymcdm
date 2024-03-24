@@ -1,8 +1,8 @@
 .. _american_school:
 
-=============
+===============
 American school
-=============
+===============
 
 
 
@@ -12,7 +12,7 @@ ARAS
 :class:`ARAS` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
-alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat`).
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat1`).
 
 .. math::
     \begin{equation}
@@ -23,7 +23,7 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat`).
     x_{n 1} & x_{n 2} & \ldots & x_{n m}
     \end{array}\right]
     \end{equation}
-    :label: equ:mat
+    :label: equ:mat1
 
 **Step 2.** Normalization the decision matrix, where for profit criteria use the equation (:eq:`equ:profita`), and for
 cost, criteria use the equation (:eq:`equ:costa`). In this study, The Sum normalization method was used.
@@ -75,7 +75,7 @@ COCOSO
 :class:`COCOSO` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
-alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat`).
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_cocoso`).
 
 .. math::
     \begin{equation}
@@ -86,7 +86,7 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat`).
     x_{n 1} & x_{n 2} & \ldots & x_{n m}
     \end{array}\right]
     \end{equation}
-    :label: equ:mat
+    :label: equ:mat_cocoso
 
 
 
@@ -164,7 +164,7 @@ CODAS
 :class:`CODAS` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
-alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat`).
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat2`).
 
 .. math::
     \begin{equation}
@@ -175,7 +175,7 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat`).
     x_{n 1} & x_{n 2} & \ldots & x_{n m}
     \end{array}\right]
     \end{equation}
-    :label: equ:mat
+    :label: equ:mat2
 
 **Step 2.** Normalization the decision matrix, where for profit criteria use the equation (:eq:`equ:profitc`), and for
 cost, criteria use the equation (:eq:`equ:costc`). In this study, The Linear normalization method was used.
@@ -321,7 +321,7 @@ EDAS
 :class:`EDAS` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
-and :math:`m` is the number of criteria (:eq:`equ:mat2`).
+and :math:`m` is the number of criteria (:eq:`equ:mat_edas`).
 
 .. math::
     \begin{equation}
@@ -332,7 +332,7 @@ and :math:`m` is the number of criteria (:eq:`equ:mat2`).
     x_{n 1} & x_{n 2} & \ldots & x_{n m}
     \end{array}\right]
     \end{equation}
-    :label: equ:mat2
+    :label: equ:mat_edas
 
 **Step 2.** Calculate the average solution for each criterion according to the formula (:eq:`equ:av`).
 
@@ -514,13 +514,13 @@ and for criteria of type cost use equation (:eq:`equ:costma`).
     :label: equ:costma
 
 **Step 3.** Create a weighted matrix based on the values from the normalized matrix according to the formula
-(:eq:`equ:wema`).
+(:eq:`equ:wema_mabac`).
 
 .. math::
     \begin{equation}
     v_{i j}=w_{i} \cdot\left(n_{i j}+1\right)
     \end{equation}
-    :label: equ:wema
+    :label: equ:wema_mabac
 
 
 **Step 4.** Boundary approximation area (:math:`G`) matrix determination. The Boundary Approximation Area (:math:`BAA`)

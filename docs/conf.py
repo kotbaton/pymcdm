@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pymcdm'
-copyright = '2023, shekhand & kiziub'
+copyright = '2024, shekhand & kiziub'
 author = 'shekhand & kiziub'
 
 # -- General configuration ---------------------------------------------------
@@ -39,13 +39,6 @@ source_suffix = {
     '.md': 'markdown',
 }
 
-# source_suffix = ['.rst', '.md']
-
-# source_parsers = {
-# '.md': 'CommonMarkParser',
-# }
-# source_suffix = ['.rst', '.md']
-
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
@@ -63,7 +56,6 @@ napoleon_type_aliases = None
 napoleon_attr_annotations = True
 
 # Mathematics expersions
-# math_number_all = True
 math_numfig = True
 numfig = True
 math_eqref_format = "{number}"
@@ -77,6 +69,9 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db',
                     '.DS_Store', '**.ipynb_checkpoints',
                     'requirements.txt']
+
+# Suppress warnings by MyST
+suppress_warnings = ["myst.xref_missing"]
 
 # -- Options for HTML output -------------------------------------------------
 

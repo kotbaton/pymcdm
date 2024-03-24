@@ -1,5 +1,5 @@
 Weighting methods
-------------
+-----------------
 
 .. toctree::
     :maxdepth: 2

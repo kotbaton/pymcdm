@@ -1,5 +1,5 @@
 Normalizations methods
-------------
+----------------------
 
 .. toctree::
     :maxdepth: 2
