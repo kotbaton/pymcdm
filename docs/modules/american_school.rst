@@ -992,6 +992,40 @@ solution as follows:
     P_i=\frac{1}{1+R_i^2}+S_{i(\mathrm{avg})}
     \end{equation}
 
+RAM
+=======================
+
+:class:`RAM` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the linear sum method.
+
+**Step 3.** Create normalized weighted decision matrix.
+
+**Step 4.** Calculate the sums of weighted normalized scores of beneficial (:math:`+i`) and cost (:math:`-i`) criteria
+of :math:`i-th` alternative by the following equations:
+
+.. math::
+    \begin{equation}
+    S_{+i} = \sum^{n}_{j=1} y_{+ij}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_{-i} = \sum^{n}_{j=1} y_{-ij}
+    \end{equation}
+
+**Step 5.** Determine the overall score of each alternative using the following aggreating function:
+
+.. math::
+    \begin{equation}
+    RI_{i} = \sqrt[{2 + S_{-i}}]{2 + S_{+i}}
+    \end{equation}
+
+**Step 6.** Rank the alternatives using the value of :math:`RI_i`. The alternatives with the bigger value
+of :math:`RI_i` are more preferred ones.
+
 RIM
 =======================
 
