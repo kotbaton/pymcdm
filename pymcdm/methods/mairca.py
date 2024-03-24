@@ -11,7 +11,7 @@ class MAIRCA(MCDA_method):
 
         The MAIRCA method is based on an assumption in which it determines the gap between ideal and empirical rates.\
 
-        Read more in the :ref:`User Guide <MAIRCA>`.
+        Read more in the User Guide.
 
         Parameters
         ----------

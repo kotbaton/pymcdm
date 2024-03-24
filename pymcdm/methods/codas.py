@@ -18,7 +18,7 @@ class CODAS(MCDA_method):
         The CODAS method is based on an approach based on Euclidean distance and Taxicab from the negative ideal solution
         [1].
 
-        Read more in the :ref:`User Guide <CODAS>`.
+        Read more in the User Guide.
 
         Parameters
         ----------

@@ -10,7 +10,7 @@ class EDAS(MCDA_method):
         The EDAS method is based on an approach in which the decision alternatives are evaluated with respect to their
         distance from the mean solutions i.e. negative mean solution and positive mean solution [1].
 
-        Read more in the :ref:`User Guide <EDAS>`.
+        Read more in the User Guide.
 
         References
         ----------

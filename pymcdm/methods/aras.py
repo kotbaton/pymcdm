@@ -13,7 +13,7 @@ class ARAS(MCDA_method):
         alternative [1]. This relationship is directly proportional to the relative effect of the values and weights of the
         main criteria.
 
-        Read more in the :ref:`User Guide <ARAS>`.
+        Read more in the User Guide.
 
 
         Parameters

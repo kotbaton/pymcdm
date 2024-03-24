@@ -30,7 +30,7 @@ class COMET(MCDA_method):
         COMET is a method based on characteristic objects on the basis of which preference of the deicision variants is
         calculated [1]. Due to this dependence the method is resistant to the phenomenon of ranking reversal paradox.
 
-        Read more in the :ref:`User Guide <COMET>`.
+        Read more in the User Guide.
 
         Parameters
         ----------
