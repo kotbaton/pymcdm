@@ -15,8 +15,7 @@ def _psi(x, tau=0.02):
 class CODAS(MCDA_method):
     """ COmbinative Distance-based ASsessment (CODAS) method.
 
-        The CODAS method is based on an approach based on Euclidean distance and Taxicab from the negative ideal solution
-        [1].
+        The CODAS method is based on an approach based on Euclidean distance and Taxicab from the negative ideal solution [#codas1]_.
 
         Read more in the :ref:`User Guide <CODAS>`.
 
@@ -29,7 +28,7 @@ class CODAS(MCDA_method):
 
         References
         ----------
-        .. [1] Keshavarz Ghorabaee, M., Zavadskas, E. K., Turskis, Z., & Antucheviciene, J. (2016). A new combinative
+        .. [#codas1] Keshavarz Ghorabaee, M., Zavadskas, E. K., Turskis, Z., & Antucheviciene, J. (2016). A new combinative
                distance-based assessment (CODAS) method for multi-criteria decision-making. Economic Computation &
                Economic Cybernetics Studies & Research, 50(3).
 

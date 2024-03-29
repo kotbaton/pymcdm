@@ -39,13 +39,13 @@ def _f(x, a, b, c, d):
 
 
 class RIM(MCDA_method):
-    """ Reference Ideal Method
+    """ Reference Ideal Method [#rim1]_.
 
     RIM is an MCDA method which uses criteria bounds and reference ideal to evaluate alternatives.
 
     References
     ----------
-    .. [1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
+    .. [#rim1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
 
     Examples
     --------

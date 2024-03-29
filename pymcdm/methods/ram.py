@@ -7,7 +7,7 @@ from .mcda_method import MCDA_method
 
 
 class RAM(MCDA_method):
-    """ Root Assessment Method (RAM).
+    """ Root Assessment Method (RAM) [#ram1]_.
 
         Parameters
         ----------
@@ -19,7 +19,7 @@ class RAM(MCDA_method):
 
         References
         ----------
-        .. [1] Sotoudeh-Anvari, A. (2023). Root Assessment Method (RAM): A novel multi-criteria decision making method and its applications in sustainability challenges. Journal of Cleaner Production, 138695.
+        .. [#ram1] Sotoudeh-Anvari, A. (2023). Root Assessment Method (RAM): A novel multi-criteria decision making method and its applications in sustainability challenges. Journal of Cleaner Production, 138695.
 
         Examples
         --------

@@ -10,7 +10,7 @@ class ARAS(MCDA_method):
     """ Additive Ratio ASsessment (ARAS) method.
 
         The ARAS method is based on a utility function value that determines the complex relative efficiency of a feasible
-        alternative [1]. This relationship is directly proportional to the relative effect of the values and weights of the
+        alternative [#aras1]_. This relationship is directly proportional to the relative effect of the values and weights of the
         main criteria.
 
         Read more in the :ref:`User Guide <ARAS>`.
@@ -25,7 +25,7 @@ class ARAS(MCDA_method):
 
         References
         ----------
-        .. [1] Zavadskas, E. K., & Turskis, Z. (2010). A new additive ratio assessment (ARAS) method in multicriteria
+        .. [#aras1] Zavadskas, E. K., & Turskis, Z. (2010). A new additive ratio assessment (ARAS) method in multicriteria
                decision‐making. Technological and economic development of economy, 16(2), 159-172.
 
         Examples

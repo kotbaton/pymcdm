@@ -15,7 +15,7 @@ class OCRA(MCDA_method):
 
         The main idea of the OCRA method is toperform   independent evaluation ofalternatives  with  respect  to
         beneficial  andnon beneficial  criteria,  and  finally  tocombine these two sets of ratings to obtainthe
-        operational competitiveness ratings [1].
+        operational competitiveness ratings [#ocra1]_.
 
         Parameters
         ----------
@@ -26,7 +26,7 @@ class OCRA(MCDA_method):
 
         References
         ----------
-        .. [1] Madić, M., Petković, D., & Radovanović, M. (2015). Selection of non-conventional machining processes using
+        .. [#ocra1] Madić, M., Petković, D., & Radovanović, M. (2015). Selection of non-conventional machining processes using
              the OCRA method. Serbian Journal of Management, 10(1), 61-73.
 
 

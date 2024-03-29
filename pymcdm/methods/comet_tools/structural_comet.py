@@ -83,7 +83,7 @@ Output cvalues: {self.cvalues}
 
 
 class StructuralCOMET(MCDA_method):
-    """ Create Structural COMET model with defined structure.
+    """ Create Structural COMET model with defined structure [#struct1]_.
 
         Parameters
         ----------
@@ -99,7 +99,7 @@ class StructuralCOMET(MCDA_method):
 
         References
         ----------
-        .. [1] Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
+        .. [#struct1] Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
 
         Examples
         --------

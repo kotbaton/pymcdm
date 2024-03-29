@@ -28,7 +28,7 @@ class COMET(MCDA_method):
     """ Characteristic Objects METhod (COMET).
 
         COMET is a method based on characteristic objects on the basis of which preference of the deicision variants is
-        calculated [1]. Due to this dependence the method is resistant to the phenomenon of ranking reversal paradox.
+        calculated [#comet1]_. Due to this dependence the method is resistant to the phenomenon of ranking reversal paradox.
 
         Read more in the :ref:`User Guide <COMET>`.
 
@@ -52,7 +52,7 @@ class COMET(MCDA_method):
 
         References
         ----------
-        .. [1] Sałabun, W. (2015). The Characteristic Objects Method: A New Distance‐based Approach to Multicriteria
+        .. [#comet1] Sałabun, W. (2015). The Characteristic Objects Method: A New Distance‐based Approach to Multicriteria
                Decision‐making Problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
 
         Examples

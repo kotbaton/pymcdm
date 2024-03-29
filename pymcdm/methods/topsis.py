@@ -10,7 +10,7 @@ class TOPSIS(MCDA_method):
     """ Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS).
 
         The TOPSIS method is based on an approach in which it evaluates alternatives to a positive ideal solution and a
-        negative ideal solution [1].
+        negative ideal solution [#topsis1]_.
 
         Parameters
         ----------
@@ -21,7 +21,7 @@ class TOPSIS(MCDA_method):
 
         References
         ----------
-        .. [1] Hwang, C. L., & Yoon, K. (1981). Methods for multiple attribute decision making. In Multiple attribute
+        .. [#topsis1] Hwang, C. L., & Yoon, K. (1981). Methods for multiple attribute decision making. In Multiple attribute
                decision making (pp. 58-191). Springer, Berlin, Heidelberg.
 
         Examples

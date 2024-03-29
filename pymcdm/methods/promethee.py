@@ -10,7 +10,7 @@ from .mcda_method import MCDA_method
 class PROMETHEE_II(MCDA_method):
     """ Preference Ranking Organization Method for Enrichment of Evaluations II (PROMETHEE II) method.
 
-        The PROMETHEE II method is based on a pairwise comparison of alternatives given a preference function [1].
+        The PROMETHEE II method is based on a pairwise comparison of alternatives given a preference function [#prom1]_.
 
         Parameters
         ----------
@@ -19,7 +19,7 @@ class PROMETHEE_II(MCDA_method):
 
         References
         ----------
-            .. [1] Mareschal, B., De Smet, Y., & Nemery, P. (2008, December). Rank reversal in the PROMETHEE II method:
+            .. [#prom1] Mareschal, B., De Smet, Y., & Nemery, P. (2008, December). Rank reversal in the PROMETHEE II method:
                    some new results. In 2008 IEEE International Conference on Industrial Engineering and Engineering
                    Management (pp. 959-963). IEEE.
 
