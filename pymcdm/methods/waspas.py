@@ -5,6 +5,7 @@ import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..validators import param_validator
 
 
 class WASPAS(MCDA_method):
@@ -52,10 +53,8 @@ class WASPAS(MCDA_method):
 
     def __init__(self, normalization_function=normalizations.linear_normalization, l=0.5):
         self.normalization = normalization_function
-        if 0 <= l <= 1:
-            self.l = l
-        else:
-            raise ValueError('l should be in range [0, 1].')
+        param_validator(l, 'l')
+        self.l = l
 
     def _method(self, matrix, weights, types):
         l = self.l

@@ -3,6 +3,7 @@
 import numpy as np
 from .. import normalizations
 from .. import helpers
+from ..validators import param_validator
 from .mcda_method import MCDA_method
 
 
@@ -57,10 +58,8 @@ class COCOSO(MCDA_method):
                  normalization_function=normalizations.minmax_normalization,
                  l=0.5):
         self.normalization = normalization_function
-        if 0 <= l <= 1:
+        if param_validator(l, 'l'):
             self.l = l
-        else:
-            raise ValueError('l should be in range [0, 1].')
 
     def _method(self, matrix, weights, types):
         l = self.l

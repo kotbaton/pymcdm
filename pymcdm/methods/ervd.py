@@ -1,9 +1,10 @@
 import numpy as np
 
-from pymcdm import helpers
-from pymcdm import normalizations
+from .. import helpers
+from .. import normalizations
 
-from pymcdm.methods.mcda_method import MCDA_method
+from .mcda_method import MCDA_method
+from ..validators import matrix_ref_point_validator
 
 class ERVD(MCDA_method):
     """ Election based on Relative Value Distances method [#ervd1]_.
@@ -56,13 +57,13 @@ class ERVD(MCDA_method):
         'Final preference values.'
     ]
 
-    def __init__(self, ref_point=None, lambd=2.25, alpha=0.88):
+    def __init__(self, ref_point, lambd=2.25, alpha=0.88):
         """ Create ERVD method object.
 
         Parameters
         ----------
             ref_point : ndarray or None
-                Reference point for alternatives evaluation. Should be one dimension array with reference value for each criterion. If None average value will be used.
+                Reference point for alternatives evaluation. Should be one dimension array with reference value for each criterion.
 
             lam : float
                 Lambda parameter. See [1] for detailed description. Default is 2.25.
@@ -74,19 +75,12 @@ class ERVD(MCDA_method):
         ----------
         .. [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
         """
-        self.ref_point = ref_point
         self.lambd = lambd
         self.alpha = alpha
-        if ref_point is not None:
-            self.ref_point = np.array(ref_point)
+        self.ref_point = np.asarray(ref_point)
 
     def _method(self, matrix, weights, types):
-        if self.ref_point is not None:
-            if self.ref_point.shape[0] != matrix.shape[1]:
-                raise ValueError(f'Len of the ref_point {self.ref_point.shape[0]} should be the same as number of the criteria {matrix.shape[1]}.')
-            ref = self.ref_point
-        else:
-            ref = np.mean(matrix, axis=0)
+        ref = self.ref_point
         lambd = self.lambd
         alpha = self.alpha
 
@@ -112,3 +106,6 @@ class ERVD(MCDA_method):
 
         p = S_minus / (S_plus + S_minus)
         return (ref, nmatrix, nref, vnmatrix, v_plus, v_minus, S_plus, S_minus, p)
+
+    def _additional_validation(self, matrix, weights, types):
+        matrix_ref_point_validator(matrix, self.ref_point)

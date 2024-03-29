@@ -3,6 +3,7 @@
 import numpy as np
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..validators import param_validator
 
 
 def _fake_normalization(x, cost=False):
@@ -61,10 +62,8 @@ class VIKOR(MCDA_method):
         else:
             self.normalization = normalization_function
 
-        if 0 <= v <= 1:
-            self.v = v
-        else:
-            raise ValueError('v should be in range [0, 1].')
+        param_validator(v, 'v')
+        self.v = v
 
     def _method(self, matrix, weights, types):
         v = self.v

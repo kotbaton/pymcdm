@@ -17,7 +17,7 @@ class TestMCDA(unittest.TestCase):
             matrix = np.array([[1, 2, 3], [1, 2, 3]])
             weights = np.array([0.5, 0.5])
             types = np.array([1, -1, -1])
-            body._validate_input_data(matrix, weights, types)
+            body(matrix=matrix, weights=weights, types=types)
 
 
 class TestARAS(unittest.TestCase):

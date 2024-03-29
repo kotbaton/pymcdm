@@ -51,6 +51,6 @@ class MethodExpert:
                     Because of how this method works MEJ matrix is not
                     generated.
         """
-        p = self.method(co, self.weights, self.types)
+        p = self.method(co, self.weights, self.types, skip_validation=True)
         r = self.method.rank(p)
         return r.shape[0] - r, None

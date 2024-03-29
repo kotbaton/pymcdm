@@ -53,14 +53,14 @@ class MAIRCA(MCDA_method):
     def __init__(self, normalization_function=normalizations.minmax_normalization):
         self.normalization = normalization_function
 
-    def _method(self, martrix, weights, types):
-        n, _ = martrix.shape
+    def _method(self, matrix, weights, types):
+        n, _ = matrix.shape
 
         # Creating theoretical ranking matrix
         Tp = 1 / n * weights
 
         # Creating real rating matrix
-        nmatrix = helpers.normalize_matrix(martrix, self.normalization, types)
+        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
         Tr = nmatrix * Tp
 
         # Calculation of Total Gap Matrix
