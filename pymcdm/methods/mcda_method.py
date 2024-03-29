@@ -1,8 +1,13 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-2024 Andrii Shekhovtsov
 
 from abc import ABC, abstractmethod
+from collections import OrderedDict
+
 import numpy as np
+
 from ..helpers import rankdata
+from ..validators import validate_decision_problem
+
 
 class MCDA_method(ABC):
     _reverse_ranking = True
@@ -11,8 +16,8 @@ class MCDA_method(ABC):
     def __call__(self, matrix, weights, types,
                  skip_validation=False,
                  explained_call=False):
-        """Rank alternatives from decision matrix `matrix`, with criteria 
-           weights `weights` and criteria types `types`.
+        """ Rank alternatives from decision matrix `matrix`, with criteria
+            weights `weights` and criteria types `types`.
 
             Parameters
             ----------
@@ -38,34 +43,21 @@ class MCDA_method(ABC):
                     all the steps of the method, instead of return just the
                     preference vector. Default is False.
         """
-        matrix = np.array(matrix, dtype='float')
-        weights = np.array(weights, dtype='float')
-        types = np.array(types)
+        matrix = np.asarray(matrix, dtype='float')
+        weights = np.asarray(weights, dtype='float')
+        types = np.asarray(types)
+
         if not skip_validation:
-            MCDA_method._validate_input_data(matrix, weights, types)
-            if getattr(self, 'bounds', None) is not None:
-                MCDA_method._validate_bounds(self.bounds, matrix.shape[1])
+            validate_decision_problem(matrix, weights, types)
+            self._additional_validation(matrix, weights, types)
 
         if explained_call:
             return self._method_explained(matrix, weights, types)
         else:
             return self._method(matrix, weights, types)[-1]
 
-    @staticmethod
-    def _validate_input_data(matrix, weights, types):
-        if (matrix.shape[1] != weights.shape[0]
-            or weights.shape[0] != len(types)):
-            raise ValueError('Number of criteria should be same as number of '
-                             'weights and number of types')
-
-        if abs(weights.sum() - 1) >= 0.01 or np.any(weights <= 0):
-            raise ValueError('Weights should be positive and its sum should '
-                             'be equal one. Now, sum of the weights is '
-                             f'{weights.sum()}.')
-
-        if np.sum(np.abs(types)) != types.shape[0]:
-            raise ValueError('Types array should only contains values -1 '
-                             'or 1.')
+    def _additional_validation(self, matrix, weights, types):
+        return
 
     @staticmethod
     def _validate_bounds(bounds, ncrit):
@@ -75,27 +67,19 @@ class MCDA_method(ABC):
         if np.any(bounds[:, 0] == bounds[:, 1]):
             eq = np.arange(bounds.shape[0])[bounds[:, 0] == bounds[:, 1]]
             raise ValueError(
-                    f'Bounds for criteria {eq} are equal. Consider changing'
-                    f'min and max values for this criterion, '
-                    f'delete this criterion or use another MCDA method.'
-                )
+                f'Bounds for criteria {eq} are equal. Consider changing'
+                f'min and max values for this criterion, '
+                f'delete this criterion or use another MCDA method.'
+            )
         if np.any(bounds[:, 0] >= bounds[:, 1]):
             eq = np.arange(bounds.shape[0])[bounds[:, 0] >= bounds[:, 1]]
-            raise ValueError(f'Lower bound of criteria {eq} is bigger or '
-                              'equal to upper bound.')
-
-        # TODO: think about validation of ESP and ref_ideal in RIM
-        # if esp is not None and bounds.shape[0] != esp.shape[0]:
-        #     raise ValueError(
-        #             'Bounds and ESP should describe the same number of'
-        #             'criteria, i.e. bounds.shape[0] should be equal to esp.shape[0].'
-        #         )
+            raise ValueError(f'Lower bound of criteria {eq} is bigger or equal to upper bound.')
 
     def _method_explained(self, matrix, weights, types):
-        return tuple(zip(
+        return OrderedDict(zip(
             self._captions,
             self._method(matrix, weights, types)
-            ))
+        ))
 
     def rank(self, a):
         return rankdata(a, reverse=self._reverse_ranking)
@@ -103,4 +87,3 @@ class MCDA_method(ABC):
     @abstractmethod
     def _method(self, matrix, weights, types):
         pass
-

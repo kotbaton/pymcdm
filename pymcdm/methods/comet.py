@@ -6,6 +6,7 @@ from functools import reduce
 import numpy as np
 
 from .mcda_method import MCDA_method
+from ..validators import cvalues_validator, matrix_cvalues_validator
 
 
 def _TFN(a, m, b):
@@ -85,19 +86,7 @@ class COMET(MCDA_method):
     """
 
     def __init__(self, cvalues, expert_function):
-        # Validate input
-        for i, cv in enumerate(cvalues):
-            if len(cv) < 2:
-                raise ValueError(
-                    f'You should provide minimum 2 characteristic value for each criterion. Check criterion with index '
-                    f'{i}.'
-                )
-            # Check if sorted
-            if any(cv[i] >= cv[i + 1] for i in range(len(cv) - 1)):
-                raise ValueError(
-                    f'Characteristic values must be sorted in ascending order and does not contain repeated elements. '
-                    f'Check criterion with index {i}. '
-                )
+        cvalues_validator(cvalues)
 
         co = product(*cvalues)
         co = np.array(list(co))
@@ -108,7 +97,8 @@ class COMET(MCDA_method):
         if sj.shape[0] != co.shape[0] or (mej is not None and not mej.shape[0] == mej.shape[1] == co.shape[0]):
             raise ValueError(
                     'Expert function must returns vector with same length as number of characteristic objects. '
-                    'And the None or MEJ matrix which is square matrix with same size as lenght of characteriscit objects. '
+                    'And the None or MEJ matrix which is square matrix with same size as length of characteristic '
+                    'objects.'
                     f'Expected length: {co.shape[0]}, but returned vector has length {sj.shape[0]}. '
                     f'Expected MEJ shape {(co.shape[0], co.shape[0])}, but returned matrix has shape {mej.shape}.'
                     )
@@ -164,6 +154,9 @@ class COMET(MCDA_method):
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
                           for p, co_values in zip(self.p, tfns_values_product))
         return sum(multiplayed_co)
+
+    def _additional_validation(self, matrix, weights, types):
+        matrix_cvalues_validator(matrix, self.cvalues)
 
     def get_MEJ(self):
         """ Return the Matrix Expert Judgment (MEJ) generated from the feature object comparisons. """

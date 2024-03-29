@@ -2,10 +2,8 @@
 
 import numpy as np
 
-from pymcdm import helpers
-from pymcdm import normalizations
-
 from .mcda_method import MCDA_method
+from ..validators import bounds_validator, matrix_bounds_validator, ref_ideal_bounds_validator
 
 
 def _dmin(x, c, d):
@@ -104,20 +102,18 @@ class RIM(MCDA_method):
             ref_ideal : ndarray or None
                 Reference ideal for alternatives evaluation. Should be two dimensional array with interval ideal value for each criterion. If None, reference ideal will be calculated based on bounds and criteria types.
         """
-        bounds = np.array(bounds)
-        if ref_ideal is not None:
-            ref_ideal = np.array(ref_ideal)
-            if ref_ideal.shape[1] != 2:
-                raise ValueError('Shape of the ref_ideal should be (M, 2),'
-                                 ' where M is a number of critria. Single'
-                                 ' values should be provided duplicated, e.g.'                                 ' 0 should be added as [0, 0].')
+        bounds = np.asarray(bounds)
+        bounds_validator(bounds)
 
-            if ref_ideal.shape != bounds.shape:
-                raise ValueError('Bounds and ref_ideal should have equal'
-                                 ' shapes.')
+        if ref_ideal is not None:
+            ref_ideal = np.asarray(ref_ideal)
+            ref_ideal_bounds_validator(ref_ideal, bounds)
 
         self.bounds = bounds
         self.ref_ideal = ref_ideal
+
+    def _additional_validation(self, matrix, weights, types):
+        matrix_bounds_validator(matrix, self.bounds)
 
     def get_ideal_from_bounds(self, bounds, types):
         ind = [0 if t == -1 else 1 for t in types]

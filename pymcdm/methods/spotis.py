@@ -1,8 +1,8 @@
 # Copyright (c) 2020-2023 Andrii Shekhovtsov
 
 import numpy as np
-from .. import normalizations
 from .mcda_method import MCDA_method
+from ..validators import bounds_validator, esp_bounds_validator, matrix_bounds_validator
 
 
 class SPOTIS(MCDA_method):
@@ -53,10 +53,12 @@ class SPOTIS(MCDA_method):
             esp : ndarray or None
                 Expected Solution Point for alternatives evaluation. Should be array with ideal (expected) value for each criterion. If None, ESP will be calculated based on bounds and criteria types. Default is None.
         """
-        self.bounds = np.array(bounds, dtype='float')
+        self.bounds = np.asarray(bounds, dtype='float')
+        bounds_validator(self.bounds)
         self.esp = esp
         if esp is not None:
-            self.esp = np.array(esp, dtype='float')
+            self.esp = np.asarray(esp, dtype='float')
+            esp_bounds_validator(self.esp, self.bounds)
 
     def _method(self, matrix, weights, types):
         bounds = self.bounds
@@ -72,6 +74,9 @@ class SPOTIS(MCDA_method):
         # Distances to ISP (smaller means better alt)
         raw_scores = np.sum(nmatrix * weights, axis=1)
         return (esp, nmatrix, raw_scores)
+
+    def _additional_validation(self, matrix, weights, types):
+        matrix_bounds_validator(matrix, self.bounds)
 
     @staticmethod
     def make_bounds(matrix):
