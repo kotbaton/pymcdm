@@ -10,7 +10,7 @@ ___
 
 You can download and install `pymcdm` library using pip:
 
-```Bash 
+```Bash
 pip install pymcdm
 ```
 
@@ -19,6 +19,30 @@ You can run all tests with following command from the root of the project:
 ```Bash
 python -m unittest -v
 ```
+
+___
+
+# Citing pymcdm
+
+If usage of the pymcdm library lead to a scientific publication, please 
+acknowledge this fact by citing "[_Kizielewicz, B., Shekhovtsov, A., 
+& Sałabun, W. (2023). pymcdm—The universal library for solving multi-criteria 
+decision-making problems. SoftwareX, 22, 101368._](https://doi.org/10.1016/j.softx.2023.101368)"
+
+Or using BibTex:
+```bibtex
+@article{kizielewicz2023pymcdm,
+  title={pymcdm—The universal library for solving multi-criteria decision-making problems},
+  author={Kizielewicz, Bart{\l}omiej and Shekhovtsov, Andrii and Sa{\l}abun, Wojciech},
+  journal={SoftwareX},
+  volume={22},
+  pages={101368},
+  year={2023},
+  publisher={Elsevier}
+}
+```
+
+DOI: [https://doi.org/10.1016/j.softx.2023.101368](https://doi.org/10.1016/j.softx.2023.101368)
 
 ___
 
