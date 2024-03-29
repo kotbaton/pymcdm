@@ -1,5 +1,6 @@
 # Copyright (c) 2023 Andrii Shekhovtsov
 
+import warnings
 import numpy as np
 
 class ESPExpert:
@@ -65,7 +66,7 @@ class ESPExpert:
             >>> # Create a visualization of the characteriscic values,
             >>> # ESP and preference function
             >>> fig, ax = plt.subplots(figsize=(4, 3.5), dpi=200)
-            >>> ax, cax = pm.visuals.comet_esp_plot(comet, esps, bounds)
+            >>> ax, cax = pm.visuals.comet_2d_esp_plot(comet, esps, bounds)
             >>> plt.tight_layout()
             >>> plt.show()
     """
@@ -138,14 +139,35 @@ class ESPExpert:
             distances.append(self.distance_function(co, nesp))
         distances = self.distance_aggregation(distances, axis=0)
 
-        mej = np.zeros((co.shape[0], co.shape[0]), dtype=np.float32)
+        try:
+            result = self._call_mej(distances)
+        except MemoryError:
+            warnings.warn('Optimized version is used,'
+                          ' MEJ will be not created.')
+            result = self._call_optimized(distances)
+
+        return result
+
+    def _call_mej(self, distances):
+        mej = np.zeros((distances.shape[0], distances.shape[0]),
+                       dtype=np.float16)
         mask_better = distances[:, None] < distances
         mask_ties = distances[:, None] == distances
         mej[mask_better] = 1
         mej[~mask_better] = 0
         mej[mask_ties] = 0.5
 
-        return mej.sum(axis=1), mej
+        return mej.sum(axis=1).astype(np.float32), mej
+
+    def _call_optimized(self, distances):
+        sj = np.zeros(distances.shape[0], dtype=np.float16)
+        for dist_i in distances:
+            mask_better = distances < dist_i
+            mask_ties = distances == dist_i
+            sj[mask_better] += 1
+            sj[mask_ties] += 0.5
+
+        return sj.astype(np.float32), None
 
     def make_cvalues(self):
         """ Generate the characteristic values array based on provided

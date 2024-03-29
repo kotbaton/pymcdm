@@ -46,12 +46,14 @@ class ManualExpert:
     """
 
     def __init__(self, criteria_names, show_MEJ=False,
-                 tablefmt='simple_grid', filename='mej.csv'):
+                 tablefmt='simple_grid', filename='mej.csv',
+                 force_file_use=False):
         self.criteria_names = criteria_names
         self.show_MEJ = show_MEJ
         self.tablefmt = tablefmt
         self.filename = filename
         self.co_names = None
+        self.force_file_use = force_file_use
 
         self.q = None
         self.max_q = None
@@ -148,11 +150,15 @@ class ManualExpert:
         self._show_mej(mej)
         print('\n')
 
-        print('Do you want to use this MEJ? [Y/n]')
-        ans = input('>>> ').strip().lower()
-        while ans not in ('', 'n', 'y'):
+        if not self.force_file_use:
+            print('Do you want to use this MEJ? [Y/n]')
             ans = input('>>> ').strip().lower()
-        print('\n')
+            while ans not in ('', 'n', 'y'):
+                ans = input('>>> ').strip().lower()
+            print('\n')
+        else:
+            print('This MEJ will be used in the model.')
+            ans = 'y'
 
         if ans == '' or ans == 'y':
             return mej.sum(axis=1), mej

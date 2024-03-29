@@ -5,3 +5,5 @@ myst_parser
 numpy
 scipy
 matplotlib
+sphinx-rtd-theme
+recommonmark

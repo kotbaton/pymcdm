@@ -20,6 +20,11 @@ pymcdm.visuals.comet\_2d\_plot module
 pymcdm.visuals.comet\_3d\_plot module
 -------------------------------------
 
+.. automodule:: pymcdm.visuals.comet_3d_esp_plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. automodule:: pymcdm.visuals.comet_3d_plot
    :members:
    :undoc-members:
@@ -36,7 +41,7 @@ pymcdm.visuals.comet\_contourf module
 pymcdm.visuals.comet\_esp\_plot module
 --------------------------------------
 
-.. automodule:: pymcdm.visuals.comet_esp_plot
+.. automodule:: pymcdm.visuals.comet_2d_esp_plot
    :members:
    :undoc-members:
    :show-inheritance:

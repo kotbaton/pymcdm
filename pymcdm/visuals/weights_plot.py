@@ -9,6 +9,9 @@ def weights_plot(weights,
                  bar_kwargs=dict(),
                  legend_ncol=5,
                  colors=None,
+                 show_text=False,
+                 show_text_threshold=0.0,
+                 text_kwargs=dict(),
                  ax=None):
     """ Function for criteria weights visualisation.
 
@@ -28,6 +31,17 @@ def weights_plot(weights,
 
             colors : Iterable or None
                 Colors for bars. If there are less colors then criteria, then colors will be cycled.
+
+            show_text : bool
+                Show the weights values as text on bars.
+
+            show_text_threshold : float
+                The smallest value of the weights to be show.
+                The values below this threshold wont be shown.
+
+            text_kwargs : dict
+                Keyword arguments for weights text.
+
             ax : Axes or None
                 Axes object to dwaw on.
 
@@ -60,6 +74,14 @@ def weights_plot(weights,
         edgecolor='black'
     ) | bar_kwargs
 
+    text_kwargs = dict(
+        ha='center',
+        va='center',
+        color='w',
+        fontweight='bold',
+        fontsize=8
+    ) | text_kwargs
+
     bottom = np.zeros(weights.shape[1], dtype=float)
     for i, alt in enumerate(weights):
         if colors is not None:
@@ -67,6 +89,20 @@ def weights_plot(weights,
 
         ax.bar(xticklabels, alt, label=f'$C_{i + 1}$', bottom=bottom, **bar_kwargs)
         bottom += alt
+
+    if show_text:
+        bottom = np.zeros(weights.shape[1])
+        for j, w in enumerate(weights):
+            means = (w / 2) + bottom
+            for i in range(len(w)):
+                if w[i] >= show_text_threshold:
+                    ax.text(
+                        i,
+                        means[i],
+                        f'{w[i]:0.3f}',
+                        **text_kwargs
+                    )
+            bottom += w
 
     ax.grid(alpha=0.5, linestyle='--')
     ax.set_axisbelow(True)
