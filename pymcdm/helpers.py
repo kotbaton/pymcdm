@@ -1,9 +1,14 @@
-# Copyright (c) 2021 Andrii Shekhovtsov
+# Copyright (c) 2024 Andrii Shekhovtsov
 # Copyright (c) 2022 Bartłomiej Kizielewicz
 
+from typing import Callable, Iterable
+
 import numpy as np
+from numpy.typing import ArrayLike
+
 from collections import Counter
-from collections.abc import Iterable
+
+from . import normalizations
 
 __all__ = [
     'rankdata',
@@ -100,17 +105,19 @@ def correlation_matrix(rankings, method, columns=False):
     return corr
 
 
-def normalize_matrix(matrix, method, criteria_types):
+def normalize_matrix(matrix: ArrayLike,
+                     method: Callable or Iterable[Callable] or str or Iterable[str],
+                     criteria_types: None or Iterable[int]) -> np.ndarray:
     """ Normalize each column in `matrix`, using `method`normalization
         function according to `criteria_types`.
 
         Parameters
         ----------
-            matrix : ndarray
+            matrix : ArrayLike
                 Decision matrix representation.
                 The rows are considered as alternatives and the columns are considered as criteria.
 
-            method : Callable or Iterable[Callable]
+            method : Callable or Iterable[Callable] or str or Iterable[str]
                 Function or Functions which should be used to normalize `matrix` columns.
                 Functions should match signature `foo(x, cost)`, where `x` is
                 a vector which would be normalized and `cost` is a bool variable
@@ -119,7 +126,7 @@ def normalize_matrix(matrix, method, criteria_types):
                 the same as number of criteria in `matrix` (columns) and same as
                 the lenght of the `criteria_types`.
 
-            criteria_types : None or Iterable
+            criteria_types : None or Iterable[int]
                 Describes criteria types.
                 1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
                 If None all criteria are considered as profit
@@ -134,6 +141,13 @@ def normalize_matrix(matrix, method, criteria_types):
             ValueError
                 If `criteria_types` and `matrix` has different number of criteria.
     """
+    matrix = np.asarray(matrix, dtype='float')
+
+    if isinstance(method, str):
+        method_name = method if method.endswith('_normalization') else f'{method}_normalization'
+        method = getattr(normalizations, method_name)
+        method = (method,) * matrix.shape[1]
+
     if criteria_types is None:
         criteria_types = np.ones(matrix.shape[1])
     else:
@@ -149,9 +163,16 @@ def normalize_matrix(matrix, method, criteria_types):
     if callable(method):
         method = (method,) * matrix.shape[1]
 
+    elif isinstance(method, Iterable) and isinstance(method[0], str):
+        method = [getattr(normalizations, m if m.endswith('_normalization') else f'{m}_normalization')
+                  for m in method]
+
+    elif not isinstance(method, Iterable):
+        raise ValueError(f'Method type is {type(method)}, which is unsupported.')
+
     nmatrix = matrix.astype('float')
-    for i, (type, met) in enumerate(zip(criteria_types, method)):
-        if type == 1:  # If profit
+    for i, (crit_type, met) in enumerate(zip(criteria_types, method)):
+        if crit_type == 1:  # If profit
             nmatrix[:, i] = met(matrix[:, i], cost=False)
         else:
             nmatrix[:, i] = met(matrix[:, i], cost=True)
