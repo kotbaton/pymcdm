@@ -12,7 +12,7 @@ class COCOSO(MCDA_method):
         The COCOSO method is based on an integrated model of simple additive weighting and exponentially weighted
         product [#cocoso1]_.
 
-        Read more in the :ref:`User Guide <COCOSO>`.
+        Read more in the User Guide.
 
         Parameters
         ----------

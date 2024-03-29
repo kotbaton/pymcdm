@@ -31,7 +31,8 @@ docs = [
     "IPython",
     "myst_parser",
     "sphinx-rtd-theme",
-    "recommonmark"
+    "recommonmark",
+    "pandoc"
 ]
 
 [project.urls]

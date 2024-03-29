@@ -10,7 +10,7 @@ class COPRAS(MCDA_method):
         COPRAS is used to assess the maximizing and minimizing index values, and the effect of maximizing and minimizing
         indexes of attributes on the results assessment is considered separately. See [#copras1]_ [#copras2]_.
 
-        Read more in the :ref:`User Guide <COPRAS>`.
+        Read more in the User Guide.
 
         References
         ----------

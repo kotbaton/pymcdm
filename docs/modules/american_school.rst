@@ -9,7 +9,7 @@ American school
 ARAS
 =======================
 
-:class:`ARAS` is designed to evaluate decision alternatives according to the following steps:
+``ARAS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
 alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat1`).
@@ -72,7 +72,7 @@ where :math:`S_i` and :math:`S_0` are the optimality criterion values.
 COCOSO
 =======================
 
-:class:`COCOSO` is designed to evaluate decision alternatives according to the following steps:
+``COCOSO`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
 alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_cocoso`).
@@ -161,7 +161,7 @@ In this study, a :math:`\lambda` value of 0.5 was used.
 CODAS
 =======================
 
-:class:`CODAS` is designed to evaluate decision alternatives according to the following steps:
+``CODAS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
 alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat2`).
@@ -255,7 +255,7 @@ parameter at a value between 0.01 and 0.05.
 COPRAS
 =======================
 
-:class:`COPRAS` is designed to evaluate decision alternatives according to the following steps:
+``COPRAS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Calculate normalized decision matrix using equation (:eq:`eq:copras_sum`).
 
@@ -318,7 +318,7 @@ value.
 EDAS
 =======================
 
-:class:`EDAS` is designed to evaluate decision alternatives according to the following steps:
+``EDAS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
 and :math:`m` is the number of criteria (:eq:`equ:mat_edas`).
@@ -414,7 +414,7 @@ point value determines a higher ranking alternative.
 
 ERVD
 =======================
-:class:`ERVD` is designed to evaluate decision alternatives according to the following steps:
+``ERVD`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 
@@ -480,7 +480,7 @@ where :math:`v_j^{+}=\max _i v_{i j}` and :math:`v_j^{-}=\min v_{i \vec{j}}`.
 
 MABAC
 =======================
-:class:`MABAC` is designed to evaluate decision alternatives according to the following steps:
+``MABAC`` is designed to evaluate decision alternatives according to the following steps:
 
 
 **Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
@@ -577,7 +577,7 @@ approximation of the borders (:eq:`equ:sima`).
 MAIRCA
 =======================
 
-:class:`MAIRCA` is designed to evaluate decision alternatives according to the following steps:
+``MAIRCA`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
 and :math:`m` is the number of criteria (:eq:`equ:mat3`).
@@ -708,7 +708,7 @@ the rows of the gap matrix (:math:`G`) using the formula (:eq:`equ:qima`). The a
 MARCOS
 =======================
 
-:class:`MARCOS` is designed to evaluate decision alternatives according to the following steps:
+``MARCOS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.**  Based on the decision matrix, create an augmented decision matrix with the ideal solution (AI) defined in
 the last row and the anti-ideal (AAI) solution defined in the first row. This can be represented by the Equation (:eq:`equ:extdecmat`).
@@ -819,7 +819,7 @@ the Equations respectively (:eq:`equ:kmf`) and (:eq:`equ:kpf`).
 MOORA
 =======================
 
-:class:`MOORA` is designed to evaluate decision alternatives according to the following steps:
+``MOORA`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Normalize the decision matrix based on the Equation (:eq:`normm`).
 
@@ -855,7 +855,7 @@ where type of beneficial and cost criteria are represented as follows :math:`j =
 OCRA
 =======================
 
-:class:`OCRA` is designed to evaluate decision alternatives according to the following steps:
+``OCRA`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 
@@ -891,7 +891,8 @@ and :math:`\bar{O}_{i}` is a measure of of relative performance for the :math:`i
 
 PROBID
 =======================
-:class:`PROBID` is designed to evaluate decision alternatives according to the following steps:
+
+``PROBID`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 
@@ -992,10 +993,44 @@ solution as follows:
     P_i=\frac{1}{1+R_i^2}+S_{i(\mathrm{avg})}
     \end{equation}
 
+RAM
+=======================
+
+``RAM`` is designed to evaluate decision alternatives according to the following steps:
+
+**Step 1.** Create a decision matrix.
+
+**Step 2.** Normalize the decision matrix using the linear sum method.
+
+**Step 3.** Create normalized weighted decision matrix.
+
+**Step 4.** Calculate the sums of weighted normalized scores of beneficial (:math:`+i`) and cost (:math:`-i`) criteria
+of :math:`i-th` alternative by the following equations:
+
+.. math::
+    \begin{equation}
+    S_{+i} = \sum^{n}_{j=1} y_{+ij}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    S_{-i} = \sum^{n}_{j=1} y_{-ij}
+    \end{equation}
+
+**Step 5.** Determine the overall score of each alternative using the following aggreating function:
+
+.. math::
+    \begin{equation}
+    RI_{i} = \sqrt[{2 + S_{-i}}]{2 + S_{+i}}
+    \end{equation}
+
+**Step 6.** Rank the alternatives using the value of :math:`RI_i`. The alternatives with the bigger value
+of :math:`RI_i` are more preferred ones.
+
 RIM
 =======================
 
-:class:`RIM` is designed to evaluate decision alternatives according to the following steps:
+``RIM`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define the following values, which determine the problem's context and the problem itself.
 
@@ -1073,7 +1108,7 @@ of :math:`R_i` are more preferred ones.
 SPOTIS
 =======================
 
-:class:`SPOTIS` is designed to evaluate decision alternatives according to the following steps:
+``SPOTIS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define the bounds of the problem - min and max bounds of classical MCDM problem must be defined to transform
 MCDM problem form ill-defined to well-defined.
@@ -1112,7 +1147,7 @@ account its weight and calculate final preference by executing following Equatio
 TOPSIS
 =======================
 
-:class:`TOPSIS` is designed to evaluate decision alternatives according to the following steps:
+``TOPSIS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Normalize the decision matrix by using min-max normalization. The values of benefit type criteria are
 normalized using the (:eq:`sumProfit`) formula, while the values of cost type criteria are normalized using the
@@ -1173,7 +1208,7 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
 VIKOR
 =======================
 
-:class:`VIKOR` is designed to evaluate decision alternatives according to the following steps:
+``VIKOR`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Determinate the best :math:`f_{j}^{*}` and the worst :math:`f_{j}^{-}` value for the function of a particular
 criterion. For profit criteria, the Equation is used (:eq:`VikorBestProfit`).
@@ -1234,7 +1269,7 @@ leading position in the ranking :math:`Q`.
 WASPAS
 =======================
 
-:class:`WASPAS` is designed to evaluate decision alternatives according to the following steps:
+``WASPAS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 
@@ -1266,7 +1301,7 @@ the normalized decision matrix.
 WPM
 =======================
 
-:class:`WPM` is designed to evaluate decision alternatives according to the following steps:
+``WPM`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 
@@ -1285,7 +1320,7 @@ the normalized decision matrix.
 WSM
 =======================
 
-:class:`WSM` is designed to evaluate decision alternatives according to the following steps:
+``WSM`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Create a decision matrix.
 

@@ -12,7 +12,7 @@ class SPOTIS(MCDA_method):
         given decision alternatives using the distance from the best
         ideal solution. [#spotis1]_.
 
-        Read more in the :ref:`User Guide <SPOTIS>`.
+        Read more in the User Guide.
 
         References
         ----------
