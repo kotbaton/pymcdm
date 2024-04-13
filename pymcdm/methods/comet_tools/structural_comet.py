@@ -103,7 +103,7 @@ class StructuralCOMET(MCDA_method):
 
         Examples
         --------
-        See examples/structural_comet_example.py for example with explanation.
+        See examples/comet_tool_examples.ipynb for example with explanation.
     """
     def __init__(self,
                  submodels,
