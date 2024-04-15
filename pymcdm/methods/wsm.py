@@ -7,7 +7,7 @@ from .mcda_method import MCDA_method
 
 
 class WSM(MCDA_method):
-    """ Weighted Sum Model (WSM) [1].
+    """ Weighted Sum Model (WSM) [#wsm1]_.
 
         WSM is based on an approach that evaluates alternatives by weighted sum.
 
@@ -20,7 +20,7 @@ class WSM(MCDA_method):
 
         References
         ----------
-        .. [1] Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability
+        .. [#wsm1] Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability
         estimation errors: A reexamination. Operations Research, 16(2), 254-267.
 
         Examples

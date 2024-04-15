@@ -11,6 +11,9 @@ Subpackages
 Subpackages tools
 ------------------------
 
+.. toctree::
+   :maxdepth: 2
+
 --------------------------
 pymcdm.methods.comet_tools
 --------------------------

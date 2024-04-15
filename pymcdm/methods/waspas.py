@@ -8,7 +8,7 @@ from .mcda_method import MCDA_method
 
 
 class WASPAS(MCDA_method):
-    """ Weighted Aggregated Sum Product ASSessment (WASPAS) [1].
+    """ Weighted Aggregated Sum Product ASSessment (WASPAS) [#waspas1]_.
 
         The WASPAS method is a unique combination of two well-known MCDM approaches, i.e. Weighted Sum Model (WSM) and
         Weighted Product Model (WPM).
@@ -22,7 +22,7 @@ class WASPAS(MCDA_method):
 
         References
         ----------
-        .. [1] Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted
+        .. [#waspas1] Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted
         aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
 
         Examples

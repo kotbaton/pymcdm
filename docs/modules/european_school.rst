@@ -1,15 +1,15 @@
 .. _european_school:
 
-=============
+===============
 European school
-=============
+===============
 
 
 
 PROMETHEE II
 =======================
 
-:class:`PROMEHTEE II` is designed to evaluate decision alternatives according to the following steps:
+``PROMEHTEE II`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** After defining the problem, calculate the preference function values.
 It is defined as (:eq:`promstep1a`) for profit criteria.

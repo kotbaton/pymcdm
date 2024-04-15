@@ -10,13 +10,13 @@ class SPOTIS(MCDA_method):
 
         The SPOTIS method is based on an approach in which it evaluates
         given decision alternatives using the distance from the best
-        ideal solution. [1].
+        ideal solution. [#spotis1]_.
 
-        Read more in the :ref:`User Guide <SPOTIS>`.
+        Read more in the User Guide.
 
         References
         ----------
-        .. [1] Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The SPOTIS rank reversal free method for multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION) (pp. 1-8). IEEE.
+        .. [#spotis1] Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The SPOTIS rank reversal free method for multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION) (pp. 1-8). IEEE.
 
         Examples
         --------

@@ -10,7 +10,7 @@ class MABAC(MCDA_method):
     """ Multi-Attributive Border Approximation Area Comparison (MABAC) method.
 
         The MABAC method is based on determining the distance measure between each possible alternative and the Boundary
-        Approximation Area (BAA).
+        Approximation Area (BAA) [#mabac1]_.
 
         Parameters
         ----------
@@ -21,7 +21,7 @@ class MABAC(MCDA_method):
 
         References
         ----------
-        .. [1] Pamučar, D., & Ćirović, G. (2015). The selection of transport and handling resources in logistics
+        .. [#mabac1] Pamučar, D., & Ćirović, G. (2015). The selection of transport and handling resources in logistics
                centers using Multi-Attributive Border Approximation area Comparison (MABAC). Expert systems with
                applications, 42(6), 3016-3028.
 

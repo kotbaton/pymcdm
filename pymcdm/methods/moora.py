@@ -7,11 +7,11 @@ from .mcda_method import MCDA_method
 class MOORA(MCDA_method):
     """ Multi-Objective Optimization on the basis of Ratio Analysis (MOORA) method.
 
-        The MOORA method is based on an approach using multi-objective optimization to evaluate alternatives.
+        The MOORA method is based on an approach using multi-objective optimization to evaluate alternatives [#moora1]_.
 
         References
         ----------
-        .. [1] Brauers, W. K., & Zavadskas, E. K. (2006). The MOORA method and its application to privatization in a
+        .. [#moora1] Brauers, W. K., & Zavadskas, E. K. (2006). The MOORA method and its application to privatization in a
              transition economy. Control and cybernetics, 35(2), 445-469.
 
 

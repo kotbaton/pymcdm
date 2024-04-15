@@ -8,13 +8,13 @@ class EDAS(MCDA_method):
     """ Evaluation based on Distance from Average Solution (EDAS) method.
 
         The EDAS method is based on an approach in which the decision alternatives are evaluated with respect to their
-        distance from the mean solutions i.e. negative mean solution and positive mean solution [1].
+        distance from the mean solutions i.e. negative mean solution and positive mean solution [#edas1]_.
 
-        Read more in the :ref:`User Guide <EDAS>`.
+        Read more in the User Guide.
 
         References
         ----------
-        .. [1] Keshavarz Ghorabaee, M., Zavadskas, E. K., Olfat, L., & Turskis, Z. (2015). Multi-criteria inventory
+        .. [#edas1] Keshavarz Ghorabaee, M., Zavadskas, E. K., Olfat, L., & Turskis, Z. (2015). Multi-criteria inventory
                classification using a new method of evaluation based on distance from average solution (EDAS).
                Informatica, 26(3), 435-451.
 

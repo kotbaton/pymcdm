@@ -6,11 +6,11 @@ from pymcdm import normalizations
 from pymcdm.methods.mcda_method import MCDA_method
 
 class ERVD(MCDA_method):
-    """ Election based on Relative Value Distances method.
+    """ Election based on Relative Value Distances method [#ervd1]_.
 
     References
     ----------
-    .. [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+    .. [#ervd1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
 
     Examples
     --------

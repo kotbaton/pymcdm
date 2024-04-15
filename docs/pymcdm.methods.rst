@@ -121,6 +121,14 @@ pymcdm.methods.promethee
    :undoc-members:
    :show-inheritance:
 
+pymcdm.methods.ram
+--------------------------
+
+.. automodule:: pymcdm.methods.ram
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pymcdm.methods.rim
 --------------------------
 

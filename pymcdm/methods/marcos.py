@@ -15,7 +15,7 @@ class MARCOS(MCDA_method):
     """ Measurement of Alternatives and Ranking according to COmpromise Solution (MARCOS) method.
 
         The MARCOS method is based on the approach of evaluating alternatives according to reference values (ideal and
-        anti-ideal) using a utility function [1].
+        anti-ideal) using a utility function [#marcos1]_.
 
         Parameters
         ----------
@@ -26,7 +26,7 @@ class MARCOS(MCDA_method):
 
         References
         ----------
-        .. [1] Stević, Ž., Pamučar, D., Puška, A., & Chatterjee, P. (2020). Sustainable supplier selection in
+        .. [#marcos1] Stević, Ž., Pamučar, D., Puška, A., & Chatterjee, P. (2020). Sustainable supplier selection in
                healthcare industries using a new MCDM method: Measurement of alternatives and ranking according to
                COmpromise solution (MARCOS). Computers & Industrial Engineering, 140, 106231.
 

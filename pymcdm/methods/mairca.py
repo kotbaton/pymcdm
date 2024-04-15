@@ -9,9 +9,9 @@ from .mcda_method import MCDA_method
 class MAIRCA(MCDA_method):
     """ Multi-Attributive RealIdeal Comparative Analysis (MARICA) method.
 
-        The MAIRCA method is based on an assumption in which it determines the gap between ideal and empirical rates.\
+        The MAIRCA method is based on an assumption in which it determines the gap between ideal and empirical rates [#mairca1]_.
 
-        Read more in the :ref:`User Guide <MAIRCA>`.
+        Read more in the User Guide.
 
         Parameters
         ----------
@@ -22,7 +22,7 @@ class MAIRCA(MCDA_method):
 
         References
         ----------
-        .. [1] Pamučar, D., Vasin, L., & Lukovac, L. (2014, October). Selection of railway level crossings for investing
+        .. [#mairca1] Pamučar, D., Vasin, L., & Lukovac, L. (2014, October). Selection of railway level crossings for investing
                in security equipment using hybrid DEMATEL-MARICA model. In XVI international scientific-expert
                conference on railway, railcon (pp. 89-92).
 

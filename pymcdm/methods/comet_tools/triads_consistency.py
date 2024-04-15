@@ -47,7 +47,7 @@ T_strong_inc_rules = (
     )
 
 def triads_consistency(comet_or_mej):
-    """ MEJ consistency coefficient based on inconsistence triads.
+    """ MEJ consistency coefficient based on inconsistence triads [#triads1]_.
 
         Parameters
         ----------
@@ -60,7 +60,7 @@ def triads_consistency(comet_or_mej):
 
         References
         ----------
-        .. [1] Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
+        .. [#triads1] Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
 
         Examples
         --------

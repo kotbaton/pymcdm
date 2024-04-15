@@ -7,6 +7,7 @@ def get_local_weights(comet, alt, percent_step=0.01):
     References
     ----------
     [1] Więckowski, J., Kizielewicz, B., Paradowski, B., Shekhovtsov, A., & Sałabun, W. (2023). Application of Multi-Criteria Decision Analysis to Identify Global and Local Importance Weights of Decision Criteria. International Journal of Information Technology & Decision Making, 22(06), 1867–1892. https://doi.org/10.1142/S0219622022500948
+    [2] Shekhovtsov, A. and Sałabun, W. (2024). Comparing Global and Local Weights in Multi-Criteria Decision-Making: A COMET-Based Approach. In Proceedings of the 16th International Conference on Agents and Artificial Intelligence - Volume 3: ICAART; ISBN 978-989-758-680-4; ISSN 2184-433X, SciTePress, pages 470-477. DOI: 10.5220/0012360700003636
 
     """
 

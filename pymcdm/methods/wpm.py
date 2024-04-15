@@ -7,7 +7,7 @@ from .mcda_method import MCDA_method
 
 
 class WPM(MCDA_method):
-    """ Weighted Product Model (WPM) [1].
+    """ Weighted Product Model (WPM) [#wpm1]_.
 
         WPM is based on an approach that evaluates alternatives by weighted product.
 
@@ -20,7 +20,7 @@ class WPM(MCDA_method):
 
         References
         ----------
-        .. [1] Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability
+        .. [#wpm1] Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability
         estimation errors: A reexamination. Operations Research, 16(2), 254-267.
 
         Examples

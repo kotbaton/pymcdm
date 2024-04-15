@@ -1,3 +1,40 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymcdm"
+version = "1.2.1"
+authors = [
+    {name = "Andrii Shekhovtsov", email = "andrii-shekhovtsov@zut.edu.pl"},
+    {name = "Bartłomiej Kizielewicz", email = "bartlomiej-kizielewicz@zut.edu.pl"},
+]
+description = "Python library for Multi-Criteria Decision-Making"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    'numpy',
+    'scipy',
+    'matplotlib',
+    'tabulate'
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx-autoapi",
+    "nbsphinx",
+    "IPython",
+    "myst_parser",
+    "sphinx-rtd-theme",
+    "recommonmark",
+    "pandoc"
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/shekhand/mcda"
+Issues = "https://gitlab.com/shekhand/mcda/-/issues"

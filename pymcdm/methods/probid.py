@@ -6,11 +6,11 @@ from pymcdm import normalizations
 from pymcdm.methods.mcda_method import MCDA_method
 
 class PROBID(MCDA_method):
-    """ Preference Ranking on the Basis of Ideal-Average Distance Method.
+    """ Preference Ranking on the Basis of Ideal-Average Distance Method [#probid1]_.
 
     References
     ----------
-    .. [1] Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
+    .. [#probid1] Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
 
     Examples
     --------

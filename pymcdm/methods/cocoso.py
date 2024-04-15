@@ -10,9 +10,9 @@ class COCOSO(MCDA_method):
     """ COmbined COmpromise SOlution (COCOSO) method.
 
         The COCOSO method is based on an integrated model of simple additive weighting and exponentially weighted
-        product [1].
+        product [#cocoso1]_.
 
-        Read more in the :ref:`User Guide <COCOSO>`.
+        Read more in the User Guide.
 
         Parameters
         ----------
@@ -23,7 +23,7 @@ class COCOSO(MCDA_method):
 
         References
         ----------
-        .. [1] Yazdani, M., Zarate, P., Zavadskas, E. K., & Turskis, Z. (2019). A Combined Compromise Solution (CoCoSo)
+        .. [#cocoso1] Yazdani, M., Zarate, P., Zavadskas, E. K., & Turskis, Z. (2019). A Combined Compromise Solution (CoCoSo)
                method for multi-criteria decision-making problems. Management Decision.
 
         Examples

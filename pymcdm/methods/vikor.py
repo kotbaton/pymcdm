@@ -16,7 +16,7 @@ class VIKOR(MCDA_method):
     """ VIšekriterijumsko KOmpromisno Rangiranje (VIKOR) method.
 
         The VIKOR method is based on an approach that uses a compromise mechanism to evaluate alternatives using
-        distance from the ideal [1].
+        distance from the ideal [#vikor1]_.
 
         Parameters
         ----------
@@ -25,9 +25,9 @@ class VIKOR(MCDA_method):
                 where `x` is a vector which should be normalized and `cost` is a bool variable which says if `x` is a
                 cost or profit criterion.
 
-         References
+        References
         ----------
-        .. [1] Duckstein, L., & Opricovic, S. (1980). Multiobjective optimization in river basin development. Water
+        .. [#vikor1] Duckstein, L., & Opricovic, S. (1980). Multiobjective optimization in river basin development. Water
                resources research, 16(1), 14-20.
 
         Examples
