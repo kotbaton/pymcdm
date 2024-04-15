@@ -1,5 +1,6 @@
 # Version 1.2.1
 
+* Add examples for the `comet_tools` to the documentation
 * Add `comet_3d_esp_plot` visualization function
 * Add `RAM` method and documentation for it
 * Add `get_local_weights` function
@@ -10,6 +11,7 @@
 * Fix bug with file writing in `manual_expert` and `triad_supported_expert`
 * Fix calculation on final stage of the `COPRAS` method and improve tests accordingly
 * Fix bug with `zavadsks_turkish_normalization` function
+* Clean up documentation folder
 * Various fixes in the documentation and docstrings
 
 # Version 1.2.0
@@ -50,7 +52,7 @@
 
 ### COMET Tools module
 
-* Refactor evaluation of the characteriscic objects in the COMET, now rate_function and expert_function are the same function
+* Refactor evaluation of the characteristic objects in the COMET, now rate_function and expert_function are the same function
 * Add bunch of Expert functions for the COMET: `MethodExpert`, `ManualExpert`, `FunctionExpert`, `CompromiseExpert`, `TriadSupportExpert`, `ESPExpert`
 * Add triads consistency coefficient
 * Add `StructuralCOMET` class which allows to build structural MCDA models in easy way
