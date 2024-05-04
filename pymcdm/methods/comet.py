@@ -58,7 +58,7 @@ class COMET(MCDA_method):
         Examples
         --------
         >>> from pymcdm.methods import COMET, TOPSIS
-        >>> from pymcdm.comet_tools import MethodExpert
+        >>> from pymcdm.methods.comet_tools import MethodExpert
         >>> import numpy as np
         >>> matrix = np.array([[64, 128, 2.9, 4.3, 3.2, 280, 495, 24763, 3990],
         ...                    [28, 56, 3.1, 3.8, 3.8, 255, 417, 12975, 2999],
@@ -119,6 +119,7 @@ class COMET(MCDA_method):
 
         self.criterion_number = len(cvalues)
         self.cvalues = cvalues
+        self.expert_function = expert_function
         self.p = p
         self.tfns = [COMET._make_tfns(chv) for chv in cvalues]
 
