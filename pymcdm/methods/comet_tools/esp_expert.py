@@ -90,7 +90,7 @@ class ESPExpert:
         self._validate_input()
 
     def _validate_input(self):
-        esps, bounds, cvalues_psi = self
+        esps, bounds, cvalues_psi = self.esps, self.bounds, self.psi
         if len(esps.shape) != 2:
             raise ValueError('esps should be a two dimensional array '
                              'with one ESP in each row.')
