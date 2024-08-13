@@ -50,7 +50,7 @@ def ref_ideal_bounds_validator(ref_ideal, bounds):
 
     min_, max_ = bounds[:, 0], bounds[:, 1]
     ref_min, ref_max = ref_ideal[:, 0], ref_ideal[:, 1]
-    if not np.all(np.logical_and(min_ <= ref_min, ref_max <= max_)) or ref_min >= ref_max:
+    if (not np.all(np.logical_and(min_ <= ref_min, ref_max <= max_))) or np.any(ref_min > ref_max):
         raise ValueError('ref_ideal values should be in range of min and max values (bounds) for each criterion.'
                          'ref_ideal values should be ordered in [min, max] order.')
 
@@ -116,7 +116,7 @@ def matrix_validator(matrix, types):
                  for i in range(matrix.shape[1])]
 
     dominant_alts, = np.where([np.all(dominant == alt) for alt in matrix])
-    if dominant_alts:
+    if dominant_alts.size > 0:
         raise ValueError(f'Alternatives with indices {list(dominant_alts)} are dominant. Consider removing them,'
                          'as such alternatives can cause numerical errors in some methods.')
 
