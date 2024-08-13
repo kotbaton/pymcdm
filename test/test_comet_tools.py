@@ -76,7 +76,7 @@ class TestStructuralCOMET(unittest.TestCase):
                 criteria_names=criteria_names
                 )
 
-        res = model(matrix, True, True)
+        res = model(matrix, weights=None, types=None, explained_call=True)
 
         reference = {
             'P_1': [0.7851, 0.6136, 0.5950, 0.7187, 0.1378,

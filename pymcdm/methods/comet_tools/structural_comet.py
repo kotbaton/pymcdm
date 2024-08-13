@@ -140,19 +140,43 @@ class StructuralCOMET(MCDA_method):
             if submodel.cvalues is None:
                 self._final_submodel_struct =  submodel.structure
 
-    def __call__(self, matrix, return_all=False, use_names=True):
+    def __call__(self, matrix,
+                 weights=None,
+                 types=None,
+                 skip_validation=False,
+                 explained_call=False):
+        """Rank alternatives from decision matrix `matrix`.
+
+            Parameters
+            ----------
+                matrix : ndarray
+                    Decision matrix / alternatives data.
+                    Alternatives are in rows and Criteria are in columns.
+
+                weights : None
+                    Not used in the StructuralCOMET method.
+
+                types : None
+                    Not used in the StructuralCOMET method.
+
+                skip_validation : bool
+                    Not used in the StructuralCOMET method.
+
+                explained_call : bool
+                    If explained_call is True, then results of all submodels will be returned.
+        """
         results = {}
         for struct, submodel in self._submodels.items():
             results[struct] = submodel(matrix, results)
 
-        if not return_all:
+        if not explained_call:
             return results[self._final_submodel_struct]
 
-        if use_names:
-            return {self._name_struct_mapper[struct]: res
-                    for struct, res in results.items()}
+        return {self._name_struct_mapper[struct]: res
+                for struct, res in results.items()}
 
-        return results
+    def _method(self, matrix, weights, types):
+        pass
 
     def __getitem__(self, structure):
         return self._submodels[self.all_to_structures(structure)]
