@@ -163,7 +163,7 @@ def normalize_matrix(matrix: ArrayLike,
     if callable(method):
         method = (method,) * matrix.shape[1]
 
-    elif isinstance(method, Iterable) and isinstance(method[0], str):
+    elif isinstance(method, Iterable) and all(isinstance(m, str) for m in method):
         method = [getattr(normalizations, m if m.endswith('_normalization') else f'{m}_normalization')
                   for m in method]
 
