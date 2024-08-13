@@ -121,7 +121,7 @@ def matrix_validator(matrix, types):
                          'as such alternatives can cause numerical errors in some methods.')
 
     dominated_alts, = np.where([np.all(dominated == alt) for alt in matrix])
-    if dominated_alts:
+    if dominated_alts.size > 0:
         raise ValueError(f'Alternatives with indices {list(dominated_alts)} are dominated. Consider removing them,'
                          'as such alternatives can cause numerical errors in some methods.')
 

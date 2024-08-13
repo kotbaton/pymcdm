@@ -45,30 +45,18 @@ class RAM(MCDA_method):
         >>> print(output_method)
         [1.4332 1.4392 1.4353 1.4322 1.4279 1.4301 1.4394 1.4308 1.4294 1.4288]
     """
+    _captions = [
+        'Normalized decision matrix.',
+        'Weighted normalized decision matrix.',
+        'Sum of weighted normalized scores of beneficial criteria.',
+        'Sum of weighted normalized scores of cost criteria.',
+        'Final preference values of each alternative.',
+    ]
 
     def __init__(self, normalization_function=normalizations.sum_normalization):
         self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-        Parameters
-        ----------
-            matrix : ndarray
-                Decision matrix / alternatives data.
-                Alternatives are in rows and Criteria are in columns.
-
-            weights : ndarray
-                Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-            types : ndarray
-                Array with definitions of criteria types:
-                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-            *args: is necessary for methods which reqiure some additional data.
-
-            **kwargs: is necessary for methods which reqiure some additional data.
-        """
+    def _method(self, matrix, weights, types):
         nmatrix = helpers.normalize_matrix(matrix, self.normalization, None)
 
         # Every row of nmatrix is multiplayed by weights
@@ -81,5 +69,5 @@ class RAM(MCDA_method):
 
         ri = (2 + Spi) ** (1 / (2 + Smi))
 
-        return ri
+        return (nmatrix, wnmatrix, Spi, Smi, ri)
 
