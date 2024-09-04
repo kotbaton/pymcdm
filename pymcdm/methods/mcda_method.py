@@ -7,6 +7,7 @@ import numpy as np
 
 from ..helpers import rankdata
 from ..validators import validate_decision_problem
+from ..io import MCDA_results
 
 
 class MCDA_method(ABC):
@@ -76,10 +77,12 @@ class MCDA_method(ABC):
             raise ValueError(f'Lower bound of criteria {eq} is bigger or equal to upper bound.')
 
     def _method_explained(self, matrix, weights, types):
-        return OrderedDict(zip(
-            self._captions,
-            self._method(matrix, weights, types)
-        ))
+        results = self._method(matrix, weights, types)
+        return MCDA_results(
+            method=self,
+            matrix=matrix,
+            results=[t.create_table(r) for t, r in zip(self._tables, results)]
+            )
 
     def rank(self, a):
         return rankdata(a, reverse=self._reverse_ranking)

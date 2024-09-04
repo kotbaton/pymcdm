@@ -1,9 +1,10 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-202r Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class TOPSIS(MCDA_method):
@@ -38,15 +39,21 @@ class TOPSIS(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.500, 0.617, 0.500]
     """
-    _captions = [
-            'Normalized decision matrix.',
-            'Weighted normalized decision matrix.',
-            'Positive Ideal Solution (PIS).',
-            'Negative Ideal Solution (NIS).',
-            'Distance from PIS.',
-            'Distance from NIS.',
-            'Final preference values.'
-            ]
+    _tables = [
+        TableDesc('Normalized decision matrix', 'nmatrix', '$r_{ij}$'),
+        TableDesc('Weighted normalized decision matrix', 'wnmatrix', '$v_{ij}$'),
+        TableDesc('Positive Ideal Solution', 'pis', 'PIS'),
+        TableDesc('Negative Ideal Solution', 'nis', 'NIS'),
+        TableDesc('Distance from PIS', 'dpis', '$D_i^+$'),
+        TableDesc('Distance from NIS', 'dnis', '$D_i^-$'),
+        TableDesc('Final preference values', 'pref', '$P_i$')
+    ]
+    _table_grouping = [ # TODO is it necessary? We can have it as generic caption
+        0, # If only one table provided, then derive caption and label from it
+        1,
+        slice(2, 4),
+        slice(4, 7)
+    ]
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):
         self.normalization = normalization_function
