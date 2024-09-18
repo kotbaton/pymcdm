@@ -48,8 +48,8 @@ class TOPSIS(MCDA_method):
         TableDesc('Distance from NIS', 'dnis', '$D_i^-$'),
         TableDesc('Final preference values', 'pref', '$P_i$')
     ]
-    _table_grouping = [ # TODO is it necessary? We can have it as generic caption
-        0, # If only one table provided, then derive caption and label from it
+    _table_grouping = [  # TODO is it necessary? We can have it as generic caption
+        0,  # If only one table provided, then derive caption and label from it
         1,
         slice(2, 4),
         slice(4, 7)

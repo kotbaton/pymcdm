@@ -9,6 +9,7 @@ import pandas as pd
 class MCDA_method:
     pass
 
+
 def latex_problem_definition(weights,
                              types=None,
                              criteria_names=None,
@@ -21,9 +22,9 @@ def latex_problem_definition(weights,
                              caption='Criteria description',
                              label='crit_desc'):
     data = {
-            'Weight': weights,
-            '$C_i$': [f'$C_{{{i}}}$' for i in range(1, weights.shape[0] + 1)]
-            }
+        'Weight': weights,
+        '$C_i$': [f'$C_{{{i}}}$' for i in range(1, weights.shape[0] + 1)]
+    }
 
     if types is not None:
         data['Type'] = ['Max' if t == 1 else 'Min'
@@ -61,14 +62,15 @@ def latex_problem_definition(weights,
                      'Ref. ideal Min', 'Ref. ideal Max']
     used_columns = [c for c in columns_order if c in data]
     s = df[used_columns].to_latex(
-            index=False,
-            float_format=float_fmt,
-            position='h',
-            label=label,
-            caption=caption,
-            )
+        index=False,
+        float_format=float_fmt,
+        position='h',
+        label=label,
+        caption=caption,
+    )
 
     print('\n', s, sep='')
+
 
 # def latex_ndarray(array,
 #                   row_labels=None,
@@ -105,7 +107,10 @@ def latex_problem_definition(weights,
 
 
 class TableDesc:
-    def __init__(self, caption: str, label: str, symbol: str or None=None):
+    def __init__(self,
+                 caption: str,
+                 label: str,
+                 symbol: str or None = None):
         self.caption = caption
         self.label = label
         self.symbol = symbol
@@ -118,22 +123,22 @@ class Table:
     def __init__(self,
                  data: ArrayLike,
                  desc: TableDesc,
-                 row_labels: List[str] or None=None,
-                 col_labels: List[str] or None=None,
-                 row_labels_name: str or None=None):
-        self.data = data
+                 row_labels: List[str] or None = None,
+                 col_labels: List[str] or None = None,
+                 row_labels_name: str or None = None):
+        self.data = np.array(data)
         self.desc = desc
 
-        if len(data.shape) == 2:
+        if len(self.data.shape) == 2:
             if row_labels is None:
                 self.row_labels = [f'$A_{{{i}}}$'
-                                   for i in range(1, data.shape[0] + 1)]
+                                   for i in range(1, self.data.shape[0] + 1)]
             else:
                 self.row_labels = row_labels
 
             if col_labels is None:
                 self.col_labels = [f'$C_{{{i}}}$'
-                                   for i in range(1, data.shape[1] + 1)]
+                                   for i in range(1, self.data.shape[1] + 1)]
             else:
                 self.col_labels = col_labels
 
@@ -145,7 +150,7 @@ class Table:
             self.df = pd.DataFrame(data=self.data, columns=self.col_labels)
             self.df.insert(0, self.row_labels_name, self.row_labels)
 
-        elif len(data.shape) == 1:
+        elif len(self.data.shape) == 1:
             if row_labels is None:
                 self.row_labels = [desc.symbol]
             else:
@@ -153,7 +158,7 @@ class Table:
 
             if col_labels is None:
                 self.col_labels = [f'$A_{{{i}}}$'
-                                   for i in range(1, data.shape[0] + 1)]
+                                   for i in range(1, self.data.shape[0] + 1)]
             else:
                 self.col_labels = col_labels
 
@@ -166,19 +171,19 @@ class Table:
             self.df.insert(0, self.row_labels_name, self.row_labels)
 
         else:
-            raise ValueError(f'Data shape {data.shape} is not supported.')
+            raise ValueError(f'Data shape {self.data.shape} is not supported.')
 
     def to_latex(self, float_fmt=None):
         return self.df.to_latex(
-                index=False,
-                float_format=float_fmt,
-                position='h',
-                label=f'tab:{self.desc.label}',
-                caption=self.desc.caption,
-                )
+            index=False,
+            float_format=float_fmt,
+            position='h',
+            label=f'tab:{self.desc.label}',
+            caption=self.desc.caption,
+        )
 
 
-# TODO We supposely don't need it
+# TODO We supposedly don't need it
 # class GroupedTableDesc(TableDesc):
 #     def __init__(self,
 #                  table_slice: str,
@@ -192,7 +197,7 @@ class Table:
 #         return
 
 
-class MCDA_results: # TODO it should work as a list
+class MCDA_results:  # TODO it should work as a list
     def __init__(self,
                  method: MCDA_method,
                  matrix: ArrayLike,
@@ -203,12 +208,12 @@ class MCDA_results: # TODO it should work as a list
         self.results = results
 
     def to_latex(self,
-                 group_tables: bool=True,
-                 ranking: bool=True,
-                 matrix: bool=True,
-                 label_prefix: bool=True,
-                 float_fmt: str or List[str] or None='%0.4f',
-                 **kwargs): # TODO there will be many different parameters
+                 group_tables: bool = True,
+                 ranking: bool = True,
+                 matrix: bool = True,
+                 label_prefix: bool = True,
+                 float_fmt: str or List[str] or None = '%0.4f',
+                 **kwargs):  # TODO there will be many different parameters
         output_strs = [f'Results of the {self.method_name}.']
         if matrix:
             t = Table(data=self.matrix,
@@ -237,9 +242,9 @@ class MCDA_results: # TODO it should work as a list
         if group_tables:
             data = [t.data for t in grouped_tables]
             desc = TableDesc(
-                    caption=f'Results of the {self.method_name} calculations.',
-                    label='results'
-                    )
+                caption=f'Results of the {self.method_name} calculations.',
+                label='results'
+            )
             col_labels = [t.data for t in grouped_tables]
             t = Table(data=data, desc=desc, col_labels=col_labels)
             output_strs.append(t.to_latex(float_fmt))
@@ -248,11 +253,8 @@ class MCDA_results: # TODO it should work as a list
 
         return '\n\n'.join(output_strs)
 
-
     def __str__(self):
         return 'Not implemented yet'
 
     def __dict__(self):
         pass
-
-

@@ -54,7 +54,7 @@ class CODAS(MCDA_method):
         'Negative-ideal solution.',
         'Euclidean distances from the negative-ideal solution.',
         'Manhattan distances from the negative-ideal solution.',
-        'Relative assessement matrix.',
+        'Relative assessment matrix.',
         'Final preference values.'
     ]
 
