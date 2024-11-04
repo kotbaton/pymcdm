@@ -10,6 +10,6 @@ weights = pm.weights.equal_weights(alts)
 types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
 
 topsis = pm.methods.TOPSIS()
-results = topsis(alts, weights, types, explained_call=True)
+results = topsis(alts, weights, types, verbose=True)
 
-print(results.to_latex(group_tables=False))
+print(results.to_latex(group_tables=True))

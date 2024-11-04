@@ -144,7 +144,7 @@ class StructuralCOMET(MCDA_method):
                  weights=None,
                  types=None,
                  skip_validation=False,
-                 explained_call=False):
+                 verbose=False):
         """Rank alternatives from decision matrix `matrix`.
 
             Parameters
@@ -162,14 +162,14 @@ class StructuralCOMET(MCDA_method):
                 skip_validation : bool
                     Not used in the StructuralCOMET method.
 
-                explained_call : bool
+                verbose : bool
                     If explained_call is True, then results of all submodels will be returned.
         """
         results = {}
         for struct, submodel in self._submodels.items():
             results[struct] = submodel(matrix, results)
 
-        if not explained_call:
+        if not verbose:
             return results[self._final_submodel_struct]
 
         return {self._name_struct_mapper[struct]: res

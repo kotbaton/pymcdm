@@ -115,7 +115,7 @@ class COMET(MCDA_method):
                  weights=None,
                  types=None,
                  skip_validation=False,
-                 explained_call=False):
+                 verbose=False):
         """Rank alternatives from decision matrix `matrix`.
 
             Parameters
@@ -133,7 +133,7 @@ class COMET(MCDA_method):
                 skip_validation : bool
                     Not used in the COMET method.
 
-                explained_call : bool
+                verbose : bool
                     Not used in the COMET method.
         """
         if self.criterion_number != matrix.shape[1]:

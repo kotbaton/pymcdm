@@ -40,19 +40,20 @@ class TOPSIS(MCDA_method):
         [0.500, 0.617, 0.500]
     """
     _tables = [
-        TableDesc('Normalized decision matrix', 'nmatrix', '$r_{ij}$'),
-        TableDesc('Weighted normalized decision matrix', 'wnmatrix', '$v_{ij}$'),
-        TableDesc('Positive Ideal Solution', 'pis', 'PIS'),
-        TableDesc('Negative Ideal Solution', 'nis', 'NIS'),
-        TableDesc('Distance from PIS', 'dpis', '$D_i^+$'),
-        TableDesc('Distance from NIS', 'dnis', '$D_i^-$'),
-        TableDesc('Final preference values', 'pref', '$P_i$')
-    ]
-    _table_grouping = [  # TODO is it necessary? We can have it as generic caption
-        0,  # If only one table provided, then derive caption and label from it
-        1,
-        slice(2, 4),
-        slice(4, 7)
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Negative Ideal Solution',
+                  label='nis', symbol='NIS', rows='C', cols=None),
+        TableDesc(caption='Positive Ideal Solution',
+                  label='pis', symbol='PIS', rows='C', cols=None),  # TODO should be proper symbol not PIS/NIS
+        TableDesc(caption='Distance from NIS',
+                  label='dnis', symbol='$D_i^-$', rows='A', cols=None),
+        TableDesc(caption='Distance from PIS',
+                  label='dpis', symbol='$D_i^+$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
     ]
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):
@@ -74,5 +75,5 @@ class TOPSIS(MCDA_method):
 
         p = Dm / (Dm + Dp)
 
-        return (nmatrix, weighted_matrix, pis, nis, Dp, Dm, p)
+        return nmatrix, weighted_matrix, nis, pis, Dm, Dp, p
 

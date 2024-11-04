@@ -12,11 +12,11 @@ from ..io import MCDA_results
 
 class MCDA_method(ABC):
     _reverse_ranking = True
-    _captions = None
+    _tables = None
 
     def __call__(self, matrix, weights, types,
                  skip_validation=False,
-                 explained_call=False):
+                 verbose=False):
         """ Rank alternatives from decision matrix `matrix`, with criteria
             weights `weights` and criteria types `types`.
 
@@ -39,7 +39,7 @@ class MCDA_method(ABC):
                     Skip all the validations made when alternatives
                     are evaluating. Default is False.
 
-                explained_call : bool
+                verbose : bool
                     Explain the MCDA, i.e. provide matrices and vectors from
                     all the steps of the method, instead of return just the
                     preference vector. Default is False.
@@ -52,7 +52,7 @@ class MCDA_method(ABC):
             validate_decision_problem(matrix, weights, types)
             self._additional_validation(matrix, weights, types)
 
-        if explained_call:
+        if verbose:
             return self._method_explained(matrix, weights, types)
         else:
             return self._method(matrix, weights, types)[-1]
