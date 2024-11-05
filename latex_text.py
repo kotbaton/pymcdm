@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import pymcdm as pm
 
 df = pd.read_csv('examples/vans.csv')
@@ -12,4 +11,6 @@ types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
 topsis = pm.methods.TOPSIS()
 results = topsis(alts, weights, types, verbose=True)
 
-print(results.to_latex(group_tables=True))
+# print(results.to_latex(group_tables=True))
+
+print(results.to_string(group_tables=True))

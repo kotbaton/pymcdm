@@ -206,6 +206,16 @@ class Table:
             caption=self.desc.caption,
         )
 
+    def to_string(self, float_fmt='0.4f'):
+        s = self.df.to_string(
+            index=False,
+            float_format=float_fmt,
+        )
+        return f'{self.desc.caption}\n{s}'
+
+    def __str__(self):
+        return self.to_string()
+
     def generate_row_labels(self, row_labels):
         n = self.data.shape[0]
         if row_labels is not None:
@@ -265,27 +275,27 @@ class MCDA_results:
         self.matrix = matrix
         self.results = results
 
-    def to_latex(self,
-                 group_tables: bool = True,
-                 ranking: bool = True,
-                 matrix: bool = True,
-                 label_prefix: bool = True,
-                 float_fmt: str or List[str] or None = '%0.4f',
-                 **kwargs):
+    def prepare_output(self,
+                       group_tables: bool = True,
+                       ranking: bool = True,
+                       matrix: bool = True,
+                       label_prefix: bool = True,
+                       float_fmt: str or List[str] or None = '%0.4f',
+                       output_function=None):
         output_strs = [f'Results of the {self.method_name}.']
         if matrix:
             t = Table(data=self.matrix,
                       desc=TableDesc(caption='Decision matrix',
                                      label='matrix', symbol='$x_{ij}$', rows='A', cols='C'))
-            output_strs.append(t.to_latex(float_fmt))
+            output_strs.append(output_function(t, float_fmt))
 
         grouped_tables = []
         last_group_spec = ()
         for t in self.results:
             if len(t.data.shape) == 2:  # Can't group 2d tables
-                output_strs.append(t.to_latex(float_fmt))
+                output_strs.append(output_function(t, float_fmt))
             elif not group_tables:  # If grouping is not enabled just add the table to final output
-                output_strs.append(t.to_latex(float_fmt))
+                output_strs.append(output_function(t, float_fmt))
             else:  # Process table for the grouping
                 t_spec = (t.desc.rows, t.desc.cols)
                 if last_group_spec == t_spec:  # Table fits last group
@@ -301,15 +311,21 @@ class MCDA_results:
             if group_tables and last_group_spec == ('A', None):  # If grouping is enabled and ranking fits last group
                 grouped_tables[-1].append(ranking_table)
             else:  # If not, just add as another table
-                output_strs.append(ranking_table.to_latex(float_fmt))
+                output_strs.append(output_function(ranking_table, float_fmt))
 
         if group_tables:
             for group in grouped_tables:
-                output_strs.append(Table.from_group(group).to_latex(float_fmt))
+                output_strs.append(output_function(Table.from_group(group), float_fmt))
 
         output_strs.append(f'Total {len(output_strs) - 1} tables.')
 
         return '\n\n'.join(output_strs)
+
+    def to_latex(self, **kwargs):
+        return self.prepare_output(output_function=lambda t, ff: t.to_latex(ff), **kwargs)
+
+    def to_string(self, **kwargs):
+        return self.prepare_output(output_function=lambda t, ff: t.to_string(ff), **kwargs)
 
 
     def __str__(self):
