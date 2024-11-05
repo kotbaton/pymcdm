@@ -124,7 +124,30 @@ class TableDesc:
         return Table(data, self)
 
     @staticmethod
-    def validate_option(opt):
+    def validate_option(opt: str or None):
+        """
+        Validates the option provided for row or column designation in the table.
+
+        This method checks if the specified option for rows or columns is valid. Accepted values
+        are "C" for criteria, "A" for alternatives, or None. If the input is invalid, a ValueError
+        is raised.
+
+        Parameters
+        ----------
+        opt : str or None
+            The option to validate, which should be either "C" (for criteria), "A" (for alternatives),
+            or None.
+
+        Returns
+        -------
+        str or None
+            The validated option, returned unchanged if it is valid.
+
+        Raises
+        ------
+        ValueError
+            If `opt` is not one of {"C", "A", None}.
+        """
         if opt not in ('C', 'A', None):
             raise ValueError('Valid option for rows and cols are {"C", "A"} or None.')
         return opt
@@ -197,7 +220,36 @@ class Table:
             self.df = pd.DataFrame(data=[self.data], columns=self.row_labels)
             self.df.insert(0, '', [self.desc.symbol])
 
-    def to_latex(self, float_fmt=None):
+    def fix_integers(self):
+        """
+        Converts columns in the table's DataFrame to integer type if all values in the column are integers.
+        """
+        for col in self.df.columns:
+            try:
+                if all(self.df[col].apply(float.is_integer)):
+                    self.df[col] = self.df[col].astype(int)
+            except TypeError:
+                continue
+
+    def to_latex(self, float_fmt: str or None = '0.4f'):
+        """
+        Exports the table as a LaTeX-formatted string, with optional floating-point formatting.
+
+        This method generates a LaTeX tabular representation of the table's DataFrame, including metadata
+        such as a caption and label for referencing. The float format can be specified to control the
+        precision of numeric values in the output.
+
+        Parameters
+        ----------
+        float_fmt : str or None, optional
+            A formatting string that specifies the precision of floating-point numbers in the table.
+            Defaults to '0.4f' for four decimal places.
+
+        Returns
+        -------
+        str
+            A string containing the table in LaTeX tabular format, ready for use in LaTeX documents.
+        """
         return self.df.to_latex(
             index=False,
             float_format=float_fmt,
@@ -206,7 +258,25 @@ class Table:
             caption=self.desc.caption,
         )
 
-    def to_string(self, float_fmt='0.4f'):
+    def to_string(self, float_fmt: str or None = '0.4f'):
+        """
+        Returns a string representation of the table with an optional floating-point format.
+
+        This method generates a plain-text string representation of the table's DataFrame, including
+        the table's caption as a header. The float format can be specified to control the precision
+        of numeric values in the output.
+
+        Parameters
+        ----------
+        float_fmt : str or None, optional
+            A formatting string specifying the precision of floating-point numbers in the table.
+            Defaults to '0.4f', showing four decimal places.
+
+        Returns
+        -------
+        str
+            A string representation of the table with the caption followed by the table data.
+        """
         s = self.df.to_string(
             index=False,
             float_format=float_fmt,
@@ -216,7 +286,31 @@ class Table:
     def __str__(self):
         return self.to_string()
 
-    def generate_row_labels(self, row_labels):
+    def generate_row_labels(self, row_labels: List[str] or None):
+        """
+        Generates or validates row labels for the table based on the provided labels or metadata.
+
+        This method checks if custom row labels are provided. If so, it validates that the number
+        of labels matches the number of rows in the table's data. If no labels are provided, it generates
+        default row labels using the symbol defined in the table's `desc` metadata.
+
+        Parameters
+        ----------
+        row_labels : list of str or None
+            A list of custom row labels. If None, default labels are generated based on the symbol in
+            `desc.rows`, typically representing criteria or alternatives.
+
+        Returns
+        -------
+        list of str
+            A list of row labels, either validated custom labels or automatically generated labels
+            based on the table's data shape.
+
+        Raises
+        ------
+        ValueError
+            If `row_labels` is provided but does not match the number of rows in the data.
+        """
         n = self.data.shape[0]
         if row_labels is not None:
             if len(row_labels) != n:
@@ -227,7 +321,31 @@ class Table:
         sym = self.desc.rows
         return [f'${sym}_{{{i}}}$' for i in range(1, n + 1)]
 
-    def generate_col_labels(self, col_labels):
+    def generate_col_labels(self, col_labels: List[str] or None):
+        """
+        Generates or validates column labels for the table based on the provided labels or metadata.
+
+        This method checks if custom column labels are provided. If so, it validates that the number of
+        labels matches the number of columns in the table's data. If no labels are provided, it generates
+        default column labels using the symbol defined in the table's `desc` metadata.
+
+        Parameters
+        ----------
+        col_labels : list of str or None
+            A list of custom column labels. If None, default labels are generated based on the symbol
+            in `desc.cols`, typically representing criteria or alternatives.
+
+        Returns
+        -------
+        list of str
+            A list of column labels, either validated custom labels or automatically generated labels
+            based on the table's data shape.
+
+        Raises
+        ------
+        ValueError
+            If `col_labels` is provided but does not match the number of columns in the data.
+        """
         if len(self.data.shape) == 1:
             return [self.desc.symbol]
 
@@ -241,7 +359,25 @@ class Table:
         sym = self.desc.cols
         return [f'${sym}_{{{i}}}$' for i in range(1, n + 1)]
 
-    def generate_row_labels_name(self, row_labels_name):
+    def generate_row_labels_name(self, row_labels_name: str or None):
+        """
+        Generates or returns a row label name based on provided input or metadata.
+
+        This method determines the name for the row labels column in the table. If a custom row label name
+        is provided, it returns that name. Otherwise, it generates a default name based on the table's data
+        dimensions and metadata from `desc`.
+
+        Parameters
+        ----------
+        row_labels_name : str or None
+            A custom name for the row labels column. If None, a default name is generated based on the
+            table's shape and metadata.
+
+        Returns
+        -------
+        str
+            The row labels name, either the provided custom name or a generated default name.
+        """
         if row_labels_name is not None:
             return row_labels_name
 
@@ -253,6 +389,33 @@ class Table:
 
     @staticmethod
     def from_group(group: List):
+        """
+        Creates a new `Table` instance by combining data from a group of existing `Table` objects.
+
+        This method aggregates the `data` attributes of multiple `Table` instances into a single table,
+        where each original table contributes a column in the new table. Metadata for the new table,
+        including a combined caption and label, is generated based on the metadata of the individual
+        `Table` objects in the group. Aggregated tables should contain only 1d data.
+
+        Parameters
+        ----------
+        group : list of Table
+            A list of `Table` instances to be combined. Each table in the group should share compatible
+            dimensions and metadata.
+
+        Returns
+        -------
+        Table
+            A new `Table` instance containing the combined data and generated metadata.
+
+        Raises
+        ------
+        ValueError
+            If the `group` if the tables have incompatible data shapes.
+        """
+        if any(len(t.data.shape) != 1 for t in group):
+            raise ValueError('All tables in group should be 1d.')
+
         data = np.array([t.data for t in group]).T
         desc = TableDesc(
             caption=', '.join(t.desc.caption for t in group),
@@ -266,10 +429,57 @@ class Table:
 
 
 class MCDA_results:
+    """
+    Represents the results of a Multi-Criteria Decision Analysis (MCDA) method,
+    including the decision matrix, processed results tables, and optional ranking.
+
+    Attributes
+    ----------
+    method : MCDA_method
+        The MCDA method used to generate the results.
+    method_name : str
+        The name of the MCDA method class.
+    matrix : ArrayLike
+        The decision matrix used as input for the MCDA method.
+    results : list of Table
+        A list of `Table` objects representing the analysis results.
+
+    Methods
+    -------
+    prepare_output(group_tables=True, ranking=True, matrix=True, label_prefix=True,
+                   float_fmt='%0.4f', fix_integers=True, output_function=None)
+        Prepares the formatted output string for the results, supporting options for
+        table grouping, rankings, matrix display, and formatting options.
+
+    to_latex(**kwargs)
+        Returns the results formatted as a LaTeX string, using the `prepare_output` method.
+
+    to_string(**kwargs)
+        Returns the results formatted as a plain text string, using the `prepare_output` method.
+
+    __str__()
+        Returns the results formatted as a string, equivalent to `to_string()`.
+
+    __dict__()
+        Returns a dictionary where the keys are the captions of the tables in `results`
+        and the values are the corresponding `Table` objects.
+    """
     def __init__(self,
                  method: MCDA_method,
                  matrix: ArrayLike,
                  results: List[Table]):
+        """
+        Initializes an MCDA_results instance.
+
+        Parameters
+        ----------
+        method : MCDA_method
+            The MCDA method used for analysis.
+        matrix : ArrayLike
+            The decision matrix used as input for the analysis.
+        results : list of Table
+            A list of `Table` objects representing the analysis results.
+        """
         self.method = method
         self.method_name = method.__class__.__name__
         self.matrix = matrix
@@ -280,13 +490,45 @@ class MCDA_results:
                        ranking: bool = True,
                        matrix: bool = True,
                        label_prefix: bool = True,
-                       float_fmt: str or List[str] or None = '%0.4f',
+                       float_fmt: str or None = '%0.4f',
+                       fix_integers=True,
                        output_function=None):
+        """
+        Prepares the formatted output string for the MCDA results, with options for
+        grouping tables, including rankings, and displaying the decision matrix.
+        Not meant for explicit usage.
+
+        Parameters
+        ----------
+        group_tables : bool, optional
+            Whether to group tables with similar structure, by default True.
+        ranking : bool, optional
+            Whether to include the ranking table in the output, by default True.
+        matrix : bool, optional
+            Whether to include the decision matrix in the output, by default True.
+        label_prefix : bool, optional
+            Whether to use label prefixes in the output, by default True.
+        float_fmt : str or None, optional
+            Format for floating-point numbers, by default '%0.4f'.
+        fix_integers : bool, optional
+            Whether to round integer values in tables, by default True.
+            Applied only to decision matrix and ranking. Work only if all column is integer.
+        output_function : callable, optional
+            Function to format each table, passed as a function argument.
+
+        Returns
+        -------
+        str
+            The formatted output as a string, with grouped tables, rankings,
+            and decision matrix if specified.
+        """
         output_strs = [f'Results of the {self.method_name}.']
         if matrix:
             t = Table(data=self.matrix,
                       desc=TableDesc(caption='Decision matrix',
                                      label='matrix', symbol='$x_{ij}$', rows='A', cols='C'))
+            if fix_integers:
+                t.fix_integers()
             output_strs.append(output_function(t, float_fmt))
 
         grouped_tables = []
@@ -308,28 +550,77 @@ class MCDA_results:
             ranking_table = Table(data=self.method.rank(self.results[-1].data),
                                   desc=TableDesc(caption='Final ranking',
                                                  label='ranking', symbol='$R_{i}$', rows='A', cols=None))
+            if fix_integers:
+                ranking_table.fix_integers()
             if group_tables and last_group_spec == ('A', None):  # If grouping is enabled and ranking fits last group
                 grouped_tables[-1].append(ranking_table)
             else:  # If not, just add as another table
                 output_strs.append(output_function(ranking_table, float_fmt))
 
         if group_tables:
-            for group in grouped_tables:
-                output_strs.append(output_function(Table.from_group(group), float_fmt))
+            for i, group in enumerate(grouped_tables):
+                t = Table.from_group(group)
+
+                # If this is last group we need to explicitly fix integers (in ranking)
+                if fix_integers and ranking and i == len(grouped_tables) - 1:
+                    t.fix_integers()
+
+                output_strs.append(output_function(t, float_fmt))
 
         output_strs.append(f'Total {len(output_strs) - 1} tables.')
 
         return '\n\n'.join(output_strs)
 
     def to_latex(self, **kwargs):
+        """
+        Returns the MCDA results formatted as a LaTeX string.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments passed to `prepare_output`.
+
+        Returns
+        -------
+        str
+            LaTeX-formatted string of the MCDA results.
+        """
         return self.prepare_output(output_function=lambda t, ff: t.to_latex(ff), **kwargs)
 
     def to_string(self, **kwargs):
+        """
+        Returns the MCDA results formatted as a plain text string.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments passed to `prepare_output`.
+
+        Returns
+        -------
+        str
+            Plain text string of the MCDA results.
+        """
         return self.prepare_output(output_function=lambda t, ff: t.to_string(ff), **kwargs)
 
-
     def __str__(self):
-        return 'Not implemented yet'
+        """
+        Returns the string representation of the MCDA results, equivalent to `to_string()`.
+
+        Returns
+        -------
+        str
+            String representation of the MCDA results.
+        """
+        return self.to_string()
 
     def __dict__(self):
-        pass
+        """
+        Returns a dictionary of the results with captions as keys and np.array objects as values.
+
+        Returns
+        -------
+        dict
+            Dictionary where keys are captions of the tables in `results` and values are the np.array objects.
+        """
+        return {t.desc.caption: t.data for t in self.results}

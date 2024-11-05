@@ -65,3 +65,12 @@ pymcdm.weights module
    :members:
    :undoc-members:
    :show-inheritance:
+
+---------------------
+pymcdm.io module
+---------------------
+
+.. automodule:: pymcdm.io
+   :members:
+   :undoc-members: MCDA_method
+   :show-inheritance:
