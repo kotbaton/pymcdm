@@ -14,3 +14,11 @@ results = topsis(alts, weights, types, verbose=True)
 # print(results.to_latex(group_tables=True))
 
 print(results.to_string(group_tables=True))
+
+pr = pm.io.MCDA_problem(
+    matrix=alts,
+    weights=weights,
+    types=types,
+    criteria_names=df.columns[3:]
+)
+print(pr.to_string())
