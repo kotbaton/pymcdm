@@ -1,76 +1,87 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from typing import List
+from typing import List, TypeVar, Iterable
 
 import numpy as np
 from numpy.typing import ArrayLike
 import pandas as pd
 
-
-class MCDA_method:
-    pass
+MCDA_method = TypeVar('MCDA_method')
 
 
-# TODO rewrite as a class, add more output options (at least latex and str)
-def latex_problem_definition(weights,
-                             types=None,
-                             criteria_names=None,
-                             criteria_units=None,
-                             cvalues=None,
-                             bounds=None,
-                             esp=None,
-                             ref_ideal=None,
-                             float_fmt=None,
-                             caption='Criteria description',
-                             label='crit_desc'):
-    data = {
-        'Weight': weights,
-        '$C_i$': [f'$C_{{{i}}}$' for i in range(1, weights.shape[0] + 1)]
-    }
+# TODO: include matrix and matrix output
+# TODO: validators
+# TODO: test if works
+# TODO: docstring
+class MCDA_problem:
+    def __init__(self,
+                 weights: ArrayLike,
+                 types: Iterable[{1, -1}] = None,
+                 criteria_names: Iterable[str] = None,
+                 criteria_units: Iterable[str] = None,
+                 cvalues: ArrayLike = None,
+                 bounds: ArrayLike = None,
+                 esp: Iterable[float or int] = None,
+                 ref_ideal: ArrayLike = None):
+        data = {
+            'Weight': weights,
+            '$C_i$': [f'$C_{{{i}}}$' for i in range(1, len(weights) + 1)]
+        }
 
-    if types is not None:
-        data['Type'] = ['Max' if t == 1 else 'Min'
-                        for t in types]
+        if types is not None:
+            data['Type'] = ['Max' if t == 1 else 'Min'
+                            for t in types]
 
-    if criteria_names is not None:
-        data['Criterion Name'] = criteria_names
+        if criteria_names is not None:
+            data['Criterion Name'] = criteria_names
 
-    if criteria_units is not None:
-        data['Unit'] = criteria_units
+        if criteria_units is not None:
+            data['Unit'] = criteria_units
 
-    if cvalues is not None:
-        if cvalues.shape[1] == 3:
-            data['Min'] = cvalues[:, 0]
-            data['Max'] = cvalues[:, -1]
-            data['Mean'] = cvalues[:, 1]
-        else:
-            print('Other then 3 cvalues is not supported.')
+        if cvalues is not None:
+            cvalues = np.array(cvalues)
+            if cvalues.shape[1] == 3:
+                data['$CV_1$'] = cvalues[:, 0]
+                data['$CV_3$'] = cvalues[:, -1]
+                data['$CV_2$'] = cvalues[:, 1]
+            else:
+                print('Other then 3 cvalues is not supported.')
 
-    if bounds is not None:
-        data['Min'] = bounds[:, 0]
-        data['Max'] = bounds[:, 1]
+        if bounds is not None:
+            bounds = np.array(bounds)
+            data['Min'] = bounds[:, 0]
+            data['Max'] = bounds[:, 1]
 
-    if esp is not None:
-        data['Expected value'] = esp
+        if esp is not None:
+            data['Expected value'] = esp
 
-    if ref_ideal is not None:
-        data['Ref. ideal Min'] = ref_ideal[:, 0]
-        data['Ref. ideal Max'] = ref_ideal[:, 1]
+        if ref_ideal is not None:
+            ref_ideal = np.array(ref_ideal)
+            data['Ref. ideal Min'] = ref_ideal[:, 0]
+            data['Ref. ideal Max'] = ref_ideal[:, 1]
 
-    df = pd.DataFrame(data)
+        self.df = pd.DataFrame(data)
+        self.columns_order = ['$C_i$', 'Criterion Name', 'Unit', 'Weight',
+                              'Type', 'Min', 'Max', '$CV_1$', '$CV_2$', '$CV_3$',
+                              'Expected value', 'Ref. ideal Min', 'Ref. ideal Max']
 
-    columns_order = ['$C_i$', 'Criterion Name', 'Unit', 'Weight',
-                     'Type', 'Min', 'Mean', 'Max', 'Expected value',
-                     'Ref. ideal Min', 'Ref. ideal Max']
-    used_columns = [c for c in columns_order if c in data]
-    s = df[used_columns].to_latex(
-        index=False,
-        float_format=float_fmt,
-        position='h',
-        label=label,
-        caption=caption,
-    )
+    def to_latex(self, float_fmt: str or None = '0.4f'):
+        used_columns = [c for c in self.columns_order if c in self.df.columns]
+        s = self.df[used_columns].to_latex(
+            index=False,
+            float_format=float_fmt,
+            position='h',
+            label='crit_desc',
+            caption='Criteria description.',
+        )
+        return s
 
-    print('\n', s, sep='')
+    def to_string(self, float_fmt: str or None = '0.4f'):
+        used_columns = [c for c in self.columns_order if c in self.df.columns]
+        s = self.df[used_columns].to_string(
+            index=False,
+            float_format=float_fmt,
+        )
+        return f'Criteria description.\n{s}'
 
 
 class TableDesc:
@@ -464,6 +475,7 @@ class MCDA_results:
         Returns a dictionary where the keys are the captions of the tables in `results`
         and the values are the corresponding `Table` objects.
     """
+
     def __init__(self,
                  method: MCDA_method,
                  matrix: ArrayLike,
