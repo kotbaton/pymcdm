@@ -4,6 +4,7 @@ import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 def _psi(x, tau=0.02):
@@ -48,14 +49,21 @@ class CODAS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [1.3914, 0.3411, -0.2170, -0.5381, -0.7292, -0.2481]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Negative-ideal solution.',
-        'Euclidean distances from the negative-ideal solution.',
-        'Manhattan distances from the negative-ideal solution.',
-        'Relative assessment matrix.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Negative-ideal Solution',
+                  label='nis', symbol='${ns}^{i}$', rows='C', cols=None),
+        TableDesc(caption='Euclidean distances from the negative-ideal solution',
+                  label='eucl', symbol='$E^{i}$', rows='A', cols=None),
+        TableDesc(caption='Manhattan distances from the negative-ideal solution',
+                  label='manh', symbol='$T_i$', rows='A', cols=None),
+        TableDesc(caption='Relative assessment matrix',
+                  label='rel_asses', symbol='$h_{ik}$', rows='A', cols='A'),
+        TableDesc(caption='Final preference values (assessment score)',
+                  label='pref', symbol='$H_i$', rows='A', cols=None)
     ]
 
     def __init__(self, normalization_function=normalizations.linear_normalization):
@@ -82,4 +90,4 @@ class CODAS(MCDA_method):
 
         H = np.sum(h, axis=1)
 
-        return (nmatrix, weighted_matrix, nis, E, T, h, H)
+        return nmatrix, weighted_matrix, nis, E, T, h, H

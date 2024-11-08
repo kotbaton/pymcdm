@@ -1,9 +1,10 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020, 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import helpers
 from .mcda_method import MCDA_method
 from ..validators import param_validator
+from ..io import TableDesc
 
 
 def _fake_normalization(x, cost=False):
@@ -47,13 +48,19 @@ class VIKOR(MCDA_method):
         [0.5679, 0.7667, 1, 0.7493, 0]
     """
     _reverse_ranking = False
-    _captions = [
-        'Normalized decision matrix.',
-        'Best values of all criterion functions.',
-        'Worst values of all criterion functions.',
-        'Vector of $S_i$ values.',
-        'Vector of $R_i$ values.',
-        'Vector of $Q_i$ values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Worst values of all criterion functions',
+                  label='fminus', symbol='$f^{-}$', rows='C', cols=None),
+        TableDesc(caption='Best values of all criterion functions',
+                  label='fstar', symbol='$f^{*}$', rows='C', cols=None),
+        TableDesc(caption='Vector of $S_i$ values',
+                  label='s', symbol='$S_i$', rows='A', cols=None),
+        TableDesc(caption='Vector of $R_i$ values',
+                  label='r', symbol='$R_i$', rows='A', cols=None),
+        TableDesc(caption='Vector of $Q_i$ values',
+                  label='q', symbol='$Q_i$', rows='A', cols=None),
     ]
 
     def __init__(self, normalization_function=None, v=0.5):
@@ -80,7 +87,7 @@ class VIKOR(MCDA_method):
                 f'MCDA method.'
             )
 
-        weighted_ff = weights * ((fstar - nmatrix)/(fstar - fminus))
+        weighted_ff = weights * ((fstar - nmatrix) / (fstar - fminus))
         S = np.sum(weighted_ff, axis=1)
         R = np.max(weighted_ff, axis=1)
 
@@ -89,7 +96,7 @@ class VIKOR(MCDA_method):
         Rstar = np.min(R)
         Rminus = np.max(R)
 
-        Q = v * (S - Sstar)/(Sminus - Sstar)\
-          + (1 - v) * (R - Rstar)/(Rminus - Rstar)
+        Q = v * (S - Sstar) / (Sminus - Sstar) \
+            + (1 - v) * (R - Rstar) / (Rminus - Rstar)
 
-        return (nmatrix, fstar, fminus, S, R, Q)
+        return nmatrix, fminus, fstar, S, R, Q

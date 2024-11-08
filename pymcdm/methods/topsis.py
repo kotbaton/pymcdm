@@ -45,9 +45,9 @@ class TOPSIS(MCDA_method):
         TableDesc(caption='Weighted normalized decision matrix',
                   label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Negative Ideal Solution',
-                  label='nis', symbol='NIS', rows='C', cols=None),
+                  label='nis', symbol='$A^{-}$', rows='C', cols=None),
         TableDesc(caption='Positive Ideal Solution',
-                  label='pis', symbol='PIS', rows='C', cols=None),  # TODO should be proper symbol not PIS/NIS
+                  label='pis', symbol='$A^{+}$', rows='C', cols=None),
         TableDesc(caption='Distance from NIS',
                   label='dnis', symbol='$D_i^-$', rows='A', cols=None),
         TableDesc(caption='Distance from PIS',

@@ -8,17 +8,19 @@ alts = df[df.columns[3:]].to_numpy()
 weights = pm.weights.equal_weights(alts)
 types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
 
-topsis = pm.methods.TOPSIS()
-results = topsis(alts, weights, types, verbose=True)
+tested_methods = [
+    pm.methods.TOPSIS(),
+    pm.methods.VIKOR(),
+    pm.methods.ARAS(),  # TODO rewrite ARAS so the additional element will be out of extended matrix, + maybe add esp
+                        # TODO ARAS has wrong description in the documentation
+                        # TODO ARAS check the tests
+    pm.methods.COCOSO(),
+    pm.methods.CODAS(),
 
-# print(results.to_latex(group_tables=True))
+]
 
-print(results.to_string(group_tables=True))
-
-pr = pm.io.MCDA_problem(
-    matrix=alts,
-    weights=weights,
-    types=types,
-    criteria_names=df.columns[3:]
-)
-print(pr.to_string())
+for tm in tested_methods:
+    results = tm(alts, weights, types, verbose=True)
+    s = results.to_string(group_tables=True)
+    with open(f'output/{results.method_name}.txt', 'w') as f:
+        f.write(s)

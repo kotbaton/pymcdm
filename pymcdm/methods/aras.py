@@ -1,9 +1,11 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class ARAS(MCDA_method):
@@ -42,12 +44,15 @@ class ARAS(MCDA_method):
         >>> [round(preference, 2) for preference in body(matrix, weights, types)]
         [0.74, 0.86, 0.78, 0.86]
     """
-    _captions = [
-        'Extended decision matrix.',
-        'Normalized extended decision matrix.',
-        'Weighted normalized extended decision matrix.',
-        'Values of optimality function.',
-        'Final preference values (Utility degree).'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Values of optimality function',
+                  label='opt_func', symbol='S_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference values (Utility degree)',
+                  label='utility', symbol='$K_i', rows='A', cols=None),
     ]
 
     def __init__(self, normalization_function=normalizations.sum_normalization):
@@ -76,4 +81,4 @@ class ARAS(MCDA_method):
         # Utility degree
         K = S[1:] / S[0]
 
-        return (exmatrix, nmatrix, weighted_matrix, S, K)
+        return nmatrix[1:], weighted_matrix[1:], S[1:], K

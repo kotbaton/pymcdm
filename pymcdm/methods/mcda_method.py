@@ -1,9 +1,9 @@
 # Copyright (c) 2020-2024 Andrii Shekhovtsov
 
 from abc import ABC, abstractmethod
-from collections import OrderedDict
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from ..helpers import rankdata
 from ..validators import validate_decision_problem
@@ -14,9 +14,9 @@ class MCDA_method(ABC):
     _reverse_ranking = True
     _tables = None
 
-    def __call__(self, matrix, weights, types,
-                 skip_validation=False,
-                 verbose=False):
+    def __call__(self, matrix: ArrayLike, weights: ArrayLike, types: ArrayLike,
+                 skip_validation: bool = False,
+                 verbose: bool = False):
         """ Rank alternatives from decision matrix `matrix`, with criteria
             weights `weights` and criteria types `types`.
 
@@ -59,22 +59,6 @@ class MCDA_method(ABC):
 
     def _additional_validation(self, matrix, weights, types):
         return
-
-    @staticmethod
-    def _validate_bounds(bounds, ncrit):
-        if bounds.shape[0] != ncrit:
-            raise ValueError('Number of criteria bounds should be same as '
-                             'number of weights and number of types')
-        if np.any(bounds[:, 0] == bounds[:, 1]):
-            eq = np.arange(bounds.shape[0])[bounds[:, 0] == bounds[:, 1]]
-            raise ValueError(
-                f'Bounds for criteria {eq} are equal. Consider changing'
-                f'min and max values for this criterion, '
-                f'delete this criterion or use another MCDA method.'
-            )
-        if np.any(bounds[:, 0] >= bounds[:, 1]):
-            eq = np.arange(bounds.shape[0])[bounds[:, 0] >= bounds[:, 1]]
-            raise ValueError(f'Lower bound of criteria {eq} is bigger or equal to upper bound.')
 
     def _method_explained(self, matrix, weights, types):
         results = self._method(matrix, weights, types)

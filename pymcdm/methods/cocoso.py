@@ -5,6 +5,7 @@ from .. import normalizations
 from .. import helpers
 from ..validators import param_validator
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class COCOSO(MCDA_method):
@@ -52,6 +53,22 @@ class COCOSO(MCDA_method):
         'Appraisal score strategy $k_{ib}$.',
         'Appraisal score strategy $k_{ic}$.',
         'Final preference value.',
+    ]
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Vector of $S_i$ values',
+                  label='s_values', symbol='$S_{i}$', rows='A', cols=None),
+        TableDesc(caption='Vector of $P_i$ values',
+                  label='p_values', symbol='$P_{i}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal score strategy $k_{ia}$',
+                  label='appr_score_a', symbol='$k_{ia}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal score strategy $k_{ib}$',
+                  label='appr_score_b', symbol='$k_{ib}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal score strategy $k_{ic}$',
+                  label='appr_score_c', symbol='$k_{ic}$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$k_i$', rows='A', cols=None)
     ]
 
     def __init__(self,
