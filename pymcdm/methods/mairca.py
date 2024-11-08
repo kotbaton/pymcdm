@@ -1,9 +1,11 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class MAIRCA(MCDA_method):
@@ -42,12 +44,17 @@ class MAIRCA(MCDA_method):
         [0.0332, 0.1122, 0.0654, 0.1304, 0.1498]
     """
     _reverse_ranking = False
-    _captions = [
-        'Normalized decision matrix.',
-        'Theoretical ranking matrix.',
-        'Real rating matrix.',
-        'Total gap matrix.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Theoretical ranking matrix',
+                  label='tpmatrix', symbol='$t_{pij}$', rows='A', cols='C'),
+        TableDesc(caption='Real rating matrix',
+                  label='trmatrix', symbol='$t_{rij}$', rows='A', cols='C'),
+        TableDesc(caption='Total gap matrix',
+                  label='gmatrix', symbol='$g_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$Q_{i}$', rows='A', cols=None),
     ]
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):
@@ -66,6 +73,6 @@ class MAIRCA(MCDA_method):
         # Calculation of Total Gap Matrix
         G = Tp - Tr
 
-        # Calculation the final values of criteria functions
+        # Calculation of the final values of criteria functions
         score = np.sum(G, axis=1)
-        return (nmatrix, Tp, Tr, G, score)
+        return nmatrix, Tp, Tr, G, score

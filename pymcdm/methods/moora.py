@@ -1,7 +1,9 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class MOORA(MCDA_method):
@@ -32,10 +34,13 @@ class MOORA(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.1801, 0.2345, 0.0625, 0.1757, 0.1683, 0.0742, 0.1197]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
     ]
 
     def _method(self, matrix, weights, types):

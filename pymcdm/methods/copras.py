@@ -1,7 +1,8 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020, 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class COPRAS(MCDA_method):
@@ -37,13 +38,19 @@ class COPRAS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.9459, 1.0, 0.8192, 0.8839, 0.8556, 0.7789]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Sum of maximising indices.',
-        'Sum of minimising indices.',
-        'Related significance.',
-        'Utility degree.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Sum of minimising indices',
+                  label='smin', symbol='$S_{-i}$', rows='A', cols=None),
+        TableDesc(caption='Sum of maximising indices',
+                  label='smax', symbol='$S_{+i}$', rows='A', cols=None),
+        TableDesc(caption='Related significance',
+                  label='rel_sign', symbol='$Q_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference (utility degree)',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
     def _method(self, matrix, weights, types):
@@ -62,4 +69,4 @@ class COPRAS(MCDA_method):
 
         Q = Sp + ((np.min(Sm) * Sm) / (Sm * (np.min(Sm) / Sm)))
 
-        return (nmatrix, wmatrix, Sp, Sm, Q, Q / np.max(Q))
+        return nmatrix, wmatrix, Sm, Sp, Q, Q / np.max(Q)

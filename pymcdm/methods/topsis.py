@@ -1,4 +1,4 @@
-# Copyright (c) 2020-202r Andrii Shekhovtsov
+# Copyright (c) 2020-2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations

@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import pymcdm as pm
 
@@ -16,7 +17,15 @@ tested_methods = [
                         # TODO ARAS check the tests
     pm.methods.COCOSO(),
     pm.methods.CODAS(),
-
+    # pm.methods.COMET(),  # TODO rewrite call to support verbose here
+    pm.methods.COPRAS(),
+    pm.methods.EDAS(),
+    pm.methods.ERVD(np.mean(alts, axis=0)),
+    pm.methods.MABAC(),
+    pm.methods.MAIRCA(),  # TODO verify the algorithm. Tr should be 2d?
+    # pm.methods.MARCOS(),  # TODO return to this method later
+    pm.methods.MOORA(),
+    pm.methods.OCRA(),  # TODO mistakes in the documentation
 ]
 
 for tm in tested_methods:

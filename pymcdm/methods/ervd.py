@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Andrii Shekhovtsov
 import numpy as np
 
 from .. import helpers
@@ -5,6 +6,7 @@ from .. import normalizations
 
 from .mcda_method import MCDA_method
 from ..validators import matrix_ref_point_validator
+from ..io import TableDesc
 
 class ERVD(MCDA_method):
     """ Election based on Relative Value Distances method [#ervd1]_.
@@ -45,16 +47,25 @@ class ERVD(MCDA_method):
     >>> print(rank)
     [ 7. 13.  3. 12.  9.  4. 14. 11.  2. 10. 17. 16.  8.  6. 15.  1.  5.]
     """
-    _captions = [
-        'Reference point for alternatives evaluation.',
-        'Normalized decision matrix.',
-        'Normalized reference point.',
-        'Matrix of relative performance of alternatives.',
-        'Positive ideal solution (PIS).',
-        'Negative ideal solution (NIS).',
-        'Individual separation measures from the PIS.',
-        'Individual separation measures from the NIS.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Reference point for alternatives evaluation',
+                  label='ref_point', symbol='$\\mu$', rows='C', cols=None),
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Normalized reference point',
+                  label='norm_ref_point', symbol='$\\varphi$', rows='C', cols=None),
+        TableDesc(caption='Matrix of relative performance of alternatives',
+                  label='rp_matrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Positive ideal solution',
+                  label='pis', symbol='$A^{+}$', rows='C', cols=None),
+        TableDesc(caption='Negative ideal solution',
+                  label='nis', symbol='$A^{-}$', rows='C', cols=None),
+        TableDesc(caption='Individual separation measures from the PIS',
+                  label='ind_sep_pis', symbol='$S^{+}$', rows='A', cols=None),
+        TableDesc(caption='Individual separation measures from the NIS',
+                  label='ind_sep_nis', symbol='$S^{-}$', rows='A', cols=None),
+        TableDesc(caption='Final preference values (relative closeness)',
+                  label='pref', symbol='$\\phi$', rows='A', cols=None),
     ]
 
     def __init__(self, ref_point, lambd=2.25, alpha=0.88):
@@ -105,7 +116,7 @@ class ERVD(MCDA_method):
         S_minus = np.sum(weights * np.abs(vnmatrix - v_minus), axis=1)
 
         p = S_minus / (S_plus + S_minus)
-        return (ref, nmatrix, nref, vnmatrix, v_plus, v_minus, S_plus, S_minus, p)
+        return ref, nmatrix, nref, vnmatrix, v_plus, v_minus, S_plus, S_minus, p
 
     def _additional_validation(self, matrix, weights, types):
         matrix_ref_point_validator(matrix, self.ref_point)

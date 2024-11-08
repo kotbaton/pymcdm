@@ -1,7 +1,9 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class EDAS(MCDA_method):
@@ -33,15 +35,23 @@ class EDAS(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.841, 0.632, 0.883, 0.457, 0.104]
     """
-    _captions = [
-        'Average solution (AV).',
-        'Positive distance from Average solution (PDA).',
-        'Negative distance from Average solution (NDA).',
-        'Weighted sum of PDA values (SP).',
-        'Weighted sum of NDA values (SN).',
-        'Normalized values of SP.',
-        'Normalized values of SN.',
-        'Appraisal Score.'
+    _tables = [
+        TableDesc(caption='Average solution',
+                  label='av_sol', symbol='${AV}_{i}$', rows='C', cols=None),
+        TableDesc(caption='Positive distance from Average solution',
+                  label='pds', symbol='${PDA}_{i}$', rows='A', cols='C'),
+        TableDesc(caption='Negative distance from Average solution',
+                  label='nda', symbol='${NDA}_{i}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted sum of PDA values',
+                  label='sp', symbol='${SP}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Weighted sum of NDA values',
+                  label='sn', symbol='${SN}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Normalized values of SP',
+                  label='nsp', symbol='${NSP}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Normalized values of SN',
+                  label='nsn', symbol='${NSN}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal Score',
+                  label='appr_score', symbol='${AS}_{i}$', rows='A', cols=None),
     ]
 
     def _method(self, matrix, weights, types):
@@ -71,4 +81,4 @@ class EDAS(MCDA_method):
 
         score = (nsp + nsn) / 2
 
-        return (amatrix, pda, nda, sp, sn, nsp, nsn, score)
+        return amatrix, pda, nda, sp, sn, nsp, nsn, score

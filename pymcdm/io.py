@@ -613,7 +613,7 @@ class MCDA_results:
                        group_tables: bool = True,
                        ranking: bool = True,
                        matrix: bool = True,
-                       label_prefix: bool = True,
+                       label_prefix: bool = True,  # TODO implement it
                        float_fmt: str or None = '%0.4f',
                        fix_integers=True,
                        output_function=None):
@@ -655,6 +655,8 @@ class MCDA_results:
                 t.fix_integers()
             output_strs.append(output_function(t, float_fmt))
 
+        # TODO rewrite here so the order of grouped and not grouped tables will be preserved (same as in method)
+        # TODO now the order is wrong in for example EDAS (AV is in the middle but should be first), ERVD
         grouped_tables = []
         last_group_spec = ()
         for t in self.results:

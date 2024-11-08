@@ -1,7 +1,9 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 def _ocra_normalization(x, cost=False):
@@ -46,13 +48,18 @@ class OCRA(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.143, 0.210, 0.164, 0.167, 0, 0.112]
     """
-    _captions = [
-        'The aggregate performance of $i^{th}$ alternative with respect to '
-        'all non-beneficial criteria.',
-        'Linear preference rating for the non-beneficial criteria.',
-        'The preference ratings with respect to the beneficial criteria.',
-        'Linear preference rating for the beneficial criteria.',
-        'Overall preference rating.'
+    _tables = [
+        TableDesc(caption='The aggregate performance of $i^{th}$ alternative with respect'
+                          ' to all non-beneficial criteria',
+                  label='non-benef', symbol='$\\bar{I}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Linear preference rating for the non-beneficial criteria',
+                  label='non-benef_rating', symbol='$\\bar{\\bar{I}}_{i}$', rows='A', cols=None),
+        TableDesc(caption='The preference ratings with respect to the beneficial criteria',
+                  label='benef', symbol='$\\bar{O}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Linear preference rating for the beneficial criteria',
+                  label='benef_rating', symbol='$\\bar{\\bar{O}}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Overall preference rating',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
     ]
 
     def __init__(self, normalization_function=_ocra_normalization):
@@ -76,4 +83,4 @@ class OCRA(MCDA_method):
 
         # Calculate overall preference rating
         P = (Il + Ol) - np.min(Il + Ol)
-        return (I, Il, O, Ol, P)
+        return I, Il, O, Ol, P

@@ -1,9 +1,11 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class MABAC(MCDA_method):
@@ -42,12 +44,17 @@ class MABAC(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.0826, 0.2183, -0.0488, 0.0246, -0.0704, 0.0465, 0.0464]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Border approximation area matrix.',
-        'Distances from border approximation matrix.',
-        'Final preference values',
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$n_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Border approximation area matrix',
+                  label='baam', symbol='$g_{i}$', rows='C', cols=None),
+        TableDesc(caption='Distances from border approximation matrix',
+                  label='dbaam', symbol='$q_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$S_i$', rows='A', cols=None)
     ]
 
     def __init__(self, normalization_function=normalizations.minmax_normalization):
@@ -66,4 +73,4 @@ class MABAC(MCDA_method):
         Q = weighted_matrix - G
 
         score = np.sum(Q, axis=1)
-        return (nmatrix, weighted_matrix, G, Q, score)
+        return nmatrix, weighted_matrix, G, Q, score
