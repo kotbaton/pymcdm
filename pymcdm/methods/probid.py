@@ -1,9 +1,11 @@
+# Copyright (c) 2024 Andrii Shekhovtsov
 import numpy as np
 
-from pymcdm import helpers
-from pymcdm import normalizations
+from .. import helpers
+from .. import normalizations
 
-from pymcdm.methods.mcda_method import MCDA_method
+from ..methods.mcda_method import MCDA_method
+from ..io import TableDesc
 
 class PROBID(MCDA_method):
     """ Preference Ranking on the Basis of Ideal-Average Distance Method [#probid1]_.
@@ -34,17 +36,27 @@ class PROBID(MCDA_method):
     >>> print(pref)
     [0.8568, 0.7826, 0.9362, 0.9369, 0.9379, 0.8716, 0.5489, 0.7231, 0.7792, 0.3331, 0.3387]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Matrix of ideal solutions.',
-        'Average ideal solution.',
-        'Euclidean distances between ideal solutions and alternatives.',
-        'Average Euclidean distance.',
-        'Overall positive-ideal distance.',
-        'Overall negative-ideal distance.',
-        'Vector of pos-ideal/neg-ideal ratio.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Matrix of ideal solutions',
+                  label='imatrix', symbol='$A_{(k)}$', rows='A', cols='C'),
+        TableDesc(caption='Average ideal solution',
+                  label='av_sol', symbol='$\\bar{v}_{j}$', rows='C', cols=None),
+        TableDesc(caption='Euclidean distances between ideal solutions and alternatives',
+                  label='dist', symbol='$S_{i(k)}$', rows='A', cols='A'),
+        TableDesc(caption='Average Euclidean distance',
+                  label='av_dist', symbol='$S_{i(avg)}$', rows='A', cols=None),
+        TableDesc(caption='Overall positive-ideal distance',
+                  label='pi_dist', symbol='$S_{i(pos-ideal)}$', rows='A', cols=None),
+        TableDesc(caption='Overall negative-ideal distance',
+                  label='ni_dist', symbol='$S_{i(neg-ideal)}$', rows='A', cols=None),
+        TableDesc(caption='Vector of pos-ideal/neg-ideal ratio',
+                  label='pos_neg_ratio', symbol='$R_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
     def _method(self, matrix, weights, types):

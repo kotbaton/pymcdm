@@ -1,12 +1,17 @@
+# Copyright (c) 2024 Andrii Shekhovtsov
 import numpy as np
 
-from pymcdm.methods.probid import PROBID
+from ..methods.probid import PROBID
+from ..io import TableDesc
 
 class SPROBID(PROBID):
-    _captions = PROBID._captions[:6] + [
-        'Overall positive-ideal distance.',
-        'Overall negative-ideal distance.',
-        'Final preference values.'
+    _tables = PROBID._tables[:6] + [
+        TableDesc(caption='Overall positive-ideal distance',
+                  label='pi_dist', symbol='$S_{i(pos-ideal)}$', rows='A', cols=None),
+        TableDesc(caption='Overall negative-ideal distance',
+                  label='ni_dist', symbol='$S_{i(neg-ideal)}$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
     def _final_preference_calculation(self, Si, Si_average):

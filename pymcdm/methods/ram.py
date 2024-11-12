@@ -1,9 +1,10 @@
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class RAM(MCDA_method):
@@ -45,12 +46,17 @@ class RAM(MCDA_method):
         >>> print(output_method)
         [1.4332 1.4392 1.4353 1.4322 1.4279 1.4301 1.4394 1.4308 1.4294 1.4288]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Sum of weighted normalized scores of beneficial criteria.',
-        'Sum of weighted normalized scores of cost criteria.',
-        'Final preference values of each alternative.',
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$y_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Sum of weighted normalized scores of beneficial criteria',
+                  label='benefit_scores', symbol='$S_{+i}$', rows='A', cols=None),
+        TableDesc(caption='Sum of weighted normalized scores of cost criteria',
+                  label='cost_scores', symbol='$S_{-i}$', rows='A', cols=None),
+        TableDesc(caption='Final preference values of each alternative',
+                  label='pref', symbol='${RI}_{i}$', rows='A', cols=None),
     ]
 
     def __init__(self, normalization_function=normalizations.sum_normalization):
