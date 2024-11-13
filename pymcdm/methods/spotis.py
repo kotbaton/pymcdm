@@ -1,8 +1,9 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
 from ..validators import bounds_validator, esp_bounds_validator, matrix_bounds_validator
+from ..io import TableDesc
 
 
 class SPOTIS(MCDA_method):
@@ -36,10 +37,13 @@ class SPOTIS(MCDA_method):
         [0.1989, 0.3705, 0.3063, 0.7491]
     """
     _reverse_ranking = False
-    _captions = [
-        'Ideal Solution Point (ISP).',
-        'Normalized distances from ISP.',
-        'Weighted average distance from ISP.'
+    _tables = [
+        TableDesc(caption='Ideal/Expected Solution Point (ISP/ESP)',
+                  label='esp_isp', symbol='$S^{*}$/$S^{+}$', rows='C', cols=None),
+        TableDesc(caption='Normalized distances from ISP',
+                  label='nmatrix', symbol='$d_{ij}(A_i, S^{*}_j)$', rows='A', cols='C'),
+        TableDesc(caption='Weighted average distance from ISP',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
     def __init__(self, bounds, esp=None):

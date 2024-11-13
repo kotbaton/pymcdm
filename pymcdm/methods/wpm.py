@@ -1,9 +1,11 @@
 # Copyright (c) 2023 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class WPM(MCDA_method):
@@ -38,10 +40,13 @@ class WPM(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.065, 0.017, 0.019, 0.007, 0.052]
    """
-    _captions = [
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
     def __init__(self, normalization_function=normalizations.sum_normalization):
@@ -54,4 +59,4 @@ class WPM(MCDA_method):
         weighted_matrix = nmatrix ** weights
 
         p = np.prod(weighted_matrix, axis=1)
-        return (nmatrix, weighted_matrix, p)
+        return nmatrix, weighted_matrix, p

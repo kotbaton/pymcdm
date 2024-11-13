@@ -1,9 +1,11 @@
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from .mcda_method import MCDA_method
 from ..validators import bounds_validator, matrix_bounds_validator, ref_ideal_bounds_validator
+from ..io import TableDesc
 
 
 def _dmin(x, c, d):
@@ -82,16 +84,22 @@ class RIM(MCDA_method):
     >>>  print(rank)
     ...  [3. 1. 5. 4. 2.]
     """
-    _captions = [
-        'Reference ideal.',
-        'Normalized decision matrix.',
-        'Weighted normalized decision matrix.',
-        'Variation to the normalized reference ideal $I_i^+$.',
-        'Variation to the normalized reference ideal $I_i^-$.',
-        'Final preferece values.'
+    _tables = [
+        TableDesc(caption='Reference ideal',
+                  label='ref_ideal', symbol='$s_j$', rows='C', cols='A'),
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$y_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatirx', symbol='$y^{\\prime}_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Positive variation to the normalized reference ideal',
+                  label='pos_var', symbol='$I_i^+$', rows='A', cols=None),
+        TableDesc(caption='Negative variation to the normalized reference ideal',
+                  label='neg_var', symbol='$I_i^-$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
-    def __init__(self, bounds, ref_ideal=None):
+    def __init__(self, bounds: ArrayLike, ref_ideal: ArrayLike or None=None):
         """ Create RIM method object.
 
         Parameters

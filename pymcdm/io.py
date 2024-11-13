@@ -646,7 +646,7 @@ class MCDA_results:
             The formatted output as a string, with grouped tables, rankings,
             and decision matrix if specified.
         """
-        output_strs = [f'Results of the {self.method_name}.']
+        output_strs = [f'Results for the {self.method_name} method.']
         if matrix:
             t = Table(data=self.matrix,
                       desc=TableDesc(caption='Decision matrix',

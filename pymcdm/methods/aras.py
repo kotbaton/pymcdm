@@ -52,7 +52,7 @@ class ARAS(MCDA_method):
         TableDesc(caption='Values of optimality function',
                   label='opt_func', symbol='S_i$', rows='A', cols=None),
         TableDesc(caption='Final preference values (Utility degree)',
-                  label='utility', symbol='$K_i', rows='A', cols=None),
+                  label='utility', symbol='$K_i$', rows='A', cols=None),
     ]
 
     def __init__(self, normalization_function=normalizations.sum_normalization):

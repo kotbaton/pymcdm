@@ -8,10 +8,9 @@ print(df.columns)
 alts = df[df.columns[3:]].to_numpy()
 weights = pm.weights.equal_weights(alts)
 types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
+bounds = pm.methods.SPOTIS.make_bounds(alts)
 
 tested_methods = [
-    pm.methods.TOPSIS(),
-    pm.methods.VIKOR(),
     pm.methods.ARAS(),  # TODO rewrite ARAS so the additional element will be out of extended matrix, + maybe add esp
                         # TODO ARAS has wrong description in the documentation
                         # TODO ARAS check the tests
@@ -31,7 +30,13 @@ tested_methods = [
     # pm.methods.PROMETHEE_I(),  # TODO think how to return data or maybe not return at all
     # pm.methods.PROMETHEE_II(),  # TODO think how to return data or maybe not return at all
     pm.methods.RAM(),
-
+    pm.methods.RIM(bounds),  # TODO support of the custom symbols (for ref ideal) and proper order
+    pm.methods.SPOTIS(bounds),
+    pm.methods.TOPSIS(),
+    pm.methods.VIKOR(),
+    pm.methods.WSM(), # TODO Sprawdzić wzory? Pytanie czy ma być taki sam wynik jak w WASPAS czy nie
+    pm.methods.WPM(), # TODO Sprawdzić wzory? Pytanie czy ma być taki sam wynik jak w WASPAS czy nie
+    pm.methods.WASPAS()
 ]
 
 for tm in tested_methods:

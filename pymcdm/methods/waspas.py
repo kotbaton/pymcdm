@@ -1,11 +1,12 @@
 # Copyright (c) 2023 Bartłomiej Kizielewicz
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
 from ..validators import param_validator
+from ..io import TableDesc
 
 
 class WASPAS(MCDA_method):
@@ -44,11 +45,15 @@ class WASPAS(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.8329, 0.7884, 0.6987, 0.8831, 0.7971, 0.7036, 0.8728, 0.5749]
     """
-    _captions = [
-        'Normalized decision matrix.',
-        'WSM part of the final preference.',
-        'WPM part of the final preference.',
-        'Final preference values.'
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='WSM part of the final preference.',
+                  label='wsm', symbol='${WSM}_i$', rows='A', cols=None),
+        TableDesc(caption='WPM part of the final preference.',
+                  label='wpm', symbol='${WPM}_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
     ]
 
     def __init__(self, normalization_function=normalizations.linear_normalization, l=0.5):
@@ -64,4 +69,4 @@ class WASPAS(MCDA_method):
         q_prod = np.prod(nmatrix ** weights, axis=1)
 
         p = l * q_sum + (1 - l) * q_prod
-        return (nmatrix, q_sum, q_prod, p)
+        return nmatrix, q_sum, q_prod, p
