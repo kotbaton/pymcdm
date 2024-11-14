@@ -48,7 +48,7 @@ class MAIRCA(MCDA_method):
         TableDesc(caption='Normalized decision matrix',
                   label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Theoretical ranking matrix',
-                  label='tpmatrix', symbol='$t_{pij}$', rows='A', cols='C'),
+                  label='tpmatrix', symbol='$t_{pij}$', rows='C', cols=None),
         TableDesc(caption='Real rating matrix',
                   label='trmatrix', symbol='$t_{rij}$', rows='A', cols='C'),
         TableDesc(caption='Total gap matrix',
