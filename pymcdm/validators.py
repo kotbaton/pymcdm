@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
 # Copyright (c) 2024 Bartłomiej Kizielewicz
 
-from typing import Iterable
+from typing import Sequence
 
 import numpy as np
 
@@ -66,7 +66,7 @@ def matrix_bounds_validator(matrix, bounds):
 
 def cvalues_validator(cvalues):
     for i, cv in enumerate(cvalues):
-        if not isinstance(cv, Iterable):
+        if not isinstance(cv, Sequence):
             raise ValueError(
                 'Characteristic values should be represented with nested lists or other iterables.'
                 f'However "{cv}" is not iterable.'

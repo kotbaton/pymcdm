@@ -30,8 +30,8 @@ tested_methods = [
     pm.methods.OCRA(),  # TODO mistakes in the documentation
     pm.methods.PROBID(),  # TODO mistakes in the documentation
                           # TODO add a way to support custom symbols in some tables instead of only A and C
-    pm.methods.PROMETHEE_I('usual'),  # TODO think how to return data or maybe not return at all
-    pm.methods.PROMETHEE_II('usual'),  # TODO think how to return data or maybe not return at all
+    pm.methods.PROMETHEE_I('usual'),  # TODO custom symbols
+    pm.methods.PROMETHEE_II('usual'),
     pm.methods.RAM(),
     pm.methods.RIM(bounds),  # TODO support of the custom symbols (for ref ideal) and proper order
     pm.methods.SPOTIS(bounds),
