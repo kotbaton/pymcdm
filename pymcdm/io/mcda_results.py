@@ -101,6 +101,9 @@ class MCDA_results:
             The formatted output as a string, with grouped tables, rankings,
             and decision matrix if specified.
         """
+        if ranking and self.method_name == 'PROMETHEE_I':
+            raise ValueError("Can't generate ranking for PROMETHEE I as it returns partial ranking.")
+
         if label_prefix:  # Check if label_prefix is enabled and use appropriate value for it
             label_prefix = self.method_name.lower()
         else:

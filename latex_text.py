@@ -30,8 +30,8 @@ tested_methods = [
     pm.methods.OCRA(),  # TODO mistakes in the documentation
     pm.methods.PROBID(),  # TODO mistakes in the documentation
                           # TODO add a way to support custom symbols in some tables instead of only A and C
-    # pm.methods.PROMETHEE_I(),  # TODO think how to return data or maybe not return at all
-    # pm.methods.PROMETHEE_II(),  # TODO think how to return data or maybe not return at all
+    pm.methods.PROMETHEE_I('usual'),  # TODO think how to return data or maybe not return at all
+    pm.methods.PROMETHEE_II('usual'),  # TODO think how to return data or maybe not return at all
     pm.methods.RAM(),
     pm.methods.RIM(bounds),  # TODO support of the custom symbols (for ref ideal) and proper order
     pm.methods.SPOTIS(bounds),
@@ -44,6 +44,9 @@ tested_methods = [
 
 for tm in tested_methods:
     results = tm(alts, weights, types, verbose=True)
-    s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True)
+    if tm.__class__.__name__ == 'PROMETHEE_I':
+        s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True, ranking=False)
+    else:
+        s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True)
     with open(f'output/{results.method_name}.txt', 'w') as f:
         f.write(s)

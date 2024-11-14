@@ -81,3 +81,7 @@ class TableDesc:
         if opt not in ('C', 'A', None):
             raise ValueError('Valid option for rows and cols are {"C", "A"} or None.')
         return opt
+        # TODO we should also support:
+        #      - full custom list if names are known (for example promethee)
+        #      - lambda or smth like that if lenght will be known only in runtime,
+        #        but we want custom symbol (RIM, PROBID, etc)

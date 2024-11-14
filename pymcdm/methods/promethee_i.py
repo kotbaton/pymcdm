@@ -1,11 +1,11 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-2024 Andrii Shekhovtsov
 
 from itertools import repeat
 from functools import partial, wraps
 import numpy as np
 
-from .. import normalizations
 from .mcda_method import MCDA_method
+from ..io import TableDesc, MCDA_results
 
 def _preference_function_wrapper(f):
     @wraps(f)
@@ -90,14 +90,17 @@ class PROMETHEE_I(MCDA_method):
         >>> body(matrix, weights, types)
         (array([0.55, 0.35, 0.6 ]), array([0.45, 0.65, 0.4 ]))
     """
-    _captions = [
-        'Difference tables for each criterion.',
-        'Aggregated preference indices.',
-        'Positive and negative outranking flows.'
+    _tables = [
+        # Additionally there will be a group of difference tables which will generated dynamically
+        TableDesc(caption='Aggregated preference indices',
+                  label='pi', symbol='$\\pi(A_i, A_j)$', rows='A', cols='A'),
+        TableDesc(caption='Positive and negative outranking flows',
+                  label='flows', symbol='$\\phi^+(A_i)$/$\\phi^-(A_i)$', rows='A', cols='A')  # TODO custom symbols
+                    # TODO size seems to be unsupported whatever??
     ]
 
     def __init__(self, preference_function, p=None, q=None):
-        pf  = getattr(_PreferenceFunctions, preference_function)
+        pf = getattr(_PreferenceFunctions, preference_function)
         # p and q can be provided as list of values or list of functions
         if p is None and q is None:
             pfs = repeat(partial(pf, p=None, q=None))
@@ -131,10 +134,26 @@ class PROMETHEE_I(MCDA_method):
         F_plus = np.sum(pi_table, axis=1) / (N-1)
         F_minus = np.sum(pi_table, axis=0) / (N-1)
 
-        return (diff_tables, pi_table, (F_plus, F_minus))
+        return diff_tables, pi_table, (F_plus, F_minus)
 
     def _method_explained(self, matrix, weights, types):
-        return tuple(zip(
-            self._captions,
-            self._method(matrix, weights, types, save_results=True)
-            ))
+        diff_tables, pi_table, (F_plus, F_minus) = self._method(matrix, weights, types, save_results=True)
+
+        tables = self._generate_diff_tables(diff_tables)
+        tables.append(self._tables[0].create_table(pi_table))
+        tables.append(self._tables[1].create_table((F_plus, F_minus)))
+
+        return MCDA_results(
+            method=self,
+            matrix=matrix,
+            results=tables
+        )
+
+    @staticmethod
+    def _generate_diff_tables(diff_tables):
+        return [
+            TableDesc(caption=f'Difference table for criterion $C_{{{i}}}$',
+                      label=f'diff_c{{{i}}}', symbol=f'$d_{{{i}}}(A_i, A_j)$',
+                      rows='A', cols='A').create_table(t)
+            for i, t in enumerate(diff_tables, 1)
+        ]

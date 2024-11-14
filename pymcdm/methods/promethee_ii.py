@@ -1,6 +1,8 @@
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 from .promethee_i import PROMETHEE_I
+from ..io import TableDesc, MCDA_results
+
 
 class PROMETHEE_II(PROMETHEE_I):
     """ Preference Ranking Organization Method for Enrichment of Evaluations II (PROMETHEE II) method.
@@ -37,10 +39,13 @@ class PROMETHEE_II(PROMETHEE_I):
         >>> [round(preference, 2) for preference in body(matrix, weights, types)]
         [0.1, -0.3, 0.2]
     """
-    _captions = PROMETHEE_I._captions[:-1] + [
-        'Positive outrankig flows.',
-        'Negative outrankig flows.',
-        'Global preference net flows.'
+    _tables = PROMETHEE_I._tables[:-1] + [
+        TableDesc(caption='Positive outrankig flows',
+                  label='pos_flow', symbol='$\\phi^+(A_i)$', rows='A', cols=None),
+        TableDesc(caption='Negative outrankig flows',
+                  label='neg_flow', symbol='$\\phi^-(A_i)$', rows='A', cols=None),
+        TableDesc(caption='Global preference net flows',
+                  label='net_flow', symbol='$$\\phi(A_i)$', rows='A', cols=None),
     ]
 
     def _method(self, matrix, weights, types, save_results=False):
@@ -49,4 +54,17 @@ class PROMETHEE_II(PROMETHEE_I):
 
         FI = F_plus - F_minus
 
-        return (*other, F_plus, F_minus, FI)
+        return *other, F_plus, F_minus, FI
+
+    def _method_explained(self, matrix, weights, types):
+        diff_tables, *other_tables = self._method(matrix, weights, types, save_results=True)
+
+        tables = self._generate_diff_tables(diff_tables)
+        tables.extend([t.create_table(data)
+                       for t, data in zip(self._tables, other_tables)])
+
+        return MCDA_results(
+            method=self,
+            matrix=matrix,
+            results=tables
+        )
