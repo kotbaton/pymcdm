@@ -76,7 +76,7 @@ class TestStructuralCOMET(unittest.TestCase):
                 criteria_names=criteria_names
                 )
 
-        res = model(matrix, weights=None, types=None, explained_call=True)
+        res = model(matrix, weights=None, types=None, verbose=True)
 
         reference = {
             'P_1': [0.7851, 0.6136, 0.5950, 0.7187, 0.1378,
@@ -89,8 +89,9 @@ class TestStructuralCOMET(unittest.TestCase):
                         0.4619, 0.4595, 0.5138, 0.8374, 0.1512]
         }
 
+        res = res.to_dict()
         for key in reference:
-            self.assertListEqual(list(np.round(res[key], 4)), reference[key])
+            self.assertListEqual(list(np.round(res[key].data, 4)), reference[key])
 
 
 class TestTriadsConsistency_MEJ(unittest.TestCase):

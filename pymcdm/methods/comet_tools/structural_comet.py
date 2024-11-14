@@ -4,6 +4,8 @@ import numpy as np
 
 from ..comet import COMET
 from ..mcda_method import MCDA_method
+from ...io import TableDesc,  Table, MCDA_results
+
 
 class Submodel:
     """ Create object of the COMET submodel. This class is mostly for internal
@@ -16,7 +18,7 @@ class Submodel:
                 Structure of the submodel. Refer to the single criteria by
                 names (str) or by indexes (int). If structure is more complex
                 use defined names or nested structures. See example use of
-                StructuralCOMET for more infomation.
+                StructuralCOMET for more information.
 
             cvalues : list or None
                 Cvalues for output of this submodel. Pass None if it is a final
@@ -29,15 +31,15 @@ class Submodel:
 
             name : str or None
                 Name (alias) of the Submodel. If name is not None Submodel
-                could be reffered by it in another Submodel in one
+                could be referred by it in another Submodel in one
                 StructuralCOMET model.
     """
 
     def __init__(self,
                  structure,
-                 cvalues, # Could be None if it is final submodel
-                 expert_function, # Could be None if structure is int
-                 name, # If we do not provide name we should put in some generic one
+                 cvalues,  # Could be None if it is final submodel
+                 expert_function,  # Could be None if structure is int
+                 name,  # If we do not provide name we should put in some generic one
                  ):
         self.cvalues = cvalues
         self.structure = structure
@@ -45,7 +47,7 @@ class Submodel:
         if name is None:
             self.name = str(structure)
         else:
-            self.name=name
+            self.name = name
 
         if not isinstance(self.structure, int) and expert_function is None:
             raise ValueError('expert_function argument must be a function if '
@@ -138,7 +140,7 @@ class StructuralCOMET(MCDA_method):
 
             # Submodel without cvaluese is considered final
             if submodel.cvalues is None:
-                self._final_submodel_struct =  submodel.structure
+                self._final_submodel_struct = submodel.structure
 
     def __call__(self, matrix,
                  weights=None,
@@ -172,8 +174,13 @@ class StructuralCOMET(MCDA_method):
         if not verbose:
             return results[self._final_submodel_struct]
 
-        return {self._name_struct_mapper[struct]: res
-                for struct, res in results.items()}
+        return MCDA_results(
+            method=self,
+            matrix=matrix,
+            results=[TableDesc(caption=(name := self._name_struct_mapper[struct]),
+                               label=name, symbol=name, rows='A', cols=None).create_table(res)
+                     for struct, res in results.items() if not isinstance(struct, int)]
+        )
 
     def _method(self, matrix, weights, types):
         pass

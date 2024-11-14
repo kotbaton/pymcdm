@@ -7,6 +7,7 @@ import numpy as np
 
 from .mcda_method import MCDA_method
 from ..validators import cvalues_validator, matrix_cvalues_validator
+from ..io import TableDesc
 
 
 def _TFN(a, m, b):
@@ -59,7 +60,7 @@ class COMET(MCDA_method):
         Examples
         --------
         >>> from pymcdm.methods import COMET, TOPSIS
-        >>> from pymcdm.comet_tools import MethodExpert
+        >>> from pymcdm.methods.comet_tools import MethodExpert
         >>> import numpy as np
         >>> matrix = np.array([[64, 128, 2.9, 4.3, 3.2, 280, 495, 24763, 3990],
         ...                    [28, 56, 3.1, 3.8, 3.8, 255, 417, 12975, 2999],
@@ -83,6 +84,10 @@ class COMET(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix)]
         [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
     """
+    _tables = [
+        TableDesc(caption='Final preference value',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
+    ]
 
     def __init__(self, cvalues, expert_function):
         cvalues_validator(cvalues)
@@ -110,7 +115,7 @@ class COMET(MCDA_method):
         self.cvalues = cvalues
         self.p = p
         self.tfns = [COMET._make_tfns(chv) for chv in cvalues]
-
+        
     def __call__(self, matrix,
                  weights=None,
                  types=None,
@@ -131,17 +136,24 @@ class COMET(MCDA_method):
                     Not used in the COMET method.
 
                 skip_validation : bool
-                    Not used in the COMET method.
+                    Skip all the validations made when alternatives
+                    are evaluating. Default is False. For the COMET method
+                    only matrix and cvalues are validated.
 
                 verbose : bool
-                    Not used in the COMET method.
+                    Explain the MCDA, i.e. provide matrices and vectors from
+                    all the steps of the method, instead of return just the
+                    preference vector. Default is False.
         """
-        if self.criterion_number != matrix.shape[1]:
-            raise ValueError(
-                'Number of criteria in decision matrix must be equal to number of criteria in characteristic '
-                'values. '
-            )
-        return self._method(matrix, weights, types)
+        matrix = np.asarray(matrix, dtype='float')
+
+        if not skip_validation:
+            self._additional_validation(matrix, weights, types)
+
+        if verbose:
+            return self._method_explained(matrix, weights, types)
+        else:
+            return self._method(matrix, weights, types)[-1]
 
     def _method(self, matrix, weights, types):
         tfns = self.tfns
@@ -152,7 +164,7 @@ class COMET(MCDA_method):
         tfns_values_product = product(*pref_level_vectors)
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
                           for p, co_values in zip(self.p, tfns_values_product))
-        return sum(multiplayed_co)
+        return sum(multiplayed_co),
 
     def _additional_validation(self, matrix, weights, types):
         matrix_cvalues_validator(matrix, self.cvalues)
@@ -214,7 +226,7 @@ class COMET(MCDA_method):
             --------
             >>> import numpy as np
             >>> from pymcdm.methods import COMET, TOPSIS
-            >>> from pymcdm.comet_tools import MethodExpert
+            >>> from pymcdm.methods.comet_tools import MethodExpert
             >>> matrix = np.array([[ 96, 145, 200],
                                    [100, 145, 200],
                                    [120, 170,  80],

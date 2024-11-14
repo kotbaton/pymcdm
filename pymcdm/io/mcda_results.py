@@ -205,7 +205,7 @@ class MCDA_results:
         """
         return self.to_string()
 
-    def __dict__(self):
+    def to_dict(self):
         """
         Returns a dictionary of the results with captions as keys and np.array objects as values.
 

@@ -9,20 +9,23 @@ alts = df[df.columns[3:]].to_numpy()
 weights = pm.weights.equal_weights(alts)
 types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
 bounds = pm.methods.SPOTIS.make_bounds(alts)
+expert = pm.methods.comet_tools.MethodExpert(pm.methods.TOPSIS(), weights, types)
+cvalues = pm.methods.COMET.make_cvalues(alts, 3)
+
 
 tested_methods = [
     pm.methods.ARAS(),  # TODO rewrite ARAS so the additional element will be out of extended matrix, + maybe add esp
                         # TODO ARAS has wrong description in the documentation
                         # TODO ARAS check the tests
+    # pm.methods.MARCOS(),  # TODO return to this method later, extended matrix
     pm.methods.COCOSO(),
     pm.methods.CODAS(),
-    # pm.methods.COMET(),  # TODO rewrite call to support verbose here
+    pm.methods.COMET(cvalues, expert),
     # pm.methods.COPRAS(),
     pm.methods.EDAS(),
     pm.methods.ERVD(np.mean(alts, axis=0)),
     pm.methods.MABAC(),
     pm.methods.MAIRCA(),
-    # pm.methods.MARCOS(),  # TODO return to this method later
     # pm.methods.MOORA(),
     pm.methods.OCRA(),  # TODO mistakes in the documentation
     pm.methods.PROBID(),  # TODO mistakes in the documentation
@@ -34,8 +37,8 @@ tested_methods = [
     pm.methods.SPOTIS(bounds),
     pm.methods.TOPSIS(),
     pm.methods.VIKOR(),
-    pm.methods.WSM(), # TODO Sprawdzić wzory? Pytanie czy ma być taki sam wynik jak w WASPAS czy nie
-    pm.methods.WPM(), # TODO Sprawdzić wzory? Pytanie czy ma być taki sam wynik jak w WASPAS czy nie
+    pm.methods.WSM(),
+    pm.methods.WPM(),
     pm.methods.WASPAS()
 ]
 
