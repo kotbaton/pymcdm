@@ -1,11 +1,12 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from typing import List, TypeVar
+from typing import List
 
 import numpy as np
 from numpy.typing import ArrayLike
 import pandas as pd
 
 from ..io import TableDesc
+
 
 class Table:
     """
@@ -85,7 +86,7 @@ class Table:
             except TypeError:
                 continue
 
-    def to_latex(self, float_fmt: str or None = '%0.4f'):
+    def to_latex(self, float_fmt: str or None = '%0.4f', label_prefix=''):
         """
         Exports the table as a LaTeX-formatted string, with optional floating-point formatting.
 
@@ -98,6 +99,10 @@ class Table:
         float_fmt : str or None, optional
             A formatting string that specifies the precision of floating-point numbers in the table.
             Defaults to '%0.4f' for four decimal places.
+        label_prefix : str, optional
+            Add prefix to the label, for example if label_prefix='topsis' label will be 'tab:topsis_matrix'
+            instead of 'tab:matrix'. If used with MCDA_results class, name of the method will be used
+            as the prefix.
 
         Returns
         -------
@@ -108,11 +113,11 @@ class Table:
             index=False,
             float_format=float_fmt,
             position='h',
-            label=f'tab:{self.desc.label}',
+            label=f'tab:{self.desc.label}' if not label_prefix else f'tab:{label_prefix}_{self.desc.label}',
             caption=self.desc.caption,
         )
 
-    def to_string(self, float_fmt: str or None = '%0.4f'):
+    def to_string(self, float_fmt: str or None = '%0.4f', label_prefix=''):
         """
         Returns a string representation of the table with an optional floating-point format.
 
@@ -125,6 +130,8 @@ class Table:
         float_fmt : str or None, optional
             A formatting string specifying the precision of floating-point numbers in the table.
             Defaults to '%0.4f', showing four decimal places.
+        label_prefix : str, optional
+            Unused in this method.
 
         Returns
         -------

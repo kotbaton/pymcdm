@@ -1,5 +1,5 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from typing import List, TypeVar, Sequence
+from typing import Sequence
 
 import numpy as np
 from numpy.typing import ArrayLike

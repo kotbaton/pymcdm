@@ -41,6 +41,6 @@ tested_methods = [
 
 for tm in tested_methods:
     results = tm(alts, weights, types, verbose=True)
-    s = results.to_string(group_tables=True, float_fmt='%0.6f')
+    s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True)
     with open(f'output/{results.method_name}.txt', 'w') as f:
         f.write(s)

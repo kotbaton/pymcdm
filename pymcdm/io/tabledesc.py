@@ -1,6 +1,4 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from typing import List, TypeVar, Sequence
-
 from numpy.typing import ArrayLike
 from .. import io
 
