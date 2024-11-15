@@ -95,8 +95,7 @@ class PROMETHEE_I(MCDA_method):
         TableDesc(caption='Aggregated preference indices',
                   label='pi', symbol='$\\pi(A_i, A_j)$', rows='A', cols='A'),
         TableDesc(caption='Positive and negative outranking flows',
-                  label='flows', symbol='$\\phi^+(A_i)$/$\\phi^-(A_i)$', rows='A', cols='A')  # TODO custom symbols
-                    # TODO size seems to be unsupported whatever??
+                  label='flows', symbol=None, rows='A', cols=('$\\phi^+(A_i)$', '$\\phi^-(A_i)$'))
     ]
 
     def __init__(self, preference_function, p=None, q=None):
@@ -141,7 +140,7 @@ class PROMETHEE_I(MCDA_method):
 
         tables = self._generate_diff_tables(diff_tables)
         tables.append(self._tables[0].create_table(pi_table))
-        tables.append(self._tables[1].create_table((F_plus, F_minus)))
+        tables.append(self._tables[1].create_table(np.array((F_plus, F_minus)).T))
 
         return MCDA_results(
             method=self,

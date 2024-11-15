@@ -21,15 +21,6 @@ class Table:
     desc : TableDesc
         Metadata for the table, provided as a `TableDesc` instance, including caption, label, and symbol
         information used in LaTeX representations.
-    row_labels : List[str] or None, optional
-        Labels for each row in the table. If None, row labels will be generated based on TableDesc.
-        If provided, then row labels info from TableDesc will be overridden.
-    col_labels : List[str] or None, optional
-        Labels for each column in the table. If None, columns labels will be generated based on TableDesc.
-        If provided, then column labels info from TableDesc will be overridden.
-    row_labels_name : str or None, optional
-        Name to display for the row labels, useful for creating a title for the first column in the table.
-        If None, a default based on the table type is used.
 
     Attributes
     ----------
@@ -43,6 +34,10 @@ class Table:
         List of labels for the table's columns.
     row_labels_name : str
         The name or title of the row labels column in the table.
+    caption : str
+        Caption of the table. Caption with symbol from TableDesc will be used or
+        only caption if no symbol is provided. Symbol will be added only if table
+        is 2d.
     df : pd.DataFrame
         A pandas DataFrame representation of the table, including row and column labels as well as data.
 
@@ -54,19 +49,16 @@ class Table:
 
     def __init__(self,
                  data: ArrayLike,
-                 desc: TableDesc,
-                 row_labels: List[str] or None = None,
-                 col_labels: List[str] or None = None,
-                 row_labels_name: str or None = None):
+                 desc: TableDesc):
         self.data = np.asarray(data)
         self.desc = desc
 
         if len(self.data.shape) > 2:
             raise ValueError(f'Data shape {self.data.shape} is not supported.')
 
-        self.row_labels = self.generate_row_labels(row_labels)
-        self.col_labels = self.generate_col_labels(col_labels)
-        self.row_labels_name = self.generate_row_labels_name(row_labels_name)
+        self.row_labels = self.generate_row_labels()
+        self.col_labels = self.generate_col_labels()
+        self.row_labels_name = self.generate_row_labels_name()
 
         if len(self.data.shape) == 2:
             self.df = pd.DataFrame(data=self.data, columns=self.col_labels)
@@ -74,6 +66,11 @@ class Table:
         else:
             self.df = pd.DataFrame(data=[self.data], columns=self.row_labels)
             self.df.insert(0, '', [self.desc.symbol])
+
+        if self.desc.symbol is not None and len(self.data.shape) == 2:
+            self.caption = f'{self.desc.caption} ({self.desc.symbol})'
+        else:
+            self.caption = self.desc.caption
 
     def fix_integers(self):
         """
@@ -114,7 +111,7 @@ class Table:
             float_format=float_fmt,
             position='h',
             label=f'tab:{self.desc.label}' if not label_prefix else f'tab:{label_prefix}_{self.desc.label}',
-            caption=self.desc.caption,
+            caption=self.caption,
         )
 
     def to_string(self, float_fmt: str or None = '%0.4f', label_prefix=''):
@@ -142,24 +139,14 @@ class Table:
             index=False,
             float_format=float_fmt,
         )
-        return f'{self.desc.caption}\n{s}'
+        return f'{self.caption}\n{s}'
 
     def __str__(self):
         return self.to_string()
 
-    def generate_row_labels(self, row_labels: List[str] or None):
+    def generate_row_labels(self):
         """
-        Generates or validates row labels for the table based on the provided labels or metadata.
-
-        This method checks if custom row labels are provided. If so, it validates that the number
-        of labels matches the number of rows in the table's data. If no labels are provided, it generates
-        default row labels using the symbol defined in the table's `desc` metadata.
-
-        Parameters
-        ----------
-        row_labels : list of str or None
-            A list of custom row labels. If None, default labels are generated based on the symbol in
-            `desc.rows`, typically representing criteria or alternatives.
+        Generates or validates row labels for the table based on the provided labels in metadata.
 
         Returns
         -------
@@ -170,31 +157,21 @@ class Table:
         Raises
         ------
         ValueError
-            If `row_labels` is provided but does not match the number of rows in the data.
+            If `rows` is provided as sequence but does not match the number of rows in the data.
         """
         n = self.data.shape[0]
-        if row_labels is not None:
-            if len(row_labels) != n:
-                raise ValueError('row_labels should have same number of elements as number'
+        rows = self.desc.rows
+        if isinstance(rows, (list, tuple, np.ndarray)):
+            if len(rows) != n:
+                raise ValueError('rows should have same number of elements as number'
                                  f' of rows in data ({n}).')
-            return row_labels
+            return rows
 
-        sym = self.desc.rows
-        return [f'${sym}_{{{i}}}$' for i in range(1, n + 1)]
+        return [f'${rows}_{{{i}}}$' for i in range(1, n + 1)]
 
-    def generate_col_labels(self, col_labels: List[str] or None):
+    def generate_col_labels(self):
         """
-        Generates or validates column labels for the table based on the provided labels or metadata.
-
-        This method checks if custom column labels are provided. If so, it validates that the number of
-        labels matches the number of columns in the table's data. If no labels are provided, it generates
-        default column labels using the symbol defined in the table's `desc` metadata.
-
-        Parameters
-        ----------
-        col_labels : list of str or None
-            A list of custom column labels. If None, default labels are generated based on the symbol
-            in `desc.cols`, typically representing criteria or alternatives.
+        Generates or validates column labels for the table based on the provided labels in metadata.
 
         Returns
         -------
@@ -205,48 +182,38 @@ class Table:
         Raises
         ------
         ValueError
-            If `col_labels` is provided but does not match the number of columns in the data.
+            If `cols` is provided but does not match the number of columns in the data.
         """
+        cols = self.desc.cols
         if len(self.data.shape) == 1:
-            return [self.desc.symbol]
+            if isinstance(cols, str):
+                return [cols]
+            else:
+                return cols
 
         n = self.data.shape[1]
-        if col_labels is not None:
-            if len(col_labels) != n:
-                raise ValueError('col_labels should have same number of elements as number'
+        if isinstance(cols, (list, tuple, np.ndarray)):
+            if len(cols) != n:
+                raise ValueError('cols should have same number of elements as number'
                                  f' of columns in data ({n}).')
-            return col_labels
+            return cols
 
-        sym = self.desc.cols
-        return [f'${sym}_{{{i}}}$' for i in range(1, n + 1)]
+        return [f'${cols}_{{{i}}}$' for i in range(1, n + 1)]
 
-    def generate_row_labels_name(self, row_labels_name: str or None):
+    def generate_row_labels_name(self):
         """
-        Generates or returns a row label name based on provided input or metadata.
-
-        This method determines the name for the row labels column in the table. If a custom row label name
-        is provided, it returns that name. Otherwise, it generates a default name based on the table's data
-        dimensions and metadata from `desc`.
-
-        Parameters
-        ----------
-        row_labels_name : str or None
-            A custom name for the row labels column. If None, a default name is generated based on the
-            table's shape and metadata.
+        Generates or returns a row label name based on provided metadata.
 
         Returns
         -------
         str
-            The row labels name, either the provided custom name or a generated default name.
+            The row labels name.
         """
-        if row_labels_name is not None:
-            return row_labels_name
-
-        if len(self.data.shape) == 1:
+        rows = self.desc.rows
+        if len(self.data.shape) == 2 and isinstance(rows, str):
+            return f'${rows}_{{i}}$'
+        else:
             return ''
-
-        if len(self.data.shape) == 2:
-            return f'${self.desc.rows}_{{i}}$'
 
     @staticmethod
     def from_group(group: List):
@@ -278,12 +245,12 @@ class Table:
             raise ValueError('All tables in group should be 1d.')
 
         data = np.array([t.data for t in group]).T
+        col_labels = [t.desc.symbol for t in group]
         desc = TableDesc(
             caption=', '.join(t.desc.caption for t in group),
             label='_'.join(t.desc.label for t in group),
             symbol=None,
             rows=group[0].desc.rows,
-            cols=None
+            cols=col_labels
         )
-        col_labels = [t.desc.symbol for t in group]
-        return Table(data=data, desc=desc, col_labels=col_labels)
+        return Table(data=data, desc=desc)

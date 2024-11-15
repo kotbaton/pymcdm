@@ -21,16 +21,16 @@ tested_methods = [
     pm.methods.COCOSO(),
     pm.methods.CODAS(),
     pm.methods.COMET(cvalues, expert),
-    # pm.methods.COPRAS(),
+    pm.methods.COPRAS(),
     pm.methods.EDAS(),
     pm.methods.ERVD(np.mean(alts, axis=0)),
     pm.methods.MABAC(),
     pm.methods.MAIRCA(),
-    # pm.methods.MOORA(),
+    pm.methods.MOORA(),
     pm.methods.OCRA(),  # TODO mistakes in the documentation
     pm.methods.PROBID(),  # TODO mistakes in the documentation
                           # TODO add a way to support custom symbols in some tables instead of only A and C
-    pm.methods.PROMETHEE_I('usual'),  # TODO custom symbols
+    pm.methods.PROMETHEE_I('usual'),
     pm.methods.PROMETHEE_II('usual'),
     pm.methods.RAM(),
     pm.methods.RIM(bounds),  # TODO support of the custom symbols (for ref ideal) and proper order

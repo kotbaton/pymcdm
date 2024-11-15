@@ -17,12 +17,15 @@ class TableDesc:
     symbol : str or None, optional
         A mathematical symbol representing the data in the table as in the referenced paper. Defaults to None
         if no symbol is specified.
-    rows : {'C', 'A'}, optional
-        Defines the type of data stored in the rows of the table. Use 'C' to indicate criteria, or 'A' to
-        indicate alternatives. Defaults to None if unspecified.
-    cols : {'C', 'A'}, optional
-        Defines the type of data stored in the columns of the table. Use 'C' to indicate criteria, or 'A'
-        to indicate alternatives. Defaults to None if unspecified.
+    rows : str or list[str] or None
+        Defines the labels of data stored in the rows of the table. Use 'C' to indicate criteria, or 'A' to
+        indicate alternatives. Usage of custom symbol will result in labels like: $S_1$, $S_2$, etc.
+        If list provided, then labels from the list will be used.
+        Defaults to None if unspecified.
+    cols : str or list[str] or None
+        Defines the labels of data stored in the columns of the table. Use 'C' to indicate criteria, or 'A' to
+        indicate alternatives. Usage of custom symbol will result in labels like: $S_1$, $S_2$, etc.
+        If list provided, then labels from the list will be used.
 
     Attributes
     ----------
@@ -32,18 +35,23 @@ class TableDesc:
         The short reference label for the table in LaTeX or other references.
     symbol : str or None
         Mathematical symbol associated with the table data.
-    rows : str or None
-        Specifies whether criteria ('C') or alternatives ('A') are represented in the rows, if applicable.
-    cols : str or None
-        Specifies whether criteria ('C') or alternatives ('A') are represented in the columns, if applicable.
+    rows : str or list[str] or None
+        Defines the labels of data stored in the rows of the table. Use 'C' to indicate criteria, or 'A' to
+        indicate alternatives. Usage of custom symbol will result in labels like: $S_1$, $S_2$, etc.
+        If list provided, then labels from the list will be used.
+        Defaults to None if unspecified.
+    cols : str or list[str] or None
+        Defines the labels of data stored in the columns of the table. Use 'C' to indicate criteria, or 'A' to
+        indicate alternatives. Usage of custom symbol will result in labels like: $S_1$, $S_2$, etc.
+        If list provided, then labels from the list will be used.
     """
 
     def __init__(self,
                  caption: str,
                  label: str,
                  symbol: str or None = None,
-                 rows: str or None = None,
-                 cols: str or None = None):
+                 rows: str or list[str] or None = None,
+                 cols: str or list[str] or None = None):
         self.caption = caption
         self.label = label
         self.symbol = symbol
@@ -54,7 +62,7 @@ class TableDesc:
         return io.Table(data, self)
 
     @staticmethod
-    def validate_option(opt: str or None):
+    def validate_option(opt: str or list[str] or None):
         """
         Validates the option provided for row or column designation in the table.
 
@@ -78,10 +86,8 @@ class TableDesc:
         ValueError
             If `opt` is not one of {"C", "A", None}.
         """
-        if opt not in ('C', 'A', None):
-            raise ValueError('Valid option for rows and cols are {"C", "A"} or None.')
+        if opt is not None\
+                and not isinstance(opt, str)\
+                and not all(isinstance(v, str) for v in opt):
+            raise ValueError('Valid arguments for cols or rows are str, list[str] or None.')
         return opt
-        # TODO we should also support:
-        #      - full custom list if names are known (for example promethee)
-        #      - lambda or smth like that if lenght will be known only in runtime,
-        #        but we want custom symbol (RIM, PROBID, etc)
