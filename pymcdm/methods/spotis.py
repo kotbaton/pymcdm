@@ -77,7 +77,7 @@ class SPOTIS(MCDA_method):
                          (bounds[:,0] - bounds[:,1]))
         # Distances to ISP (smaller means better alt)
         raw_scores = np.sum(nmatrix * weights, axis=1)
-        return (esp, nmatrix, raw_scores)
+        return esp, nmatrix, raw_scores
 
     def _additional_validation(self, matrix, weights, types):
         matrix_bounds_validator(matrix, self.bounds)

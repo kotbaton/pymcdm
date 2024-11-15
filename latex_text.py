@@ -5,18 +5,38 @@ import pymcdm as pm
 df = pd.read_csv('examples/vans.csv')
 print(df.columns)
 
-alts = df[df.columns[3:]].to_numpy()
-weights = pm.weights.equal_weights(alts)
-types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
+alts = np.array([
+    [7.6, 46, 18, 390, 0.1, 11],
+    [5.5, 32, 21, 360, 0.05, 11],
+    [5.3, 32, 21, 290, 0.05, 11],
+    [5.7, 37, 19, 270, 0.05, 9],
+    [4.2, 38, 19, 240, 0.1, 8],
+    [4.4, 38, 19, 260, 0.1, 8],
+    [3.9, 42, 16, 270, 0.1, 5],
+    [7.9, 44, 20, 400, 0.05, 6],
+    [8.1, 44, 20, 380, 0.05, 6],
+    [4.5, 46, 18, 320, 0.1, 7],
+    [5.7, 48, 20, 320, 0.05, 11],
+    [5.2, 48, 20, 310, 0.05, 11],
+    [7.1, 49, 19, 280, 0.1, 12],
+    [6.9, 50, 16, 250, 0.05, 10]
+])
+
+weights = np.array([0.21, 0.16, 0.26, 0.17, 0.12, 0.08])
+types = np.array([1, 1, 1, 1, -1, -1])
+xopt = np.array([15, 50, 24.5, 400, 0.05, 5])
+
+# alts = df[df.columns[3:]].to_numpy()
+# weights = pm.weights.equal_weights(alts)
+# types = [1, 1, 1, 1, 1, -1, -1, 1, -1]
 bounds = pm.methods.SPOTIS.make_bounds(alts)
 expert = pm.methods.comet_tools.MethodExpert(pm.methods.TOPSIS(), weights, types)
 cvalues = pm.methods.COMET.make_cvalues(alts, 3)
 
-
+# TODO add T to Table??
+# TODO make symbols and formulas same in docs and in verbose results
 tested_methods = [
-    pm.methods.ARAS(),  # TODO rewrite ARAS so the additional element will be out of extended matrix, + maybe add esp
-                        # TODO ARAS has wrong description in the documentation
-                        # TODO ARAS check the tests
+    pm.methods.ARAS(esp=xopt),
     # pm.methods.MARCOS(),  # TODO return to this method later, extended matrix
     pm.methods.COCOSO(),
     pm.methods.CODAS(),
@@ -45,8 +65,8 @@ tested_methods = [
 for tm in tested_methods:
     results = tm(alts, weights, types, verbose=True)
     if tm.__class__.__name__ == 'PROMETHEE_I':
-        s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True, ranking=False)
+        s = results.to_string(group_tables=True, float_fmt='%0.4f', label_prefix=True, ranking=False)
     else:
-        s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True)
+        s = results.to_string(group_tables=True, float_fmt='%0.4f', label_prefix=True)
     with open(f'output/{results.method_name}.txt', 'w') as f:
         f.write(s)

@@ -24,6 +24,9 @@ class ARAS(MCDA_method):
                 Function which should be used to normalize `matrix` columns. It should match signature `foo(x, cost)`,
                 where `x` is a vector which should be normalized and `cost` is a bool variable which says if `x` is a
                 cost or profit criterion.
+            esp : ndarray or None
+                Optimal values for alternatives evaluation. Should be array with ideal (expected) value for each
+                criterion. If None, ESP will be calculated based on data and criteria types. Default is None.
 
         References
         ----------
@@ -45,40 +48,55 @@ class ARAS(MCDA_method):
         [0.74, 0.86, 0.78, 0.86]
     """
     _tables = [
+        TableDesc(caption='Optimal values',
+                  label='opt', symbol='$x_0$', rows='C', cols=None),
         TableDesc(caption='Normalized decision matrix',
                   label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Weighted normalized decision matrix',
-                  label='wmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Values of optimality function',
                   label='opt_func', symbol='S_i$', rows='A', cols=None),
         TableDesc(caption='Final preference values (Utility degree)',
                   label='utility', symbol='$K_i$', rows='A', cols=None),
     ]
 
-    def __init__(self, normalization_function=normalizations.sum_normalization):
+    def __init__(self, normalization_function=normalizations.sum_normalization, esp=None):
         self.normalization = normalization_function
+        if esp is not None:
+            self.esp = np.asarray(esp, dtype='float')
+        else:
+            self.esp = esp
 
     def _method(self, matrix, weights, types):
         n, m = matrix.shape
 
+        xopt = self.esp
+        if xopt is None:
+            xopt = np.zeros(m)
+            for i in range(m):
+                if types[i] == 1:
+                    xopt[i] = np.max(matrix[:, i])
+                else:
+                    xopt[i] = np.min(matrix[:, i])
+
         # Extended initial decision matrix
         exmatrix = np.zeros((n + 1, m))
         exmatrix[1:] = matrix
+        exmatrix[0] = xopt
 
-        for i in range(m):
-            if types[i] == 1:
-                exmatrix[0, i] = np.max(matrix[:, i])
-            else:
-                exmatrix[0, i] = np.min(matrix[:, i])
-
-        # Every row of nmatrix is multiplayed by weights
+        # Normalize the extended decision matrix as well as optimal solution xopt included in it
         nmatrix = helpers.normalize_matrix(exmatrix, self.normalization, types)
+        nxopt, nmatrix = nmatrix[0], nmatrix[1:]
+
+        # Every row of nmatrix and normalized optimal solution is multiplayer by weights
+        wnxopt = nxopt * weights
         weighted_matrix = nmatrix * weights
 
         # Values of optimality function
+        Sopt = np.sum(wnxopt)
         S = weighted_matrix.sum(axis=1)
 
         # Utility degree
-        K = S[1:] / S[0]
+        K = S / Sopt
 
-        return nmatrix[1:], weighted_matrix[1:], S[1:], K
+        return xopt, nmatrix, weighted_matrix, S, K
