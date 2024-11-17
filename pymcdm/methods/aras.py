@@ -8,6 +8,25 @@ from .mcda_method import MCDA_method
 from ..io import TableDesc
 
 
+def _alts_labels(n: int) -> list[str]:
+    """
+    The purpose of this function is to generate proper alternative labels
+    for the extended matrix, instead of using generic ones from Table
+    and TableDesc functionality.
+
+    Parameters
+    ----------
+    n : int
+        Number of rows in extended matrix for which labels should be generated.
+
+    Returns
+    -------
+        List of labels, beginning from $A_{0}$ which stands for the optimal solution,
+        ending with $A_{n}$.
+    """
+    return [f'$A_{{{i}}}$' for i in range(0, n)]
+
+
 class ARAS(MCDA_method):
     """ Additive Ratio ASsessment (ARAS) method.
 
@@ -48,14 +67,14 @@ class ARAS(MCDA_method):
         [0.74, 0.86, 0.78, 0.86]
     """
     _tables = [
-        TableDesc(caption='Optimal values',
-                  label='opt', symbol='$x_0$', rows='C', cols=None),
-        TableDesc(caption='Normalized decision matrix',
-                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
-        TableDesc(caption='Weighted normalized decision matrix',
-                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Extended decision matrix',
+                  label='ematrix', symbol='$x_{ij}$', rows=_alts_labels, cols='C'),
+        TableDesc(caption='Normalized extended decision matrix',
+                  label='enmatrix', symbol='$r_{ij}$', rows=_alts_labels, cols='C'),
+        TableDesc(caption='Weighted normalized extended decision matrix',
+                  label='ewnmatrix', symbol='$v_{ij}$', rows=_alts_labels, cols='C'),
         TableDesc(caption='Values of optimality function',
-                  label='opt_func', symbol='S_i$', rows='A', cols=None),
+                  label='opt_func', symbol='S_i$', rows=_alts_labels, cols=None),
         TableDesc(caption='Final preference values (Utility degree)',
                   label='utility', symbol='$K_i$', rows='A', cols=None),
     ]
@@ -70,33 +89,27 @@ class ARAS(MCDA_method):
     def _method(self, matrix, weights, types):
         n, m = matrix.shape
 
-        xopt = self.esp
-        if xopt is None:
-            xopt = np.zeros(m)
-            for i in range(m):
-                if types[i] == 1:
-                    xopt[i] = np.max(matrix[:, i])
-                else:
-                    xopt[i] = np.min(matrix[:, i])
-
         # Extended initial decision matrix
         exmatrix = np.zeros((n + 1, m))
         exmatrix[1:] = matrix
-        exmatrix[0] = xopt
 
-        # Normalize the extended decision matrix as well as optimal solution xopt included in it
+        if self.esp is None:
+            for i in range(m):
+                if types[i] == 1:
+                    exmatrix[0, i] = np.max(matrix[:, i])
+                else:
+                    exmatrix[0, i] = np.min(matrix[:, i])
+        else:
+            exmatrix[0] = self.esp
+
+        # Every row of nmatrix is multiplayed by weights
         nmatrix = helpers.normalize_matrix(exmatrix, self.normalization, types)
-        nxopt, nmatrix = nmatrix[0], nmatrix[1:]
-
-        # Every row of nmatrix and normalized optimal solution is multiplayer by weights
-        wnxopt = nxopt * weights
         weighted_matrix = nmatrix * weights
 
         # Values of optimality function
-        Sopt = np.sum(wnxopt)
         S = weighted_matrix.sum(axis=1)
 
         # Utility degree
-        K = S / Sopt
+        K = S[1:] / S[0]
 
-        return xopt, nmatrix, weighted_matrix, S, K
+        return exmatrix, nmatrix, weighted_matrix, S, K

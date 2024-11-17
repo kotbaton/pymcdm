@@ -64,30 +64,45 @@ class TableDesc:
     @staticmethod
     def validate_option(opt: str or list[str] or None):
         """
-        Validates the option provided for row or column designation in the table.
+        Validates the provided option for row or column designation in a table.
 
-        This method checks if the specified option for rows or columns is valid. Accepted values
-        are "C" for criteria, "A" for alternatives, or None. If the input is invalid, a ValueError
-        is raised.
+        This method ensures that the input `opt` is valid for designating rows or columns in a table.
+        The valid options are:
+        - "C" for criteria
+        - "A" for alternatives
+        - Any other str which will be changed in the list of labels with lower index.
+        - None if not used
+        - A callable with a signature foo(n: int) -> list[str]
+        - A list of strings, where each string represents a valid label.
+
+        If the input does not meet these criteria, a `ValueError` is raised.
 
         Parameters
         ----------
-        opt : str or None
-            The option to validate, which should be either "C" (for criteria), "A" (for alternatives),
-            or None.
+        opt : str | list[str] | Callable | None
+            The option to validate. This can be:
+            - A string: "C" (criteria) or "A" (alternatives) or other string.
+            - A callable object with signature foo(n: int) -> list[str].
+            - A list of strings, where all elements are valid labels.
+            - None
 
         Returns
         -------
-        str or None
+        str | list[str] | Callable | None
             The validated option, returned unchanged if it is valid.
 
         Raises
         ------
         ValueError
-            If `opt` is not one of {"C", "A", None}.
+            If `opt` is not one of the following types or values:
+            - A string ("C" or "A")
+            - A list of strings
+            - A callable
+            - None
         """
         if opt is not None\
                 and not isinstance(opt, str)\
+                and not callable(opt)\
                 and not all(isinstance(v, str) for v in opt):
             raise ValueError('Valid arguments for cols or rows are str, list[str] or None.')
         return opt

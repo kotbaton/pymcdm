@@ -1,5 +1,5 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from typing import List
+from typing import List, Callable
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -28,10 +28,12 @@ class Table:
         The primary data of the table, stored as a NumPy array.
     desc : TableDesc
         The metadata description of the table, including caption and label information.
-    row_labels : List[str]
-        List of labels for the table's rows.
-    col_labels : List[str]
-        List of labels for the table's columns.
+    row_labels : List[str] or Callable
+        List of labels for the table's rows. Can be Callable with signature foo(n: int) -> List[str].
+        Size of the returned list should be same as number of rows in the Table (`n`).
+    col_labels : List[str] or Callable
+        List of labels for the table's columns. Can be Callable with signature foo(n: int) -> List[str].
+        Size of the returned list should be same as number of columns in the Table (`n`).
     row_labels_name : str
         The name or title of the row labels column in the table.
     caption : str
@@ -158,16 +160,23 @@ class Table:
         ------
         ValueError
             If `rows` is provided as sequence but does not match the number of rows in the data.
+            If provided value's type is wrong.
         """
         n = self.data.shape[0]
         rows = self.desc.rows
+        # If rows are Callable then we try to use it and then verify output
+        if callable(rows):
+            rows = rows(n)
+
         if isinstance(rows, (list, tuple, np.ndarray)):
             if len(rows) != n:
                 raise ValueError('rows should have same number of elements as number'
                                  f' of rows in data ({n}).')
             return rows
-
-        return [f'${rows}_{{{i}}}$' for i in range(1, n + 1)]
+        elif isinstance(rows, str):
+            return [f'${rows}_{{{i}}}$' for i in range(1, n + 1)]
+        else:
+            raise ValueError('rows should be List[str] or Callable which returns List[str] of the proper length.')
 
     def generate_col_labels(self):
         """
@@ -183,6 +192,7 @@ class Table:
         ------
         ValueError
             If `cols` is provided but does not match the number of columns in the data.
+            If provided value's type is wrong.
         """
         cols = self.desc.cols
         if len(self.data.shape) == 1:
@@ -192,13 +202,18 @@ class Table:
                 return cols
 
         n = self.data.shape[1]
+        if callable(cols):
+            cols = cols(n)
+
         if isinstance(cols, (list, tuple, np.ndarray)):
             if len(cols) != n:
                 raise ValueError('cols should have same number of elements as number'
                                  f' of columns in data ({n}).')
             return cols
-
-        return [f'${cols}_{{{i}}}$' for i in range(1, n + 1)]
+        elif isinstance(cols, str):
+            return [f'${cols}_{{{i}}}$' for i in range(1, n + 1)]
+        else:
+            raise ValueError('cols should be List[str] or Callable which returns List[str] of the proper length.')
 
     def generate_row_labels_name(self):
         """
