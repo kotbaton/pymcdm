@@ -5,15 +5,16 @@ from .. import helpers
 from .. import normalizations
 
 from .mcda_method import MCDA_method
-from ..validators import matrix_ref_point_validator
 from ..io import TableDesc
+
 
 class ERVD(MCDA_method):
     """ Election based on Relative Value Distances method [#ervd1]_.
 
     References
     ----------
-    .. [#ervd1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+    .. [#ervd1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method
+                based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
 
     Examples
     --------
@@ -74,7 +75,8 @@ class ERVD(MCDA_method):
         Parameters
         ----------
             ref_point : ndarray or None
-                Reference point for alternatives evaluation. Should be one dimension array with reference value for each criterion.
+                Reference point for alternatives evaluation. Should be one dimension array with reference
+                value for each criterion.
 
             lam : float
                 Lambda parameter. See [1] for detailed description. Default is 2.25.
@@ -84,7 +86,8 @@ class ERVD(MCDA_method):
 
         References
         ----------
-        .. [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+        .. [1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method
+               based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
         """
         self.lambd = lambd
         self.alpha = alpha
@@ -117,6 +120,3 @@ class ERVD(MCDA_method):
 
         p = S_minus / (S_plus + S_minus)
         return ref, nmatrix, nref, vnmatrix, v_plus, v_minus, S_plus, S_minus, p
-
-    def _additional_validation(self, matrix, weights, types):
-        matrix_ref_point_validator(matrix, self.ref_point)

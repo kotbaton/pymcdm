@@ -455,18 +455,39 @@ ERVD
 =======================
 ``ERVD`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
-
-**Step 2.** Define reference points :math:`\mu, j=1,\ldots,n` for each decision criterion.
-
-**Step 3.** Normalize the decision matrix using the sum method.
-
-**Step 4.** Transform the reference points into the normalized scale:
+**Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
+and :math:`m` is the number of criteria (:eq:`equ:mat_ervd`).
 
 .. math::
     \begin{equation}
-    \varphi_j=\frac{\mu_j}{\sum_{i=1}^m d_{i j}}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
     \end{equation}
+    :label: equ:mat_ervd
+
+**Step 2.** Define reference points :math:`\mu, j=1,\ldots,n` for each decision criterion. Decision makers must decide
+which outcomes they consider equivalent for criterion :math:`j`, set the reference point :math:`\mu_j` and then
+consider lesser outcomes as losses and greater ones as gains.
+
+**Step 3.** Normalize the decision matrix using the sum method (:eq:`equ:ervd_sum`).
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{x_{ij}}{\sum^m_{i=1} x_{ij}}
+    \end{equation}
+    :label: equ:ervd_sum
+
+**Step 4.** Normalize the reference point with similar to the data in the matrix:
+
+.. math::
+    \begin{equation}
+        \varphi_{j} = \frac{\mu_{j}}{\sum^m_{i=1} x_{ij}}
+    \end{equation}
+
 
 **Step 5.** Calculate the value of alternative :math:`A_i` according to criterion :math:`C_j` by increasing value function
 (for benefit criteria):
