@@ -50,7 +50,7 @@ class MABAC(MCDA_method):
         TableDesc(caption='Weighted normalized decision matrix',
                   label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Border approximation area matrix',
-                  label='baam', symbol='$g_{i}$', rows='C', cols=None),
+                  label='baam', symbol='$g_{j}$', rows='C', cols=None),
         TableDesc(caption='Distances from border approximation matrix',
                   label='dbaam', symbol='$q_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Final preference values',

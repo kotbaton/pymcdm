@@ -50,23 +50,23 @@ class ERVD(MCDA_method):
     """
     _tables = [
         TableDesc(caption='Reference point for alternatives evaluation',
-                  label='ref_point', symbol='$\\mu$', rows='C', cols=None),
+                  label='ref_point', symbol='$\\mu_j$', rows='C', cols=None),
         TableDesc(caption='Normalized decision matrix',
                   label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Normalized reference point',
-                  label='norm_ref_point', symbol='$\\varphi$', rows='C', cols=None),
+                  label='norm_ref_point', symbol='$\\varphi_j$', rows='C', cols=None),
         TableDesc(caption='Matrix of relative performance of alternatives',
                   label='rp_matrix', symbol='$v_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Positive ideal solution',
-                  label='pis', symbol='$A^{+}$', rows='C', cols=None),
+                  label='pis', symbol='$A^{+}_j$', rows='C', cols=None),
         TableDesc(caption='Negative ideal solution',
-                  label='nis', symbol='$A^{-}$', rows='C', cols=None),
+                  label='nis', symbol='$A^{-}_j$', rows='C', cols=None),
         TableDesc(caption='Individual separation measures from the PIS',
-                  label='ind_sep_pis', symbol='$S^{+}$', rows='A', cols=None),
+                  label='ind_sep_pis', symbol='$S^{+}_i$', rows='A', cols=None),
         TableDesc(caption='Individual separation measures from the NIS',
-                  label='ind_sep_nis', symbol='$S^{-}$', rows='A', cols=None),
+                  label='ind_sep_nis', symbol='$S^{-}_i$', rows='A', cols=None),
         TableDesc(caption='Final preference values (relative closeness)',
-                  label='pref', symbol='$\\phi$', rows='A', cols=None),
+                  label='pref', symbol='$\\phi_i$', rows='A', cols=None),
     ]
 
     def __init__(self, ref_point, lambd=2.25, alpha=0.88):

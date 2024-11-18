@@ -469,9 +469,9 @@ and :math:`m` is the number of criteria (:eq:`equ:mat_ervd`).
     \end{equation}
     :label: equ:mat_ervd
 
-**Step 2.** Define reference points :math:`\mu, j=1,\ldots,n` for each decision criterion. Decision makers must decide
-which outcomes they consider equivalent for criterion :math:`j`, set the reference point :math:`\mu_j` and then
-consider lesser outcomes as losses and greater ones as gains.
+**Step 2.** Define reference points :math:`\mu_j` for :math:`j=1,\ldots,n` for each decision criterion
+Decision makers must decide which outcomes they consider equivalent for criterion :math:`j`, set
+the reference point :math:`\mu_j` and then consider lesser outcomes as losses and greater ones as gains.
 
 **Step 3.** Normalize the decision matrix using the sum method (:eq:`equ:ervd_sum`).
 
@@ -487,7 +487,6 @@ consider lesser outcomes as losses and greater ones as gains.
     \begin{equation}
         \varphi_{j} = \frac{\mu_{j}}{\sum^m_{i=1} x_{ij}}
     \end{equation}
-
 
 **Step 5.** Calculate the value of alternative :math:`A_i` according to criterion :math:`C_j` by increasing value function
 (for benefit criteria):
@@ -538,6 +537,8 @@ where :math:`v_j^{+}=\max _i v_{i j}` and :math:`v_j^{-}=\min v_{i \vec{j}}`.
     \phi_i=\frac{S_i^{-}}{S_i^{+}+S_i^{-}}, i=1, \ldots, m
     \end{equation}
 
+Higher values of :math:`\phi_i` points to better alternatives.
+
 MABAC
 =======================
 ``MABAC`` is designed to evaluate decision alternatives according to the following steps:
@@ -548,7 +549,7 @@ and :math:`m` is the number of criteria (:eq:`equ:mat4`).
 
 .. math::
     \begin{equation}
-    x_{i j}=\left[\begin{array}{llll}
+    X = [x_{i j}]=\left[\begin{array}{llll}
     x_{11} & x_{12} & \ldots & x_{1 m} \\
     x_{21} & x_{22} & \ldots & x_{2 m} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -588,7 +589,7 @@ for all criteria can be determined using the formula (:eq:`equ:boundma`).
 
 .. math::
     \begin{equation}
-    g_{i}=\left(\prod_{j=1}^{m} v_{i j}\right)^{1 / m}
+    g_{j}=\left(\prod_{j=1}^{m} v_{i j}\right)^{1 / m}
     \end{equation}
     :label: equ:boundma
 
@@ -598,7 +599,7 @@ equation (:math:`equ:qma`).
 
 .. math::
     \begin{equation}
-    Q=\left[\begin{array}{cccc}
+    Q = [q_{i j}]=\left[\begin{array}{cccc}
     v_{11}-g_{1} & v_{12}-g_{2} & \ldots & v_{1 n}-g_{n} \\
     v_{21}-g_{1} & v_{22}-g_{2} & \ldots & v_{2 n}-g_{n} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -644,7 +645,7 @@ and :math:`m` is the number of criteria (:eq:`equ:mat3`).
 
 .. math::
     \begin{equation}
-    x_{i j}=\left[\begin{array}{llll}
+    X = [x_{i j}]=\left[\begin{array}{llll}
     x_{11} & x_{12} & \ldots & x_{1 m} \\
     x_{21} & x_{22} & \ldots & x_{2 m} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -655,7 +656,8 @@ and :math:`m` is the number of criteria (:eq:`equ:mat3`).
 
 
 **Step 2.** Determining the preference for choosing alternatives using the vector :math:`P_{Ai}` using the formula
-(:eq:`equ:pia`).
+(:eq:`equ:pia`). In ``pymcdm``, all criteria treated equally, with no option for providing preferences for the
+alternatives (second option).
 
 .. math::
     \begin{equation}
@@ -771,21 +773,24 @@ MARCOS
 ``MARCOS`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.**  Based on the decision matrix, create an augmented decision matrix with the ideal solution (AI) defined in
-the last row and the anti-ideal (AAI) solution defined in the first row. This can be represented by the Equation (:eq:`equ:extdecmat`).
+the last row and the anti-ideal (AAI) solution defined in the first row. This can be represented by
+the Equation (:eq:`equ:extdecmat`).
 
 .. math::
     \begin{equation}
         M = \left[\begin{array}{cccc}
-                  x_{aa1} & x_{aa2} & \dots & x_{aan} \cr
-                   x_{11} & x_{12} & \dots & x_{1n} \cr
+                  x_{11} & x_{12} & \dots & x_{1n} \cr
                   x_{21} & x_{22} & \dots & x_{2n} \cr
-                   \dots & \dots & \dots & \dots \cr
-                   x_{m1} & x_{m2} & \dots & x_{mn} \cr
-                   x_{ai1} & x_{ai2} & \dots & x_{ain} \end{array}\right]
+                  \dots & \dots & \dots & \dots \cr
+                  x_{m1} & x_{m2} & \dots & x_{mn} \cr
+                  x_{ai1} & x_{ai2} & \dots & x_{ain}
+                  x_{aa1} & x_{aa2} & \dots & x_{aan} \cr
+            \end{array}\right]
     \end{equation}
     :label: equ:extdecmat
 
-The ideal and anti-ideal solution values for the cost (C) and benefit (B) criteria are defined as follows:
+The ideal :math:`AI` and anti-ideal :math:`AAI` solution values for the cost (C) and benefit (B) criteria are defined
+as follows:
 
 .. math::
     \begin{equation}
@@ -827,8 +832,8 @@ The ideal and anti-ideal solution values for the cost (C) and benefit (B) criter
     :label: equ:wema
 
 
-**Step 4.** Calculating the degrees of utility of alternatives Ki relative to the ideal and anti-ideal solution using
-Equations (:eq:`equ:kiplu`), (:eq:`equ:kimin`).
+**Step 4.** Calculating the degrees of utility of alternatives :math:`K_i` relative to the ideal and anti-ideal
+solution using Equations (:eq:`equ:kiplu`), (:eq:`equ:kimin`).
 
 
 .. math::
@@ -876,12 +881,28 @@ the Equations respectively (:eq:`equ:kmf`) and (:eq:`equ:kpf`).
     \end{equation}
     :label: equ:kpf
 
+Note, that alternatives with smaller values of :math:`f(K_i)` are determined as better alternatives.
+
 MOORA
 =======================
 
 ``MOORA`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Normalize the decision matrix based on the Equation (:eq:`normm`).
+**Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
+and :math:`m` is the number of criteria (:eq:`equ:mat_moora`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_moora
+
+**Step 2.** Normalize the decision matrix based on the Equation (:eq:`normm`).
 
 .. math::
     \begin{equation}
@@ -891,7 +912,7 @@ MOORA
 
 where :math:`x_{ij}` can be called the value of the :math:`i-th` alternative for the :math:`j-th` criterion.
 
-**Step 2.** Determine weighted normalized decision matrix based on Equation (:eq:`weigh`).
+**Step 3.** Determine weighted normalized decision matrix based on Equation (:eq:`weigh`).
 
 .. math::
     \begin{equation}
@@ -901,67 +922,117 @@ where :math:`x_{ij}` can be called the value of the :math:`i-th` alternative for
 
 where :math:`w_j` can be called the weight for :math:`j-th` criterion.
 
-**Step 3.** Calculate the value of :math:`y_i` based on the values from the normalized weighted decision matrix :math:`v_{ij}`
+**Step 4.** Calculate the value of :math:`P_i` based on the values from the normalized weighted decision matrix :math:`v_{ij}`
 by using Equation (:eq:`yii`).
 
 .. math::
     \begin{equation}
-        y_i = \sum_{j=1}^g v_{ij} - \sum_{j=g+1}^n v_{ij}
+        P_i = \sum_{j=1}^g v_{ij} - \sum_{j=g+1}^n v_{ij}
     \end{equation}
     :label: yii
 
-where type of beneficial and cost criteria are represented as follows :math:`j = 1, 2, \dots, g` and :math:`j = g + 1, g + 2,\dots,n`.
+where type of beneficial and cost criteria are represented as
+follows :math:`j = 1, 2, \dots, g` and :math:`j = g + 1, g + 2,\dots,n`.
+
+Higher values of :math:`P_i` corresponds to better alternatives.
 
 OCRA
 =======================
 
 ``OCRA`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
+**Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
+and :math:`m` is the number of criteria (:eq:`equ:mat_ocra`).
 
-**Step 2.** Normalize the decision matrix using the min-max method.
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_ocra
 
-**Step 3.** Create normalized weighted decision matrix.
+**Step 2.** Normalize the decision matrix based on the Equation (:eq:`norm_ocra`) for the cost criteria (assuming
+that there is :math:`g` cost criteria) and (:eq:`norm_ocra2`) for the profit criteria.
+
+.. math::
+    \begin{equation}
+        \overline{I}_i = \sum_{j=1}^{g} w_j \frac{\max(x_{ij}) - x_{ij}}{\min(x_{ij})} \quad (i = 1, 2, \ldots, m; \, j = 1, 2, \ldots, g)
+    \end{equation}
+    :label: norm_ocra
+
+.. math::
+    \begin{equation}
+        \overline{O}_i = \sum_{j=g+1}^{n} w_j \frac{x_{ij} - \min(x_{ij})}{\min(x_{ij})} \quad (i = 1, 2, \ldots, m; \, j = g+1, g+2, \ldots, n)
+    \end{equation}
+    :label: norm_ocra2
 
 **Step 4.** Determination of preferences for cost-type and profit-type criteria sequentially according to the Equations
 (:eq:`costI`),(:eq:`profO`).
 
 .. math::
     \begin{equation}
-    \overline{\bar{I}}_{i}=\bar{I}_{i}-\min \left(\bar{I}_{i}\right)
+    \overline{\overline{I}}_{i}=\overline{I}_{i}-\min \left(\overline{I}_{i}\right)
     \end{equation}
     :label: costI
 
 .. math::
     \begin{equation}
-    \overline{\overline{O_{i}}}={\overline{O_{i}}}^{-} \min \left(\bar{O}_{i}\right)
+    \overline{\overline{O_{i}}}={\overline{O_{i}}} \min \left(\overline{O}_{i}\right)
     \end{equation}
     :label: profO
 
-where :math:`\bar{I}_{i}` is a measure of relative performance for the :math:`i-th` alternative and cost-type criteria,
-and :math:`\bar{O}_{i}` is a measure of of relative performance for the :math:`i-th` alternative and profit-type criteria.
+where :math:`\overline{I}_{i}` is a measure of relative performance for the :math:`i-th` alternative and cost-type criteria,
+and :math:`\overline{O}_{i}` is a measure of of relative performance for the :math:`i-th` alternative and profit-type criteria.
 
 **Step 5.** Determine the overall preference of the considered alternatives using the Equation (:eq:`ocrapref`).
 
 .. math::
     \begin{equation}
-    P_i = \overline{\bar{I}}_{i} + \overline{\overline{O_{i}}} - \min \left ( \overline{\bar{I}}_{i} + \overline{\overline{O_{i}}}\right )
+    P_i = \overline{\overline{I}}_{i} + \overline{\overline{O_{i}}} - \min \left ( \overline{\overline{I}}_{i} + \overline{\overline{O_{i}}}\right )
     \end{equation}
     :label: ocrapref
+
+Alternatives with the highest overall performance rating receives the first rank.
 
 PROBID
 =======================
 
 ``PROBID`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
+**Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
+and :math:`m` is the number of criteria (:eq:`equ:mat_ocra`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_ocra
 
 **Step 2.** Normalize the decision matrix using the vector method.
 
+.. math::
+    \begin{equation}
+    r_{ij} = \frac{x_{ij}}{\sqrt{\sum_{k=1}^{n} x_{kj}^2}} \quad i \in \{1, 2, \ldots, n\}; \, j \in \{1, 2, \ldots, m\}
+    \end{equation}
+
 **Step 3.** Create normalized weighted decision matrix.
 
+.. math::
+    \begin{equation}
+        v_{ij} =  r_{ij} w_{j}
+    \end{equation}
+
 **Step 4.** Sort the normalized weighted decision matrix by criteria taking into account their type. This will a matrix
-of successively Positive Ideal Solutions (1st, 2cd, ..., mth PIS) will be formed. It can be presented by using the
+of successively Positive Ideal Solutions (1st, 2nd, ..., mth PIS) will be formed. It can be presented by using the
 following formula:
 
 .. math::
@@ -972,21 +1043,21 @@ following formula:
     \end{aligned}
     \end{equation}
 
-where :math:`k \in \{1,2, \ldots, m\}`, :math:`J` is the set of benefit criteria and :math:`J^{\prime}` is the set of cost
+where :math:`k \in \{1,2, \ldots, n\}`, :math:`J` is the set of benefit criteria and :math:`J^{\prime}` is the set of cost
 criteria.
 
 Then, find the average value of each objective column as follow:
 
 .. math::
     \begin{equation}
-    \bar{v}_j=\frac{\sum_{k=1}^m v_{(k) j}}{m} \quad \text { for } j \in\{1,2, \ldots, n\}
+    \bar{v}_j=\frac{\sum_{k=1}^n v_{(k) j}}{n} \quad \text { for } j \in\{1,2, \ldots, m\}
     \end{equation}
 
 The average solution is then given by
 
 .. math::
     \begin{equation}
-    \bar{A}=\left\{\bar{v}_1, \bar{v}_2, \bar{v}_3, \ldots, \bar{v}_j, \ldots, \bar{v}_n\right\}
+    \bar{A}=\left\{\bar{v}_1, \bar{v}_2, \bar{v}_3, \ldots, \bar{v}_j, \ldots, \bar{v}_m\right\}
     \end{equation}
 
 **Step 5.** Iteratively calculate the Euclidean distance of each solution to each of the m ideal solutions as well as to
@@ -994,7 +1065,7 @@ the average solution. The distance to ideal solutions is found as:
 
 .. math::
     \begin{equation}
-    S_{i(k)}=\sqrt{\sum_{j=1}^n\left(v_{i j}-v_{(k) j}\right)^2}
+    S_{i(k)}=\sqrt{\sum_{j=1}^m\left(v_{i j}-v_{(k) j}\right)^2}
     \end{equation}
 
 **Step 6.** Determine the overall positive-ideal distance and negative-ideal distance as follow:
@@ -1002,9 +1073,9 @@ the average solution. The distance to ideal solutions is found as:
 .. math::
     \begin{equation}
     S_{i(\text { pos-ideal })}=\left\{\begin{array}{l}
-    \sum_{k=1}^{(m+1) / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \\
+    \sum_{k=1}^{(n+1) / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, n\} \text { when } n \\
     \text { is an odd number } \\
-    \sum_{k=1}^{m / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \\
+    \sum_{k=1}^{n / 2} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, n\} \text { when } n \\
     \text { is an even number }
     \end{array}\right.
     \end{equation}
@@ -1013,30 +1084,30 @@ the average solution. The distance to ideal solutions is found as:
     \begin{equation}
     S_{i(\text { neg-ideal })}
     \quad=\left\{\begin{array}{l}
-    \sum_{k=(m+1) / 2}^m \frac{1}{m-k+1} S_{i(k)} \\
-    i \in\{1,2, \ldots, m\} \text { when } m \text { is an odd number } \\
-    \sum_{k=m / 2+1}^m \frac{1}{m-k+1} S_{i(k)} \\
-    i \in\{1,2, \ldots, m\} \text { when } m \text { is an even number }
+    \sum_{k=(n+1) / 2}^n \frac{1}{n-k+1} S_{i(k)} \\
+    i \in\{1,2, \ldots, n\} \text { when } n \text { is an odd number } \\
+    \sum_{k=n / 2+1}^n \frac{1}{n-k+1} S_{i(k)} \\
+    i \in\{1,2, \ldots, n\} \text { when } n \text { is an even number }
     \end{array}\right.
     \end{equation}
 
-Positive-ideal distance and negative-ideal distance for sPROBID:
-
+There is also simplified provedure for calculating overall positive-ideal and negative-ideal distances.
+In this case, the method is called sPROBID and the procedure is as follows:
 
 .. math::
     \begin{equation}
     S_{i(\text { pos-ideal })}=\left\{\begin{array}{l}
-    \sum_{k=1}^{m \backslash 4} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, m\} \text { when } m \geq 4 \\
-    S_{i(1)} \quad i \in\{1,2, \ldots, m\} \text { when } 0<m<4
+    \sum_{k=1}^{n \backslash 4} \frac{1}{k} S_{i(k)} \quad i \in\{1,2, \ldots, n\} \text { when } n \geq 4 \\
+    S_{i(1)} \quad i \in\{1,2, \ldots, n\} \text { when } 0<n<4
     \end{array}\right.
     \end{equation}
 
 .. math::
     \begin{equation}
     S_{i(\text { neg-ideal })}=\left\{\begin{array}{l}
-    \sum_{k=m+1-(m \ 4)}^m \frac{1}{m-k+1} S_{i(k)} \\
-    \quad i \in\{1,2, \ldots, m\} \text { when } m \geq 4 \\
-    S_{i(m)} \quad i \in\{1,2, \ldots, m\} \text { when } 0<m<4
+    \sum_{k=n+1-(n \ 4)}^n \frac{1}{n-k+1} S_{i(k)} \\
+    \quad i \in\{1,2, \ldots, n\} \text { when } n \geq 4 \\
+    S_{i(n)} \quad i \in\{1,2, \ldots, n\} \text { when } 0<n<4
     \end{array}\right.
     \end{equation}
 
@@ -1052,6 +1123,8 @@ solution as follows:
     \begin{equation}
     P_i=\frac{1}{1+R_i^2}+S_{i(\mathrm{avg})}
     \end{equation}
+
+Alternatives with the highest preference value receives the first rank.
 
 RAM
 =======================
