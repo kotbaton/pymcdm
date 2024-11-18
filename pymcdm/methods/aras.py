@@ -74,7 +74,7 @@ class ARAS(MCDA_method):
         TableDesc(caption='Weighted normalized extended decision matrix',
                   label='ewnmatrix', symbol='$v_{ij}$', rows=_alts_labels, cols='C'),
         TableDesc(caption='Values of optimality function',
-                  label='opt_func', symbol='S_i$', rows=_alts_labels, cols=None),
+                  label='opt_func', symbol='$S_i$', rows=_alts_labels, cols=None),
         TableDesc(caption='Final preference values (Utility degree)',
                   label='utility', symbol='$K_i$', rows='A', cols=None),
     ]

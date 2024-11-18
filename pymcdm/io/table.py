@@ -226,7 +226,7 @@ class Table:
         """
         rows = self.desc.rows
         if len(self.data.shape) == 2 and isinstance(rows, str):
-            return f'${rows}_{{i}}$'
+            return f'${rows}_{{j}}$' if rows == "C" else f'${rows}_{{i}}$'
         else:
             return ''
 

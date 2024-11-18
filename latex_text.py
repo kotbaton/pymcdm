@@ -52,7 +52,7 @@ tested_methods = [
     pm.methods.ARAS(esp=xopt),
     pm.methods.MARCOS(),
     pm.methods.COCOSO(),
-    pm.methods.CODAS(),
+    pm.methods.CODAS(),  # TODO it should be possible to change tau parameter in psi function
     pm.methods.COMET(cvalues, expert),
     pm.methods.COPRAS(),
     pm.methods.EDAS(),

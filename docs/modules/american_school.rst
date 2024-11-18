@@ -16,7 +16,7 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat1`).
 
 .. math::
     \begin{equation}
-    x_{i j}=\left[\begin{array}{llll}
+    X = [x_{i j}]=\left[\begin{array}{llll}
     x_{11} & x_{12} & \ldots & x_{1 m} \\
     x_{21} & x_{22} & \ldots & x_{2 m} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -25,8 +25,26 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat1`).
     \end{equation}
     :label: equ:mat1
 
-**Step 2.** Normalization the decision matrix, where for profit criteria use the equation (:eq:`equ:profita`), and for
-cost, criteria use the equation (:eq:`equ:costa`). In this study, The Sum normalization method was used.
+**Step 2.** Definition of a extended decision matrix, where decision matrix :math:`X` is extended with
+optimal value :math:`x_0` (:eq:`equ:emat1`). Optimal solution can be defined as the optimal (expected) values for
+each of the criteria. If it is not defined maximum value will be chosen for profit criteria and minimum value for the
+cost criteria.
+
+.. math::
+    \begin{equation}
+    X^{\prime} = [x_{i j}]=\left[\begin{array}{llll}
+    x_{01} & x_{02} & \ldots & x_{0 m} \\
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:emat1
+
+**Step 3.** Normalization the extended decision matrix, where for profit criteria use the equation (:eq:`equ:profita`),
+and for cost, criteria use the equation (:eq:`equ:costa`). In ``pymcdm``, the Sum normalization method is used as the
+default normalization in the ARAS method. Optimal solution is normalized as other values.
 
 .. math::
     \begin{equation}
@@ -40,8 +58,8 @@ cost, criteria use the equation (:eq:`equ:costa`). In this study, The Sum normal
     \end{equation}
     :label: equ:costa
 
-**Step 3.** Building a decision matrix :math:`v_{ij}` subjected to a weighting and normalization process using the
-Equation (:eq:`weighted`).
+**Step 4.** Building a weighted normalized extended decision matrix :math:`v_{ij}` based on the normalized extended
+decision matrix and criteria weights :math:`w_{j}` using Equation (:eq:`weighted`).
 
 .. math::
     \begin{equation}
@@ -49,8 +67,8 @@ Equation (:eq:`weighted`).
     \end{equation}
     :label: weighted
 
-**Step 4.** Determining values of optimality function using the Equation (:eq:`opf`).
-
+**Step 5.** Determining values of optimality function :math:`S_i` using the Equation (:eq:`opf`).
+Note, that value :math:`S_i` is also calculated for optimal solution.
 
 .. math::
     \begin{equation}
@@ -58,7 +76,8 @@ Equation (:eq:`weighted`).
     \end{equation}
     :label: opf
 
-**Step 5.** Calculate the utility degree :math:`K_i` based on Equation (:eq:`ud`).
+**Step 6.** Calculate the utility degree :math:`K_i` based on Equation (:eq:`ud`). ``pymcdm`` calculates
+this value for the optimal solution but it is not showed in the verbose results.
 
 .. math::
     \begin{equation}
@@ -66,7 +85,8 @@ Equation (:eq:`weighted`).
     \end{equation}
     :label: ud
 
-where :math:`S_i` and :math:`S_0` are the optimality criterion values.
+where :math:`S_i` and :math:`S_0` are the optimality criterion values. Better alternatives are represented
+with larger values of the utility degree :math:`K_i`.
 
 
 COCOSO
@@ -79,7 +99,7 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_cocoso`).
 
 .. math::
     \begin{equation}
-    x_{i j}=\left[\begin{array}{llll}
+    X = [x_{i j}]=\left[\begin{array}{llll}
     x_{11} & x_{12} & \ldots & x_{1 m} \\
     x_{21} & x_{22} & \ldots & x_{2 m} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -88,10 +108,9 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_cocoso`).
     \end{equation}
     :label: equ:mat_cocoso
 
-
-
 **Step 2.** Normalization the decision matrix, where for profit criteria use the equation (:eq:`equ:profit`), and for
-cost, criteria use the equation (:eq:`equ:cost`). In this study, The Minimum-Maximum normalization method was used.
+cost, criteria use the equation (:eq:`equ:cost`). In the ``pymcdm``, The Minimum-Maximum normalization method is used
+as default normalization method.
 
 .. math::
     \begin{equation}
@@ -129,7 +148,7 @@ sequences for each alternative. The values of :math:`S_i` are based on the grey 
 strategies (:eq:`equ:s1`)-(:eq:`equ:s3`), where the first strategy expresses the average of the sums of WSM and WPM s
 cores (:eq:`equ:s1`), the second strategy expresses the sum of WSM and WPM scores over the best (:eq:`equ:s2`), and the
 third strategy expresses the compromise strategy of WSM and WPM by using the :math:`\lambda` value (:eq:`equ:s3`).
-In this study, a :math:`\lambda` value of 0.5 was used.
+Be default, ``pymcdm`` uses a :math:`\lambda` value of 0.5.
 
 .. math::
     \begin{equation}
@@ -150,7 +169,7 @@ In this study, a :math:`\lambda` value of 0.5 was used.
     :label: equ:s3
 
 **Step 5.** Establish the final ranking of alternatives based on :math:`k_i` values defined using the formula
-(:eq:`equ:ki`). The higher the :math:`k_i` value, the higher the ranking.
+(:eq:`equ:ki`). The higher the :math:`k_i` value, the higher the position of the alternative in the ranking.
 
 .. math::
     \begin{equation}
@@ -168,7 +187,7 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat2`).
 
 .. math::
     \begin{equation}
-    x_{i j}=\left[\begin{array}{llll}
+    X = [x_{i j}]=\left[\begin{array}{llll}
     x_{11} & x_{12} & \ldots & x_{1 m} \\
     x_{21} & x_{22} & \ldots & x_{2 m} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -178,7 +197,8 @@ alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat2`).
     :label: equ:mat2
 
 **Step 2.** Normalization the decision matrix, where for profit criteria use the equation (:eq:`equ:profitc`), and for
-cost, criteria use the equation (:eq:`equ:costc`). In this study, The Linear normalization method was used.
+cost, criteria use the equation (:eq:`equ:costc`). This normalization method (Linear normalization) is used as
+a default normalization method in ``pymcdm``.
 
 .. math::
     \begin{equation}
@@ -209,8 +229,8 @@ Equation (:eq:`weightedc`).
     \end{equation}
     :label: nip
 
-**Step 5.** Calculate the Euclidean and Taxicab distances of alternatives from the negative-ideal solution, shown as
-follows:
+**Step 5.** Calculate the Euclideana :math:`E_i` and Taxicab :math:`T_i` distances of alternatives
+from the negative-ideal solution, shown as follows:
 
 .. math::
     \begin{equation}
@@ -229,7 +249,7 @@ follows:
         h_{i k}=\left(E_{i}-E_{k}\right)+\left(\psi\left(E_{i}-E_{k}\right) \times\left(T_{i}-T_{k}\right)\right)
     \end{equation}
 
-where :math:`k \in \left \{ 1,2,\cdots,n \right \}` and :math:`psi` denotes a threshold function to recognize the
+where :math:`k \in \left \{ 1,2,\cdots,n \right \}` and :math:`\psi` denotes a threshold function to recognize the
 equality of the Euclidean distances of two alternatives, and is defined as follows:
 
 .. math::
@@ -240,8 +260,8 @@ equality of the Euclidean distances of two alternatives, and is defined as follo
         \end{array}\right.
     \end{equation}
 
-In this function, :math:`\tau` is the threshold parameter that can be set by decisionmaker. It is suggested to set this
-parameter at a value between 0.01 and 0.05.
+In this function, :math:`\tau` is the threshold parameter that can be set by decision maker. It is suggested to set this
+parameter at a value between 0.01 and 0.05. Default value in the ``pymcdm`` is :math:`\tau = 0.02`.
 
 **Step 7.** Calculate the assessment score of each alternative, shown as follows:
 
@@ -250,14 +270,30 @@ parameter at a value between 0.01 and 0.05.
     \mathrm{H}_{i}=\sum_{k=1}^{n} h_{i k}
     \end{equation}
 
-**Step 8.** Rank the alternatives according to the decreasing values of assessment.
+**Step 8.** Rank the alternatives according to the decreasing values of assessment (larger value of assessment score
+means better alternative).
 
 COPRAS
 =======================
 
 ``COPRAS`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Calculate normalized decision matrix using equation (:eq:`eq:copras_sum`).
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_copras`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_copras
+
+**Step 2.** Calculate normalized decision matrix values :math:`r_{i j}`
+using equation (:eq:`eq:copras_sum`).
 
 .. math::
     \begin{equation}
@@ -266,7 +302,7 @@ COPRAS
     :label: eq:copras_sum
 
 
-**Step 2.** Calculate difficult normalized decision matrix, which represents multiplication of the normalized decision
+**Step 3.** Calculate weighted normalized decision matrix, which represents multiplication of the normalized decision
 matrix elements with the appropriate weight coefficients using equation (:eq:`eq:copras_e`).
 
 .. math::
@@ -275,8 +311,11 @@ matrix elements with the appropriate weight coefficients using equation (:eq:`eq
     \end{equation}
     :label: eq:copras_e
 
-**Step 3.** Determine the sums of difficult normalized values which was calculated previously. Equation
+**Step 4.** Determine the sums of weighted normalized values which was calculated previously. Equation
 (:eq:`eq:copras_splus`) should be used for profit criteria and equation (:eq:`eq:copras_sminus`) for cost criteria.
+It is assumed, that criteria ordered in the way that first :math:`k` criteria are profit
+and other are cost. However, in ``pymcdm`` criteria can be in other order, because their types are determined
+based on the ``types`` list in arguments.
 
 .. math::
     \begin{equation}

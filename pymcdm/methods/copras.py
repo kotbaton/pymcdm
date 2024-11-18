@@ -61,7 +61,7 @@ class COPRAS(MCDA_method):
 
         nmatrix = matrix / np.sum(matrix, axis=0)
 
-        # Difficult normalized decision making matrix
+        # Weighted normalized decision-making matrix
         wmatrix = nmatrix * weights
 
         Sp = np.sum(wmatrix[:, types == 1], axis=1)

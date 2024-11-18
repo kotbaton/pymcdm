@@ -56,7 +56,7 @@ class CODAS(MCDA_method):
         TableDesc(caption='Weighted normalized decision matrix',
                   label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Negative-ideal Solution',
-                  label='nis', symbol='${ns}^{i}$', rows='C', cols=None),
+                  label='nis', symbol='${ns}^{j}$', rows='C', cols=None),
         TableDesc(caption='Euclidean distances from the negative-ideal solution',
                   label='eucl', symbol='$E^{i}$', rows='A', cols=None),
         TableDesc(caption='Manhattan distances from the negative-ideal solution',
