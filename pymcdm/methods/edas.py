@@ -37,7 +37,7 @@ class EDAS(MCDA_method):
     """
     _tables = [
         TableDesc(caption='Average solution',
-                  label='av_sol', symbol='${AV}_{i}$', rows='C', cols=None),
+                  label='av_sol', symbol='$AV$', rows='C', cols=None),
         TableDesc(caption='Positive distance from Average solution',
                   label='pds', symbol='${PDA}_{i}$', rows='A', cols='C'),
         TableDesc(caption='Negative distance from Average solution',

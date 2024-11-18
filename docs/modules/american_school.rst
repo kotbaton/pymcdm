@@ -364,7 +364,7 @@ and :math:`m` is the number of criteria (:eq:`equ:mat_edas`).
 
 .. math::
     \begin{equation}
-    X_{i j}=\left[\begin{array}{llll}
+    X = [x_{i j}]=\left[\begin{array}{llll}
     x_{11} & x_{12} & \ldots & x_{1 m} \\
     x_{21} & x_{22} & \ldots & x_{2 m} \\
     \ldots & \ldots & \ldots & \ldots \\
@@ -377,7 +377,7 @@ and :math:`m` is the number of criteria (:eq:`equ:mat_edas`).
 
 .. math::
     \begin{equation}
-    A V_{j}=\frac{\sum_{i=1}^{n} X_{i j}}{n}
+    A V_{j}=\frac{\sum_{i=1}^{n} x_{i j}}{n}
     \end{equation}
     :label: equ:av
 
@@ -415,7 +415,7 @@ distances are calculated using formulas (:eq:`equ:ndacs`) and (:eq:`equ:pdacs`).
 
 .. math::
     \begin{equation}
-    \mathrm{A} SP_{i}=\sum_{j=1}^{m} w_{j} P D A_{i j}
+    SP_{i}=\sum_{j=1}^{m} w_{j} P D A_{i j}
     \end{equation}
     :label: equ:wsp
 
