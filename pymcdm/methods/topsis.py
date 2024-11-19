@@ -76,4 +76,3 @@ class TOPSIS(MCDA_method):
         p = Dm / (Dm + Dp)
 
         return nmatrix, weighted_matrix, nis, pis, Dm, Dp, p
-

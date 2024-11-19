@@ -179,7 +179,8 @@ class MCDA_results:
         str
             LaTeX-formatted string of the MCDA results.
         """
-        return self.prepare_output(output_function=lambda t, ff, lp: t.to_latex(ff, lp), **kwargs)
+        s = self.prepare_output(output_function=lambda t, ff, lp: t.to_latex(ff, lp), **kwargs)
+        return s.replace('\\caption', '\\centering\n\\caption')
 
     def to_string(self, **kwargs):
         """

@@ -1382,13 +1382,13 @@ calculated as the least value for each criterion (:eq:`nis`).
 
 .. math::
     \begin{equation}
-        v_{j}^{+} =  \{v_{1}^{+},  v_{2}^{+},  \dots,  v_{n}^{+} \} = \{\max_{j}(v_{ij}) \}
+        v_{j}^{+} =  \{v_{1}^{+},  v_{2}^{+},  \dots,  v_{m}^{+} \} = \{\max_{j}(v_{ij}) \}
     \end{equation}
     :label: pis
 
 .. math::
     \begin{equation}
-        v_{j}^{-} = \{v_{1}^{-},  v_{2}^{-},  \dots,  v_{n}^{-} \}=  \{\min_{j}(v_{ij}) \}
+        v_{j}^{-} = \{v_{1}^{-},  v_{2}^{-},  \dots,  v_{m}^{-} \}=  \{\min_{j}(v_{ij}) \}
     \end{equation}
     :label: nis
 
@@ -1397,13 +1397,13 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
 
 .. math::
     \begin{equation}
-        D_{i}^{+} = \sqrt{\sum_{j=1}^{n}(v_{ij}-v_{j}^{+})^{2}}
+        D_{i}^{+} = \sqrt{\sum_{j=1}^{m}(v_{ij}-v_{j}^{+})^{2}}
     \end{equation}
     :label: sqrtPIS
 
 .. math::
     \begin{equation}
-        D_{i}^{-} = \sqrt{\sum_{j=1}^{n}(v_{ij}-v_{j}^{-})^{2}}
+        D_{i}^{-} = \sqrt{\sum_{j=1}^{m}(v_{ij}-v_{j}^{-})^{2}}
     \end{equation}
     :label: sqrtNIS
 
@@ -1421,12 +1421,26 @@ VIKOR
 
 ``VIKOR`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Determinate the best :math:`f_{j}^{*}` and the worst :math:`f_{j}^{-}` value for the function of a particular
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_vikor`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_vikor
+
+**Step 2.** Determinate the best :math:`f_{j}^{*}` and the worst :math:`f_{j}^{-}` value for the function of a particular
 criterion. For profit criteria, the Equation is used (:eq:`VikorBestProfit`).
 
 .. math::
     \begin{equation}
-        f_{j}^{*} = \max_i f_{ij},\; \; \;  f_{j}^{-} = \min_i f_{ij}
+        f_{j}^{*} = \max_i x_{ij},\; \; \;  f_{j}^{-} = \min_i x_{ij}
     \end{equation}
     :label: VikorBestProfit
 
@@ -1434,27 +1448,25 @@ where in the case of the cost criteria, the following Equation is used (:eq:`Vik
 
 .. math::
     \begin{equation}
-        f_{j}^{*} = \min_i f_{ij},\; \; \;  f_{j}^{-} = \max_i f_{ij}
+        f_{j}^{*} = \min_i x_{ij},\; \; \;  f_{j}^{-} = \max_i x_{ij}
     \end{equation}
     :label: VikorBestCost
 
-**Step 2.** Calculate :math:`S_{i}` and :math:`R_{i}` with using Equations (:eq:`VikorSi`) and (:eq:`VikorRi`).
+**Step 3.** Calculate :math:`S_{i}` and :math:`R_{i}` with using Equations (:eq:`VikorSi`) and (:eq:`VikorRi`).
 
 .. math::
     \begin{equation}
-        S_{i} = \sum_{j=1}^{n}w_{j}(f_{j}^{*}-f_{ij})/(f_{j}^{*}-f_{j}^{-})
+        S_{i} = \sum_{j=1}^{m}w_{j}(f_{j}^{*}-x_{ij})/(f_{j}^{*}-f_{j}^{-})
     \end{equation}
     :label: VikorSi
 
 .. math::
     \begin{equation}
-        R_{i} = \max_j \left [
-    w_{j}(f_{j}^{*}-f_{ij})/(f_{j}^{*}-f_{j}^{-})
-    \right ]
+        R_{i} = \max_j \left [w_{j}(f_{j}^{*}-x_{ij})/(f_{j}^{*}-f_{j}^{-}) \right ]
     \end{equation}
     :label: VikorRi
 
-**Step 3.** Calculate :math:`Q_{i}` with using Equation (:eq:`VikorQi`).
+**Step 4.** Calculate :math:`Q_{i}` with using Equation (:eq:`VikorQi`).
 
 .. math::
     \begin{equation}
@@ -1470,43 +1482,69 @@ where:
 
 :math:`v` means the weight adopted for the strategy of ''most criteria''.
 
-**Step 4.** Ranked alternatives :math:`S`, :math:`R` and :math:`Q` are ordered in ascending order. Three ranked
+**Step 5.** Ranked alternatives :math:`S`, :math:`R` and :math:`Q` are ordered in ascending order. Three ranked
 lists are the outcome.
 
-**Step 5.** A compromise solution is proposed considering the conditions of good advantage and acceptable stability
-within the three vectors obtained in the previous step. The best alternative is the one with the lowest value and the
-leading position in the ranking :math:`Q`.
+**Step 6.** A compromise solution is proposed considering the conditions of good advantage and acceptable stability
+within the three vectors obtained in the previous step. The best alternative is the one with the lowest value
+of :math:`Q` and the leading position in the ranking :math:`Q`. In ``pymcdm`` only :math:`Q` ranking is returned by
+default.
 
 WASPAS
 =======================
 
 ``WASPAS`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_waspas`).
 
-**Step 2.** Normalize the decision matrix using the max method.
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_waspas
+
+**Step 2.** Normalize the decision matrix using the linear normalization method, according to:
+
+.. math::
+    \begin{equation}
+    r_{ij} = \frac{x_{ij}}{\max_i x_{ij}}, \text{if j-th criterion is profit}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+    r_{ij} = \frac{\min x_{ij}}{x_{ij}}, \text{if j-th criterion is cost}
+    \end{equation}
+
 
 **Step 3.** Calculate WSM and WPM as follow:
 
 .. math::
     \begin{equation}
-    W S M=\sum_{j=1}^n \bar{x}_{i j} w_j
+    W S M=\sum_{j=1}^n r_{i j} w_j
     \end{equation}
 
 .. math::
     \begin{equation}
-    W P M=\prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    W P M=\prod_{j=1}^n\left(r_{i j}\right)^{w_j}
     \end{equation}
 
-where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+where :math:`w_j` denote the weights for the criteria, and :math:`r_ij` denote the values of the decision options from
 the normalized decision matrix.
 
 **Step 4.** Calculation of total relative importance for each alternative as follow:
 
 .. math::
     \begin{equation}
-    Q_i=\lambda WSM+(1-\lambda) WPM=\lambda \sum_{j=1}^n \bar{x}_{i j} w_j+(1-\lambda) \prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    Q_i=\lambda WSM+(1-\lambda) WPM=\lambda \sum_{j=1}^n r_{i j} w_j+(1-\lambda) \prod_{j=1}^n\left(r_{i j}\right)^{w_j}
     \end{equation}
+
+Higher values of :math:`Q_i` points to better alternatives.
 
 
 WPM
@@ -1514,18 +1552,40 @@ WPM
 
 ``WPM`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_wpm`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_wpm
 
 **Step 2.** Normalize the decision matrix using the sum method.
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{x_{ij}}{\sum_m^{i=1}x_{ij}}, \text{if j-th criterion is profit}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{\frac{1}{x_{ij}}}{\sum_m^{i=1}\frac{1}{x_{ij}}}, \text{if j-th criterion is cost}
+    \end{equation}
 
 **Step 3.** Calculate WPM as follow:
 
 .. math::
     \begin{equation}
-    W P M=\prod_{j=1}^n\left(\bar{x}_{i j}\right)^{w_j}
+    W P M=\prod_{j=1}^n\left(r_{i j}\right)^{w_j}
     \end{equation}
 
-where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+where :math:`w_j` denote the weights for the criteria, and :math:`x_{ij}` denote the values of the decision options from
 the normalized decision matrix.
 
 WSM
@@ -1533,16 +1593,38 @@ WSM
 
 ``WSM`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_wsm`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_wsm
 
 **Step 2.** Normalize the decision matrix using the sum method.
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{x_{ij}}{\sum_m^{i=1}x_{ij}}, \text{if j-th criterion is profit}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{\frac{1}{x_{ij}}}{\sum_m^{i=1}\frac{1}{x_{ij}}}, \text{if j-th criterion is cost}
+    \end{equation}
 
 **Step 3.** Calculate WSM as follow:
 
 .. math::
     \begin{equation}
-    W S M=\sum_{j=1}^n \bar{x}_{i j} w_j
+    W S M=\sum_{j=1}^n r_{i j} w_j
     \end{equation}
 
-where :math:`w_j` denote the weights for the criteria, and :math:`x_ij` denote the values of the decision options from
+where :math:`w_j` denote the weights for the criteria, and :math:`x_{ij}` denote the values of the decision options from
 the normalized decision matrix.

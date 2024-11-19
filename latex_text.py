@@ -47,7 +47,6 @@ expert = pm.methods.comet_tools.MethodExpert(pm.methods.TOPSIS(), weights, types
 cvalues = pm.methods.COMET.make_cvalues(alts, 3)
 
 # TODO add T to Table??
-# TODO make symbols and formulas same in docs and in verbose results
 tested_methods = [
     pm.methods.ARAS(esp=xopt),
     pm.methods.MARCOS(),
@@ -78,8 +77,8 @@ tested_methods = [
 for tm in tested_methods:
     results = tm(alts, weights, types, verbose=True)
     if tm.__class__.__name__ == 'PROMETHEE_I':
-        s = results.to_string(group_tables=True, float_fmt='%0.4f', label_prefix=True, ranking=False)
+        s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True, ranking=False)
     else:
-        s = results.to_string(group_tables=True, float_fmt='%0.4f', label_prefix=True)
+        s = results.to_latex(group_tables=True, float_fmt='%0.4f', label_prefix=True)
     with open(f'output/{results.method_name}.txt', 'w') as f:
         f.write(s)
