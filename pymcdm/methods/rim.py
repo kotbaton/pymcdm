@@ -86,7 +86,7 @@ class RIM(MCDA_method):
     """
     _tables = [
         TableDesc(caption='Reference ideal',
-                  label='ref_ideal', symbol='$s_j$', rows='C', cols='A'),
+                  label='ref_ideal', symbol='$s_j$', rows='C', cols=['$s_{j}^{(min)}$', '$s_{j}^{(max)}$']),
         TableDesc(caption='Normalized decision matrix',
                   label='nmatrix', symbol='$y_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Weighted normalized decision matrix',

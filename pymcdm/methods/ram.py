@@ -75,5 +75,5 @@ class RAM(MCDA_method):
 
         ri = (2 + Spi) ** (1 / (2 + Smi))
 
-        return (nmatrix, wnmatrix, Spi, Smi, ri)
+        return nmatrix, wnmatrix, Spi, Smi, ri
 

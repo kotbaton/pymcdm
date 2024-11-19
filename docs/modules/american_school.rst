@@ -1131,23 +1131,50 @@ RAM
 
 ``RAM`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Create a decision matrix.
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_ram`).
 
-**Step 2.** Normalize the decision matrix using the linear sum method.
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_ram
 
-**Step 3.** Create normalized weighted decision matrix.
+**Step 2.** Calculate normalized decision matrix values :math:`r_{i j}`
+using equation (:eq:`eq:ram_sum`).
+
+.. math::
+    \begin{equation}
+        r_{i j}=\frac{x_{i j}}{\sum_{i=1}^{n} x_{i j}}
+    \end{equation}
+    :label: eq:ram_sum
+
+
+**Step 3.** Calculate weighted normalized decision matrix, which represents multiplication of the normalized decision
+matrix elements with the appropriate weight coefficients using equation (:eq:`eq:ram_e`).
+
+.. math::
+    \begin{equation}
+        v_{ij} = r_{ij} \cdot w_j
+    \end{equation}
+    :label: eq:ram_e
 
 **Step 4.** Calculate the sums of weighted normalized scores of beneficial (:math:`+i`) and cost (:math:`-i`) criteria
 of :math:`i-th` alternative by the following equations:
 
 .. math::
     \begin{equation}
-    S_{+i} = \sum^{n}_{j=1} y_{+ij}
+    S_{+i} = \sum^{m}_{j=1} v_{+ij}
     \end{equation}
 
 .. math::
     \begin{equation}
-    S_{-i} = \sum^{n}_{j=1} y_{-ij}
+    S_{-i} = \sum^{m}_{j=1} v_{-ij}
     \end{equation}
 
 **Step 5.** Determine the overall score of each alternative using the following aggreating function:
@@ -1167,20 +1194,28 @@ RIM
 
 **Step 1.** Define the following values, which determine the problem's context and the problem itself.
 
-- Criteria weights: :math:`w_j, j \in \{1, 2, \ldots N\}` and the sum of the criteria weights should be equal to one: :math:`\sum^N_{j = 1} w_j = 1`.
+- Criteria weights: :math:`w_j, j \in \{1, 2, \ldots N\}` and the sum of the criteria weights should
+  be equal to one: :math:`\sum^N_{j = 1} w_j = 1`.
 
-- Decision matrix: :math:`X = [ x_{ij} ]_{M \times N}` which contains information about :math:`M` alternatives evaluated under :math:`N` criteria.
+- Decision matrix: :math:`X = [ x_{ij} ]_{M \times N}` which contains information
+  about :math:`M` alternatives evaluated under :math:`N` criteria.
 
-- The Criteria Range: :math:`t_j = [t_{j}^{(min)}, t_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}` which defines the arbitrary chosen bounds of the criteria.
+- The Criteria Range: :math:`t_j = [t_{j}^{(min)}, t_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}` which
+  defines the arbitrary chosen bounds of the criteria.
 
-- The Reference Ideal: :math:`s_j = [s_{j}^{(min)}, s_{j}^{(max)}]`, :math:`j \in \{1, 2, \ldots N\}$ and $[s_{j}^{(min)}, s_{j}^{(max)}] \subset [t_{j}^{(min)}, t_{j}^{(max)}]`. Reference Ideal define most preferred interval of values for each criterion. It can be either derived from criteria range, or define expected outcome of decision process.
+- The Reference Ideal: :math:`s_j = [s_{j}^{(min)}, s_{j}^{(max)}]`,
+  :math:`j \in \{1, 2, \ldots N\}` and :math:`[s_{j}^{(min)}, s_{j}^{(max)}] \subset [t_{j}^{(min)}, t_{j}^{(max)}]`.
+  Reference Ideal define most preferred interval of values for each criterion. It can be either derived from criteria
+  range, or define expected outcome of decision process.
 
 
-**Step 2.** After defining the problem we should normalize the decision matrix :math:`X` using the RIM normalization function :math:`f(x,[A, B],[C, D])` defined as (:eq:`eq:rmnorm`). This normalization requires a definition of the criteria range :math:`[A. B]` and the reference ideal :math:`[C, D]`.
+**Step 2.** After defining the problem we should normalize the decision matrix :math:`X` using the RIM normalization
+function :math:`f(x,[A, B],[C, D])` defined as (:eq:`eq:rmnorm`). This normalization requires a definition
+of the criteria range :math:`[A. B]` and the reference ideal :math:`[C, D]`.
 
 .. math::
     \begin{equation}
-    f(\ldots) = \left\{\begin{array}{lll}
+    f(x,[A, B],[C, D]) = \left\{\begin{array}{lll}
     1 &\textit{IF}& x \in[C, D] \\
     1-\frac{d_{\min }(x,[C, D])}{|A-C|} &\textit{IF}& x \in[A, C] \wedge A \neq C \\
     1-\frac{d_{\min }(x,[C, D])}{|D-B|} &\textit{IF}& x \in[D, B] \wedge D \neq B
@@ -1208,7 +1243,7 @@ This normalization allows to map value :math:`x` to range :math:`[0, 1]` in the 
 
 .. math::
     \begin{equation}
-        Y^\prime = Y \otimes W = [ y_{ij} \cdot w_{j} ]_{M \times N}
+        Y^\prime = [ y_{ij}^{\prime} ] = Y \otimes W = [ y_{ij} \cdot w_{j} ]_{M \times N}
     \end{equation}
     :label: eq:rim_wnmatrix
 
@@ -1230,12 +1265,12 @@ This normalization allows to map value :math:`x` to range :math:`[0, 1]` in the 
 
 .. math::
     \begin{equation}
-        R_i = \frac{I_i^-}{I_i^+ + I_i^-} %\quad i \in \{1, 2, \ldots M\}
+        P_i = \frac{I_i^-}{I_i^+ + I_i^-} %\quad i \in \{1, 2, \ldots M\}
     \end{equation}
     :label: eq:rim_r
 
-Order the alternative :math:`A_i` in descending order with regard to :math:`R_i`. The alternatives with the bigger value
-of :math:`R_i` are more preferred ones.
+Order the alternative :math:`A_i` in descending order with regard to :math:`P_i`. The alternatives with the bigger value
+of :math:`P_i` are more preferred ones.
 
 
 SPOTIS
@@ -1243,25 +1278,42 @@ SPOTIS
 
 ``SPOTIS`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Define the bounds of the problem - min and max bounds of classical MCDM problem must be defined to transform
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_spotis`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_spotis
+
+**Step 2.** Define the bounds of the problem - min and max bounds of classical MCDM problem must be defined to transform
 MCDM problem form ill-defined to well-defined.
 
 .. math::
     \begin{equation}
-    \left[S_{n}^{\min }, S_{n}^{\max }\right]=\left[x_{1}, x_{2}\right]
+    \left[S_{j}^{\min }, S_{j}^{\max }\right], j \in \{1, 2, \ldots, m\}
     \end{equation}
 
 where, :math:`n` - criterion number, :math:`x_1` - min bound, :math:`x_2` - max bound.
 
-**Step 2.** Define the ideal solution point - define vector which includes maximum or minimum from bounds for specific
+**Step 3.** Define the ideal solution point - define vector which includes maximum or minimum from bounds for specific
 criterion depending on criterion type. For profit type, the max value should be taken, for cost type, min value.
 
 .. math::
     \begin{equation}
-    S^{\star}=\left(S_{1}^{\star}, S_{2}^{\star}, S_{3}^{\star}\right)
+    S^{\star}_{j}=\begin{cases}
+        S_{j}^{\min} & \text{if j-th criterion is cost}\\
+        S_{j}^{\max} & \text{if j-th criterion is profit}
+    \end{cases}
     \end{equation}
 
-**Step 3.** Compute normalized distance matrix - for each alternative :math:`A_{i}` (i= 1, :math:`\ldots` , M),compute
+**Step 4.** Compute normalized distance matrix - for each alternative :math:`A_{i}` (i= 1, :math:`\ldots` , M),compute
 its normalized distance with respect to ideal solution for each criteria :math:`C_{j}` (j= 1, :math:`\ldots` , N ).
 
 .. math::
@@ -1269,20 +1321,37 @@ its normalized distance with respect to ideal solution for each criteria :math:`
     d_{i j}=\frac{\left|A_{i j}-S_{j}^{*}\right|}{\left|S_{j}^{\max }-S_{j}^{\min }\right|}
     \end{equation}
 
-**Step 4.** Compute normalized averaged distance - for each criteria :math:`C_{j}` (j= 1, :math:`\ldots` , N ) take into
+**Step 5.** Compute normalized averaged distance - for each criteria :math:`C_{j}` (j= 1, :math:`\ldots` , N ) take into
 account its weight and calculate final preference by executing following Equation.
 
 .. math::
     \begin{equation}
-    \bar{p}_{j}=\sum_{j=1}^{N} w_{j} d_{i j}
+    P_{i}=\sum_{j=1}^{N} w_{j} d_{i j}
     \end{equation}
+
+As the :math:`P_i` value is interpreted as distance from the ideal or expected solution, alternatives with smaller
+value of :math:`P_i` are preferred.
 
 TOPSIS
 =======================
 
 ``TOPSIS`` is designed to evaluate decision alternatives according to the following steps:
 
-**Step 1.** Normalize the decision matrix by using min-max normalization. The values of benefit type criteria are
+**Step 1.** Definition of a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of
+alternatives, and :math:`m` is the number of criteria (:eq:`equ:mat_topsis`).
+
+.. math::
+    \begin{equation}
+    X = [x_{i j}]=\left[\begin{array}{llll}
+    x_{11} & x_{12} & \ldots & x_{1 m} \\
+    x_{21} & x_{22} & \ldots & x_{2 m} \\
+    \ldots & \ldots & \ldots & \ldots \\
+    x_{n 1} & x_{n 2} & \ldots & x_{n m}
+    \end{array}\right]
+    \end{equation}
+    :label: equ:mat_topsis
+
+**Step 2.** Normalize the decision matrix by using min-max normalization. The values of benefit type criteria are
 normalized using the (:eq:`sumProfit`) formula, while the values of cost type criteria are normalized using the
 (:eq:`sumCost`) formula.
 
@@ -1298,7 +1367,7 @@ normalized using the (:eq:`sumProfit`) formula, while the values of cost type cr
     \end{equation}
     :label: sumCost
 
-**Step 2.** Building a decision matrix :math:`v_{ij}` subjected to a weighting and normalization process using the
+**Step 3.** Building a decision matrix :math:`v_{ij}` subjected to a weighting and normalization process using the
 Equation (:eq:`weightedsds`).
 
 .. math::
@@ -1307,7 +1376,7 @@ Equation (:eq:`weightedsds`).
     \end{equation}
     :label: weightedsds
 
-**Step 3.** Derive a positive ideal solution :math:`PIS` and a negative ideal solution :math:`NIS`. The ideal positive
+**Step 4.** Derive a positive ideal solution :math:`PIS` and a negative ideal solution :math:`NIS`. The ideal positive
 solution is calculated as the maximum value for each criterion (:eq:`pis`), while the ideal negative solution is
 calculated as the least value for each criterion (:eq:`nis`).
 
@@ -1323,7 +1392,7 @@ calculated as the least value for each criterion (:eq:`nis`).
     \end{equation}
     :label: nis
 
-**Step 4.** Determine the Euclidean distance for each normalized weighted alternative from the :math:`PIS` (:eq:`sqrtPIS`)
+**Step 5.** Determine the Euclidean distance for each normalized weighted alternative from the :math:`PIS` (:eq:`sqrtPIS`)
 and :math:`NIS` (:eq:`sqrtNIS`) solution.
 
 .. math::
@@ -1337,6 +1406,15 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
         D_{i}^{-} = \sqrt{\sum_{j=1}^{n}(v_{ij}-v_{j}^{-})^{2}}
     \end{equation}
     :label: sqrtNIS
+
+**Step 6.** Calculate final preference value according to the Equation:
+
+.. math::
+    \begin{equation}
+        P_i = \frac{D^{-}_{i}}{D^{-}_{i} + D^{+}_{i}}
+    \end{equation}
+
+Alternative with the highest value of :math:`P_i` considered the best.
 
 VIKOR
 =======================
