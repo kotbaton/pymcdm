@@ -1,6 +1,7 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
 # Copyright (c) 2024 Bartłomiej Kizielewicz
 
+from itertools import combinations
 import numpy as np
 
 
@@ -76,10 +77,10 @@ def cvalues_validator(cvalues):
                 f'{i}.'
             )
 
-        if any(cv[i] >= cv[i + 1] for i in range(len(cv) - 1)):
+        if any(cv[j] >= cv[j + 1] for j in range(len(cv) - 1)):
             raise ValueError(
                 f'Characteristic values must be sorted in ascending order and does not contain repeated elements. '
-                f'Check criterion with index {i}. '
+                f'Check criterion with index {i}.'
             )
 
 
@@ -150,3 +151,21 @@ def validate_decision_problem(matrix, weights, types):
     matrix_validator(matrix, types)
     weights_validator(matrix, weights)
     types_validator(matrix, types)
+
+
+def validate_scoring(scoring):
+    if not all(np.isscalar(r) for r in scoring):
+        raise ValueError('Ranking and scoring should contain only numerical values!')
+
+
+def validate_pairwise_matrix(matrix, valid_values, answer_mapper):
+    if set(np.unique(matrix)) != set(valid_values):
+        raise ValueError(f'Valid values in the matrix are: {valid_values}')
+
+    if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
+        raise ValueError(f'Matrix should be two-dimensional array with (n, n) shape.')
+
+    for i, j in combinations(range(matrix.shape[0]), 2):
+        if matrix[j, i] != answer_mapper(matrix[i, j]):
+            raise ValueError(f'matrix[{j}, {i}] should be {answer_mapper(matrix[i, j])}, because '
+                             f'matrix[{i}, {j}] is {matrix[i, j]}.')
