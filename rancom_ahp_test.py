@@ -1,19 +1,28 @@
 import pymcdm as pm
 from pymcdm.weights.subjective import RANCOM, AHP
+from pymcdm.weights import equal_weights
 
-rancom = RANCOM(ranking=[1, 2, 2, 4])
-print(rancom())
-print(rancom.matrix)
+selected_method = AHP
 
-rancom = RANCOM(scoring=[1, 2, 2, 4])
-print(rancom())
-print(rancom.matrix)
+method = selected_method(ranking=[1, 2, 2, 4])
+print('Ranking', [1, 2, 2, 4])
+weights = method()
+print(weights)
+print(method.matrix)
 
-rancom.to_csv('test.csv', allow_overwrite=True)
+method = selected_method(scoring=[4, 2, 2, 1])
+print('Scoring', [4, 2, 2, 1])
+weights = method()
+print(weights)
+print(method.matrix)
 
-rancom = RANCOM(filename='test.csv')
-print(rancom())
+method.to_csv('test.csv', allow_overwrite=True)
 
-rancom = RANCOM(object_names=['A', 'B', 'C', 'D'])
-print(rancom())
-print(rancom.matrix)
+method = selected_method(filename='test.csv')
+print(method())
+
+method = selected_method(object_names=['A', 'B', 'C', 'D'])
+print(method())
+print(method.matrix)
+if isinstance(method, AHP):
+    print(method.get_cr())

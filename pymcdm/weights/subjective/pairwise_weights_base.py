@@ -9,6 +9,7 @@ from ...validators import validate_pairwise_matrix, validate_scoring
 
 
 # TODO group the methods in this class and add some comments
+# TODO AHP and RANCOM tests + docs + examples
 class PairwiseWeightsBase(ABC):
     tie_value: float | int = None
     user_answer_map: dict[str, float | int] = None
@@ -19,9 +20,13 @@ class PairwiseWeightsBase(ABC):
                              '`matrix` or `filename` should be provided!')
 
         if scoring is not None:
+            scoring = np.array(scoring)  # Make copy here because we will modify it
             validate_scoring(scoring)
-            self.ranking = np.max(scoring) - scoring
+            idx = np.argsort(scoring)
+            scoring[idx] = scoring[idx][::-1]
+            self.ranking = scoring
         elif ranking is not None:
+            ranking = np.asarray(ranking)
             validate_scoring(ranking)
             self.ranking = ranking
         else:
@@ -70,7 +75,7 @@ class PairwiseWeightsBase(ABC):
 
     def _identify(self, objects, comparison_func):
         n = len(objects)
-        matrix = np.diag([self.tie_value] * n)
+        matrix = np.diag([float(self.tie_value)] * n)
 
         for i, j in combinations(range(n), 2):
             ans = comparison_func(i, j)

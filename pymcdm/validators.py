@@ -154,12 +154,12 @@ def validate_decision_problem(matrix, weights, types):
 
 
 def validate_scoring(scoring):
-    if not all(np.isscalar(r) for r in scoring):
-        raise ValueError('Ranking and scoring should contain only numerical values!')
+    if not all(np.isscalar(r) and r > 0 for r in scoring):
+        raise ValueError('Ranking and scoring should contain only positive non-zero numerical values!')
 
 
 def validate_pairwise_matrix(matrix, valid_values, answer_mapper):
-    if set(np.unique(matrix)) != set(valid_values):
+    if set(np.unique(matrix)) >= set(valid_values):
         raise ValueError(f'Valid values in the matrix are: {valid_values}')
 
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
