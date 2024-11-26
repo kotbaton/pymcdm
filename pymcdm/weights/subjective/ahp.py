@@ -29,6 +29,9 @@ class AHP(PairwiseWeightsBase):
         ri = AHP.RI_M[m.shape[0] - 1]
         return ci / ri
 
+    def check_cr(self, cr_threshold: float = 0.1):
+        return self.get_cr() <= cr_threshold
+
     def _answer_mapper(self, ans):
         return 1 / ans
 

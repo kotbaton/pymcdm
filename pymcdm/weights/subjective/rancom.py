@@ -30,4 +30,4 @@ class RANCOM(PairwiseWeightsBase):
                 f'Choose:\n'
                 f'  1: if "{a}" is more important than "{b}";\n' 
                 f'1/2: if "{a}" is equally important to "{b}";\n'
-                f'  0: if "{a}" is less important than "{b}".')
+                f'  0: if "{b}" is more important than "{a}".')
