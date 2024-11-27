@@ -5,14 +5,14 @@ import numpy as np
 from numpy.typing import ArrayLike
 import pandas as pd
 
-from pymcdm.validators import (validate_decision_problem,
-                               esp_bounds_validator,
-                               bounds_validator,
-                               matrix_bounds_validator,
-                               cvalues_validator,
-                               matrix_cvalues_validator,
-                               ref_ideal_bounds_validator,
-                               matrix_ref_point_validator)
+from ..validators import (validate_decision_problem,
+                          esp_bounds_validator,
+                          bounds_validator,
+                          matrix_bounds_validator,
+                          cvalues_validator,
+                          matrix_cvalues_validator,
+                          ref_ideal_bounds_validator,
+                          matrix_ref_point_validator)
 
 
 class MCDA_problem:
