@@ -159,7 +159,8 @@ def validate_scoring(scoring):
 
 
 def validate_pairwise_matrix(matrix, valid_values, answer_mapper):
-    if set(np.unique(matrix)) >= set(valid_values):
+    valid_values = set(valid_values)
+    if not all(v in valid_values for v in np.unique(matrix)):
         raise ValueError(f'Valid values in the matrix are: {valid_values}')
 
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
