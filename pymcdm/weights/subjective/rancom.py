@@ -8,14 +8,14 @@ class RANCOM(PairwiseWeightsBase):
     tie_value = 0.5
     user_answer_map = {'0': 0, '1/2': 0.5, '0.5': 0.5, '1': 1}
 
-    def _answer_mapper(self, ans):
+    def _answer_mapper(self, ans: float) -> float:
         return 1 - ans
 
-    def _matrix_to_weights(self):
+    def _matrix_to_weights(self) -> np.ndarray:
         s = np.sum(self.matrix, axis=1)
         return s / s.sum()
 
-    def _compare_ranking(self, i, j):
+    def _compare_ranking(self, i: int, j: int) -> float:
         # Smaller value in the ranking represent better option
         if self.ranking[i] < self.ranking[j]:
             return 1
@@ -25,7 +25,7 @@ class RANCOM(PairwiseWeightsBase):
             return 0.5
 
     @staticmethod
-    def _question(a, b):
+    def _question(a: str, b: str) -> str:
         return (f'Please compare two objects:\n'
                 f'Choose:\n'
                 f'  1: if "{a}" is more important than "{b}";\n' 

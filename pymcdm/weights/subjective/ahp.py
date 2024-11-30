@@ -32,15 +32,15 @@ class AHP(PairwiseWeightsBase):
     def check_cr(self, cr_threshold: float = 0.1):
         return self.get_cr() <= cr_threshold
 
-    def _answer_mapper(self, ans):
+    def _answer_mapper(self, ans: float) -> float:
         return 1 / ans
 
-    def _matrix_to_weights(self):
+    def _matrix_to_weights(self) -> np.ndarray:
         eig, eig_w = np.linalg.eig(self.matrix)
         w = eig_w[:, np.argmax(np.abs(eig))].real
         return w / w.sum()
 
-    def _compare_ranking(self, i, j):
+    def _compare_ranking(self, i: int, j: int) -> float:
         if self.ranking[i] == self.ranking[j]:
             return 1
 
@@ -54,7 +54,7 @@ class AHP(PairwiseWeightsBase):
             return 1/d
 
     @staticmethod
-    def _question(a, b):
+    def _question(a: str, b: str) -> str:
         return (f'Please compare two objects:\n'
                 f'Choose values in scale from 1 to 9 where:'
                 f'  1: if "{a}" is equally important to "{b}";\n'

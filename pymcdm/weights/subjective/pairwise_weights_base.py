@@ -1,20 +1,27 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
 import os
+from typing import Callable
 from abc import ABC, abstractmethod
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from itertools import combinations
 from ...validators import validate_pairwise_matrix, validate_scoring
 
 
-# TODO group the methods in this class and add some comments
 # TODO AHP and RANCOM tests + docs + examples
 class PairwiseWeightsBase(ABC):
+
     tie_value: float | int = None
     user_answer_map: dict[str, float | int] = None
 
-    def __init__(self, ranking=None, scoring=None, object_names=None, matrix=None, filename=None):
+    def __init__(self,
+                 ranking: ArrayLike = None,
+                 scoring: ArrayLike = None,
+                 object_names: list[str] = None,
+                 matrix: ArrayLike = None,
+                 filename: str = None):
         if sum(obj is not None for obj in (ranking, scoring, object_names, matrix, filename)) != 1:
             raise ValueError('One of the arguments `ranking`, `scoring`, `object_names`,'
                              '`matrix` or `filename` should be provided!')
@@ -45,7 +52,7 @@ class PairwiseWeightsBase(ABC):
 
         self.weights = None
 
-    def __call__(self):
+    def __call__(self) -> np.ndarray:
         # If we already have weights, then just return them
         if self.weights is not None:
             return self.weights
@@ -64,7 +71,7 @@ class PairwiseWeightsBase(ABC):
         self.weights = self._matrix_to_weights()
         return self.weights
 
-    def _compare_pairwise(self, i, j):
+    def _compare_pairwise(self, i: int, j: int) -> float:
         print(self._question(self.object_names[i], self.object_names[j]))
 
         ans = self.user_answer_map.get(input('\nYour answer: ').strip(), None)
@@ -73,7 +80,7 @@ class PairwiseWeightsBase(ABC):
             ans = self.user_answer_map.get(input('\nYour answer: ').strip(), None)
         return ans
 
-    def _identify(self, objects, comparison_func):
+    def _identify(self, objects: list, comparison_func: Callable) -> np.ndarray:
         n = len(objects)
         matrix = np.diag([float(self.tie_value)] * n)
 
@@ -97,19 +104,19 @@ class PairwiseWeightsBase(ABC):
         np.savetxt(filename, self.matrix, delimiter=',', fmt='%0.6f')
 
     @abstractmethod
-    def _answer_mapper(self, ans):
+    def _answer_mapper(self, ans: float) -> float:
         pass
 
     @abstractmethod
-    def _matrix_to_weights(self):
+    def _matrix_to_weights(self) -> np.ndarray:
         pass
 
     @abstractmethod
-    def _compare_ranking(self, i, j):
+    def _compare_ranking(self, i: int, j: int) -> float:
         pass
 
     @staticmethod
     @abstractmethod
-    def _question(a, b):
+    def _question(a: str, b: str) -> str:
         pass
 
