@@ -109,4 +109,4 @@ class PROBID(MCDA_method):
         Ri = Si_pos_ideal / Si_neg_ideal
 
         p = 1 / (1 + Ri**2) + Si_average
-        return (Si_pos_ideal, Si_neg_ideal, Ri, p)
+        return Si_pos_ideal, Si_neg_ideal, Ri, p

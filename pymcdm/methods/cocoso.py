@@ -94,4 +94,4 @@ class COCOSO(MCDA_method):
         # Compute the prefomance score
         ksi = np.power(ksi_a * ksi_b * ksi_c, 1/3) + 1/3 * (ksi_a + ksi_b + ksi_c)
 
-        return (nmatrix, S, P, ksi_a, ksi_b, ksi_c, ksi)
+        return nmatrix, S, P, ksi_a, ksi_b, ksi_c, ksi

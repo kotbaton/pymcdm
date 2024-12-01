@@ -129,5 +129,4 @@ class MARCOS(MCDA_method):
         f_k_neg = k_pos / (k_pos + k_neg)
         f_k = (k_pos + k_neg) / (1 + (1 - f_k_pos) / f_k_pos + (1 - f_k_neg) / f_k_neg)
 
-        return (exmatrix, n_exmatrix, weighted_matrix,
-                k_neg, k_pos, f_k_neg, f_k_pos, f_k)
+        return exmatrix, n_exmatrix, weighted_matrix, k_neg, k_pos, f_k_neg, f_k_pos, f_k

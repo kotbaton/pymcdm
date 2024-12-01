@@ -26,9 +26,9 @@ class TestARAS(unittest.TestCase):
     candidates in the process of recruitment and selection of personnel based on the SWARA and ARAS methods.
     Quaestus, (7), 53.
     
-    [2] Zavadskas, E. K., & Turskis, Z. (2010). A NEW ADDITIVE RATIO ASSESSMENT (ARAS) METHOD IN MULTICRITERIA
-    DECISION‐MAKING / NAUJAS ADITYVINIS KRITERIJŲ SANTYKIŲ ĮVERTINIMO METODAS (ARAS) DAUGIAKRITERINIAMS UŽDAVINIAMS
-    SPRĘSTI. Technological and Economic Development of Economy, 16(2), 159–172. https://doi.org/10.3846/tede.2010.10
+    [2] Zavadskas, E. K., & Turskis, Z. (2010). A new additive ratio assessment (ARAS) method in Multicriteria
+    Decision‐Aaking / Naujas adityvinis kriterijų santykių įvertinimo metodas (ARAS) Daugiakriteriniams uždaviniams
+    spręsti. Technological and Economic Development of Economy, 16(2), 159–172. https://doi.org/10.3846/tede.2010.10
     """
 
     def test_output(self):

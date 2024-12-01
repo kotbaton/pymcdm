@@ -147,4 +147,4 @@ class RIM(MCDA_method):
 
         p = i_minus / (i_plus + i_minus)
 
-        return (ref_ideal_s, nmatrix, wnmatrix, i_plus, i_minus, p)
+        return ref_ideal_s, nmatrix, wnmatrix, i_plus, i_minus, p

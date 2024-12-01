@@ -33,4 +33,4 @@ class SPROBID(PROBID):
 
         p = Si_neg_ideal / Si_pos_ideal
 
-        return (Si_pos_ideal, Si_neg_ideal, p)
+        return Si_pos_ideal, Si_neg_ideal, p

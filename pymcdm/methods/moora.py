@@ -51,9 +51,9 @@ class MOORA(MCDA_method):
 
         nmatrix = matrix / np.sqrt(np.sum(matrix ** 2, axis=0))
 
-        # Difficult normalized decision making matrix
+        # Difficult normalized decision-making matrix
         wmatrix = nmatrix * weights
         # Calculate the composite score
         cscore = np.sum(wmatrix[:, types == 1], axis=1) - np.sum(wmatrix[:, types == -1], axis=1)
 
-        return (nmatrix, wmatrix, cscore)
+        return nmatrix, wmatrix, cscore
