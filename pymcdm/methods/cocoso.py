@@ -76,8 +76,8 @@ class COCOSO(MCDA_method):
                  normalization_function=normalizations.minmax_normalization,
                  l=0.5):
         self.normalization = normalization_function
-        if param_validator(l, 'l'):
-            self.l = l
+        param_validator(l, 'l')
+        self.l = l
 
     def _method(self, matrix, weights, types):
         l = self.l
