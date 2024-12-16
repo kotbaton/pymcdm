@@ -1,6 +1,6 @@
 # Copyright (c) 2023-2024 Andrii Shekhovtsov
 
-from .promethee_i import PROMETHEE_I
+from .partial import PROMETHEE_I
 from ..io import TableDesc, MCDA_results
 
 

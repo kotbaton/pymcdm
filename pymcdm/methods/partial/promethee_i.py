@@ -4,8 +4,8 @@ from itertools import repeat
 from functools import partial, wraps
 import numpy as np
 
-from .mcda_method import MCDA_method
-from ..io import TableDesc, MCDA_results
+from ..mcda_method import MCDA_method
+from ...io import TableDesc, MCDA_results
 
 def _preference_function_wrapper(f):
     @wraps(f)
@@ -79,7 +79,7 @@ class PROMETHEE_I(MCDA_method):
 
         Examples
         --------
-        >>> from pymcdm.methods import PROMETHEE_I
+        >>> from pymcdm.partial.methods import PROMETHEE_I
         >>> import numpy as np
         >>> body = PROMETHEE_I('usual')
         >>> matrix =  np.array([[4, 3, 2],

@@ -1,0 +1,1 @@
+from .promethee_i import PROMETHEE_I
