@@ -2,10 +2,10 @@ import pymcdm as pm
 from pymcdm.weights.subjective import RANCOM, AHP
 from pymcdm.weights import equal_weights
 
-selected_method = AHP
+selected_method = RANCOM
 
-method = selected_method(ranking=[1, 2, 2, 4])
-print('Ranking', [1, 2, 2, 4])
+method = selected_method(ranking=[1, 2, 4, 3])
+print('Ranking', [1, 2, 4, 3])
 weights = method()
 print(weights)
 print(method.matrix)
