@@ -752,14 +752,14 @@ def validate_pairwise_matrix(matrix, valid_values, answer_mapper):
         If the `matrix` is not square.
         If the reciprocal relationship defined by `answer_mapper` is not satisfied.
     """
-    valid_values = set(valid_values)
-    if not all(v in valid_values for v in np.unique(matrix)):
+    valid_values = {round(v, 2) for v in valid_values}
+    if not all(round(v, 2) in valid_values for v in np.unique(matrix)):
         raise ValueError(f'Valid values in the matrix are: {valid_values}')
 
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
         raise ValueError(f'Matrix should be two-dimensional array with (n, n) shape.')
 
     for i, j in combinations(range(matrix.shape[0]), 2):
-        if matrix[j, i] != answer_mapper(matrix[i, j]):
+        if abs(matrix[j, i] - answer_mapper(matrix[i, j])) > 0.01:
             raise ValueError(f'matrix[{j}, {i}] should be {answer_mapper(matrix[i, j])}, because '
                              f'matrix[{i}, {j}] is {matrix[i, j]}.')
