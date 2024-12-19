@@ -20,27 +20,7 @@ class MCDA_results:
     matrix : ArrayLike
         The decision matrix used as input for the MCDA method.
     results : list of Table
-        A list of `Table` objects representinghttps://www.reddit.com/r/Polska/comments/1gr0vdy/czym_myjecie_d%C5%82ugie_w%C5%82osy/ the analysis results.
-
-    Methods
-    -------
-    prepare_output(group_tables=True, ranking=True, matrix=True, label_prefix=True,
-                   float_fmt='%0.4f', fix_integers=True, output_function=None)
-        Prepares the formatted output string for the results, supporting options for
-        table grouping, rankings, matrix display, and formatting options.
-
-    to_latex(**kwargs)
-        Returns the results formatted as a LaTeX string, using the `prepare_output` method.
-
-    to_string(**kwargs)
-        Returns the results formatted as a plain text string, using the `prepare_output` method.
-
-    __str__()
-        Returns the results formatted as a string, equivalent to `to_string()`.
-
-    __dict__()
-        Returns a dictionary where the keys are the captions of the tables in `results`
-        and the values are the corresponding `Table` objects.
+        A list of `Table` objects representing the analysis results.
     """
 
     def __init__(self,
