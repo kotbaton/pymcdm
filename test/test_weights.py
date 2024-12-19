@@ -209,7 +209,6 @@ class TestRANCOMWeights(unittest.TestCase):
         ])
 
         output = [0.2449, 0.2449, 0.1429, 0.0204, 0.0612, 0.1020, 0.1837]
-        # print(weights.subjective.RANCOM(matrix)())
         output_method = [round(weight, 4) for weight in weights.subjective.RANCOM(matrix=matrix)()]
         self.assertListEqual(output, output_method)
 
