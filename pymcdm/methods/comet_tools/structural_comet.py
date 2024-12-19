@@ -145,7 +145,7 @@ class StructuralCOMET(MCDA_method):
     def __call__(self, matrix,
                  weights=None,
                  types=None,
-                 skip_validation=False,
+                 validation=False,
                  verbose=False):
         """Rank alternatives from decision matrix `matrix`.
 
@@ -161,7 +161,7 @@ class StructuralCOMET(MCDA_method):
                 types : None
                     Not used in the StructuralCOMET method.
 
-                skip_validation : bool
+                validation : bool
                     Not used in the StructuralCOMET method.
 
                 verbose : bool

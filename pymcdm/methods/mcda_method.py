@@ -15,7 +15,7 @@ class MCDA_method(ABC):
     _tables = None
 
     def __call__(self, matrix: ArrayLike, weights: ArrayLike, types: ArrayLike,
-                 skip_validation: bool = False,
+                 validation: bool = True,
                  verbose: bool = False):
         """ Rank alternatives from decision matrix `matrix`, with criteria
             weights `weights` and criteria types `types`.
@@ -35,9 +35,9 @@ class MCDA_method(ABC):
                     1 if criteria is profit and -1 if criteria is cost for 
                     each criteria in `matrix`.
 
-                skip_validation : bool
-                    Skip all the validations made when alternatives
-                    are evaluating. Default is False.
+                validation : bool
+                    Enable or disable validation of the all input data. True - validation is enabled,
+                    False - validation is disabled. Default is True.
 
                 verbose : bool
                     Explain the MCDA, i.e. provide matrices and vectors from
@@ -48,7 +48,7 @@ class MCDA_method(ABC):
         weights = np.asarray(weights, dtype='float')
         types = np.asarray(types)
 
-        if not skip_validation:
+        if validation:
             validate_decision_problem(matrix, weights, types)
             self._additional_validation(matrix, weights, types)
 

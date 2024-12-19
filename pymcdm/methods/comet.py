@@ -119,7 +119,7 @@ class COMET(MCDA_method):
     def __call__(self, matrix,
                  weights=None,
                  types=None,
-                 skip_validation=False,
+                 validation=True,
                  verbose=False):
         """Rank alternatives from decision matrix `matrix`.
 
@@ -135,10 +135,10 @@ class COMET(MCDA_method):
                 types : None
                     Not used in the COMET method.
 
-                skip_validation : bool
-                    Skip all the validations made when alternatives
-                    are evaluating. Default is False. For the COMET method
-                    only matrix and cvalues are validated.
+                validation : bool
+                    Enable (True) or disable (False) validation of the input data.
+                    For the COMET method only matrix and cvalues are validated.
+                    Default is True.
 
                 verbose : bool
                     Explain the MCDA, i.e. provide matrices and vectors from
@@ -147,7 +147,7 @@ class COMET(MCDA_method):
         """
         matrix = np.asarray(matrix, dtype='float')
 
-        if not skip_validation:
+        if validation:
             self._additional_validation(matrix, weights, types)
 
         if verbose:
