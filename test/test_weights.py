@@ -189,3 +189,27 @@ class TestVarianceWeights(unittest.TestCase):
         output_method = [round(weight, 4) for weight in weights.variance_weights(matrix)]
 
         self.assertListEqual(output, output_method)
+
+
+class TestRANCOMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Shuai, D., Zongzhun, Z., Yongji, W., & Lei, L. (2012, May). A new angular method to determine the objective
+        weights. In 2012 24th Chinese Control and Decision Conference (CCDC) (pp. 3889-3892). IEEE.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+            [0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+            [0.0, 0.0, 0.5, 1.0, 1.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0, 1.0, 0.5, 0.0],
+            [0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.5]
+        ])
+
+        output = [0.2449, 0.2449, 0.1429, 0.0204, 0.0612, 0.1020, 0.1837]
+        # print(weights.subjective.RANCOM(matrix)())
+        output_method = [round(weight, 4) for weight in weights.subjective.RANCOM(matrix=matrix)()]
+        self.assertListEqual(output, output_method)
+
