@@ -193,8 +193,9 @@ class TestVarianceWeights(unittest.TestCase):
 
 class TestRANCOMWeights(unittest.TestCase):
     """ Test output method with reference:
-        [1] Shuai, D., Zongzhun, Z., Yongji, W., & Lei, L. (2012, May). A new angular method to determine the objective
-        weights. In 2012 24th Chinese Control and Decision Conference (CCDC) (pp. 3889-3892). IEEE.
+        [1] Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to
+        identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial
+        Intelligence, 122, 106114.
     """
 
     def test_output(self):
@@ -212,3 +213,22 @@ class TestRANCOMWeights(unittest.TestCase):
         output_method = [round(weight, 4) for weight in weights.subjective.RANCOM(matrix=matrix)()]
         self.assertListEqual(output, output_method)
 
+
+class TestAHPWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Wang, Y. M., & Chin, K. S. (2011). A linear programming approximation to the eigenvector method in the
+        analytic hierarchy process. Information Sciences, 181(23), 5240-5248.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [1, 4, 3, 1, 3, 4],
+            [1/4, 1, 7, 3, 1/5, 1],
+            [1/3, 1/7, 1, 1/5, 1/5, 1/6],
+            [1, 1/3, 5, 1, 1, 1/3],
+            [1/3, 5, 5, 1, 1, 3],
+            [1/4, 1, 6, 3, 1/3, 1]
+        ])
+        output = [0.3208, 0.1395, 0.0348, 0.1285, 0.2374, 0.1391]
+        output_method = [round(weight, 4) for weight in weights.subjective.AHP(matrix=matrix)()]
+        self.assertListEqual(output, output_method)
