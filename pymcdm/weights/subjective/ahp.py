@@ -36,7 +36,10 @@ class AHP(PairwiseWeightsBase):
     [0.48144852 0.21998235 0.13073309 0.16783605]
     >>> ahp = AHP(object_names=['Price', 'Mileage', 'HP', 'Year']) # Identify weights based on manual comparisons
     >>> weights = ahp()
-    [0.64861395 0.17215263 0.10981084 0.06942258]
+    >>> print(weights)
+    [0.52407767 0.26268171 0.03742414 0.17581648]
+    >>> print(ahp.get_cr())  # To calculate CR use get_cr() method
+    0.5021601824872032
 
     References
     ----------
