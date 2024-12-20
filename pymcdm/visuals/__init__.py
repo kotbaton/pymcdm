@@ -18,3 +18,26 @@ from .comet_contourf import comet_contourf
 from .comet_2d_esp_plot import comet_2d_esp_plot
 from .comet_3d_esp_plot import comet_3d_esp_plot
 from .comet_tfns import comet_tfns
+
+__all__ = [
+    'promethee_I_flows',
+    'promethee_I_graph',
+    'rankings_flow_correlation',
+    'ranking_flows',
+    'ranking_bar',
+    'ranking_scatter',
+    'mej_plot',
+    'correlation_heatmap',
+    'correlation_plot',
+    'boxplot',
+    'violin',
+    'polar_plot',
+    'polar_weights',
+    'weights_plot',
+    'comet_2d_plot',
+    'comet_3d_plot',
+    'comet_contourf',
+    'comet_2d_esp_plot',
+    'comet_3d_esp_plot',
+    'comet_tfns'
+]
