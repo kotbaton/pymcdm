@@ -9,7 +9,20 @@ pymcdm.weights
 pymcdm.weights.subjective
 --------------------------
 
-.. automodule:: pymcdm.weights.subjective
+.. autoclass:: pymcdm.weights.subjective.AHP
    :members:
-   :undoc-members:
+   :private-members:
+   :exclude-members: tie_value, user_answer_map, RI_M
+   :show-inheritance:
+
+.. autoclass:: pymcdm.weights.subjective.RANCOM
+   :members:
+   :private-members:
+   :exclude-members: tie_value, user_answer_map
+   :show-inheritance:
+
+.. autoclass:: pymcdm.weights.subjective.PairwiseWeightsBase
+   :members:
+   :private-members:
+   :exclude-members: tie_value, user_answer_map
    :show-inheritance:

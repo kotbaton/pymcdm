@@ -6,18 +6,10 @@ from .pairwise_weights_base import PairwiseWeightsBase
 
 class RANCOM(PairwiseWeightsBase):
     """
-    A subclass of PairwiseWeightsBase implementing the RANCOM (RANking COMparison) method [#rancom1].
+    A subclass of PairwiseWeightsBase implementing the RANCOM (RANking COMparison) method [#rancom1]_.
 
     The RANCOM class computes weights for pairwise comparisons based on rankings or user-provided
     input.
-
-    Attributes
-    ----------
-    tie_value : float
-        Value representing a tie in pairwise comparisons. Default is 0.5.
-    user_answer_map : dict of str to float
-        A mapping of user responses ('0', '1/2', '0.5', '1') to numerical values used in pairwise
-        comparisons.
 
     Parameters
     ----------

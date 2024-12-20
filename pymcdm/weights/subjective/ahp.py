@@ -6,20 +6,12 @@ from .pairwise_weights_base import PairwiseWeightsBase
 
 class AHP(PairwiseWeightsBase):
     """
-    A subclass of PairwiseWeightsBase implementing the AHP (Analytic Hierarchy Process) method [#ahp1].
+    A subclass of PairwiseWeightsBase implementing the AHP (Analytic Hierarchy Process) method [#ahp1]_.
 
-    RI values for determination of the consistency are taken from [#ahp2].
+    RI values for determination of the consistency are taken from [#ahp2]_.
 
     The AHP class computes weights for pairwise comparisons based on rankings or user-provided
     input.
-
-    Attributes
-    ----------
-    tie_value : float
-        Value representing a tie in pairwise comparisons. Default is 1.
-    user_answer_map : dict of str to float
-        A mapping of user responses (for example 1, 2, 1/2, etc.) to numerical values used in pairwise
-        comparisons.
 
     Parameters
     ----------
@@ -55,9 +47,6 @@ class AHP(PairwiseWeightsBase):
     """
     tie_value = 1
     user_answer_map = {f'1/{v}': 1 / v for v in range(2, 10)} | {str(v): v for v in range(1, 10)}
-
-    # Rao Tummala, V. M., & Ling, H. (1998). A note on the computation of the mean random consistency index
-    # of the analytic hierarchy process (AHP). Theory and decision, 44(3), 221-230.
     RI_M = [0, 0, 0.5799, 0.8921, 1.1159, 1.2358, 1.3322, 1.3952, 1.4537, 1.4882, 1.5117, 1.5356, 1.5571, 1.5714,
             1.5831]
 
@@ -180,15 +169,7 @@ class AHP(PairwiseWeightsBase):
         Generates a question string for comparing two objects.
 
         The question prompts the user to compare the importance of two objects and choose one of
-        the following options for two criteria a anb b:
-        Choose values in scale from 1 to 9 where:
-          1: if "{a}" is equally important to "{b}";
-          ...
-          9: if "{a}" is extremely more important than "{b}";
-        OR value in scale 1 to 1/9 where:
-          1: if "{b}" is equally important to "{a}";
-          ...
-        1/9: if "{b}" is extremely more important than "{a}".
+        the options for two criteria a anb b.
 
         Parameters
         ----------

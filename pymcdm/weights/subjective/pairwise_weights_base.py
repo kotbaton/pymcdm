@@ -18,28 +18,6 @@ class PairwiseWeightsBase(ABC):
     pairwise comparison matrices, or a file. It is designed for extension in derived classes,
     which must override its abstract methods.
 
-    Abstract Methods
-    -----------------
-    _answer_mapper(ans: float) -> float
-        Maps a user-provided answer value to its corresponding inverse value.
-    _matrix_to_weights() -> np.ndarray
-        Calculates the weights based on the pairwise comparison matrix.
-    _compare_ranking(i: int, j: int) -> float
-        Compares two objects based on their ranking.
-    _question(a: str, b: str) -> str
-        Generates a question string for comparing two objects during manual comparison process.
-
-    Attributes
-    ----------
-    tie_value : float or int, optional
-        Value representing ties in pairwise comparisons. Default is None.
-        This should be defined or overridden in derived classes.
-    user_answer_map : dict of str to float or int, optional
-        A mapping of user-provided answers to corresponding numerical values.
-        This should be defined or overridden in derived classes.
-    weights : np.ndarray, optional
-        The calculated pairwise comparison weights. Initially set to None.
-
     Parameters
     ----------
     ranking : np.ndarray | list | tuple, optional
@@ -55,34 +33,11 @@ class PairwiseWeightsBase(ABC):
     filename : str, optional
         Path to a CSV file containing a pairwise comparison matrix.
 
-    Methods
-    -------
-    __call__() -> np.ndarray
-        Generates or retrieves the calculated weights from the pairwise comparison matrix.
-    _compare_pairwise(i: int, j: int) -> float
-        Performs a pairwise comparison between two objects based on user input.
-    _identify(objects: list, comparison_func: Callable) -> np.ndarray
-        Constructs a pairwise comparison matrix using the provided objects and a
-        comparison function.
-    to_csv(filename: str, allow_overwrite: bool = False)
-        Saves the pairwise comparison matrix to a CSV file.
-
     Raises
     ------
     ValueError
         If none or more than one of `ranking`, `scoring`, `object_names`, `matrix`, or
-        `filename` is provided.
-    ValueError
-        If the pairwise comparison matrix fails validation.
-    FileExistsError
-        If the specified output file already exists and `allow_overwrite` is False.
-
-    Notes
-    -----
-    - The `tie_value` and `user_answer_map` attributes must be defined in derived classes.
-    - Derived classes must override all abstract methods to provide specific functionality.
-    - The class supports manual pairwise comparisons, matrix-based identification, and automated
-      matrix generation from rankings or scores.
+        `filename` are provided.
     """
     tie_value: float | int = None
     user_answer_map: dict[str, float | int] = None
@@ -93,30 +48,6 @@ class PairwiseWeightsBase(ABC):
                  object_names: list[str] = None,
                  matrix: np.ndarray | list | tuple = None,
                  filename: str = None):
-        """
-        Initializes the PairwiseWeightsBase instance with one of the input formats.
-
-        Parameters
-        ----------
-        ranking : np.ndarray | list | tuple, optional
-            Array representing the ranking of objects. Only one of `ranking`, `scoring`,
-            `object_names`, `matrix`, or `filename` must be provided.
-        scoring : np.ndarray | list | tuple, optional
-            Array representing the scoring of objects.
-        object_names : list of str, optional
-            List of names corresponding to the objects being compared. This triggers
-            manual pairwise comparison.
-        matrix : np.ndarray | list | tuple, optional
-            Predefined pairwise comparison matrix.
-        filename : str, optional
-            Path to a CSV file containing a pairwise comparison matrix.
-
-        Raises
-        ------
-        ValueError
-            If none or more than one of `ranking`, `scoring`, `object_names`, `matrix`, or
-            `filename` are provided.
-        """
 
         if sum(obj is not None for obj in (ranking, scoring, object_names, matrix, filename)) != 1:
             raise ValueError('One of the arguments `ranking`, `scoring`, `object_names`,'
@@ -149,6 +80,16 @@ class PairwiseWeightsBase(ABC):
         self.weights = None
 
     def __call__(self) -> np.ndarray:
+        """
+        Return weights if already calculated, or calculate them based on matrix (if matrix is present).
+        If there are no matrix available, it will be calculated based on provided input and then weights will
+        be calculated and returned.
+
+        Returns
+        -------
+            np.ndarray
+                Weights computed based on input.
+        """
         # If we already have weights, then just return them
         if self.weights is not None:
             return self.weights
@@ -341,4 +282,3 @@ class PairwiseWeightsBase(ABC):
         This method must be implemented in subclasses.
         """
         pass
-
