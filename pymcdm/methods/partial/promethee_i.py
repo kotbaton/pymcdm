@@ -57,7 +57,7 @@ class _PreferenceFunctions:
 class PROMETHEE_I(MCDA_method):
     """ Preference Ranking Organization Method for Enrichment of Evaluations I (PROMETHEE I) method.
 
-        The PROMETHEE I method is based on a pairwise comparison of alternatives given a preference function [1].
+        The PROMETHEE I method is based on a pairwise comparison of alternatives given a preference function [#promethee1]_.
 
         Parameters
         ----------
@@ -73,14 +73,14 @@ class PROMETHEE_I(MCDA_method):
 
         References
         ----------
-            .. [1] Mareschal, B., De Smet, Y., & Nemery, P. (2008, December). Rank reversal in the PROMETHEE II method:
+            .. [#promethee1] Mareschal, B., De Smet, Y., & Nemery, P. (2008, December). Rank reversal in the PROMETHEE II method:
                    some new results. In 2008 IEEE International Conference on Industrial Engineering and Engineering
                    Management (pp. 959-963). IEEE.
 
         Examples
         --------
-        >>> from pymcdm.partial.methods import PROMETHEE_I
         >>> import numpy as np
+        >>> from pymcdm.methods.partial import PROMETHEE_I
         >>> body = PROMETHEE_I('usual')
         >>> matrix =  np.array([[4, 3, 2],
         ...                     [3, 2, 4],

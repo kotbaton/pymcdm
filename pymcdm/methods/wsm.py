@@ -23,7 +23,7 @@ class WSM(MCDA_method):
         References
         ----------
         .. [#wsm1] Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability
-        estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+            estimation errors: A reexamination. Operations Research, 16(2), 254-267.
 
         Examples
         --------

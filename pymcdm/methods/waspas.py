@@ -25,7 +25,7 @@ class WASPAS(MCDA_method):
         References
         ----------
         .. [#waspas1] Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted
-        aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
+            aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
 
         Examples
         --------

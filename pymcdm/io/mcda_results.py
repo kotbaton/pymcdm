@@ -1,7 +1,8 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
 from typing import List, TypeVar
 
-from numpy.typing import ArrayLike
+import numpy as np
+
 from . import Table, TableDesc
 
 MCDA_method = TypeVar('MCDA_method')
@@ -17,7 +18,7 @@ class MCDA_results:
         The MCDA method used to generate the results.
     method_name : str
         The name of the MCDA method class.
-    matrix : ArrayLike
+    matrix : np.ndarray | list | tuple
         The decision matrix used as input for the MCDA method.
     results : list of Table
         A list of `Table` objects representing the analysis results.
@@ -25,7 +26,7 @@ class MCDA_results:
 
     def __init__(self,
                  method: MCDA_method,
-                 matrix: ArrayLike,
+                 matrix: np.ndarray | list | tuple,
                  results: List[Table]):
         """
         Initializes an MCDA_results instance.
@@ -34,7 +35,7 @@ class MCDA_results:
         ----------
         method : MCDA_method
             The MCDA method used for analysis.
-        matrix : ArrayLike
+        matrix : np.ndarray | list | tuple
             The decision matrix used as input for the analysis.
         results : list of Table
             A list of `Table` objects representing the analysis results.

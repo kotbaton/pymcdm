@@ -2,7 +2,6 @@
 from typing import List, Callable
 
 import numpy as np
-from numpy.typing import ArrayLike
 import pandas as pd
 
 from ..io import TableDesc
@@ -15,7 +14,7 @@ class Table:
 
     Parameters
     ----------
-    data : ArrayLike
+    data : np.ndarray | list | tuple
         The data for the table, either a 1D or 2D array, representing different data.
         This data is automatically converted to a NumPy array.
     desc : TableDesc
@@ -50,7 +49,7 @@ class Table:
     """
 
     def __init__(self,
-                 data: ArrayLike,
+                 data: np.ndarray | list | tuple,
                  desc: TableDesc):
         self.data = np.asarray(data)
         self.desc = desc

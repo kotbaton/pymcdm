@@ -3,7 +3,6 @@
 from abc import ABC, abstractmethod
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from ..helpers import rankdata
 from ..validators import validate_decision_problem
@@ -14,7 +13,7 @@ class MCDA_method(ABC):
     _reverse_ranking = True
     _tables = None
 
-    def __call__(self, matrix: ArrayLike, weights: ArrayLike, types: ArrayLike,
+    def __call__(self, matrix: np.ndarray | list | tuple, weights: np.ndarray | list | tuple, types: np.ndarray | list | tuple,
                  validation: bool = True,
                  verbose: bool = False):
         """ Rank alternatives from decision matrix `matrix`, with criteria

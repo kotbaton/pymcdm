@@ -1,7 +1,6 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from numpy.typing import ArrayLike
+import numpy as np
 from .. import io
-
 
 class TableDesc:
     """
@@ -58,7 +57,7 @@ class TableDesc:
         self.rows = self.validate_option(rows)
         self.cols = self.validate_option(cols)
 
-    def create_table(self, data: ArrayLike):
+    def create_table(self, data: np.ndarray | list | tuple):
         return io.Table(data, self)
 
     @staticmethod

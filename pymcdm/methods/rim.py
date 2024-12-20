@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from .mcda_method import MCDA_method
 from ..validators import bounds_validator, matrix_bounds_validator, ref_ideal_bounds_validator
@@ -99,7 +98,7 @@ class RIM(MCDA_method):
                   label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
-    def __init__(self, bounds: ArrayLike, ref_ideal: ArrayLike or None=None):
+    def __init__(self, bounds: np.ndarray | list | tuple, ref_ideal: np.ndarray | list | tuple or None=None):
         """ Create RIM method object.
 
         Parameters

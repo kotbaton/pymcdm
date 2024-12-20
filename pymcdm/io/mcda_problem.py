@@ -2,7 +2,6 @@
 from typing import Sequence
 
 import numpy as np
-from numpy.typing import ArrayLike
 import pandas as pd
 
 from ..validators import (validate_decision_problem,
@@ -30,25 +29,25 @@ class MCDA_problem:
         The default order of columns for display in the DataFrame.
     """
     def __init__(self,
-                 matrix: ArrayLike,
-                 weights: ArrayLike,
+                 matrix: np.ndarray | list | tuple,
+                 weights: np.ndarray | list | tuple,
                  types: Sequence[{1, -1}],
                  criteria_names: Sequence[str] = None,
                  criteria_units: Sequence[str] = None,
-                 cvalues: ArrayLike = None,
-                 bounds: ArrayLike = None,
+                 cvalues: np.ndarray | list | tuple = None,
+                 bounds: np.ndarray | list | tuple = None,
                  esp: Sequence[float or int] = None,
-                 ref_ideal: ArrayLike = None):
+                 ref_ideal: np.ndarray | list | tuple = None):
         """
         Initializes an MCDA_problem instance, validating the consistency of weights, types,
         and other optional parameters with the decision matrix.
 
         Parameters
         ----------
-        matrix : ArrayLike
+        matrix : np.ndarray | list | tuple
             Decision matrix for validating dimensions and consistency of the problem.
             It will not be stored or outputted by to_latex() and to_string() methods.
-        weights : ArrayLike
+        weights : np.ndarray | list | tuple
             Array of weights assigned to each criterion.
         types : Sequence[{1, -1}]
             Sequence indicating the optimization direction for each criterion
@@ -57,16 +56,16 @@ class MCDA_problem:
             List of names for each criterion, by default None.
         criteria_units : Sequence[str], optional
             List of units for each criterion, by default None.
-        cvalues : ArrayLike, optional
+        cvalues : np.ndarray | list | tuple, optional
             Array of characteristic values associated with each criterion, by default None.
             Normally used in the COMET method.
-        bounds : ArrayLike, optional
+        bounds : np.ndarray | list | tuple, optional
             Array of bounds for each criterion, by default None.
             Normally used in such methods as SPOTIS and RIM.
         esp : Sequence[float or int], optional
             Expected values for each criterion, by default None.
             Normally used in the ESPExpert class.
-        ref_ideal : ArrayLike, optional
+        ref_ideal : np.ndarray | list | tuple, optional
             Reference ideal values for each criterion, by default None.
             Normally used in the RIM method.
 

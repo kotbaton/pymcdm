@@ -4,7 +4,6 @@
 from typing import Callable, Iterable
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from collections import Counter
 
@@ -105,7 +104,7 @@ def correlation_matrix(rankings, method, columns=False):
     return corr
 
 
-def normalize_matrix(matrix: ArrayLike,
+def normalize_matrix(matrix: np.ndarray | list | tuple,
                      method: Callable or Iterable[Callable] or str or Iterable[str],
                      criteria_types: None or Iterable[int]) -> np.ndarray:
     """ Normalize each column in `matrix`, using `method`normalization
@@ -113,7 +112,7 @@ def normalize_matrix(matrix: ArrayLike,
 
         Parameters
         ----------
-            matrix : ArrayLike
+            matrix : np.ndarray | list | tuple
                 Decision matrix representation.
                 The rows are considered as alternatives and the columns are considered as criteria.
 

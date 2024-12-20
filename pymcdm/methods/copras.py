@@ -18,9 +18,9 @@ class COPRAS(MCDA_method):
         .. [#copras1] Zavadskas, E. K., Kaklauskas, A., & Sarka, V. (1994). The new method of multicriteria complex
                proportional assessment of projects. Technological and economic development of economy, 1(3), 131-139.
         .. [#copras2] Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis,
-        Z. (2007). Multi-attribute assessment of road design solutions by
-        using the COPRAS method. The Baltic journal of Road and Bridge
-        engineering, 2(4), 195-203.
+               Z. (2007). Multi-attribute assessment of road design solutions by
+               using the COPRAS method. The Baltic journal of Road and Bridge
+               engineering, 2(4), 195-203.
 
         Examples
         --------

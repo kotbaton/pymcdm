@@ -4,7 +4,6 @@ from typing import Callable
 from abc import ABC, abstractmethod
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from itertools import combinations
 from ...validators import validate_pairwise_matrix, validate_scoring
@@ -43,15 +42,15 @@ class PairwiseWeightsBase(ABC):
 
     Parameters
     ----------
-    ranking : ArrayLike, optional
+    ranking : np.ndarray | list | tuple, optional
         Array representing the ranking of objects. Only one of `ranking`, `scoring`,
         `object_names`, `matrix`, or `filename` must be provided.
-    scoring : ArrayLike, optional
+    scoring : np.ndarray | list | tuple, optional
         Array representing the scoring of objects.
     object_names : list of str, optional
         List of names corresponding to the objects being compared. This triggers
         manual pairwise comparison.
-    matrix : ArrayLike, optional
+    matrix : np.ndarray | list | tuple, optional
         Predefined pairwise comparison matrix.
     filename : str, optional
         Path to a CSV file containing a pairwise comparison matrix.
@@ -89,25 +88,25 @@ class PairwiseWeightsBase(ABC):
     user_answer_map: dict[str, float | int] = None
 
     def __init__(self,
-                 ranking: ArrayLike = None,
-                 scoring: ArrayLike = None,
+                 ranking: np.ndarray | list | tuple = None,
+                 scoring: np.ndarray | list | tuple = None,
                  object_names: list[str] = None,
-                 matrix: ArrayLike = None,
+                 matrix: np.ndarray | list | tuple = None,
                  filename: str = None):
         """
         Initializes the PairwiseWeightsBase instance with one of the input formats.
 
         Parameters
         ----------
-        ranking : ArrayLike, optional
+        ranking : np.ndarray | list | tuple, optional
             Array representing the ranking of objects. Only one of `ranking`, `scoring`,
             `object_names`, `matrix`, or `filename` must be provided.
-        scoring : ArrayLike, optional
+        scoring : np.ndarray | list | tuple, optional
             Array representing the scoring of objects.
         object_names : list of str, optional
             List of names corresponding to the objects being compared. This triggers
             manual pairwise comparison.
-        matrix : ArrayLike, optional
+        matrix : np.ndarray | list | tuple, optional
             Predefined pairwise comparison matrix.
         filename : str, optional
             Path to a CSV file containing a pairwise comparison matrix.

@@ -21,15 +21,15 @@ class RANCOM(PairwiseWeightsBase):
 
     Parameters
     ----------
-    ranking : ArrayLike, optional
+    ranking : np.ndarray | list | tuple, optional
         Array representing the ranking of objects. Only one of `ranking`, `scoring`,
         `object_names`, `matrix`, or `filename` must be provided.
-    scoring : ArrayLike, optional
+    scoring : np.ndarray | list | tuple, optional
         Array representing the scoring of objects.
     object_names : list of str, optional
         List of names corresponding to the objects being compared. This triggers
         manual pairwise comparison.
-    matrix : ArrayLike, optional
+    matrix : np.ndarray | list | tuple, optional
         Predefined pairwise comparison matrix.
     filename : str, optional
         Path to a CSV file containing a pairwise comparison matrix.

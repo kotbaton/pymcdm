@@ -23,15 +23,15 @@ class AHP(PairwiseWeightsBase):
 
     Parameters
     ----------
-    ranking : ArrayLike, optional
+    ranking : np.ndarray | list | tuple, optional
         Array representing the ranking of objects. Only one of `ranking`, `scoring`,
         `object_names`, `matrix`, or `filename` must be provided.
-    scoring : ArrayLike, optional
+    scoring : np.ndarray | list | tuple, optional
         Array representing the scoring of objects.
     object_names : list of str, optional
         List of names corresponding to the objects being compared. This triggers
         manual pairwise comparison.
-    matrix : ArrayLike, optional
+    matrix : np.ndarray | list | tuple, optional
         Predefined pairwise comparison matrix.
     filename : str, optional
         Path to a CSV file containing a pairwise comparison matrix.
@@ -39,7 +39,7 @@ class AHP(PairwiseWeightsBase):
     Examples
     --------
     >>> from pymcdm.weights.subjective import AHP
-    >>> ahp = RANCOM(ranking=[1, 2, 4, 3]) # Identify weights for four criteria based on ranking
+    >>> ahp = AHP(ranking=[1, 2, 4, 3]) # Identify weights for four criteria based on ranking
     >>> weights = ahp()
     [0.48144852 0.21998235 0.13073309 0.16783605]
     >>> ahp = AHP(object_names=['Price', 'Mileage', 'HP', 'Year']) # Identify weights based on manual comparisons
