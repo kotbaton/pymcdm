@@ -1,3 +1,9 @@
+[![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://gitlab.com/shekhand/mcda)
+[![Version](https://img.shields.io/pypi/v/pymcdm)](https://pypi.org/project/pymcdm/)
+[![ReadTheDocs](https://img.shields.io/readthedocs/pymcdm)](https://pymcdm.readthedocs.io/en/latest/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.softx.2023.101368-000.svg?color=blue)](https://doi.org/10.1016/j.softx.2023.101368)
+
 # PyMCDM
 
 Python 3 library for solving multi-criteria decision-making (MCDM) problems.
