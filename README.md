@@ -79,23 +79,25 @@ The library contains:
 
 * Weighting methods:
 
-| Acronym   	 | Method Name                                             	 |        Reference                	        |
-|-------------|-----------------------------------------------------------|:----------------------------------------:|
-| -         	 | Equal/Mean weights                                      	 |       [[23]](#c23)               	       |
-| -         	 | Entropy weights                                         	 | [[23]](#c23),[[24]](#c24),[[25]](#c25) 	 |
-| STD       	 | Standard Deviation weights                              	 |    [[23]](#c23),[[26]](#c26)        	    |
-| MEREC     	 | MEthod based on the Removal Effects of Criteria         	 |       [[27]](#c27)               	       |
-| CRITIC    	 | CRiteria Importance Through Intercriteria Correlation   	 |    [[28]](#c28),[[29]](#c29)       	     |
-| CILOS     	 | Criterion Impact LOS                                    	 |       [[30]](#c30)               	       |
-| IDOCRIW   	 | Integrated Determination of Objective CRIteria Weight   	 |       [[30]](#c30)               	       |
-| -         	 | Angular/Angle weights                                   	 |       [[31]](#c31)               	       |
-| -         	 | Gini Coeficient weights                                 	 |       [[32]](#c32)               	       |
-| -         	 | Statistical variance weights                            	 |       [[33]](#c33)               	       |
+| Acronym | Method Name                                           |                Reference                 |
+|:--------|:------------------------------------------------------|:----------------------------------------:|
+| -       | Equal/Mean weights                                    |               [[23]](#c23)               |
+| -       | Entropy weights                                       | [[23]](#c23), [[24]](#c24), [[25]](#c25) |
+| STD     | Standard Deviation weights                            |        [[23]](#c23), [[26]](#c26)        |
+| MEREC   | MEthod based on the Removal Effects of Criteria       |               [[27]](#c27)               |
+| CRITIC  | CRiteria Importance Through Intercriteria Correlation |        [[28]](#c28), [[29]](#c29)        |
+| CILOS   | Criterion Impact LOS                                  |               [[30]](#c30)               |
+| IDOCRIW | Integrated Determination of Objective CRIteria Weight |               [[30]](#c30)               |
+| -       | Angular/Angle weights                                 |               [[31]](#c31)               |
+| -       | Gini Coeficient weights                               |               [[32]](#c32)               |
+| -       | Statistical variance weights                          |               [[33]](#c33)               |
+| AHP     | Analytic Hierarchy Process                            |               [[65]](#c65)               |
+| RANCOM  | RANking COMparison                                    |               [[66]](#c66)               |
 
 * Normalization methods:
 
 | Method Name                          	 |     Reference         	     |
-|----------------------------------------|:---------------------------:|
+|:---------------------------------------|:---------------------------:|
 | Weitendorf’s Linear Normalization    	 |    [[34]](#c34)        	    |
 | Maximum - Linear Normalization       	 |    [[35]](#c35)        	    |
 | Sum-Based Linear Normalization       	 |    [[36]](#c36)        	    |
@@ -329,3 +331,7 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c63">[63]</a> Kizielewicz, B., Shekhovtsov, A., Więckowski, J., Wątróbski, J., & Sałabun, W. (2024). The Compromise-COMET method for identifying an adaptive multi-criteria decision model. IEEE Access.
 
 <a name="c64">[64]</a> Shekhovtsov, A., & Sałabun, W. (2023, September). The New Algorithm for Effective Reducing the Number of Pairwise Comparisons in the Decision Support Methods. In European Conference on Artificial Intelligence (pp. 243-254). Cham: Springer Nature Switzerland.
+
+<a name="c65">[65]</a> Saaty, T. L. (1980). The analytic hierarchy process (AHP). The Journal of the Operational Research Society, 41(11), 1073–1076.
+
+<a name="c66">[66]</a> Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial Intelligence, 122, 106114.
