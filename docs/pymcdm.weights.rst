@@ -1,9 +1,10 @@
 pymcdm.weights
 ======================
 
-.. automodule:: pymcdm.weights.weights
+.. automodule:: pymcdm.weights
    :members:
    :undoc-members:
+   :exclude-members: subjective
    :show-inheritance:
 
 pymcdm.weights.subjective
