@@ -80,6 +80,7 @@ class TableDesc:
         ----------
         opt : str | list[str] | Callable | None
             The option to validate. This can be:
+
             - A string: "C" (criteria) or "A" (alternatives) or other string.
             - A callable object with signature foo(n: int) -> list[str].
             - A list of strings, where all elements are valid labels.
@@ -93,11 +94,7 @@ class TableDesc:
         Raises
         ------
         ValueError
-            If `opt` is not one of the following types or values:
-            - A string ("C" or "A")
-            - A list of strings
-            - A callable
-            - None
+            If `opt` is not one of the required types.
         """
         if opt is not None\
                 and not isinstance(opt, str)\

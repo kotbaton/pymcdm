@@ -12,6 +12,15 @@ class MCDA_results:
     Represents the results of a Multi-Criteria Decision Analysis (MCDA) method,
     including the decision matrix, processed results tables, and optional ranking.
 
+    Parameters
+    ----------
+    method : MCDA_method
+        The MCDA method used for analysis.
+    matrix : np.ndarray | list | tuple
+        The decision matrix used as input for the analysis.
+    results : list of Table
+        A list of `Table` objects representing the analysis results.
+
     Attributes
     ----------
     method : MCDA_method
@@ -28,18 +37,6 @@ class MCDA_results:
                  method: MCDA_method,
                  matrix: np.ndarray | list | tuple,
                  results: List[Table]):
-        """
-        Initializes an MCDA_results instance.
-
-        Parameters
-        ----------
-        method : MCDA_method
-            The MCDA method used for analysis.
-        matrix : np.ndarray | list | tuple
-            The decision matrix used as input for the analysis.
-        results : list of Table
-            A list of `Table` objects representing the analysis results.
-        """
         self.method = method
         self.method_name = method.__class__.__name__
         self.matrix = matrix
@@ -153,7 +150,7 @@ class MCDA_results:
         Parameters
         ----------
         **kwargs : dict
-            Additional keyword arguments passed to `prepare_output`.
+            Additional keyword arguments passed to `prepare_output()`.
 
         Returns
         -------
@@ -170,7 +167,7 @@ class MCDA_results:
         Parameters
         ----------
         **kwargs : dict
-            Additional keyword arguments passed to `prepare_output`.
+            Additional keyword arguments passed to `prepare_output()`.
 
         Returns
         -------

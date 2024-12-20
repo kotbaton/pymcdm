@@ -21,6 +21,11 @@ class Table:
         Metadata for the table, provided as a `TableDesc` instance, including caption, label, and symbol
         information used in LaTeX representations.
 
+    Raises
+    ------
+    ValueError
+        If the shape of `data` is not supported (only 1D or 2D arrays are allowed).
+
     Attributes
     ----------
     data : np.ndarray
@@ -41,11 +46,6 @@ class Table:
         is 2d.
     df : pd.DataFrame
         A pandas DataFrame representation of the table, including row and column labels as well as data.
-
-    Raises
-    ------
-    ValueError
-        If the shape of `data` is not supported (only 1D or 2D arrays are allowed).
     """
 
     def __init__(self,

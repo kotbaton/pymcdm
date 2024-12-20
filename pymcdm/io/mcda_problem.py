@@ -20,30 +20,8 @@ class MCDA_problem:
     of the decision problem and presenting them in a tabular format as text or LaTeX code.
     The `matrix` argument is used solely for validating the consistency of other parameters.
 
-    Attributes
+    Parameters
     ----------
-    df : pandas.DataFrame
-        A DataFrame containing the criteria description, including weights, types, names, units,
-        cvalues, bounds, expected values, and reference ideals.
-    columns_order : list of str
-        The default order of columns for display in the DataFrame.
-    """
-    def __init__(self,
-                 matrix: np.ndarray | list | tuple,
-                 weights: np.ndarray | list | tuple,
-                 types: Sequence[{1, -1}],
-                 criteria_names: Sequence[str] = None,
-                 criteria_units: Sequence[str] = None,
-                 cvalues: np.ndarray | list | tuple = None,
-                 bounds: np.ndarray | list | tuple = None,
-                 esp: Sequence[float or int] = None,
-                 ref_ideal: np.ndarray | list | tuple = None):
-        """
-        Initializes an MCDA_problem instance, validating the consistency of weights, types,
-        and other optional parameters with the decision matrix.
-
-        Parameters
-        ----------
         matrix : np.ndarray | list | tuple
             Decision matrix for validating dimensions and consistency of the problem.
             It will not be stored or outputted by to_latex() and to_string() methods.
@@ -69,14 +47,32 @@ class MCDA_problem:
             Reference ideal values for each criterion, by default None.
             Normally used in the RIM method.
 
-        Raises
-        ------
-        ValueError
-            If `matrix` or `types` size does not match `weights`.
-            If `criteria_names` or `criteria_units` length does not match `weights`.
-            If `esp`, or `ref_ideal` are provided without `bounds` for validation.
-            If the shape of `cvalues` is not supported.
-        """
+    Raises
+    ------
+    ValueError
+        If `matrix` or `types` size does not match `weights`.
+        If `criteria_names` or `criteria_units` length does not match `weights`.
+        If `esp`, or `ref_ideal` are provided without `bounds` for validation.
+        If the shape of `cvalues` is not supported.
+
+    Attributes
+    ----------
+    df : pandas.DataFrame
+        A DataFrame containing the criteria description, including weights, types, names, units,
+        cvalues, bounds, expected values, and reference ideals.
+    columns_order : list of str
+        The default order of columns for display in the DataFrame.
+    """
+    def __init__(self,
+                 matrix: np.ndarray | list | tuple,
+                 weights: np.ndarray | list | tuple,
+                 types: Sequence[{1, -1}],
+                 criteria_names: Sequence[str] = None,
+                 criteria_units: Sequence[str] = None,
+                 cvalues: np.ndarray | list | tuple = None,
+                 bounds: np.ndarray | list | tuple = None,
+                 esp: Sequence[float or int] = None,
+                 ref_ideal: np.ndarray | list | tuple = None):
         matrix = np.asarray(matrix)
         weights = np.asarray(weights)
         types = np.asarray(types)
