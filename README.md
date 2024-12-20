@@ -60,15 +60,15 @@ The library contains:
 | PROMETHEE I & II   	 | Preference Ranking Organization METHod for Enrichment of Evaluations I & II |       [^4]        |
 | COMET              	 | Characteristic Objects Method                                               |       [^5]        |
 | SPOTIS             	 | Stable Preference Ordering Towards Ideal Solution                           |       [^6]        |
-| ARAS               	 | Additive Ratio ASsessment                                                   |     [^7],[^8]     |
+| ARAS               	 | Additive Ratio ASsessment                                                   |     [^7] [^8]     |
 | COCOSO             	 | COmbined COmpromise SOlution                                                |       [^9]        |
 | CODAS              	 | COmbinative Distance-based ASsessment                                       |       [^10]       |
-| EDAS               	 | Evaluation based on Distance from Average Solution                          |    [^11],[^12]    |
+| EDAS               	 | Evaluation based on Distance from Average Solution                          |    [^11] [^12]    |
 | MABAC              	 | Multi-Attributive Border Approximation area Comparison                      |       [^13]       |
-| MAIRCA             	 | MultiAttributive Ideal-Real Comparative Analysis                            | [^14],[^15],[^16] |
-| MARCOS             	 | Measurement Alternatives and Ranking according to COmpromise Solution       |    [^17],[^18]    |
-| OCRA               	 | Operational Competitiveness Ratings                                         |    [^19],[^20]    |
-| MOORA              	 | Multi-Objective Optimization Method by Ratio Analysis                       |    [^21],[^22]    |
+| MAIRCA             	 | MultiAttributive Ideal-Real Comparative Analysis                            | [^14] [^15] [^16] |
+| MARCOS             	 | Measurement Alternatives and Ranking according to COmpromise Solution       |    [^17] [^18]    |
+| OCRA               	 | Operational Competitiveness Ratings                                         |    [^19] [^20]    |
+| MOORA              	 | Multi-Objective Optimization Method by Ratio Analysis                       |    [^21] [^22]    |
 | RIM                	 | Reference Ideal Method                                                      |       [^48]       |
 | ERVD               	 | Election Based on relative Value Distances                                  |       [^49]       |
 | PROBID               | Preference Ranking On the Basis of Ideal-average Distance                   |       [^50]       |
@@ -82,10 +82,10 @@ The library contains:
 | Acronym   	 | Method Name                                             	 | Reference                	 |
 |-------------|-----------------------------------------------------------|:--------------------------:|
 | -         	 | Equal/Mean weights                                      	 |   [^23]               	    |
-| -         	 | Entropy weights                                         	 |    [^23],[^24],[^25] 	     |
-| STD       	 | Standard Deviation weights                              	 |    [^23],[^26]        	    |
+| -         	 | Entropy weights                                         	 |    [^23] [^24] [^25] 	     |
+| STD       	 | Standard Deviation weights                              	 |    [^23] [^26]        	    |
 | MEREC     	 | MEthod based on the Removal Effects of Criteria         	 |   [^27]               	    |
-| CRITIC    	 | CRiteria Importance Through Intercriteria Correlation   	 |    [^28],[^29]       	     |
+| CRITIC    	 | CRiteria Importance Through Intercriteria Correlation   	 |    [^28] [^29]       	     |
 | CILOS     	 | Criterion Impact LOS                                    	 |   [^30]               	    |
 | IDOCRIW   	 | Integrated Determination of Objective CRIteria Weight   	 |   [^30]               	    |
 | -         	 | Angular/Angle weights                                   	 |   [^31]               	    |
@@ -99,9 +99,9 @@ The library contains:
 | Weitendorf’s Linear Normalization    	 |   [^34]        	    |
 | Maximum - Linear Normalization       	 |   [^35]        	    |
 | Sum-Based Linear Normalization       	 |   [^36]        	    |
-| Vector Normalization                 	 |    [^36],[^37] 	    |
-| Logarithmic Normalization            	 |    [^36],[^37] 	    |
-| Linear Normalization (Max-Min)       	 |    [^34],[^38] 	    |
+| Vector Normalization                 	 |    [^36] [^37] 	    |
+| Logarithmic Normalization            	 |    [^36] [^37] 	    |
+| Linear Normalization (Max-Min)       	 |    [^34] [^38] 	    |
 | Non-linear Normalization (Max-Min)   	 |   [^39]        	    |
 | Enhanced Accuracy Normalization      	 |   [^40]        	    |
 | Lai and Hwang Normalization            |        [^38]        |
@@ -111,7 +111,7 @@ The library contains:
 
 | Coefficient name                                   	 | Reference         	 |
 |------------------------------------------------------|:-------------------:|
-| Spearman's rank correlation coefficient            	 |    [^41],[^42] 	    |
+| Spearman's rank correlation coefficient            	 |    [^41] [^42] 	    |
 | Pearson correlation coefficient                    	 |    [^43]       	    |
 | Weighted Spearman’s rank correlation coefficient   	 |    [^44]       	    |
 | Rank Similarity Coefficient                        	 |    [^45]       	    |
@@ -156,7 +156,7 @@ import numpy as np
 from pymcdm.methods import TOPSIS
 from pymcdm.helpers import rrankdata
 
-# Define decision matrix (2 criteria, 4 alternative)
+# Define decision matrix (3 criteria, 4 alternative)
 alts = np.array([
     [4, 4, 0.2],
     [1, 5, 0.5],
@@ -164,11 +164,14 @@ alts = np.array([
     [4, 3, 0.5]
 ])
 
-# Define weights and types
+# Define criteria weights (should sum up to 1)
 weights = np.array([0.3, 0.5, 0.2])
+
+# Define criteria types (1 for profit, -1 for cost)
 types = np.array([1, -1, 1])
 
 # Create object of the method
+# Note, that default normalization method for TOPSIS is minmax
 topsis = TOPSIS()
 
 # Determine preferences and ranking for alternatives
