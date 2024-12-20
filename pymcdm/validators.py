@@ -83,6 +83,7 @@ def matrix_ref_point_validator(matrix: np.ndarray, ref_point: np.ndarray) -> Non
     Validates that the reference point matches the criteria of the given decision matrix.
 
     This function checks two conditions:
+
     1. The `ref_point` must be a one-dimensional array.
     2. The length of the `ref_point` must match the number of columns (criteria) in the `matrix`.
 
@@ -131,9 +132,10 @@ def matrix_cvalues_validator(matrix: np.ndarray, cvalues: list[tuple] | list[lis
     Validates that the characteristic values (`cvalues`) align with the criteria in the decision matrix.
 
     This function performs two validations:
-    1. Ensures the number of criteria (columns) in the `matrix` matches
-    the number of characteristic values in `cvalues`.
-    2. Ensures that each value in the decision matrix falls within the corresponding bounds defined in `cvalues`.
+
+        1. Ensures the number of criteria (columns) in the `matrix` matches
+           the number of characteristic values in `cvalues`.
+        2. Ensures that each value in the decision matrix falls within the corresponding bounds defined in `cvalues`.
 
     Parameters
     ----------
@@ -182,11 +184,12 @@ def ref_ideal_bounds_validator(ref_ideal: np.ndarray, bounds: np.ndarray):
     Validates that the reference ideal (`ref_ideal`) aligns with the given bounds for each criterion.
 
     This function performs the following validations:
-    1. Ensures the `ref_ideal` has a shape of `(M, 2)`, where `M` is the number of criteria,
-    and each criterion is defined by a pair of identical values (e.g., `[0, 0]`).
-    2. Ensures the shapes of `ref_ideal` and `bounds` are identical.
-    3. Verifies that all `ref_ideal` values lie within the respective bounds
-    and that the `ref_ideal` values are in ascending order `[min, max]`.
+
+        1. Ensures the `ref_ideal` has a shape of `(M, 2)`, where `M` is the number of criteria,
+           and each criterion is defined by a pair of identical values (e.g., `[0, 0]`).
+        2. Ensures the shapes of `ref_ideal` and `bounds` are identical.
+        3. Verifies that all `ref_ideal` values lie within the respective bounds
+           and that the `ref_ideal` values are in ascending order `[min, max]`.
 
     Parameters
     ----------
@@ -291,6 +294,7 @@ def cvalues_validator(cvalues: list | tuple | np.ndarray):
     Validates the characteristic values (`cvalues`) for each criterion.
 
     This function ensures that:
+
     1. Each element in `cvalues` is an iterable (e.g., a list, tuple, or numpy array).
     2. Each criterion has at least two characteristic values.
     3. The characteristic values for each criterion are sorted in strictly ascending order (no duplicates).
@@ -357,6 +361,7 @@ def bounds_validator(bounds: np.ndarray):
     Validates the bounds array to ensure it contains valid minimum and maximum values for each criterion.
 
     This function performs the following validations:
+
     1. Ensures `bounds` is a two-dimensional array with shape `(N, 2)`, where `N` is the number of criteria.
     2. Ensures that for each row in `bounds`, the first value (minimum) is less than the second value (maximum).
 
@@ -402,6 +407,7 @@ def esp_bounds_validator(esp: np.ndarray, bounds: np.ndarray):
     Validates that the ESP (Expected Solution Point) values lie within the specified bounds for each criterion.
 
     This function ensures the following:
+
     1. The `esp` array is one-dimensional.
     2. Each value in the `esp` array lies within the corresponding minimum and maximum bounds defined in `bounds`.
 
@@ -450,11 +456,13 @@ def matrix_validator(matrix: np.ndarray, types: list[int]):
     Validates the decision matrix and checks for dominant or dominated alternatives.
 
     This function ensures that:
-    1. The decision `matrix` is two-dimensional.
-    2. It identifies and raises errors if any alternative is either dominant or dominated, which could cause
-       numerical errors in some methods.
-       - Dominant alternatives have the best values for all criteria.
-       - Dominated alternatives have the worst values for all criteria.
+
+        1. The decision `matrix` is two-dimensional.
+        2. It identifies and raises errors if any alternative is either dominant or dominated, which could cause
+           numerical errors in some methods.
+
+           - Dominant alternatives have the best values for all criteria.
+           - Dominated alternatives have the worst values for all criteria.
 
     Parameters
     ----------
@@ -525,6 +533,7 @@ def weights_validator(matrix: np.ndarray, weights: np.ndarray):
     Validates the weights assigned to the criteria in a decision matrix.
 
     This function ensures the following:
+
     1. The `weights` array is one-dimensional.
     2. The number of weights matches the number of criteria (columns) in the decision matrix.
     3. All weights are positive, and their sum is approximately 1 (within a tolerance of 0.01).
@@ -577,6 +586,7 @@ def types_validator(matrix: np.ndarray, types: np.ndarray):
     Validates the types array used to define optimization directions for each criterion in a decision matrix.
 
     This function ensures the following:
+
     1. The `types` array is one-dimensional.
     2. The number of elements in `types` matches the number of criteria (columns) in the decision matrix.
     3. The `types` array contains only the values `1` (for maximization) and `-1` (for minimization).
@@ -630,12 +640,13 @@ def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np
     Validates the components of a decision problem, including the decision matrix, weights, and types.
 
     This function performs the following validations:
-    1. Ensures the decision matrix is valid
-       and does not contain dominant or dominated alternatives (`matrix_validator`).
-    2. Validates the weights array to ensure positivity, correct dimensionality,
-       and that the sum is approximately 1 (`weights_validator`).
-    3. Validates the types array to ensure it is one-dimensional,
-       matches the number of criteria, and contains only `1` or `-1` values (`types_validator`).
+
+        1. Ensures the decision matrix is valid
+           and does not contain dominant or dominated alternatives (`matrix_validator`).
+        2. Validates the weights array to ensure positivity, correct dimensionality,
+           and that the sum is approximately 1 (`weights_validator`).
+        3. Validates the types array to ensure it is one-dimensional,
+           matches the number of criteria, and contains only `1` or `-1` values (`types_validator`).
 
     Parameters
     ----------
@@ -685,6 +696,7 @@ def validate_scoring(scoring: list | tuple | np.ndarray):
     Validates the scoring values to ensure they are positive, non-zero numerical values.
 
     This function checks that:
+
     1. All elements in the `scoring` iterable are scalar values.
     2. Each scalar value is greater than zero.
 
@@ -725,6 +737,7 @@ def validate_pairwise_matrix(matrix, valid_values, answer_mapper):
     Validates a pairwise comparison matrix.
 
     This function checks the following:
+
     1. All elements in the `matrix` belong to the specified set of valid values.
     2. The `matrix` is a square matrix, i.e., its shape is `(n, n)`.
     3. The pairwise relationships in the matrix are consistent, as defined by the `answer_mapper`.

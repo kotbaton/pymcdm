@@ -2,7 +2,7 @@ Examples
 ========
 
 MCDM Examples
----------------
+-------------
 
 .. toctree::
    :maxdepth: 2
@@ -10,7 +10,7 @@ MCDM Examples
    example/MCDA_Example
 
 Verbosity Example
---------------------
+-----------------
 
 .. toctree::
    :maxdepth: 2
@@ -26,7 +26,7 @@ COMET Tools Examples
    example/COMET_Examples
 
 Subjective Weights Example
---------------------
+--------------------------
 
 .. toctree::
    :maxdepth: 2
