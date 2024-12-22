@@ -8,3 +8,4 @@ matplotlib
 sphinx-rtd-theme
 recommonmark
 pandoc
+pandas
