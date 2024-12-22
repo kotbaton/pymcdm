@@ -1,9 +1,10 @@
-from typing import Iterable
+# Copyright (c) 2024 Andrii Shekhovtsov
+from typing import Sequence
 
 import numpy as np
-from numpy.typing import ArrayLike
 
-from pymcdm.methods.mcda_method import MCDA_method
+from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class LoPM(MCDA_method):
@@ -14,6 +15,20 @@ class LoPM(MCDA_method):
         and target properties [#lopm]_.
 
         Read more in the User Guide.
+
+        Parameters
+        ----------
+            property_limits : Sequence[float] or None
+                Vector of lower-limit, upper-limit and target value properties. If None, then limits will be derived
+                from matrix based on types on each call. Default is None.
+
+            property_types : Sequence[str] or None
+                Vector of property types: should be iterable with str values that define types of properties
+                provided in `property_limits` argument. Letters can be either lowercase or upper case. Possible values:
+                - 'l' or 'L' for lower-limit, treated as "no lower than", equivalent to profit criteria.
+                - 'u' or 'U' for upper-limit, treated as "no bigger than", equivalent to cost criteria.
+                - 't' or 'T' for target properties, equivalent of Expected Solution Point.
+                If None, then `types` argument will be used to determine limits' types. Default is None.
 
         References
         ----------
@@ -37,62 +52,19 @@ class LoPM(MCDA_method):
         [0.77 1.08 0.81 0.66 0.78 0.68]
     """
     reverse_ranking = False
+    _tables = [
+        # TODO add table desc
+    ]
 
     def __init__(self,
-                 property_limits: Iterable[float] or None = None,
-                 property_types: Iterable[str] or None = None):
-        """ Create Limits on Property Method object.
-
-        Limits on Property Method is a method primarily proposed for dealing with material selection problems. It
-        operates on three types of criteria (in method's convention): lower-limit, upper-limit and target properties.
-
-        Parameters
-        ----------
-            property_limits : Iterable[float] or None
-                Vector of lower-limit, upper-limit and target value properties. If None, then limits will be derived
-                from matrix based on types on each call. Default is None.
-
-            property_types : Iterable[str] or None
-                Vector of property types: should be iterable with str values that define types of properties
-                provided in `property_limits` argument. Letters can be either lowercase or upper case. Possible values:
-                - 'l' or 'L' for lower-limit, treated as "no lower than", equivalent to profit criteria.
-                - 'u' or 'U' for upper-limit, treated as "no bigger than", equivalent to cost criteria.
-                - 't' or 'T' for target properties, equivalent of Expected Solution Point.
-                If None, then `types` argument will be used to determine limits' types. Default is None.
-        """
+                 property_limits: Sequence[float] or None = None,
+                 property_types: Sequence[str] or None = None):
+        # TODO add validation pl and pt should be same length
+        # TODO Can be not provided, then will be derived from data in _method
         self.property_limits = np.array(property_limits)
         self.property_types = np.array([c.lower() for c in property_types])
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have smaller values.
-        """
-        LoPM._validate_input_data(matrix, weights, types)
-
-        return self._method(matrix, weights)
-
-    def _method(self, matrix: ArrayLike, weights: ArrayLike):
+    def _method(self, matrix, weights, types):
         limits = self.property_limits
         types = self.property_types
 
@@ -104,4 +76,11 @@ class LoPM(MCDA_method):
         upper = np.sum(weights[upper_mask] * (matrix[:, upper_mask] / limits[upper_mask]), axis=1)
         target = np.sum(weights[target_mask] * np.abs((matrix[:, target_mask] / limits[target_mask]) - 1), axis=1)
 
+        # TODO return all according to _tables
+        # TODO make proper test for the method
+        # TODO user guide description
         return lower + upper + target
+
+    def _additional_validation(self, matrix, weights, types):
+        # TODO validate if matrix has good number of criteria as in property_limits and property_types
+        pass

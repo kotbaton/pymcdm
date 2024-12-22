@@ -11,7 +11,7 @@ Most of the code written for previous versions of `pymcdm` should work, however 
 
 #### New methods
 - Added pairwise weighting method: RANCOM, and AHP, including examples and tests for them.
-- Add RAM method, with documentation and tests for it.
+- Add RAM and LoPM methods, with documentation and tests for it.
 
 #### New modules and changes in the structure
 - Now such methods as PROMETHEE I/II and PROBID/SPROBID are implemented in separate classes.
