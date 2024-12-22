@@ -1,8 +1,10 @@
-[![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://gitlab.com/shekhand/mcda)
+[![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/kotbaton/pymcdm)
 [![Version](https://img.shields.io/pypi/v/pymcdm)](https://pypi.org/project/pymcdm/)
 [![ReadTheDocs](https://img.shields.io/readthedocs/pymcdm)](https://pymcdm.readthedocs.io/en/latest/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.softx.2023.101368-000.svg?color=blue)](https://doi.org/10.1016/j.softx.2023.101368)
+
+**Important:** Development process was moved from [GitLab](https://gitlab.com/shekhand/mcda) to [Github](https://github.com/kotbaton/pymcdm).
 
 # PyMCDM
 
