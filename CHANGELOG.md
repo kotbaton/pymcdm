@@ -7,13 +7,13 @@ comparison-based subjective weighting methods.
 
 Most of the code written for previous versions of `pymcdm` should work, however small fixes can be required.
 
-## List of all changes:
+### List of all changes:
 
-### New methods
+#### New methods
 - Added pairwise weighting method: RANCOM, and AHP, including examples and tests for them.
 - Add RAM method, with documentation and tests for it.
 
-### New modules and changes in the structure
+#### New modules and changes in the structure
 - Now such methods as PROMETHEE I/II and PROBID/SPROBID are implemented in separate classes.
 - PROMETHEE I method is now implemented as `PROMETHEE_I` class in `pymcdm.methods.partial` module.
 - Classes `RANCOM` and `AHP` are available under `pymcdm.weights.subjective`.
@@ -25,7 +25,7 @@ Most of the code written for previous versions of `pymcdm` should work, however 
   - `pymcdm.weights.subjective` - module for subjective weighting method. Currently, contains AHP and RANCOM
     implementations.
 
-### Changes related to the usage of MCDM method
+#### Changes related to the usage of MCDM method
 - Now, all additional arguments besides decision matrix, weights and types are provided in the constructor, not in 
   the call.
 - Two new arguments to the call:
@@ -34,12 +34,13 @@ Most of the code written for previous versions of `pymcdm` should work, however 
   - `validation=False` - to disable input data validation. Use it if you absolutely want to run the method on this data,
     but validation does not allow you to do it.
 
-### Other improvements
+#### Other improvements
 - Rewritten validation system across most methods for improved reliability. To skip validation add `validation=False`
   to the method call.
 - Update for the documentation, including various fixes and improvements, as well as new examples. This includes changes
   in the subpage structure, API and User Guide improvements.
 - Improved normalization handling in `normalize_matrix`. Now normalization type can be provided as `str`.
+- Add new arguments to `ranking_bar()` function.
 - Removed redundant files.
 
 # Version 1.2.1

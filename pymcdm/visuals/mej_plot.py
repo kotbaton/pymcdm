@@ -39,8 +39,9 @@ def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
         --------
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
-        >>> from pymcdm.methods import COMET
+        >>> from pymcdm.methods import COMET, TOPSIS
         >>> from pymcdm.visuals import mej_plot
+        >>> from pymcdm.methods.comet_tools import MethodExpert
         >>> cvalues = np.array([
         ...     [1, 2],
         ...     [3, 4],
@@ -48,7 +49,7 @@ def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
         >>> n = len(cvalues)
         >>> weights = np.ones(n) / n
         >>> types = np.ones(n)
-        >>> comet = COMET(cvalues, rate_function=COMET.topsis_rate_function(weights, types))
+        >>> comet = COMET(cvalues, MethodExpert(TOPSIS(), weights, types))
         >>> mej_plot(comet.get_MEJ(), grid_width=4)
         >>> plt.show()
     """

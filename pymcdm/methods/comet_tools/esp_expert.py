@@ -79,7 +79,6 @@ class ESPExpert:
                  cvalues_psi=None,
                  full_domain_psi=False
                  ):
-        self._validate_input(esps, bounds, cvalues_psi)
         self.esps = esps
         self.bounds = bounds
         if distance_function is None:
@@ -88,9 +87,10 @@ class ESPExpert:
         self.distance_aggregation = distance_aggregation
         self.psi = cvalues_psi
         self.full_domain_psi = full_domain_psi
+        self._validate_input()
 
-    @staticmethod
-    def _validate_input(esps, bounds, cvalues_psi):
+    def _validate_input(self):
+        esps, bounds, cvalues_psi = self.esps, self.bounds, self.psi
         if len(esps.shape) != 2:
             raise ValueError('esps should be a two dimensional array '
                              'with one ESP in each row.')

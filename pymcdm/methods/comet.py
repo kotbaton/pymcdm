@@ -113,6 +113,7 @@ class COMET(MCDA_method):
 
         self.criterion_number = len(cvalues)
         self.cvalues = cvalues
+        self.expert_function = expert_function
         self.p = p
         self.tfns = [COMET._make_tfns(chv) for chv in cvalues]
         
