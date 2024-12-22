@@ -72,12 +72,12 @@ def promethee_I_flows(Fp, Fm,
     ax.plot([0, 0], [-0.5, 0.5], 'k',
             alpha=0.5, linewidth=2, linestyle='--')
 
-    ax.text(-0.49, 0.5, '$\Phi$+', **text_kwargs)
+    ax.text(-0.49, 0.5, '$\\Phi$+', **text_kwargs)
     ax.text(-0.51, 0.5, '1.0', ha='right', **text_kwargs)
     ax.text(-0.51, 0.0, '0.5', ha='right', **text_kwargs)
     ax.text(-0.51, -0.5, '0.0', ha='right', **text_kwargs)
 
-    ax.text(0.49, 0.5, '$\Phi$-', ha='right', **text_kwargs)
+    ax.text(0.49, 0.5, '$\\Phi$-', ha='right', **text_kwargs)
     ax.text(0.51, -0.5, '1.0', **text_kwargs)
     ax.text(0.51, 0.0, '0.5', **text_kwargs)
     ax.text(0.51, 0.5, '0.0', **text_kwargs)

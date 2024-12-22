@@ -1,9 +1,11 @@
+# Copyright (c) 2024 Andrii Shekhovtsov
 import numpy as np
 
-from pymcdm import helpers
-from pymcdm import normalizations
+from .. import helpers
+from .. import normalizations
 
-from pymcdm.methods.mcda_method import MCDA_method
+from ..methods.mcda_method import MCDA_method
+from ..io import TableDesc
 
 class PROBID(MCDA_method):
     """ Preference Ranking on the Basis of Ideal-Average Distance Method [#probid1]_.
@@ -34,48 +36,33 @@ class PROBID(MCDA_method):
     >>> print(pref)
     [0.8568, 0.7826, 0.9362, 0.9369, 0.9379, 0.8716, 0.5489, 0.7231, 0.7792, 0.3331, 0.3387]
     """
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Matrix of ideal solutions',
+                  label='imatrix', symbol='$A_{(k)}$', rows='A', cols='C'),
+        TableDesc(caption='Average ideal solution',
+                  label='av_sol', symbol='$\\bar{v}_{j}$', rows='C', cols=None),
+        TableDesc(caption='Euclidean distances between ideal solutions and alternatives',
+                  label='dist', symbol='$S_{i(k)}$', rows='A', cols='A'),
+        TableDesc(caption='Average Euclidean distance',
+                  label='av_dist', symbol='$S_{i(avg)}$', rows='A', cols=None),
+        TableDesc(caption='Overall positive-ideal distance',
+                  label='pi_dist', symbol='$S_{i(pos-ideal)}$', rows='A', cols=None),
+        TableDesc(caption='Overall negative-ideal distance',
+                  label='ni_dist', symbol='$S_{i(neg-ideal)}$', rows='A', cols=None),
+        TableDesc(caption='Vector of pos-ideal/neg-ideal ratio',
+                  label='pos_neg_ratio', symbol='$R_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
+    ]
 
-    def __init__(self, sPROBID=False):
-        """ Creates a PROBID method object.
-
-        Parameters
-        ----------
-            sPROBID : bool
-                Determine if sPROBID variation should be used. Default is False, therefore the full procedure of the PROBID method is used.
-        """
-        self.sPROBID = sPROBID
-
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """ Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        PROBID._validate_input_data(matrix, weights, types)
-        return PROBID._probid(matrix, weights, types, self.sPROBID)
-
-    @staticmethod
-    def _probid(matrix, weights, types, sPROBID):
-        nmatrix = helpers.normalize_matrix(matrix, normalizations.vector_normalization, None)
+    def _method(self, matrix, weights, types):
+        nmatrix = helpers.normalize_matrix(matrix,
+                                           normalizations.vector_normalization,
+                                           None)
 
         wnmatrix = nmatrix * weights
 
@@ -94,35 +81,32 @@ class PROBID(MCDA_method):
 
         Si_average = np.sqrt(np.sum((wnmatrix - average_pis)**2, axis=1))
 
-        m = wnmatrix.shape[0]
+        return (nmatrix,
+                wnmatrix,
+                pis_matrix,
+                average_pis,
+                Si,
+                Si_average,
+                *self._final_preference_calculation(Si, Si_average))
+
+    def _final_preference_calculation(self, Si, Si_average):
+        m = Si.shape[0]
 
         Si_pos_ideal = np.zeros(m)
         Si_neg_ideal = np.zeros(m)
-        if not sPROBID:
-            if m % 2 == 1:
-                lim = (m + 1) // 2
-            else:
-                lim = m // 2
 
-            for k in range(1, lim + 1):
-                Si_pos_ideal += Si[:, k - 1] / k
-
-            for k in range(lim, m + 1):
-                Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
-
-            Ri = Si_pos_ideal / Si_neg_ideal
-            return 1 / (1 + Ri**2) + Si_average
-
+        if m % 2 == 1:
+            lim = (m + 1) // 2
         else:
-            if m >= 4:
-                for k in range(1, m // 4 + 1):
-                    Si_pos_ideal += Si[:, k - 1] / k
+            lim = m // 2
 
-                for k in range(m + 1 - (m // 4), m + 1):
-                    Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
+        for k in range(1, lim + 1):
+            Si_pos_ideal += Si[:, k - 1] / k
 
-            else:
-                Si_pos_ideal = Si[0]
-                Si_neg_ideal = Si[-1]
+        for k in range(lim, m + 1):
+            Si_neg_ideal += Si[:, k - 1] / (m - k + 1)
 
-            return Si_neg_ideal / Si_pos_ideal
+        Ri = Si_pos_ideal / Si_neg_ideal
+
+        p = 1 / (1 + Ri**2) + Si_average
+        return Si_pos_ideal, Si_neg_ideal, Ri, p

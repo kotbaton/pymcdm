@@ -1,3 +1,4 @@
+from . import io
 from . import methods
 from . import correlations
 from . import normalizations

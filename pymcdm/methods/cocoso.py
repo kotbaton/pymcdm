@@ -1,9 +1,12 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
+from ..validators import param_validator
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class COCOSO(MCDA_method):
@@ -43,47 +46,42 @@ class COCOSO(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [2.041, 2.788, 2.882, 2.416, 1.299, 1.443, 2.519]
     """
+    _captions = [
+        'Normalized decision matrix.',
+        'Vector of $S_i$ values.',
+        'Vector of $P_i$ values.',
+        'Appraisal score strategy $k_{ia}$.',
+        'Appraisal score strategy $k_{ib}$.',
+        'Appraisal score strategy $k_{ic}$.',
+        'Final preference value.',
+    ]
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Vector of $S_i$ values',
+                  label='s_values', symbol='$S_{i}$', rows='A', cols=None),
+        TableDesc(caption='Vector of $P_i$ values',
+                  label='p_values', symbol='$P_{i}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal score strategy $k_{ia}$',
+                  label='appr_score_a', symbol='$k_{ia}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal score strategy $k_{ib}$',
+                  label='appr_score_b', symbol='$k_{ib}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal score strategy $k_{ic}$',
+                  label='appr_score_c', symbol='$k_{ic}$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$k_i$', rows='A', cols=None)
+    ]
 
-    def __init__(self, normalization_function=normalizations.minmax_normalization):
+    def __init__(self,
+                 normalization_function=normalizations.minmax_normalization,
+                 l=0.5):
         self.normalization = normalization_function
+        param_validator(l, 'l')
+        self.l = l
 
-    def __call__(self, matrix, weights, types, l=0.5, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-        Parameters
-        ----------
-            matrix : ndarray
-                Decision matrix / alternatives data.
-                Alternatives are in rows and Criteria are in columns.
-
-            weights : ndarray
-                Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-            types : ndarray
-                Array with definitions of criteria types:
-                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-            l: value
-                The value of balanced compromise. It must be from the interval [0, 1].
-
-            *args: is necessary for methods which reqiure some additional data.
-
-            **kwargs: is necessary for methods which reqiure some additional data.
-
-        Returns
-        -------
-            ndarray
-                Preference values for alternatives. Better alternatives have higher values.
-        """
-        COCOSO._validate_input_data(matrix, weights, types)
-        if self.normalization is not None:
-            nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
-        else:
-            nmatrix = helpers.normalize_matrix(matrix, normalizations.minmax_normalization, types)
-        return COCOSO._cocoso(nmatrix, weights, l)
-
-    @staticmethod
-    def _cocoso(nmatrix, weights, l=0.5):
+    def _method(self, matrix, weights, types):
+        l = self.l
+        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
         # Vectors of S and P
         S = np.sum(nmatrix * weights, axis=1)
         P = np.sum(nmatrix ** weights, axis=1)
@@ -96,4 +94,4 @@ class COCOSO(MCDA_method):
         # Compute the prefomance score
         ksi = np.power(ksi_a * ksi_b * ksi_c, 1/3) + 1/3 * (ksi_a + ksi_b + ksi_c)
 
-        return ksi
+        return nmatrix, S, P, ksi_a, ksi_b, ksi_c, ksi

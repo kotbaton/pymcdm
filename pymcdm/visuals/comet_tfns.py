@@ -97,7 +97,7 @@ def comet_tfns(comet,
 
     ax.set_title(criterion_name)
     ax.set_xlabel('$x$')
-    ax.set_ylabel('$\mu(x)$')
+    ax.set_ylabel('$\\mu(x)$')
 
     ax.grid(linestyle='--', alpha=0.5)
     ax.set_axisbelow(True)

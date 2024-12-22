@@ -1,186 +1,135 @@
-pymcdm.methods package
+pymcdm.methods
 ======================
 
-pymcdm.methods.aras
+.. autoclass:: pymcdm.methods.ARAS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.COCOSO
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.CODAS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.COMET
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.COPRAS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.EDAS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.ERVD
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.MABAC
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.MAIRCA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.MARCOS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.MOORA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.OCRA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.PROBID
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.PROMETHEE_II
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.RAM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.RIM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.SPOTIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.TOPSIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.VIKOR
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.WASPAS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.WPM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.WSM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.mcda_method.MCDA_method
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+pymcdm.methods.comet_tools
 --------------------------
 
-.. automodule:: pymcdm.methods.aras
+.. automodule:: pymcdm.methods.comet_tools
    :members:
    :undoc-members:
    :show-inheritance:
 
-pymcdm.methods.cocoso
-----------------------------
-
-.. automodule:: pymcdm.methods.cocoso
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.codas
----------------------------
-
-.. automodule:: pymcdm.methods.codas
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.comet
----------------------------
-
-.. automodule:: pymcdm.methods.comet
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.copras
-----------------------------
-
-.. automodule:: pymcdm.methods.copras
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.edas
+pymcdm.methods.partial
 --------------------------
 
-.. automodule:: pymcdm.methods.edas
+.. automodule:: pymcdm.methods.partial
    :members:
    :undoc-members:
    :show-inheritance:
 
-pymcdm.methods.ervd
---------------------------
-
-.. automodule:: pymcdm.methods.ervd
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.mabac
----------------------------
-
-.. automodule:: pymcdm.methods.mabac
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.mairca
-----------------------------
-
-.. automodule:: pymcdm.methods.mairca
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.marcos
-----------------------------
-
-.. automodule:: pymcdm.methods.marcos
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.mcda_method
-----------------------------------
-
-.. automodule:: pymcdm.methods.mcda_method
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.moora
----------------------------
-
-.. automodule:: pymcdm.methods.moora
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.ocra
---------------------------
-
-.. automodule:: pymcdm.methods.ocra
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.probid
---------------------------
-
-.. automodule:: pymcdm.methods.probid
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.promethee
--------------------------------
-
-.. automodule:: pymcdm.methods.promethee
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.ram
---------------------------
-
-.. automodule:: pymcdm.methods.ram
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.rim
---------------------------
-
-.. automodule:: pymcdm.methods.rim
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.spotis
-----------------------------
-
-.. automodule:: pymcdm.methods.spotis
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.topsis
-----------------------------
-
-.. automodule:: pymcdm.methods.topsis
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.vikor
----------------------------
-
-.. automodule:: pymcdm.methods.vikor
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.waspas
----------------------------
-
-.. automodule:: pymcdm.methods.waspas
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.wpm
----------------------------
-
-.. automodule:: pymcdm.methods.wpm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pymcdm.methods.wsm
----------------------------
-
-.. automodule:: pymcdm.methods.wsm
-   :members:
-   :undoc-members:
-   :show-inheritance:

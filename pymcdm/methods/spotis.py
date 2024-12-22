@@ -1,8 +1,9 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-2024 Andrii Shekhovtsov
 
 import numpy as np
-from .. import normalizations
 from .mcda_method import MCDA_method
+from ..validators import bounds_validator, esp_bounds_validator, matrix_bounds_validator
+from ..io import TableDesc
 
 
 class SPOTIS(MCDA_method):
@@ -35,7 +36,15 @@ class SPOTIS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.1989, 0.3705, 0.3063, 0.7491]
     """
-    reverse_ranking = False
+    _reverse_ranking = False
+    _tables = [
+        TableDesc(caption='Ideal/Expected Solution Point (ISP/ESP)',
+                  label='esp_isp', symbol='$S^{*}$/$S^{+}$', rows='C', cols=None),
+        TableDesc(caption='Normalized distances from ISP',
+                  label='nmatrix', symbol='$d_{ij}(A_i, S^{*}_j)$', rows='A', cols='C'),
+        TableDesc(caption='Weighted average distance from ISP',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
+    ]
 
     def __init__(self, bounds, esp=None):
         """ Create SPOTIS method object.
@@ -48,65 +57,30 @@ class SPOTIS(MCDA_method):
             esp : ndarray or None
                 Expected Solution Point for alternatives evaluation. Should be array with ideal (expected) value for each criterion. If None, ESP will be calculated based on bounds and criteria types. Default is None.
         """
-        self.bounds = bounds
+        self.bounds = np.asarray(bounds, dtype='float')
+        bounds_validator(self.bounds)
         self.esp = esp
-        if np.any(bounds[:, 0] == bounds[:, 1]):
-            eq = np.arange(bounds.shape[0])[bounds[:, 0] == bounds[:, 1]]
-            raise ValueError(
-                    f'Bounds for criteria {eq} are equal. Consider changing'
-                    f'min and max values for this criterion, '
-                    f'delete this criterion or use another MCDA method.'
-                )
-        if esp is not None and bounds.shape[0] != esp.shape[0]:
-            raise ValueError(
-                    'Bounds and ESP should describe the same number of'
-                    'criteria, i.e. bounds.shape[0] should be equal to esp.shape[0].'
-                )
+        if esp is not None:
+            self.esp = np.asarray(esp, dtype='float')
+            esp_bounds_validator(self.esp, self.bounds)
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have smaller values.
-        """
-        SPOTIS._validate_input_data(matrix, weights, types)
+    def _method(self, matrix, weights, types):
         bounds = self.bounds
         esp = self.esp
-
         if esp is None:
             # Determine ESP based on criteria bounds. In this case ESP == ISP.
-            esp = bounds[np.arange(bounds.shape[0]), ((types+1)//2).astype('int')]
+            esp = bounds[np.arange(bounds.shape[0]),
+                         ((types+1)//2).astype('int')]
 
-        return SPOTIS._spotis(matrix, weights, esp, bounds)
-
-    @staticmethod
-    def _spotis(matrix, weights, esp, bounds):
-        nmatrix = matrix.astype(float)
         # Normalized distances matrix (d_{ij})
-        nmatrix = np.abs((nmatrix - esp)/
+        nmatrix = np.abs((matrix - esp)/
                          (bounds[:,0] - bounds[:,1]))
         # Distances to ISP (smaller means better alt)
         raw_scores = np.sum(nmatrix * weights, axis=1)
-        return raw_scores
+        return esp, nmatrix, raw_scores
+
+    def _additional_validation(self, matrix, weights, types):
+        matrix_bounds_validator(matrix, self.bounds)
 
     @staticmethod
     def make_bounds(matrix):

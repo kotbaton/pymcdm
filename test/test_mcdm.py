@@ -13,11 +13,11 @@ class TestMCDA(unittest.TestCase):
 
     def test_validation(self):
         with self.assertRaises(ValueError):
-            body = MCDA_method()
+            body = methods.TOPSIS()
             matrix = np.array([[1, 2, 3], [1, 2, 3]])
             weights = np.array([0.5, 0.5])
             types = np.array([1, -1, -1])
-            body._validate_input_data(matrix, weights, types)
+            body(matrix=matrix, weights=weights, types=types)
 
 
 class TestARAS(unittest.TestCase):
@@ -25,6 +25,10 @@ class TestARAS(unittest.TestCase):
     [1] Stanujkic, D., Djordjevic, B., & Karabasevic, D. (2015). Selection of
     candidates in the process of recruitment and selection of personnel based on the SWARA and ARAS methods.
     Quaestus, (7), 53.
+    
+    [2] Zavadskas, E. K., & Turskis, Z. (2010). A new additive ratio assessment (ARAS) method in Multicriteria
+    Decision‐Aaking / Naujas adityvinis kriterijų santykių įvertinimo metodas (ARAS) Daugiakriteriniams uždaviniams
+    spręsti. Technological and Economic Development of Economy, 16(2), 159–172. https://doi.org/10.3846/tede.2010.10
     """
 
     def test_output(self):
@@ -38,7 +42,37 @@ class TestARAS(unittest.TestCase):
         types = np.array([1, 1, 1, 1, 1, 1])
 
         output = [0.74, 0.86, 0.78, 0.86]
-        output_method = [round(preference, 2) for preference in body(matrix, weights, types)]
+        output_method = [round(preference, 2) for preference in body(matrix, weights, types, validation=False)]
+
+        self.assertListEqual(output, output_method)
+
+    def test_output2(self):
+        xopt = np.array([15, 50, 24.5, 400, 0.05, 5])
+        body = methods.ARAS(esp=xopt)
+        matrix = np.array([
+            [7.6, 46, 18, 390, 0.1, 11],
+            [5.5, 32, 21, 360, 0.05, 11],
+            [5.3, 32, 21, 290, 0.05, 11],
+            [5.7, 37, 19, 270, 0.05, 9],
+            [4.2, 38, 19, 240, 0.1, 8],
+            [4.4, 38, 19, 260, 0.1, 8],
+            [3.9, 42, 16, 270, 0.1, 5],
+            [7.9, 44, 20, 400, 0.05, 6],
+            [8.1, 44, 20, 380, 0.05, 6],
+            [4.5, 46, 18, 320, 0.1, 7],
+            [5.7, 48, 20, 320, 0.05, 11],
+            [5.2, 48, 20, 310, 0.05, 11],
+            [7.1, 49, 19, 280, 0.1, 12],
+            [6.9, 50, 16, 250, 0.05, 10]
+        ])
+
+        weights = np.array([0.21, 0.16, 0.26, 0.17, 0.12, 0.08])
+        types = np.array([1, 1, 1, 1, -1, -1])
+
+        # The output is different from [2]. Supposedly because of numerical errors we got slightly different results.
+        output = [0.6706, 0.6564, 0.6269, 0.6315, 0.5464, 0.5580, 0.5658,
+                  0.7762, 0.7734, 0.6003, 0.6772, 0.6628, 0.6334, 0.6511]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types, validation=False)]
 
         self.assertListEqual(output, output_method)
 
@@ -379,7 +413,7 @@ class TestSPOTIS(unittest.TestCase):
 
         body = methods.SPOTIS(bounds)
         output = [0.1989, 0.3705, 0.3063, 0.7491]
-        output_method = [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
 
         self.assertListEqual(output, output_method)
 
@@ -412,7 +446,7 @@ class TestSPOTIS2(unittest.TestCase):
 
         body = methods.SPOTIS(bounds, esp)
         output = [0.1841, 0.0734, 0.0842, 0.1920]
-        output_method = [round(preference, 4) for preference in body(matrix, weights, types, bounds)]
+        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
 
         self.assertListEqual(output, output_method)
 
@@ -520,7 +554,7 @@ class TestRIM(unittest.TestCase):
         ]
 
         pr = methods.RIM(range_t, ref_s)
-        output_method = pr(matrix, weights, None)
+        output_method = pr(matrix, weights, None, validation=False)
 
         output_method = list(np.round(output_method, 5))
         output = [0.58663, 0.75584, 0.37163, 0.46658, 0.74015]
@@ -630,7 +664,7 @@ class TestPROBID(unittest.TestCase):
         self.assertListEqual(output, output_method)
 
         # Example is slightly modified to eliminate rounding errors
-        pr = methods.PROBID(sPROBID=True)
+        pr = methods.SPROBID()
         output_method = list(np.round(pr(matrix, weights, types), 4))
         output = [2.4246, 2.0596, 3.2806, 3.3702, 3.4374, 2.6435, 1.2628, 1.8158, 2.0885, 0.3399, 0.4279]
         self.assertListEqual(output, output_method)
@@ -649,7 +683,7 @@ class TestWSM(unittest.TestCase):
                             [77, 21, 17, 11]])
         weights = np.array([8 / 13, 5 / 13, 6 / 13, 7 / 13])
         types = np.array([1, 1, -1, -1])
-        output_method = list(np.round(body(matrix, weights, types), 3))
+        output_method = list(np.round(body(matrix, weights, types, validation=False), 3))
         output = [0.609, 0.313, 0.334, 0.265, 0.479]
 
         self.assertListEqual(output, output_method)
@@ -668,7 +702,7 @@ class TestWPM(unittest.TestCase):
                             [77, 21, 17, 11]])
         weights = np.array([8 / 13, 5 / 13, 6 / 13, 7 / 13])
         types = np.array([1, 1, -1, -1])
-        output_method = list(np.round(body(matrix, weights, types), 3))
+        output_method = list(np.round(body(matrix, weights, types, validation=False), 3))
         output = [0.065, 0.017, 0.019, 0.007, 0.052]
 
         self.assertListEqual(output, output_method)
@@ -692,7 +726,7 @@ class TestWASPAS(unittest.TestCase):
                            [16, 8, 14, 0.255, 0.500, 1500, 3000]])
         weights = np.array([0.1181, 0.1181, 0.0445, 0.1181, 0.2861, 0.2861, 0.0445])
         types = np.array([1, 1, 1, 1, 1, -1, -1])
-        output_method = list(np.round(body(matrix, weights, types), 4))
+        output_method = list(np.round(body(matrix, weights, types, validation=False), 4))
         output = [0.8329, 0.7884, 0.6987, 0.8831, 0.7971, 0.7036, 0.8728, 0.5749]
 
         self.assertListEqual(output, output_method)
