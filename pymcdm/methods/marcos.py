@@ -1,14 +1,35 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 def _marcos_normalization(x, cost=False):
     if cost:
         return x[-2] / x
     return x / x[-2]
+
+
+def _alts_labels(n: int) -> list[str]:
+    """
+    The purpose of this function is to generate proper alternative labels
+    for the extended matrix, instead of using generic ones from Table
+    and TableDesc functionality.
+
+    Parameters
+    ----------
+    n : int
+        Number of rows in extended matrix for which labels should be generated.
+
+    Returns
+    -------
+        List of labels, beginning from normal alternatives labels, ending
+        with AI and AAI which stands for Ideal and Anti-Ideal solutions.
+    """
+    return [f'$A_{{{i}}}$' for i in range(1, n - 1)] + ['AI', 'AAI']
 
 
 class MARCOS(MCDA_method):
@@ -49,40 +70,29 @@ class MARCOS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.5649, 0.5543, 0.6410, 0.6174, 0.6016, 0.5453, 0.6282, 0.6543]
     """
+    _tables = [
+        TableDesc(caption='Extended decision matrix',
+                  label='ematrix', symbol='$x_{ij}$', rows=_alts_labels, cols='C'),
+        TableDesc(caption='Normalized extended decision matrix',
+                  label='nmatrix', symbol='$n_{ij}$', rows=_alts_labels, cols='C'),
+        TableDesc(caption='Weighted normalized extended decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows=_alts_labels, cols='C'),
+        TableDesc(caption='Utility degree in relation to anti-ideal solution',
+                  label='neg_util', symbol='$K^{-}_{i})$', rows='A', cols=None),
+        TableDesc(caption='Utility degree in relation to ideal solution',
+                  label='pos_util', symbol='$K^{+}_{i})$', rows='A', cols=None),
+        TableDesc(caption='Utility function in relation to anti-ideal solution',
+                  label='neg_f_util', symbol='$f(K^{-}_{i})$', rows='A', cols=None),
+        TableDesc(caption='Utility function in relation to ideal solution',
+                  label='pos_f_util', symbol='$f(K^{+}_{i})$', rows='A', cols=None),
+        TableDesc(caption='Final preference score',
+                  label='pref', symbol='$f(K_i)$', rows='A', cols=None),
+    ]
 
     def __init__(self, normalization_function=_marcos_normalization):
         self.normalization = normalization_function
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        MARCOS._validate_input_data(matrix, weights, types)
-        return MARCOS._marcos(matrix, weights, types, self.normalization)
-
-    @staticmethod
-    def _marcos(matrix, weights, types, normalization):
+    def _method(self, matrix, weights, types):
         n, m = matrix.shape
 
         # Extended initial decision matrix
@@ -93,6 +103,8 @@ class MARCOS(MCDA_method):
         min_values = matrix.min(axis=0)
 
         for i in range(m):
+            # Add Ideal Solution (AI) to index -2
+            # and Anti-Ideal Solution (AAI) to index -1
             if types[i] == 1:
                 exmatrix[-2, i] = max_maxes[i]
                 exmatrix[-1, i] = min_values[i]
@@ -101,7 +113,8 @@ class MARCOS(MCDA_method):
                 exmatrix[-1, i] = max_maxes[i]
 
         # Normalization
-        n_exmatrix = helpers.normalize_matrix(exmatrix, normalization, types)
+        n_exmatrix = helpers.normalize_matrix(exmatrix,
+                                              self.normalization, types)
 
         # Weighting
         weighted_matrix = n_exmatrix * weights
@@ -116,4 +129,4 @@ class MARCOS(MCDA_method):
         f_k_neg = k_pos / (k_pos + k_neg)
         f_k = (k_pos + k_neg) / (1 + (1 - f_k_pos) / f_k_pos + (1 - f_k_neg) / f_k_neg)
 
-        return f_k
+        return exmatrix, n_exmatrix, weighted_matrix, k_neg, k_pos, f_k_neg, f_k_pos, f_k

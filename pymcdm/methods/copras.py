@@ -1,7 +1,8 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
+# Copyright (c) 2020, 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class COPRAS(MCDA_method):
@@ -17,9 +18,9 @@ class COPRAS(MCDA_method):
         .. [#copras1] Zavadskas, E. K., Kaklauskas, A., & Sarka, V. (1994). The new method of multicriteria complex
                proportional assessment of projects. Technological and economic development of economy, 1(3), 131-139.
         .. [#copras2] Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis,
-        Z. (2007). Multi-attribute assessment of road design solutions by
-        using the COPRAS method. The Baltic journal of Road and Bridge
-        engineering, 2(4), 195-203.
+               Z. (2007). Multi-attribute assessment of road design solutions by
+               using the COPRAS method. The Baltic journal of Road and Bridge
+               engineering, 2(4), 195-203.
 
         Examples
         --------
@@ -37,51 +38,35 @@ class COPRAS(MCDA_method):
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
         [0.9459, 1.0, 0.8192, 0.8839, 0.8556, 0.7789]
     """
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatrix', symbol='$v_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Sum of minimising indices',
+                  label='smin', symbol='$S_{-i}$', rows='A', cols=None),
+        TableDesc(caption='Sum of maximising indices',
+                  label='smax', symbol='$S_{+i}$', rows='A', cols=None),
+        TableDesc(caption='Related significance',
+                  label='rel_sign', symbol='$Q_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference (utility degree)',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
+    ]
 
-    def __init__(self):
-        pass
-
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        COPRAS._validate_input_data(matrix, weights, types)
+    def _method(self, matrix, weights, types):
         if np.all(types == 1.0):
-            raise ValueError('types array contains only profit criteria. COPRAS method requires at least one cost '
-                             'criteria.')
-        return COPRAS._copras(matrix, weights, types)
+            raise ValueError('types array contains only profit criteria.'
+                             ' COPRAS method requires at least one cost'
+                             ' criterion.')
 
-    @staticmethod
-    def _copras(matrix, weights, criteria_types):
         nmatrix = matrix / np.sum(matrix, axis=0)
 
-        # Difficult normalized decision making matrix
+        # Weighted normalized decision-making matrix
         wmatrix = nmatrix * weights
 
-        Sp = np.sum(wmatrix[:, criteria_types == 1], axis=1)
-        Sm = np.sum(wmatrix[:, criteria_types == -1], axis=1)
+        Sp = np.sum(wmatrix[:, types == 1], axis=1)
+        Sm = np.sum(wmatrix[:, types == -1], axis=1)
 
         Q = Sp + ((np.min(Sm) * Sm) / (Sm * (np.min(Sm) / Sm)))
 
-        return Q / np.max(Q)
+        return nmatrix, wmatrix, Sm, Sp, Q, Q / np.max(Q)

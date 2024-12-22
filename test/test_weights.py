@@ -189,3 +189,46 @@ class TestVarianceWeights(unittest.TestCase):
         output_method = [round(weight, 4) for weight in weights.variance_weights(matrix)]
 
         self.assertListEqual(output, output_method)
+
+
+class TestRANCOMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to
+        identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial
+        Intelligence, 122, 106114.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+            [0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+            [0.0, 0.0, 0.5, 1.0, 1.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0, 1.0, 0.5, 0.0],
+            [0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.5]
+        ])
+
+        output = [0.2449, 0.2449, 0.1429, 0.0204, 0.0612, 0.1020, 0.1837]
+        output_method = [round(weight, 4) for weight in weights.subjective.RANCOM(matrix=matrix)()]
+        self.assertListEqual(output, output_method)
+
+
+class TestAHPWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Wang, Y. M., & Chin, K. S. (2011). A linear programming approximation to the eigenvector method in the
+        analytic hierarchy process. Information Sciences, 181(23), 5240-5248.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [1, 4, 3, 1, 3, 4],
+            [1/4, 1, 7, 3, 1/5, 1],
+            [1/3, 1/7, 1, 1/5, 1/5, 1/6],
+            [1, 1/3, 5, 1, 1, 1/3],
+            [1/3, 5, 5, 1, 1, 3],
+            [1/4, 1, 6, 3, 1/3, 1]
+        ])
+        output = [0.3208, 0.1395, 0.0348, 0.1285, 0.2374, 0.1391]
+        output_method = [round(weight, 4) for weight in weights.subjective.AHP(matrix=matrix)()]
+        self.assertListEqual(output, output_method)
