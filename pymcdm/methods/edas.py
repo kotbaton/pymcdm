@@ -1,7 +1,9 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2024 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
+from ..io import TableDesc
 
 
 class EDAS(MCDA_method):
@@ -33,40 +35,26 @@ class EDAS(MCDA_method):
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.841, 0.632, 0.883, 0.457, 0.104]
     """
+    _tables = [
+        TableDesc(caption='Average solution',
+                  label='av_sol', symbol='$AV$', rows='C', cols=None),
+        TableDesc(caption='Positive distance from Average solution',
+                  label='pds', symbol='${PDA}_{i}$', rows='A', cols='C'),
+        TableDesc(caption='Negative distance from Average solution',
+                  label='nda', symbol='${NDA}_{i}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted sum of PDA values',
+                  label='sp', symbol='${SP}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Weighted sum of NDA values',
+                  label='sn', symbol='${SN}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Normalized values of SP',
+                  label='nsp', symbol='${NSP}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Normalized values of SN',
+                  label='nsn', symbol='${NSN}_{i}$', rows='A', cols=None),
+        TableDesc(caption='Appraisal Score',
+                  label='appr_score', symbol='${AS}_{i}$', rows='A', cols=None),
+    ]
 
-    def __init__(self):
-        pass
-
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        EDAS._validate_input_data(matrix, weights, types)
-        return EDAS._edas(matrix, weights, types)
-
-    @staticmethod
-    def _edas(matrix, weights, types):
+    def _method(self, matrix, weights, types):
         _, m = matrix.shape
         amatrix = np.mean(matrix, axis=0)
 
@@ -91,4 +79,6 @@ class EDAS(MCDA_method):
         nsp = sp / np.max(sp, axis=0)
         nsn = 1 - sn / np.max(sn, axis=0)
 
-        return (nsp + nsn) / 2
+        score = (nsp + nsn) / 2
+
+        return amatrix, pda, nda, sp, sn, nsp, nsn, score

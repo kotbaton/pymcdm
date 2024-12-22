@@ -1,11 +1,10 @@
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 import numpy as np
 
-from pymcdm import helpers
-from pymcdm import normalizations
-
 from .mcda_method import MCDA_method
+from ..validators import bounds_validator, matrix_bounds_validator, ref_ideal_bounds_validator
+from ..io import TableDesc
 
 
 def _dmin(x, c, d):
@@ -84,8 +83,22 @@ class RIM(MCDA_method):
     >>>  print(rank)
     ...  [3. 1. 5. 4. 2.]
     """
+    _tables = [
+        TableDesc(caption='Reference ideal',
+                  label='ref_ideal', symbol='$s_j$', rows='C', cols=['$s_{j}^{(min)}$', '$s_{j}^{(max)}$']),
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$y_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Weighted normalized decision matrix',
+                  label='wnmatirx', symbol='$y^{\\prime}_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='Positive variation to the normalized reference ideal',
+                  label='pos_var', symbol='$I_i^+$', rows='A', cols=None),
+        TableDesc(caption='Negative variation to the normalized reference ideal',
+                  label='neg_var', symbol='$I_i^-$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
+    ]
 
-    def __init__(self, bounds, ref_ideal=None):
+    def __init__(self, bounds: np.ndarray | list | tuple, ref_ideal: np.ndarray | list | tuple or None=None):
         """ Create RIM method object.
 
         Parameters
@@ -96,61 +109,30 @@ class RIM(MCDA_method):
             ref_ideal : ndarray or None
                 Reference ideal for alternatives evaluation. Should be two dimensional array with interval ideal value for each criterion. If None, reference ideal will be calculated based on bounds and criteria types.
         """
-        bounds = np.array(bounds)
+        bounds = np.asarray(bounds)
+        bounds_validator(bounds)
+
         if ref_ideal is not None:
-            ref_ideal = np.array(ref_ideal)
-            if ref_ideal.shape[1] != 2:
-                raise ValueError('Shape of the ref_ideal should be (M, 2), where M is a number of critria. Single values should be provided duplicated, e.g. 0 should be added as [0, 0].')
-
-            if ref_ideal.shape != bounds.shape:
-                raise ValueError('Bounds and ref_ideal should have equal shapes.')
-
-        if np.any(bounds[:, 0] >= bounds[:, 1]):
-            eq = np.arange(bounds.shape[0])[bounds[:, 0] >= bounds[:, 1]]
-            raise ValueError(f'Lower bound of criteria {eq} is bigger or equal to upper bound.')
+            ref_ideal = np.asarray(ref_ideal)
+            ref_ideal_bounds_validator(ref_ideal, bounds)
 
         self.bounds = bounds
         self.ref_ideal = ref_ideal
 
-    def __call__(self, matrix, weights, types, *args, **kwargs):
-        """ Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        RIM._validate_input_data(matrix, weights, types)
-        # Build ref ideal from the bounds if None
-        ref_ideal = self.ref_ideal
-        if ref_ideal is None:
-            ref_ideal = self.get_ideal_from_bounds(self.bounds, types)
-        return RIM._rim(matrix, weights, self.bounds, ref_ideal)
+    def _additional_validation(self, matrix, weights, types):
+        matrix_bounds_validator(matrix, self.bounds)
 
     def get_ideal_from_bounds(self, bounds, types):
         ind = [0 if t == -1 else 1 for t in types]
         ref_ideal = bounds[range(len(ind)), ind]
         return np.array([ref_ideal, ref_ideal]).T
 
-    @staticmethod
-    def _rim(matrix, weights, range_t, ref_ideal_s):
+    def _method(self, matrix, weights, types):
+        ref_ideal_s = self.ref_ideal
+        range_t = self.bounds
+        if ref_ideal_s is None:
+            ref_ideal_s = self.get_ideal_from_bounds(self.bounds, types)
+
         nmatrix = matrix.astype('float')
 
         for i in range(matrix.shape[0]):
@@ -162,4 +144,6 @@ class RIM(MCDA_method):
         i_plus = np.sqrt(np.sum((wnmatrix - weights) ** 2, axis=1))
         i_minus = np.sqrt(np.sum(wnmatrix ** 2, axis=1))
 
-        return i_minus / (i_plus + i_minus)
+        p = i_minus / (i_plus + i_minus)
+
+        return ref_ideal_s, nmatrix, wnmatrix, i_plus, i_minus, p
