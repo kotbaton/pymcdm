@@ -1,7 +1,8 @@
+from . import partial
 from .topsis import TOPSIS
 from .vikor import VIKOR
 from .copras import COPRAS
-from .promethee import PROMETHEE_II
+from .promethee_ii import PROMETHEE_II
 from .comet import COMET
 from .spotis import SPOTIS
 from .aras import ARAS
@@ -17,6 +18,7 @@ from .rim import RIM
 from .ram import RAM
 from .ervd import ERVD
 from .probid import PROBID
+from .sprobid import SPROBID
 from .wsm import WSM
 from .wpm import WPM
 from .waspas import WASPAS

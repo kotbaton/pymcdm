@@ -36,5 +36,5 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://gitlab.com/shekhand/mcda"
-Issues = "https://gitlab.com/shekhand/mcda/-/issues"
+Homepage = "https://github.com/kotbaton/pymcdm"
+Issues = "https://github.com/kotbaton/pymcdm/issues"

@@ -1,3 +1,11 @@
+[![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/kotbaton/pymcdm)
+[![Version](https://img.shields.io/pypi/v/pymcdm)](https://pypi.org/project/pymcdm/)
+[![ReadTheDocs](https://img.shields.io/readthedocs/pymcdm)](https://pymcdm.readthedocs.io/en/latest/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.softx.2023.101368-000.svg?color=blue)](https://doi.org/10.1016/j.softx.2023.101368)
+
+**Important:** Development process was moved from [GitLab](https://gitlab.com/shekhand/mcda) to [Github](https://github.com/kotbaton/pymcdm).
+
 # PyMCDM
 
 Python 3 library for solving multi-criteria decision-making (MCDM) problems.
@@ -52,98 +60,99 @@ The library contains:
 
 * MCDA methods:
 
-|  Acronym            	|  Method Name                                                                      |                Reference                 |
-| :-------------------- | --------------------------------------------------------------------------------- | :--------------------------------------: |
-|  TOPSIS             	|  Technique for the Order of Prioritisation by Similarity to Ideal Solution        |               [[1]](#c1)                 |
-|  VIKOR              	|  VIseKriterijumska Optimizacija I Kompromisno Resenje                             |               [[2]](#c2)                 |
-|  COPRAS             	|  COmplex PRoportional ASsessment                                                  |               [[3]](#c3)                 |
-|  PROMETHEE I & II   	|  Preference Ranking Organization METHod for Enrichment of Evaluations I & II      |               [[4]](#c4)                 |
-|  COMET              	|  Characteristic Objects Method                                                    |               [[5]](#c5)                 |
-|  SPOTIS             	|  Stable Preference Ordering Towards Ideal Solution                                |               [[6]](#c6)                 |
-|  ARAS               	|  Additive Ratio ASsessment                                                        |          [[7]](#c7),[[8]](#c8)           |
-|  COCOSO             	|  COmbined COmpromise SOlution                                                     |               [[9]](#c9)                 |
-|  CODAS              	|  COmbinative Distance-based ASsessment                                            |              [[10]](#c10)                |
-|  EDAS               	|  Evaluation based on Distance from Average Solution                               |        [[11]](#c11),[[12]](#c12)         |
-|  MABAC              	|  Multi-Attributive Border Approximation area Comparison                           |              [[13]](#c13)                |
-|  MAIRCA             	|  MultiAttributive Ideal-Real Comparative Analysis                                 | [[14]](#c14),[[15]](#c15),[[16]](#c16)   |
-|  MARCOS             	|  Measurement Alternatives and Ranking according to COmpromise Solution            |        [[17]](#c17),[[18]](#c18)         |
-|  OCRA               	|  Operational Competitiveness Ratings                                              |        [[19]](#c19),[[20]](#c20)         |
-|  MOORA              	|  Multi-Objective Optimization Method by Ratio Analysis                            |        [[21]](#c21),[[22]](#c22)         |
-|  RIM                	|  Reference Ideal Method                                                           |               [[48]](#c48)               |
-|  ERVD               	|  Election Based on relative Value Distances                                       |               [[49]](#c49)               |
-|  PROBID               |  Preference Ranking On the Basis of Ideal-average Distance                        |               [[50]](#c50)               |
-|  WSM                  |  Weighted Sum Model                                                               |               [[51]](#c51)               |
-|  WPM                  |  Weighted Product Model                                                           |               [[52]](#c52)               |
-|  WASPAS               |  Weighted Aggregated Sum Product ASSessment                                       |               [[53]](#c53)               |
-|  RAM                	|  Root Assesment Method                                                            |               [[62]](#c62)               |
+| Acronym            	 | Method Name                                                                 |               Reference                |
+|:---------------------|-----------------------------------------------------------------------------|:--------------------------------------:|
+| TOPSIS             	 | Technique for the Order of Prioritisation by Similarity to Ideal Solution   |               [[1]](#c1)               |
+| VIKOR              	 | VIseKriterijumska Optimizacija I Kompromisno Resenje                        |               [[2]](#c2)               |
+| COPRAS             	 | COmplex PRoportional ASsessment                                             |               [[3]](#c3)               |
+| PROMETHEE I & II   	 | Preference Ranking Organization METHod for Enrichment of Evaluations I & II |               [[4]](#c4)               |
+| COMET              	 | Characteristic Objects Method                                               |               [[5]](#c5)               |
+| SPOTIS             	 | Stable Preference Ordering Towards Ideal Solution                           |               [[6]](#c6)               |
+| ARAS               	 | Additive Ratio ASsessment                                                   |         [[7]](#c7),[[8]](#c8)          |
+| COCOSO             	 | COmbined COmpromise SOlution                                                |               [[9]](#c9)               |
+| CODAS              	 | COmbinative Distance-based ASsessment                                       |              [[10]](#c10)              |
+| EDAS               	 | Evaluation based on Distance from Average Solution                          |       [[11]](#c11),[[12]](#c12)        |
+| MABAC              	 | Multi-Attributive Border Approximation area Comparison                      |              [[13]](#c13)              |
+| MAIRCA             	 | MultiAttributive Ideal-Real Comparative Analysis                            | [[14]](#c14),[[15]](#c15),[[16]](#c16) |
+| MARCOS             	 | Measurement Alternatives and Ranking according to COmpromise Solution       |       [[17]](#c17),[[18]](#c18)        |
+| OCRA               	 | Operational Competitiveness Ratings                                         |       [[19]](#c19),[[20]](#c20)        |
+| MOORA              	 | Multi-Objective Optimization Method by Ratio Analysis                       |       [[21]](#c21),[[22]](#c22)        |
+| RIM                	 | Reference Ideal Method                                                      |              [[48]](#c48)              |
+| ERVD               	 | Election Based on relative Value Distances                                  |              [[49]](#c49)              |
+| PROBID               | Preference Ranking On the Basis of Ideal-average Distance                   |              [[50]](#c50)              |
+| WSM                  | Weighted Sum Model                                                          |              [[51]](#c51)              |
+| WPM                  | Weighted Product Model                                                      |              [[52]](#c52)              |
+| WASPAS               | Weighted Aggregated Sum Product ASSessment                                  |              [[53]](#c53)              |
+| RAM                	 | Root Assesment Method                                                       |              [[62]](#c62)              |
 
 * Weighting methods:
 
-| Acronym   	| Method Name                                             	|                 Reference                	|
-|-----------	|---------------------------------------------------------	|:----------------------------------------:	|
-| -         	| Equal/Mean weights                                      	|               [[23]](#c23)               	|
-| -         	| Entropy weights                                         	| [[23]](#c23),[[24]](#c24),[[25]](#c25) 	|
-| STD       	| Standard Deviation weights                              	|        [[23]](#c23),[[26]](#c26)        	|
-| MEREC     	| MEthod based on the Removal Effects of Criteria         	|               [[27]](#c27)               	|
-| CRITIC    	| CRiteria Importance Through Intercriteria Correlation   	|        [[28]](#c28),[[29]](#c29)       	|
-| CILOS     	| Criterion Impact LOS                                    	|               [[30]](#c30)               	|
-| IDOCRIW   	| Integrated Determination of Objective CRIteria Weight   	|               [[30]](#c30)               	|
-| -         	| Angular/Angle weights                                   	|               [[31]](#c31)               	|
-| -         	| Gini Coeficient weights                                 	|               [[32]](#c32)               	|
-| -         	| Statistical variance weights                            	|               [[33]](#c33)               	|
+| Acronym | Method Name                                           |                Reference                 |
+|:--------|:------------------------------------------------------|:----------------------------------------:|
+| -       | Equal/Mean weights                                    |               [[23]](#c23)               |
+| -       | Entropy weights                                       | [[23]](#c23), [[24]](#c24), [[25]](#c25) |
+| STD     | Standard Deviation weights                            |        [[23]](#c23), [[26]](#c26)        |
+| MEREC   | MEthod based on the Removal Effects of Criteria       |               [[27]](#c27)               |
+| CRITIC  | CRiteria Importance Through Intercriteria Correlation |        [[28]](#c28), [[29]](#c29)        |
+| CILOS   | Criterion Impact LOS                                  |               [[30]](#c30)               |
+| IDOCRIW | Integrated Determination of Objective CRIteria Weight |               [[30]](#c30)               |
+| -       | Angular/Angle weights                                 |               [[31]](#c31)               |
+| -       | Gini Coeficient weights                               |               [[32]](#c32)               |
+| -       | Statistical variance weights                          |               [[33]](#c33)               |
+| AHP     | Analytic Hierarchy Process                            |               [[65]](#c65)               |
+| RANCOM  | RANking COMparison                                    |               [[66]](#c66)               |
 
 * Normalization methods:
 
-| Method Name                          	|          Reference         	|
-|--------------------------------------	|:--------------------------:	|
-| Weitendorf’s Linear Normalization    	|        [[34]](#c34)        	|
-| Maximum - Linear Normalization       	|        [[35]](#c35)        	|
-| Sum-Based Linear Normalization       	|        [[36]](#c36)        	|
-| Vector Normalization                 	|  [[36]](#c36),[[37]](#c37) 	|
-| Logarithmic Normalization            	| [[36]](#c36),[[37]](#c37) 	|
-| Linear Normalization (Max-Min)       	|  [[34]](#c34),[[38]](#c38) 	|
-| Non-linear Normalization (Max-Min)   	|        [[39]](#c39)        	|
-| Enhanced Accuracy Normalization      	|        [[40]](#c40)        	|
-| Lai and Hwang Normalization           |        [[38]](#c38)           |
-| Zavadskas and Turskis Normalization   |        [[38]](#c38)           |
+| Method Name                          	 |     Reference         	     |
+|:---------------------------------------|:---------------------------:|
+| Weitendorf’s Linear Normalization    	 |    [[34]](#c34)        	    |
+| Maximum - Linear Normalization       	 |    [[35]](#c35)        	    |
+| Sum-Based Linear Normalization       	 |    [[36]](#c36)        	    |
+| Vector Normalization                 	 | [[36]](#c36),[[37]](#c37) 	 |
+| Logarithmic Normalization            	 | [[36]](#c36),[[37]](#c37) 	 |
+| Linear Normalization (Max-Min)       	 | [[34]](#c34),[[38]](#c38) 	 |
+| Non-linear Normalization (Max-Min)   	 |    [[39]](#c39)        	    |
+| Enhanced Accuracy Normalization      	 |    [[40]](#c40)        	    |
+| Lai and Hwang Normalization            |        [[38]](#c38)         |
+| Zavadskas and Turskis Normalization    |        [[38]](#c38)         |
 
 * Correlation coefficients:
 
-| Coefficient name                                   	|         Reference         	|
-|----------------------------------------------------	|:-------------------------:	|
-| Spearman's rank correlation coefficient            	| [[41]](#c41),[[42]](#c42) 	|
-| Pearson correlation coefficient                    	|        [[43]](#c43)       	|
-| Weighted Spearman’s rank correlation coefficient   	|        [[44]](#c44)       	|
-| Rank Similarity Coefficient                        	|        [[45]](#c45)       	|
-| Kendall rank correlation coefficient               	|        [[46]](#c46)       	|
-| Goodman and Kruskal's gamma                        	|        [[47]](#c47)       	|
-| Drastic Weighted Similarity (draWS)                   |        [[59]](#c59)       	|
-| Weights Similarity Coefficient (WSC)                  |        [[60]](#c60)       	|
-| Weights Similarity Coefficient 2 (WSC2)               |        [[60]](#c60)       	|
+| Coefficient name                                   	 |     Reference         	     |
+|------------------------------------------------------|:---------------------------:|
+| Spearman's rank correlation coefficient            	 | [[41]](#c41),[[42]](#c42) 	 |
+| Pearson correlation coefficient                    	 |    [[43]](#c43)       	     |
+| Weighted Spearman’s rank correlation coefficient   	 |    [[44]](#c44)       	     |
+| Rank Similarity Coefficient                        	 |    [[45]](#c45)       	     |
+| Kendall rank correlation coefficient               	 |    [[46]](#c46)       	     |
+| Goodman and Kruskal's gamma                        	 |    [[47]](#c47)       	     |
+| Drastic Weighted Similarity (draWS)                  |    [[59]](#c59)       	     |
+| Weights Similarity Coefficient (WSC)                 |    [[60]](#c60)       	     |
+| Weights Similarity Coefficient 2 (WSC2)              |    [[60]](#c60)       	     |
 
 * Helpers
 
-| Helpers submodule     | Description                                                                                                      |
-|---------------------  |------------                                                                                                      |
-| `rankdata`            | Create ranking vector from the preference vector. Smaller preference values has higher positions in the ranking. |
-| `rrankdata`           | Alias to the `rankdata` which reverse the sorting order.                                                         |
-| `correlation_matrix`  | Create the correlation matrix for given coefficient from several the several rankings.                           |
-| `normalize_matrix`    | Normalize decision matrix column by column using given normalization and criteria types.                         |
+| Helpers submodule    | Description                                                                                                      |
+|----------------------|------------------------------------------------------------------------------------------------------------------|
+| `rankdata`           | Create ranking vector from the preference vector. Smaller preference values has higher positions in the ranking. |
+| `rrankdata`          | Alias to the `rankdata` which reverse the sorting order.                                                         |
+| `correlation_matrix` | Create the correlation matrix for given coefficient from several the several rankings.                           |
+| `normalize_matrix`   | Normalize decision matrix column by column using given normalization and criteria types.                         |
 
 * COMET Tools
 
-| Class/Function       | Description                                                                                        | Reference     |
-|----------------------|----------------------------------------------------------------------------------------------------|:-------------:|
-| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  | [[56]](#c56)  |
-| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       | [[57]](#c57)  |
-| `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              | [[58]](#c58)  |
-| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     | -             |
-| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       | In Press      |
-| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | [[61]](#c61)  |
-| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         | [[55]](#c55)  |
-| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            | [[54]](#c54)  |
-| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. | [[54]](#c54)  |
-
+| Class/Function       | Description                                                                                        |  Reference   |
+|----------------------|----------------------------------------------------------------------------------------------------|:------------:|
+| `MethodExpert`       | Class which allows to evaluate CO in COMET using any MCDA method.                                  | [[56]](#c56) |
+| `ManualExpert`       | Class which allows to evaluate CO in COMET manually by pairwise comparisons.                       | [[57]](#c57) |
+| `FunctionExpert`     | Class which allows to evaluate CO in COMET using any expert function.                              | [[58]](#c58) |
+| `CompromiseExpert`   | Class which allows to evaluate CO in COMET using compromise between several different methods.     | [[63]](#c63) |
+| `TriadSupportExpert` | Class which allows to evaluate CO in COMET manually but with triads support.                       | [[64]](#c64) |
+| `ESPExpert`          | Class which allows to identify MEJ using expert-defined Expected Solution Points.                  | [[61]](#c61) |
+| `triads_consistency` | Function to which evaluates consistency of the MEJ matrix.                                         | [[55]](#c55) |
+| `Submodel`           | Class mostly for internal use in StructuralCOMET class.                                            | [[54]](#c54) |
+| `StructuralCOMET`    | Class which allows to split a decision problem into submodels to be evaluated by the COMET method. | [[54]](#c54) |
 
 ___
 # Usage example
@@ -156,19 +165,22 @@ import numpy as np
 from pymcdm.methods import TOPSIS
 from pymcdm.helpers import rrankdata
 
-# Define decision matrix (2 criteria, 4 alternative)
+# Define decision matrix (3 criteria, 4 alternative)
 alts = np.array([
-    [4, 4],
-    [1, 5],
-    [3, 2],
-    [4, 2]
-], dtype='float')
+    [4, 4, 0.2],
+    [1, 5, 0.5],
+    [3, 2, 0.3],
+    [4, 3, 0.5]
+])
 
-# Define weights and types
-weights = np.array([0.5, 0.5])
-types = np.array([1, -1])
+# Define criteria weights (should sum up to 1)
+weights = np.array([0.3, 0.5, 0.2])
+
+# Define criteria types (1 for profit, -1 for cost)
+types = np.array([1, -1, 1])
 
 # Create object of the method
+# Note, that default normalization method for TOPSIS is minmax
 topsis = TOPSIS()
 
 # Determine preferences and ranking for alternatives
@@ -182,11 +194,21 @@ for r, p in zip(ranking, pref):
 And the output of this example (numbers are rounded):
 
 ```bash
-3 0.6126
-4 0.0
-2 0.7829
-1 1.0
+3.0 0.469
+4.0 0.255
+1.0 0.765
+2.0 0.747
 ```
+
+If you want to inspect computation process in details, you can add the following code to the above example:
+
+```python
+results = topsis(alts, weights, types, verbose=True)
+print(results)
+```
+
+This will produce output that contains formatted decision matrix, intermediate results, preference values and ranking.
+
 ---
 # References
 
@@ -313,3 +335,11 @@ And the output of this example (numbers are rounded):
 <a name="c61">[61]</a> Shekhovtsov, A., Kizielewicz, B., & Sałabun, W. (2023). Advancing individual decision-making: An extension of the characteristic objects method using expected solution point. Information Sciences, 647, 119456.
 
 <a name="c62">[62]</a> Sotoudeh-Anvari, A. (2023). Root Assessment Method (RAM): a novel multi-criteria decision making method and its applications in sustainability challenges. Journal of Cleaner Production, 423, 138695.
+
+<a name="c63">[63]</a> Kizielewicz, B., Shekhovtsov, A., Więckowski, J., Wątróbski, J., & Sałabun, W. (2024). The Compromise-COMET method for identifying an adaptive multi-criteria decision model. IEEE Access.
+
+<a name="c64">[64]</a> Shekhovtsov, A., & Sałabun, W. (2023, September). The New Algorithm for Effective Reducing the Number of Pairwise Comparisons in the Decision Support Methods. In European Conference on Artificial Intelligence (pp. 243-254). Cham: Springer Nature Switzerland.
+
+<a name="c65">[65]</a> Saaty, T. L. (1980). The analytic hierarchy process (AHP). The Journal of the Operational Research Society, 41(11), 1073–1076.
+
+<a name="c66">[66]</a> Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial Intelligence, 122, 106114.

@@ -2,10 +2,10 @@
 # Copyright (c) 2021 Bartłomiej Kizielewicz
 
 import numpy as np
-from .normalizations import minmax_normalization, sum_normalization, linear_normalization
-from .correlations import pearson
+from ..normalizations import minmax_normalization, sum_normalization, linear_normalization
+from ..correlations import pearson
 from scipy.linalg import null_space
-from .helpers import correlation_matrix, normalize_matrix
+from ..helpers import correlation_matrix, normalize_matrix
 
 __all__ = [
     'equal_weights',

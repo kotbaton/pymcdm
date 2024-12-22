@@ -6,6 +6,8 @@ from functools import reduce
 import numpy as np
 
 from .mcda_method import MCDA_method
+from ..validators import cvalues_validator, matrix_cvalues_validator
+from ..io import TableDesc
 
 
 def _TFN(a, m, b):
@@ -79,25 +81,16 @@ class COMET(MCDA_method):
         >>> types = np.array([1, 1, 1, 1, 1, -1, 1, 1, -1])
         >>> weights = np.array([1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9])
         >>> body = COMET(cvalues, MethodExpert(TOPSIS(), weights, types))
-
         >>> [round(preference, 4) for preference in body(matrix)]
         [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
     """
+    _tables = [
+        TableDesc(caption='Final preference value',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
+    ]
 
     def __init__(self, cvalues, expert_function):
-        # Validate input
-        for i, cv in enumerate(cvalues):
-            if len(cv) < 2:
-                raise ValueError(
-                    f'You should provide minimum 2 characteristic value for each criterion. Check criterion with index '
-                    f'{i}.'
-                )
-            # Check if sorted
-            if any(cv[i] >= cv[i + 1] for i in range(len(cv) - 1)):
-                raise ValueError(
-                    f'Characteristic values must be sorted in ascending order and does not contain repeated elements. '
-                    f'Check criterion with index {i}. '
-                )
+        cvalues_validator(cvalues)
 
         co = product(*cvalues)
         co = np.array(list(co))
@@ -108,7 +101,8 @@ class COMET(MCDA_method):
         if sj.shape[0] != co.shape[0] or (mej is not None and not mej.shape[0] == mej.shape[1] == co.shape[0]):
             raise ValueError(
                     'Expert function must returns vector with same length as number of characteristic objects. '
-                    'And the None or MEJ matrix which is square matrix with same size as lenght of characteriscit objects.'
+                    'And the None or MEJ matrix which is square matrix with same size as length of characteristic '
+                    'objects.'
                     f'Expected length: {co.shape[0]}, but returned vector has length {sj.shape[0]}. '
                     f'Expected MEJ shape {(co.shape[0], co.shape[0])}, but returned matrix has shape {mej.shape}.'
                     )
@@ -122,40 +116,59 @@ class COMET(MCDA_method):
         self.expert_function = expert_function
         self.p = p
         self.tfns = [COMET._make_tfns(chv) for chv in cvalues]
-
-    def __call__(self, alts, *args, **kwargs):
-        """Rank alternatives from decision matrix `alts`, with criteria weights `weights` and criteria types `types`.
+        
+    def __call__(self, matrix,
+                 weights=None,
+                 types=None,
+                 validation=True,
+                 verbose=False):
+        """Rank alternatives from decision matrix `matrix`.
 
             Parameters
             ----------
-                alts : ndarray
+                matrix : ndarray
                     Decision matrix / alternatives data.
                     Alternatives are in rows and Criteria are in columns.
 
-                *args: is necessary for methods which reqiure some additional data.
+                weights : None
+                    Not used in the COMET method.
 
-                **kwargs: is necessary for methods which reqiure some additional data.
+                types : None
+                    Not used in the COMET method.
 
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
+                validation : bool
+                    Enable (True) or disable (False) validation of the input data.
+                    For the COMET method only matrix and cvalues are validated.
+                    Default is True.
+
+                verbose : bool
+                    Explain the MCDA, i.e. provide matrices and vectors from
+                    all the steps of the method, instead of return just the
+                    preference vector. Default is False.
         """
-        if self.criterion_number != alts.shape[1]:
-            raise ValueError(
-                'Number of criteria in decision matrix must be equal to number of criteria in characteristic '
-                'values. '
-            )
+        matrix = np.asarray(matrix, dtype='float')
 
+        if validation:
+            self._additional_validation(matrix, weights, types)
+
+        if verbose:
+            return self._method_explained(matrix, weights, types)
+        else:
+            return self._method(matrix, weights, types)[-1]
+
+    def _method(self, matrix, weights, types):
         tfns = self.tfns
 
-        pref_level_vectors = ((lambda tfns_icrit=tfns_icrit, values=values: (tfn(values) for tfn in tfns_icrit))()
-                              for values, tfns_icrit in zip(alts.T, tfns))
+        pref_level_vectors = [[tfn(values) for tfn in tfns_icrit]
+                              for values, tfns_icrit in zip(matrix.T, tfns)]
 
         tfns_values_product = product(*pref_level_vectors)
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
                           for p, co_values in zip(self.p, tfns_values_product))
-        return sum(multiplayed_co)
+        return sum(multiplayed_co),
+
+    def _additional_validation(self, matrix, weights, types):
+        matrix_cvalues_validator(matrix, self.cvalues)
 
     def get_MEJ(self):
         """ Return the Matrix Expert Judgment (MEJ) generated from the feature object comparisons. """
@@ -214,7 +227,7 @@ class COMET(MCDA_method):
             --------
             >>> import numpy as np
             >>> from pymcdm.methods import COMET, TOPSIS
-            >>> from pymcdm.comet_tools import MethodExpert
+            >>> from pymcdm.methods.comet_tools import MethodExpert
             >>> matrix = np.array([[ 96, 145, 200],
                                    [100, 145, 200],
                                    [120, 170,  80],

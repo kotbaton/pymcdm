@@ -1,10 +1,12 @@
 # Copyright (c) 2023 Bartłomiej Kizielewicz
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2024 Andrii Shekhovtsov
 
 import numpy as np
 from .. import normalizations
 from .. import helpers
 from .mcda_method import MCDA_method
+from ..validators import param_validator
+from ..io import TableDesc
 
 
 class WASPAS(MCDA_method):
@@ -23,7 +25,7 @@ class WASPAS(MCDA_method):
         References
         ----------
         .. [#waspas1] Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted
-        aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
+            aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
 
         Examples
         --------
@@ -42,51 +44,29 @@ class WASPAS(MCDA_method):
         >>> types = np.array([1, 1, 1, 1, 1, -1, -1])
         >>> [round(preference, 3) for preference in body(matrix, weights, types)]
         [0.8329, 0.7884, 0.6987, 0.8831, 0.7971, 0.7036, 0.8728, 0.5749]
-   """
+    """
+    _tables = [
+        TableDesc(caption='Normalized decision matrix',
+                  label='nmatrix', symbol='$r_{ij}$', rows='A', cols='C'),
+        TableDesc(caption='WSM part of the final preference.',
+                  label='wsm', symbol='${WSM}_i$', rows='A', cols=None),
+        TableDesc(caption='WPM part of the final preference.',
+                  label='wpm', symbol='${WPM}_i$', rows='A', cols=None),
+        TableDesc(caption='Final preference values',
+                  label='pref', symbol='$P_i$', rows='A', cols=None)
+    ]
 
-    def __init__(self, normalization_function=normalizations.linear_normalization):
+    def __init__(self, normalization_function=normalizations.linear_normalization, l=0.5):
         self.normalization = normalization_function
+        param_validator(l, 'l')
+        self.l = l
 
-    def __call__(self, matrix, weights, types, l=0.5, *args, **kwargs):
-        """Rank alternatives from decision matrix `matrix`, with criteria weights `weights` and criteria types `types`.
-
-            Parameters
-            ----------
-                matrix : ndarray
-                    Decision matrix / alternatives data.
-                    Alternatives are in rows and Criteria are in columns.
-
-                weights : ndarray
-                    Criteria weights. Sum of the weights should be 1. (e.g. sum(weights) == 1)
-
-                types : ndarray
-                    Array with definitions of criteria types:
-                    1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
-
-                l: value
-                    Dominance parameter: if the value used is 0 the model obtained is a WPM model, if the value used is
-                    1 the model obtained is a WSM model.
-
-                *args: is necessary for methods which reqiure some additional data.
-
-                **kwargs: is necessary for methods which reqiure some additional data.
-
-            Returns
-            -------
-                ndarray
-                    Preference values for alternatives. Better alternatives have higher values.
-        """
-        WASPAS._validate_input_data(matrix, weights, types)
-        if self.normalization is not None:
-            nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
-        else:
-            nmatrix = helpers.normalize_matrix(matrix, normalizations.linear_normalization, types)
-        return WASPAS._waspas(nmatrix, weights, l)
-
-    @staticmethod
-    def _waspas(nmatrix, weights, l):
+    def _method(self, matrix, weights, types):
+        l = self.l
+        nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
 
         q_sum = np.sum(nmatrix * weights, axis=1)
         q_prod = np.prod(nmatrix ** weights, axis=1)
 
-        return l * q_sum + (1 - l) * q_prod
+        p = l * q_sum + (1 - l) * q_prod
+        return nmatrix, q_sum, q_prod, p

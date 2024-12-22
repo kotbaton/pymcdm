@@ -46,10 +46,10 @@ def polar_plot(rankings,
         ax : Axes
             Axes object to draw on. Should be created with `projection='polar'` argument.
 
-        Returns
-        -------
-            ax : Axes
-                Axes object on which plot were drawn.
+    Returns
+    -------
+        ax : Axes
+            Axes object on which plot were drawn.
 
     Examples
     --------
