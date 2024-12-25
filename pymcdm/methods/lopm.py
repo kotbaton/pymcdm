@@ -5,6 +5,7 @@ import numpy as np
 
 from .mcda_method import MCDA_method
 from ..io import TableDesc
+from ..validators import array_dimension_validator, matrix_validator, weights_validator, types_validator
 
 
 class LoPM(MCDA_method):
@@ -53,20 +54,92 @@ class LoPM(MCDA_method):
     """
     reverse_ranking = False
     _tables = [
-        # TODO add table desc
+        TableDesc(caption='Lower property score',
+                  label='lower', symbol='', rows='A', cols=None),
+        TableDesc(caption='Upper property score',
+                  label='upper', symbol='', rows='A', cols=None),
+        TableDesc(caption='Target property score',
+                  label='target', symbol='', rows='A', cols=None),
+        TableDesc(caption='Merit/Preference value',
+                  label='pref', symbol='$P_i$', rows='A', cols=None),
     ]
 
     def __init__(self,
                  property_limits: Sequence[float] or None = None,
                  property_types: Sequence[str] or None = None):
-        # TODO add validation pl and pt should be same length
-        # TODO Can be not provided, then will be derived from data in _method
-        self.property_limits = np.array(property_limits)
-        self.property_types = np.array([c.lower() for c in property_types])
+        if (property_limits is None and property_types is not None) \
+                or (property_limits is not None and property_types is None):
+            raise ValueError('Both property_limits and property_types should be provided and have same length.'
+                             'Alternatively, none of the arguments should be provided.')
+        if property_limits is not None and property_types is not None:
+            self.property_limits = np.asarray(property_limits)
+            self.property_types = np.array([c.lower() for c in property_types])
+            array_dimension_validator(self.property_limits, 1, 'property_limits')
+            if len(self.property_limits) != len(self.property_types):
+                raise ValueError('property_limits and property_types should have same length.')
+        else:
+            self.property_limits = None
+            self.property_types = None
+
+
+    def __call__(self,
+                 matrix: np.ndarray | list | tuple,
+                 weights: np.ndarray | list | tuple,
+                 types: np.ndarray | list | tuple = None,
+                 validation: bool = True,
+                 verbose: bool = False):
+        """ Rank alternatives from decision matrix `matrix`, with criteria
+            weights `weights` and criteria types `types`.
+
+            Parameters
+            ----------
+                matrix : ndarray
+                    Decision matrix / alternatives data.
+                    Alternatives are in rows and Criteria are in columns.
+
+                weights : ndarray
+                    Criteria weights. Sum of the weights should be 1. (e.g.
+                    sum(weights) == 1)
+
+                types : ndarray or None
+                    Array with definitions of criteria types:
+                    1 if criteria is profit and -1 if criteria is cost for
+                    each criteria in `matrix`. Can be omitted if property_limits
+                    and property_types were provided in the constructor.
+
+                validation : bool
+                    Enable or disable validation of the all input data. True - validation is enabled,
+                    False - validation is disabled. Default is True.
+
+                verbose : bool
+                    Explain the MCDA, i.e. provide matrices and vectors from
+                    all the steps of the method, instead of return just the
+                    preference vector. Default is False.
+        """
+        matrix = np.asarray(matrix, dtype='float')
+        weights = np.asarray(weights, dtype='float')
+
+        if validation:
+            if types is not None:
+                types = np.asarray(types)
+                matrix_validator(matrix, types)
+                types_validator(matrix, types)
+            weights_validator(matrix, weights)
+            self._additional_validation(matrix, weights, types)
+
+        if verbose:
+            return self._method_explained(matrix, weights, types)
+        else:
+            return self._method(matrix, weights, types)[-1]
 
     def _method(self, matrix, weights, types):
-        limits = self.property_limits
-        types = self.property_types
+        if self.property_limits is not None:
+            limits = self.property_limits
+            types = self.property_types
+        else:
+            types = np.array(['l' if t == 1 else 'u' for t in types])
+            limits = np.array([np.min(matrix[:, i]) if types[i] == 'l' else np.max(matrix[:, i])
+                               for i in range(matrix.shape[1])])
 
         upper_mask = (types == 'u')
         lower_mask = (types == 'l')
@@ -76,11 +149,12 @@ class LoPM(MCDA_method):
         upper = np.sum(weights[upper_mask] * (matrix[:, upper_mask] / limits[upper_mask]), axis=1)
         target = np.sum(weights[target_mask] * np.abs((matrix[:, target_mask] / limits[target_mask]) - 1), axis=1)
 
-        # TODO return all according to _tables
         # TODO make proper test for the method
         # TODO user guide description
-        return lower + upper + target
+        m = lower + upper + target
+        return lower, upper, target, m
 
     def _additional_validation(self, matrix, weights, types):
-        # TODO validate if matrix has good number of criteria as in property_limits and property_types
-        pass
+        if self.property_limits is not None and self.property_limits.shape[0] != matrix.shape[1]:
+            raise ValueError(f'Property limits are provided for {self.property_limits.shape[0]} criteria, but '
+                             f'matrix has {matrix.shape[1]} criteria.')
