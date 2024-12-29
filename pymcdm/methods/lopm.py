@@ -1,6 +1,4 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
-from typing import Sequence
-
 import numpy as np
 
 from .mcda_method import MCDA_method
@@ -19,17 +17,19 @@ class LoPM(MCDA_method):
 
         Parameters
         ----------
-            property_limits : Sequence[float] or None
+            property_limits : np.ndarray or None
                 Vector of lower-limit, upper-limit and target value properties. If None, then limits will be derived
                 from matrix based on types on each call. Default is None.
 
-            property_types : Sequence[str] or None
-                Vector of property types: should be iterable with str values that define types of properties
-                provided in `property_limits` argument. Letters can be either lowercase or upper case. Possible values:
-                - 'l' or 'L' for lower-limit, treated as "no lower than", equivalent to profit criteria.
-                - 'u' or 'U' for upper-limit, treated as "no bigger than", equivalent to cost criteria.
-                - 't' or 'T' for target properties, equivalent of Expected Solution Point.
-                If None, then `types` argument will be used to determine limits' types. Default is None.
+            property_types : np.ndarray or None
+                Vector of property types: should be iterable with int values that define types of properties
+                provided in `property_limits` argument. Possible values:
+                -  1 for lower-limit, treated as "no lower than", equivalent to profit criteria.
+                - -1 for upper-limit, treated as "no bigger than", equivalent to cost criteria.
+                -  0 for target properties, equivalent of Expected Solution Point.
+                If None, then `types` argument will be used to determine limits' types.
+                Note, that if the
+                Default is None.
 
         References
         ----------
@@ -48,16 +48,16 @@ class LoPM(MCDA_method):
         ...     [21_450, 16, 0.0005, 2.2,  8.6, 1.0]
         ... ])
         >>> weights = np.array([0.20, 0.33, 0.13, 0.07, 0.07, 0.20])
-        >>> lopm = LoPM([10_000, 14, 0.0015, 3.5, 2.3, 9.0], 'LLUUTU')
+        >>> lopm = LoPM([10_000, 14, 0.0015, 3.5, 2.3, 9.0], [1, 1, -1, -1, 0, -1])
         >>> print(lopm(matrix, weights, None).round(2))
         [0.77 1.08 0.81 0.66 0.78 0.68]
     """
     reverse_ranking = False
     _tables = [
         TableDesc(caption='Lower property score',
-                  label='lower', symbol='', rows='A', cols=None),
+                  label='lower_profit', symbol='', rows='A', cols=None),
         TableDesc(caption='Upper property score',
-                  label='upper', symbol='', rows='A', cols=None),
+                  label='upper_cost', symbol='', rows='A', cols=None),
         TableDesc(caption='Target property score',
                   label='target', symbol='', rows='A', cols=None),
         TableDesc(caption='Merit/Preference value',
@@ -65,16 +65,23 @@ class LoPM(MCDA_method):
     ]
 
     def __init__(self,
-                 property_limits: Sequence[float] or None = None,
-                 property_types: Sequence[str] or None = None):
+                 property_limits: np.ndarray or None = None,
+                 property_types: np.ndarray or None = None):
         if (property_limits is None and property_types is not None) \
                 or (property_limits is not None and property_types is None):
             raise ValueError('Both property_limits and property_types should be provided and have same length.'
                              'Alternatively, none of the arguments should be provided.')
+
         if property_limits is not None and property_types is not None:
             self.property_limits = np.asarray(property_limits)
-            self.property_types = np.array([c.lower() for c in property_types])
+            self.property_types = np.asarray(property_types)
             array_dimension_validator(self.property_limits, 1, 'property_limits')
+            array_dimension_validator(self.property_types, 1, 'property_types')
+
+            valid_property_types = (-1, 0, 1)
+            if not all(v in valid_property_types for v in self.property_types):
+                raise ValueError('Valid property_types are: {-1, 0 1}, but different value was provided.')
+
             if len(self.property_limits) != len(self.property_types):
                 raise ValueError('property_limits and property_types should have same length.')
         else:
@@ -106,6 +113,8 @@ class LoPM(MCDA_method):
                     1 if criteria is profit and -1 if criteria is cost for
                     each criteria in `matrix`. Can be omitted if property_limits
                     and property_types were provided in the constructor.
+                    Note, that if both types and property_types are provided,
+                    property_types are preferred and will be used.
 
                 validation : bool
                     Enable or disable validation of the all input data. True - validation is enabled,
@@ -124,6 +133,8 @@ class LoPM(MCDA_method):
                 types = np.asarray(types)
                 matrix_validator(matrix, types)
                 types_validator(matrix, types)
+            elif self.property_types is None:
+                raise ValueError('Either types (in call) or property_types (in init) should be provided.')
             weights_validator(matrix, weights)
             self._additional_validation(matrix, weights, types)
 
@@ -137,13 +148,12 @@ class LoPM(MCDA_method):
             limits = self.property_limits
             types = self.property_types
         else:
-            types = np.array(['l' if t == 1 else 'u' for t in types])
-            limits = np.array([np.min(matrix[:, i]) if types[i] == 'l' else np.max(matrix[:, i])
+            limits = np.array([np.min(matrix[:, i]) if types[i] == -1 else np.max(matrix[:, i])
                                for i in range(matrix.shape[1])])
 
-        upper_mask = (types == 'u')
-        lower_mask = (types == 'l')
-        target_mask = (types == 't')
+        upper_mask = (types == -1)
+        lower_mask = (types == 1)
+        target_mask = (types == 0)
 
         lower = np.sum(weights[lower_mask] * (limits[lower_mask] / matrix[:, lower_mask]), axis=1)
         upper = np.sum(weights[upper_mask] * (matrix[:, upper_mask] / limits[upper_mask]), axis=1)

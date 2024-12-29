@@ -539,6 +539,51 @@ where :math:`v_j^{+}=\max _i v_{i j}` and :math:`v_j^{-}=\min v_{i \vec{j}}`.
 
 Higher values of :math:`\phi_i` points to better alternatives.
 
+LoPM
+====
+
+The Limits on Property method is a technique for selecting materials or making decisions based on setting boundaries
+for desired characteristics. This method was described by Mahmoud Farag in his book.
+It categorizes performance requirements into three groups:
+
+* Lower-limit properties: These are the minimum acceptable values for a particular property.
+  For instance, in selecting a material for a bridge, there would be a lower limit
+  for strength to ensure the bridge can support its load.
+* Upper-limit properties: These are the maximum acceptable values for a property.
+  An example might be an upper limit on the weight of an aircraft wing material to optimize fuel efficiency.
+* Target value properties: These are the ideal values for a property, where achieving them is most desirable.
+  Compatibility between materials might require a specific target value
+  for thermal expansion coefficient to minimize thermal stress.
+
+The choice of whether a property is designated as a lower limit, upper limit, or target value depends on
+the specific application. For example, In an electrical cable, conductivity would be a lower limit for the core
+material to ensure proper current flow, while it would be an upper limit for the insulation layer to prevent leakage.
+This method is particularly useful when dealing with a large number of potential alternatives because it allows for
+efficient screening. By setting these limits, we can eliminate unsuitable alternatives from the set.
+
+Once the initial screening is complete, the Limits on Property Method employs a merit value :math:`m` to further
+refine the selection process. Merit value is calculated using the following formula:
+
+.. math::
+    \begin{equation}
+    m = \left( \sum_{i=1}^{n_l} w_i \frac{Y_i}{X_i} \right)
+    + \left( \sum_{i=n_l + 1}^{n_l + n_u} w_i \frac{X_i}{Y_i} \right)
+    + \left( \sum_{i=n_l + n_u + 1}^{N} w_i \left| \frac{X_i}{Y_i} - 1 \right| \right)
+    \end{equation}
+
+where :math:`n_l, n_u, n_t` denote the number of lower-limit, upper-limit, and target value properties, respectively,
+while :math:`N` represents total number of the criteria. Next, :math:`w_i` represent the criteria weights and :math:`X_i`
+represents the alternative value properties, while :math:`Y_i` represents the specified limits (lower, upper or target)
+respectively. Notice, that this formula assumes, that criteria are sorted and grouped
+in the following order: lower, upper, target.
+
+A lower merit value :math:`m` indicates a better alternative according to the defined limits and weightings.
+Alternatives with properties exceeding the upper limits or falling short of the lower limits will receive
+significant penalties in the calculation, driving their merit value up. In other words, lower values of :math:`m`
+suggest better alternatives.
+By comparing the merit values of the remaining alternatives after screening, we can identify the most
+suitable option for the specific application.
+
 MABAC
 =======================
 ``MABAC`` is designed to evaluate decision alternatives according to the following steps:
@@ -783,7 +828,7 @@ the Equation (:eq:`equ:extdecmat`).
                   x_{21} & x_{22} & \dots & x_{2n} \cr
                   \dots & \dots & \dots & \dots \cr
                   x_{m1} & x_{m2} & \dots & x_{mn} \cr
-                  x_{ai1} & x_{ai2} & \dots & x_{ain}
+                  x_{ai1} & x_{ai2} & \dots & x_{ain} \cr
                   x_{aa1} & x_{aa2} & \dots & x_{aan} \cr
             \end{array}\right]
     \end{equation}
@@ -1004,7 +1049,7 @@ PROBID
 ``PROBID`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** Define a decision matrix of dimension :math:`n \times m`, where :math:`n` is the number of alternatives,
-and :math:`m` is the number of criteria (:eq:`equ:mat_ocra`).
+and :math:`m` is the number of criteria (:eq:`equ:mat_probid`).
 
 .. math::
     \begin{equation}
@@ -1015,7 +1060,7 @@ and :math:`m` is the number of criteria (:eq:`equ:mat_ocra`).
     x_{n 1} & x_{n 2} & \ldots & x_{n m}
     \end{array}\right]
     \end{equation}
-    :label: equ:mat_ocra
+    :label: equ:mat_probid
 
 **Step 2.** Normalize the decision matrix using the vector method.
 
