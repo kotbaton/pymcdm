@@ -1,4 +1,6 @@
-# Version 1.3.0
+# Release history
+
+## Version 1.3.0
 
 This is fairly big update, which include various improvements in code and modules structure, documentation,
 implementations and so on. Two main points of the update are: `verbose` argument for MCDM methods,
@@ -43,7 +45,7 @@ Most of the code written for previous versions of `pymcdm` should work, however 
 - Add new arguments to `ranking_bar()` function.
 - Removed redundant files.
 
-# Version 1.2.1
+## Version 1.2.1
 
 * Add examples for the `comet_tools` to the documentation
 * Add `comet_3d_esp_plot` visualization function
@@ -59,7 +61,7 @@ Most of the code written for previous versions of `pymcdm` should work, however 
 * Clean up documentation folder
 * Various fixes in the documentation and docstrings
 
-# Version 1.2.0
+## Version 1.2.0
 
 ### General changes
 

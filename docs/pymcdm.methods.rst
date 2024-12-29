@@ -36,6 +36,11 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.LoPM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.MABAC
    :members:
    :undoc-members:

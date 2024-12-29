@@ -16,6 +16,7 @@ Welcome to pymcdm's documentation!
    user_guide
    modules
    examples
+   changelog_link.rst
 
 Indices and tables
 ==================
