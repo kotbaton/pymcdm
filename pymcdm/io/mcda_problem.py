@@ -151,10 +151,10 @@ class MCDA_problem:
             index=False,
             float_format=float_fmt,
             position='h',
-            label='crit_desc',
+            label='tab:crit_desc',
             caption='Criteria description.',
         )
-        return s
+        return s.replace('\\caption', '\\centering\n\\caption')
 
     def to_string(self, float_fmt: str or None = '%0.4f'):
         """
