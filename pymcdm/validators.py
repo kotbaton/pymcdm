@@ -2,6 +2,7 @@
 # Copyright (c) 2024 Bartłomiej Kizielewicz
 
 from itertools import combinations
+from warnings import warn
 import numpy as np
 
 
@@ -232,8 +233,7 @@ def ref_ideal_bounds_validator(ref_ideal: np.ndarray, bounds: np.ndarray):
                          ' 0 should be added as [0, 0].')
 
     if ref_ideal.shape != bounds.shape:
-        raise ValueError('Bounds and ref_ideal should have equal'
-                         ' shapes.')
+        raise ValueError('Bounds and ref_ideal should have equal shapes.')
 
     min_, max_ = bounds[:, 0], bounds[:, 1]
     ref_min, ref_max = ref_ideal[:, 0], ref_ideal[:, 1]
@@ -482,6 +482,8 @@ def matrix_validator(matrix: np.ndarray, types: list[int]):
     ------
     ValueError
         If `matrix` is not two-dimensional.
+
+    UserWarning
         If any alternative in `matrix` is dominant (best in all criteria).
         If any alternative in `matrix` is dominated (worst in all criteria).
 
@@ -495,16 +497,12 @@ def matrix_validator(matrix: np.ndarray, types: list[int]):
     >>> dominant_matrix = np.array([[5, 10], [1, 2], [3, 4]])
     >>> types = [1, 1]
     >>> matrix_validator(dominant_matrix, types)
-    Traceback (most recent call last):
-        ...
-    ValueError: Alternatives with indices [0] are dominant. Consider removing them,
+    UserWarning: Alternatives with indices [np.int64(0)] are dominated. Consider removing them,
     as such alternatives can cause numerical errors in some methods.
 
     >>> dominated_matrix = np.array([[1, 2], [5, 10], [3, 4]])
     >>> matrix_validator(dominated_matrix, types)
-    Traceback (most recent call last):
-        ...
-    ValueError: Alternatives with indices [0] are dominated. Consider removing them,
+    UserWarning: Alternatives with indices [np.int64(0)] are dominant. Consider removing them,
     as such alternatives can cause numerical errors in some methods.
     """
     array_dimension_validator(matrix, 2, 'Matrix')
@@ -519,13 +517,13 @@ def matrix_validator(matrix: np.ndarray, types: list[int]):
 
     dominant_alts, = np.where([np.all(dominant == alt) for alt in matrix])
     if dominant_alts.size > 0:
-        raise ValueError(f'Alternatives with indices {list(dominant_alts)} are dominant. Consider removing them,'
-                         'as such alternatives can cause numerical errors in some methods.')
+        warn(f'Alternatives with indices {dominant_alts} are dominant. Consider removing them, '
+             'as such alternatives can cause numerical errors in some methods.', UserWarning)
 
     dominated_alts, = np.where([np.all(dominated == alt) for alt in matrix])
     if dominated_alts.size > 0:
-        raise ValueError(f'Alternatives with indices {list(dominated_alts)} are dominated. Consider removing them,'
-                         'as such alternatives can cause numerical errors in some methods.')
+        warn(f'Alternatives with indices {dominated_alts} are dominated. Consider removing them, '
+             'as such alternatives can cause numerical errors in some methods.', UserWarning)
 
 
 def weights_validator(matrix: np.ndarray, weights: np.ndarray):
@@ -556,6 +554,8 @@ def weights_validator(matrix: np.ndarray, weights: np.ndarray):
         If `weights` is not one-dimensional.
         If the number of weights does not match the number of criteria in `matrix`.
         If any weight is non-positive.
+
+    UserWarning
         If the sum of weights deviates from 1 by more than 0.01.
 
     Examples
@@ -567,9 +567,7 @@ def weights_validator(matrix: np.ndarray, weights: np.ndarray):
 
     >>> invalid_weights = np.array([0.2, 0.3, 0.4])
     >>> weights_validator(matrix, invalid_weights)
-    Traceback (most recent call last):
-        ...
-    ValueError: Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
+    UserWarning: Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
     """
     array_dimension_validator(weights, 1, 'Weights')
 
@@ -577,8 +575,8 @@ def weights_validator(matrix: np.ndarray, weights: np.ndarray):
         raise ValueError('Number of criteria should be same as number of weights.')
 
     if abs(weights.sum() - 1) >= 0.01 or np.any(weights <= 0):
-        raise ValueError('Weights should be positive and its sum should be equal one. Now, sum of the weights is '
-                         f'{weights.sum()}.')
+        warn('Weights should be positive and its sum should be equal one. Now, sum of the weights is '
+             f'{weights.sum()}.', UserWarning)
 
 
 def types_validator(matrix: np.ndarray, types: np.ndarray):
@@ -666,7 +664,7 @@ def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np
 
     Raises
     ------
-    ValueError
+    ValueError or UserWarning
         If the decision matrix fails validation (`matrix_validator`).
         If the weights array fails validation (`weights_validator`).
         If the types array fails validation (`types_validator`).
@@ -682,9 +680,7 @@ def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np
 
     >>> invalid_weights = np.array([0.5, 0.4])
     >>> validate_decision_problem(matrix, invalid_weights, types)
-    Traceback (most recent call last):
-        ...
-    ValueError: Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
+    UserWarning: Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
     """
     matrix_validator(matrix, types)
     weights_validator(matrix, weights)
