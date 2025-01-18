@@ -42,18 +42,14 @@ class MCDA_results:
         self.matrix = matrix
         self.results = results
 
-    def prepare_output(self,
+    def prepare_tables(self,
                        group_tables: bool = True,
                        ranking: bool = True,
                        matrix: bool = True,
-                       label_prefix: bool = True,
-                       float_fmt: str or None = '%0.4f',
-                       fix_integers=True,
-                       output_function=None):
+                       fix_integers=True, **kwargs):
         """
-        Prepares the formatted output string for the MCDA results, with options for
+        Prepares the resulted Tables according to the arguments, with options for
         grouping tables, including rankings, and displaying the decision matrix.
-        Not meant for explicit usage.
 
         Parameters
         ----------
@@ -63,44 +59,32 @@ class MCDA_results:
             Whether to include the ranking table in the output, by default True.
         matrix : bool, optional
             Whether to include the decision matrix in the output, by default True.
-        label_prefix : bool, optional
-            Whether to use label prefixes in the output, by default True.
-        float_fmt : str or None, optional
-            Format for floating-point numbers, by default '%0.4f'.
         fix_integers : bool, optional
             Whether to round integer values in tables, by default True.
             Applied only to decision matrix and ranking. Work only if all column is integer.
-        output_function : callable, optional
-            Function to format each table, passed as a function argument.
 
         Returns
         -------
-        str
-            The formatted output as a string, with grouped tables, rankings,
-            and decision matrix if specified.
+        list[Table]
+            List of the Tables which can be processed further.
         """
         if ranking and self.method_name == 'PROMETHEE_I':
             raise ValueError("Can't generate ranking for PROMETHEE I as it returns partial ranking.")
 
-        if label_prefix:  # Check if label_prefix is enabled and use appropriate value for it
-            label_prefix = self.method_name.lower()
-        else:
-            label_prefix = ''
-
-        output_strs = [f'Results for the {self.method_name} method.']
+        output_tables = []
         if matrix:
             t = Table(data=self.matrix,
                       desc=TableDesc(caption='Decision matrix',
                                      label='matrix', symbol='$x_{ij}$', rows='A', cols='C'))
             if fix_integers:
                 t.fix_integers()
-            output_strs.append(output_function(t, float_fmt, label_prefix))
+            output_tables.append(t)
 
         grouped_tables = []
         last_group_spec = ()
         for t in self.results:
             if not group_tables:  # If grouping is not enabled just add the table to final output
-                output_strs.append(output_function(t, float_fmt, label_prefix))
+                output_tables.append(t)
             elif len(t.data.shape) == 2:
                 # Add 2d table to grouped_tables to preserve correct order of displaying
                 grouped_tables.append(t)
@@ -123,12 +107,12 @@ class MCDA_results:
             if group_tables and last_group_spec == ('A', None):  # If grouping is enabled and ranking fits last group
                 grouped_tables[-1].append(ranking_table)
             else:  # If not, just add as another table
-                output_strs.append(output_function(ranking_table, float_fmt, label_prefix))
+                output_tables.append(ranking_table)
 
         if group_tables:
             for i, group in enumerate(grouped_tables):
                 if isinstance(group, Table):  # Check if we deal with real group or 2d table
-                    output_strs.append(output_function(group, float_fmt, label_prefix))
+                    output_tables.append(group)
                     continue
 
                 t = Table.from_group(group)
@@ -137,11 +121,9 @@ class MCDA_results:
                 if fix_integers and ranking and i == len(grouped_tables) - 1:
                     t.fix_integers()
 
-                output_strs.append(output_function(t, float_fmt, label_prefix))
+                output_tables.append(t)
 
-        output_strs.append(f'Total {len(output_strs) - 1} tables.\n')
-
-        return '\n\n'.join(output_strs)
+        return output_tables
 
     def to_latex(self, **kwargs):
         """
@@ -150,15 +132,24 @@ class MCDA_results:
         Parameters
         ----------
         **kwargs : dict
-            Additional keyword arguments passed to `prepare_output()`.
+            Additional keyword arguments passed to `prepare_tables()` or to `to_latex()` functions.
 
         Returns
         -------
         str
             LaTeX-formatted string of the MCDA results.
         """
-        s = self.prepare_output(output_function=lambda t, ff, lp: t.to_latex(ff, lp), **kwargs)
-        return s.replace('\\caption', '\\centering\n\\caption')
+        output_strs = [f'Results for the {self.method_name} method.']
+
+        label_prefix = kwargs.get('label_prefix', self.method_name.lower())
+        float_fmt = kwargs.get('float_fmt', '%0.4f')
+        tables = self.prepare_tables(**kwargs)
+
+        for t in tables:
+            output_strs.append(t.to_latex(float_fmt, label_prefix))
+
+        output_strs.append(f'Total {len(output_strs) - 1} tables.\n')
+        return '\n'.join(output_strs).replace('\\caption', '\\centering\n\\caption')
 
     def to_string(self, **kwargs):
         """
@@ -174,7 +165,17 @@ class MCDA_results:
         str
             Plain text string of the MCDA results.
         """
-        return self.prepare_output(output_function=lambda t, ff, lp: t.to_string(ff, lp), **kwargs)
+        output_strs = [f'Results for the {self.method_name} method.']
+
+        label_prefix = kwargs.get('label_prefix', self.method_name.lower())
+        float_fmt = kwargs.get('float_fmt', '%0.4f')
+        tables = self.prepare_tables(**kwargs)
+
+        for t in tables:
+            output_strs.append(t.to_string(float_fmt, label_prefix))
+
+        output_strs.append(f'Total {len(output_strs) - 1} tables.\n')
+        return '\n'.join(output_strs)
 
     def __str__(self):
         """
