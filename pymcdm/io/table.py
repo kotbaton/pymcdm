@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2025 Andrii Shekhovtsov
 from typing import List, Callable
 
 import numpy as np
@@ -115,7 +115,7 @@ class Table:
             caption=self.caption,
         )
 
-    def to_string(self, float_fmt: str or None = '%0.4f', label_prefix=''):
+    def to_string(self, float_fmt: str or None = '%0.4f'):
         """
         Returns a string representation of the table with an optional floating-point format.
 
@@ -128,8 +128,6 @@ class Table:
         float_fmt : str or None, optional
             A formatting string specifying the precision of floating-point numbers in the table.
             Defaults to '%0.4f', showing four decimal places.
-        label_prefix : str, optional
-            Unused in this method.
 
         Returns
         -------
@@ -141,6 +139,29 @@ class Table:
             float_format=float_fmt,
         )
         return f'{self.caption}\n{s}'
+
+
+    def to_csv(self, filename, float_fmt: str or None = '%0.4f'):
+        """
+        Writes the table to csv with an option to change floating-point format.
+
+        Parameters
+        ----------
+        filename : str
+            Name of the file where data should be written. File will be overwritten.
+        float_fmt : str or None, optional
+            A formatting string specifying the precision of floating-point numbers in the table.
+            Defaults to '%0.4f', storing four decimal places.
+
+        Returns
+        -------
+            None
+        """
+        self.df.to_csv(
+            path_or_buf=filename,
+            index=False,
+            float_format=float_fmt,
+        )
 
     def __str__(self):
         return self.to_string()

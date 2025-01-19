@@ -1,5 +1,6 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2025 Andrii Shekhovtsov
 from typing import List, TypeVar
+import os
 
 import numpy as np
 
@@ -167,12 +168,11 @@ class MCDA_results:
         """
         output_strs = [f'Results for the {self.method_name} method.']
 
-        label_prefix = kwargs.get('label_prefix', self.method_name.lower())
         float_fmt = kwargs.get('float_fmt', '%0.4f')
         tables = self.prepare_tables(**kwargs)
 
         for t in tables:
-            output_strs.append(t.to_string(float_fmt, label_prefix))
+            output_strs.append(t.to_string(float_fmt))
 
         output_strs.append(f'Total {len(output_strs) - 1} tables.\n')
         return '\n'.join(output_strs)
@@ -198,3 +198,29 @@ class MCDA_results:
             Dictionary where keys are captions of the tables in `results` and values are the np.array objects.
         """
         return {t.desc.caption: t.data for t in self.results}
+
+    def to_csv(self, output_dir, **kwargs):
+        """
+        Returns the MCDA results formatted as a LaTeX string.
+
+        Parameters
+        ----------
+        output_dir : str
+            Output folder where csv files should be written.
+        **kwargs : dict
+            Additional keyword arguments passed to `prepare_tables()` or to `to_latex()` functions.
+
+        Returns
+        -------
+            None
+        """
+        label_prefix = kwargs.get('label_prefix', self.method_name.lower())
+        float_fmt = kwargs.get('float_fmt', '%0.4f')
+        tables = self.prepare_tables(**kwargs)
+
+        if not os.path.isdir(output_dir):
+            os.mkdir(output_dir)
+
+        for t in tables:
+            filename = f'{label_prefix}_{t.desc.label}.csv'
+            t.to_csv(os.path.join(output_dir, filename))
