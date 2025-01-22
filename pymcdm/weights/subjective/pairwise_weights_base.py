@@ -135,6 +135,7 @@ class PairwiseWeightsBase(ABC):
         while ans is None:
             print(f'Provide valid option: {self.user_answer_map.keys()}!')
             ans = self.user_answer_map.get(input('\nYour answer: ').strip(), None)
+        print()
         return ans
 
     def _identify(self, objects: list, comparison_func: Callable) -> np.ndarray:
