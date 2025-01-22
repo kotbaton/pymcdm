@@ -58,6 +58,19 @@ class TableDesc:
         self.cols = self.validate_option(cols)
 
     def create_table(self, data: np.ndarray | list | tuple):
+        """
+        Creates Table object using this table description.
+
+        Parameters
+        ----------
+        data : np.ndarray | list | tuple
+            Data to create table from.
+
+        Returns
+        -------
+        Table
+            Table object with provided data and current TableDesc as description.
+        """
         return io.Table(data, self)
 
     @staticmethod

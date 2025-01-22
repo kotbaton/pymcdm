@@ -1,5 +1,6 @@
 # Copyright (c) 2024-2025 Andrii Shekhovtsov
 from typing import List, Callable
+from json import dumps
 
 import numpy as np
 import pandas as pd
@@ -140,7 +141,6 @@ class Table:
         )
         return f'{self.caption}\n{s}'
 
-
     def to_csv(self, filename, float_fmt: str or None = '%0.4f'):
         """
         Writes the table to csv with an option to change floating-point format.
@@ -162,6 +162,33 @@ class Table:
             index=False,
             float_format=float_fmt,
         )
+
+    def to_json(self):
+        """
+        Returns a JSON string representation of the table.
+
+        This method generates a JSON string representation of the table.
+        Table is represented as a JSON object, with fields:
+
+        - 'label' - Short label described content of the table (string).
+        - 'caption' - Description of the table, in case of grouped tables captions are concatenated (string).
+        - 'symbol' - Symbol of the data in the data, according to the method's algorithm (string).
+        - 'columns' - Names of the columns as (list of strings).
+        - 'data' - Rows of the table (list of mixed values: string, float or int).
+          First element will be row's label, other elements are data of the row.
+
+        Returns
+        -------
+        str
+            A JSON string representation of the table.
+        """
+        return dumps({
+            'label': self.desc.label,
+            'caption': self.desc.caption,
+            'symbol': self.desc.symbol,
+            'columns': self.df.columns.tolist(),
+            'data': self.df.values.tolist()
+        })
 
     def __str__(self):
         return self.to_string()

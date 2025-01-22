@@ -1,4 +1,5 @@
 # Copyright (c) 2024 Andrii Shekhovtsov
+from json import dumps
 from typing import Sequence
 
 import numpy as np
@@ -176,6 +177,57 @@ class MCDA_problem:
             float_format=float_fmt,
         )
         return f'Criteria description.\n{s}'
+
+    def to_csv(self, filename, float_fmt: str or None = '%0.4f'):
+        """
+        Writes the MCDA_problem table to csv with an option to change floating-point format.
+
+        Parameters
+        ----------
+        filename : str
+            Name of the file where data should be written. File will be overwritten.
+        float_fmt : str or None, optional
+            A formatting string specifying the precision of floating-point numbers in the table.
+            Defaults to '%0.4f', storing four decimal places.
+
+        Returns
+        -------
+            None
+        """
+        used_columns = [c for c in self.columns_order if c in self.df.columns]
+        self.df[used_columns].to_csv(
+            path_or_buf=filename,
+            index=False,
+            float_format=float_fmt,
+        )
+
+    def to_json(self):
+        """
+        Returns a JSON string representation of the MCDA_problem table.
+
+        This method generates a JSON string representation of the table.
+        MCDA_problem is represented as a JSON object, with fields:
+
+        - 'label' - 'crit_desc'.
+        - 'caption' - 'Criteria description.'
+        - 'symbol' - Empty string.
+        - 'columns' - Names of the columns as (list of strings).
+        - 'data' - Rows of the table (list of mixed values: string, float or int).
+          First element will be row's label (name of the criterion), other elements are data of the row.
+
+        Returns
+        -------
+        str
+            A JSON string representation of the table.
+        """
+        used_columns = [c for c in self.columns_order if c in self.df.columns]
+        return dumps({
+            'label': 'crit_desc',
+            'caption': 'Criteria description.',
+            'symbol': '',
+            'columns': used_columns,
+            'data': self.df[used_columns].values.tolist()
+        })
 
     def __str__(self):
         """

@@ -63,6 +63,8 @@ class MCDA_results:
         fix_integers : bool, optional
             Whether to round integer values in tables, by default True.
             Applied only to decision matrix and ranking. Work only if all column is integer.
+        **kwargs
+            Used to omit errors when function is called with more arguments than defined.
 
         Returns
         -------
@@ -223,4 +225,31 @@ class MCDA_results:
 
         for t in tables:
             filename = f'{label_prefix}_{t.desc.label}.csv'
-            t.to_csv(os.path.join(output_dir, filename))
+            t.to_csv(os.path.join(output_dir, filename), float_fmt)
+
+    def to_json(self, **kwargs):
+        """
+        Returns a JSON string representation of the decision analysis results.
+
+        This method generates a JSON string representation of the results.
+        JSON contains list of JSON objects, where each object represents Table and have the following fields:
+
+        - 'label' - Short label described content of the table (string).
+        - 'caption' - Description of the table, in case of grouped tables captions are concatenated (string).
+        - 'symbol' - Symbol of the data in the data, according to the method's algorithm (string).
+        - 'columns' - Names of the columns as (list of strings).
+        - 'data' - Rows of the table (list of mixed values: string, float or int).
+          First element will be row's label, other elements are data of the row.
+
+        Returns
+        -------
+        str
+            JSON representation of the MCDA results.
+        """
+        output_strs = []
+        tables = self.prepare_tables(**kwargs)
+
+        for t in tables:
+            output_strs.append(t.to_json())
+
+        return f'[{",".join(output_strs)}]'
