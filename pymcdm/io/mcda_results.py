@@ -146,10 +146,9 @@ class MCDA_results:
 
         label_prefix = kwargs.get('label_prefix', self.method_name.lower())
         float_fmt = kwargs.get('float_fmt', '%0.4f')
-        tables = self.prepare_tables(**kwargs)
 
-        for t in tables:
-            output_strs.append(t.to_latex(float_fmt, label_prefix))
+        tables = self.prepare_tables(**kwargs)
+        output_strs.extend(t.to_latex(float_fmt, label_prefix) for t in tables)
 
         output_strs.append(f'Total {len(output_strs) - 1} tables.\n')
         return '\n'.join(output_strs).replace('\\caption', '\\centering\n\\caption')
@@ -171,13 +170,12 @@ class MCDA_results:
         output_strs = [f'Results for the {self.method_name} method.']
 
         float_fmt = kwargs.get('float_fmt', '%0.4f')
-        tables = self.prepare_tables(**kwargs)
 
-        for t in tables:
-            output_strs.append(t.to_string(float_fmt))
+        tables = self.prepare_tables(**kwargs)
+        output_strs.extend(t.to_string(float_fmt) for t in tables)
 
         output_strs.append(f'Total {len(output_strs) - 1} tables.\n')
-        return '\n'.join(output_strs)
+        return '\n\n'.join(output_strs)
 
     def __str__(self):
         """
@@ -246,10 +244,5 @@ class MCDA_results:
         str
             JSON representation of the MCDA results.
         """
-        output_strs = []
         tables = self.prepare_tables(**kwargs)
-
-        for t in tables:
-            output_strs.append(t.to_json())
-
-        return f'[{",".join(output_strs)}]'
+        return f'[{",".join(t.to_json() for t in tables)}]'

@@ -1,5 +1,14 @@
 # Release history
 
+## Version 1.3.1
+
+* Add CSV and JSON export options to Table, MCDA_problem and MCDA_results classes.
+* Add centering command to latex output of MCDA_problem, add "tab:" prefix to its label.
+* Partially rewrite MCDA_results to be able to add new output format more easily.
+* Change the validation of matrix and weights. Now if matrix contains dominant od dominated alternatives,
+  or weights does not sum up to 1, UserWarning will be shown, instead of exception. To obey validation use
+  validation=False argument in the method's call.
+
 ## Version 1.3.0
 
 This is fairly big update, which include various improvements in code and modules structure, documentation,
