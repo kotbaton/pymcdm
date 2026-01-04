@@ -162,7 +162,7 @@ def matrix_cvalues_validator(matrix: np.ndarray, cvalues: list[tuple] | list[lis
     >>> import numpy as np
     >>> matrix = np.array([[0.2, 0.5, 0.8], [0.3, 0.4, 0.7]])
     >>> cvalues = [(0, 1), (0, 0.6), (0.5, 1)]
-    >>> matrix_cvalues_validator(matrix, cvalues) # No output, as validation passes.
+    >>> matrix_cvalues_validator(matrix, cvalues)  # No output, as validation passes.
 
     >>> invalid_matrix = np.array([[0.2, 0.7, 0.8], [0.3, 0.4, 1.2]])
     >>> matrix_cvalues_validator(invalid_matrix, cvalues)
@@ -171,13 +171,17 @@ def matrix_cvalues_validator(matrix: np.ndarray, cvalues: list[tuple] | list[lis
     ValueError: Some criteria values in alternative with index 0 are not in problem's domain, i.e. there are values that are bigger or smaller than bounds defined in cvalues.
     """
     if matrix.shape[1] != len(cvalues):
-        ValueError(f'Number of criteria in matrix ({matrix.shape[1]}) is different from number of criteria in '
-                   f'the characteristic values ({len(cvalues)}), but those values should be the same.')
+        raise ValueError(
+            f'Number of criteria in matrix ({matrix.shape[1]}) is different from number of criteria in '
+            f'the characteristic values ({len(cvalues)}), but those values should be the same.'
+        )
 
     for i, alt in enumerate(matrix):
         if any(a < cv[0] or cv[-1] < a for a, cv in zip(alt, cvalues)):
-            ValueError(f'Some criteria values in alternative with index {i} are not in problem\'s domain, '
-                       'i.e. there are values that are bigger or smaller then bounds defined in cvalues.')
+            raise ValueError(
+                f"Some criteria values in alternative with index {i} are not in problem's domain, "
+                'i.e. there are values that are bigger or smaller than bounds defined in cvalues.'
+            )
 
 
 def ref_ideal_bounds_validator(ref_ideal: np.ndarray, bounds: np.ndarray):
@@ -451,7 +455,7 @@ def esp_bounds_validator(esp: np.ndarray, bounds: np.ndarray):
         raise ValueError('ESP values should be in range of min and max values (bounds) for each criterion.')
 
 
-def matrix_validator(matrix: np.ndarray, types: list[int]):
+def matrix_validator(matrix: np.ndarray, types: np.ndarray | list | tuple):
     """
     Validates the decision matrix and checks for dominant or dominated alternatives.
 
@@ -468,8 +472,8 @@ def matrix_validator(matrix: np.ndarray, types: list[int]):
     ----------
     matrix : numpy.ndarray
         A 2D array where each row represents an alternative, and each column represents a criterion.
-    types : list of int
-        A list indicating the type of optimization for each criterion. Each element should be:
+    types : array-like of int
+        A sequence indicating the type of optimization for each criterion. Each element should be:
         - `1` for maximization (profit) criteria.
         - `-1` for minimization (cost) criteria.
 
@@ -506,6 +510,8 @@ def matrix_validator(matrix: np.ndarray, types: list[int]):
     as such alternatives can cause numerical errors in some methods.
     """
     array_dimension_validator(matrix, 2, 'Matrix')
+
+    types = np.asarray(types)
 
     max_alt = np.max(matrix, axis=0)
     min_alt = np.min(matrix, axis=0)

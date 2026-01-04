@@ -4,6 +4,7 @@
 from functools import wraps
 from itertools import permutations
 import numpy as np
+from warnings import warn
 
 __all__ = [
     'spearman',
@@ -50,8 +51,17 @@ def spearman(x, y):
         -------
             float
                 Correlation between two rankings vectors.
+
+        Notes
+        -----
+            If either input vector has zero variance, the Spearman correlation is undefined.
+            In such cases, a UserWarning is emitted.
     """
-    return (_cov(x, y)) / (np.std(x) * np.std(y))
+    sx = np.std(x)
+    sy = np.std(y)
+    if sx == 0 or sy == 0:
+        warn('Spearman correlation is undefined when one of the vectors has zero variance.', UserWarning)
+    return (_cov(x, y)) / (sx * sy)
 
 rs = spearman
 
@@ -72,8 +82,17 @@ def pearson(x, y):
         -------
             float
                 Correlation between two vectors.
+
+        Notes
+        -----
+            If either input vector has zero variance, the Pearson correlation is undefined.
+            In such cases, a UserWarning is emitted.
     """
-    return (_cov(x, y)) / (np.std(x) * np.std(y))
+    sx = np.std(x)
+    sy = np.std(y)
+    if sx == 0 or sy == 0:
+        warn('Pearson correlation is undefined when one of the vectors has zero variance.', UserWarning)
+    return (_cov(x, y)) / (sx * sy)
 
 r = pearson
 
@@ -170,6 +189,11 @@ def goodman_kruskal_gamma(x, y):
         -------
             float
                 Correlation between two rankings vectors.
+
+        Notes
+        -----
+            If there are no comparable pairs (i.e., the denominator is zero), Gamma is undefined.
+            In such cases, a UserWarning is emitted.
     """
     num = 0
     den = 0
@@ -180,6 +204,8 @@ def goodman_kruskal_gamma(x, y):
         num += sign
         if sign:
             den += 1
+    if den == 0:
+        warn("Goodman's and Kruskal's Gamma is undefined when there are no comparable pairs (denominator is zero).", UserWarning)
     return num / float(den)
 
 

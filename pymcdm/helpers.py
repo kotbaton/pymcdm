@@ -105,8 +105,8 @@ def correlation_matrix(rankings, method, columns=False):
 
 
 def normalize_matrix(matrix: np.ndarray | list | tuple,
-                     method: Callable or Iterable[Callable] or str or Iterable[str],
-                     criteria_types: None or Iterable[int]) -> np.ndarray:
+                     method: Callable | Iterable[Callable] | str | Iterable[str],
+                     criteria_types: None | Iterable[int]) -> np.ndarray:
     """ Normalize each column in `matrix`, using `method`normalization
         function according to `criteria_types`.
 
@@ -154,7 +154,7 @@ def normalize_matrix(matrix: np.ndarray | list | tuple,
         if np.any(np.logical_and(criteria_types != 1, criteria_types != -1)):
             raise ValueError('Types should include only values 1 or -1.')
 
-    if (matrix.shape[1] != len(criteria_types)):
+    if matrix.shape[1] != len(criteria_types):
         raise ValueError(f'Matrix has {matrix.shape[1]} criteria, criteria_types has {len(criteria_types)}. However, those values should be equal.')
     if isinstance(method, Iterable) and matrix.shape[1] != len(method):
         raise ValueError(f'Matrix has {matrix.shape[1]} criteria, but method has {len(method)}. Those values should be equal.')
