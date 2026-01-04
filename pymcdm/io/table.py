@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Andrii Shekhovtsov
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 from typing import List, Callable
 from json import dumps
 

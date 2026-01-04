@@ -1,5 +1,5 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
-# Copyright (c) 2022 Bartłomiej Kizielewicz
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
+# Copyright (c) 2022-2026 Bartłomiej Kizielewicz
 
 from typing import Callable, Iterable
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 from .tabledesc import TableDesc
 from .table import Table
 from .mcda_problem import MCDA_problem

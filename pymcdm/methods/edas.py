@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Bartłomiej Kizielewicz
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2021-2026 Bartłomiej Kizielewicz
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method

@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-2026 Andrii Shekhovtsov
 
 from itertools import product
 from functools import reduce

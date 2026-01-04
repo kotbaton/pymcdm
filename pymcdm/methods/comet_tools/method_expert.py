@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Andrii Shekhovtsov
+# Copyright (c) 2023-2026 Andrii Shekhovtsov
 
 class MethodExpert:
     """ Create an object which will rate characteristic objects with any MCDA method.

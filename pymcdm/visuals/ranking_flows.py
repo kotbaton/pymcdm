@@ -1,5 +1,5 @@
-# Copyright (c) 2022 Bartłomiej Kizielewicz
-# Copyright (c) 2022-2023 Andrii Shekhovtsov
+# Copyright (c) 2022-2026 Bartłomiej Kizielewicz
+# Copyright (c) 2022-2026 Andrii Shekhovtsov
 
 import numpy as np
 import matplotlib.pyplot as plt

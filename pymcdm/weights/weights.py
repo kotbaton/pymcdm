@@ -1,5 +1,5 @@
-# Copyright (c) 2020 Andrii Shekhovtsov
-# Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2020-2026 Andrii Shekhovtsov
+# Copyright (c) 2021-2026 Bartłomiej Kizielewicz
 
 import numpy as np
 from ..normalizations import minmax_normalization, sum_normalization, linear_normalization

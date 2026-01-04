@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Andrii Shekhovtsov
+# Copyright (c) 2023-2026 Andrii Shekhovtsov
 
 import numpy as np
 

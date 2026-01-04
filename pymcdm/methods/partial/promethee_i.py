@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024 Andrii Shekhovtsov
+# Copyright (c) 2020-2026 Andrii Shekhovtsov
 
 from itertools import repeat
 from functools import partial, wraps

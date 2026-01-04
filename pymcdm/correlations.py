@@ -1,5 +1,5 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
-# Copyright (c) 2021 Bartłomiej Kizielewicz
+# Copyright (c) 2020-2026 Andrii Shekhovtsov
+# Copyright (c) 2021-2026 Bartłomiej Kizielewicz
 
 from functools import wraps
 from itertools import permutations
