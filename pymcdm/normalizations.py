@@ -67,7 +67,7 @@ def sum_normalization(x, cost=False):
     Parameters
     ----------
         x : ndarray
-            One-dimensional numpy array of values to be normalized
+            One-dimensional numpy array of values to be normalized. All values must be strictly positive (> 0).
 
         cost : bool, optional
             Vector type. Default profit type.
@@ -77,6 +77,10 @@ def sum_normalization(x, cost=False):
         ndarray
             One-dimensional numpy array of normalized values.
     """
+    # Input validation: sum normalization requires strictly positive values
+    if np.any(x <= 0):
+        raise ValueError('sum_normalization requires all positive values.')
+
     if cost:
         return (1 / x) / np.sum(1 / x)
     return x / np.sum(x)
@@ -109,7 +113,8 @@ def logarithmic_normalization(x, cost=False):
     Parameters
     ----------
         x : ndarray
-            One-dimensional numpy array of values to be normalized
+            One-dimensional numpy array of values to be normalized. All values must be strictly positive (> 0)
+            because the logarithm is undefined for zero or negative inputs.
 
         cost : bool, optional
             Vector type. Default profit type.
@@ -119,6 +124,10 @@ def logarithmic_normalization(x, cost=False):
         ndarray
             One-dimensional numpy array of normalized values.
     """
+    # Input validation: logarithmic normalization requires strictly positive values
+    if np.any(x <= 0):
+        raise ValueError('logarithmic_normalization requires all positive values.')
+
     prod = np.prod(x)
     if cost:
         return (1 - (np.log(x) / np.log(prod))) / (x.shape[0] - 1)
@@ -131,7 +140,8 @@ def linear_normalization(x, cost=False):
     Parameters
     ----------
         x : ndarray
-            One-dimensional numpy array of values to be normalized
+            One-dimensional numpy array of values to be normalized. Values must be non-zero, as division by zero
+            would occur when computing the normalization.
 
         cost : bool, optional
             Vector type. Default profit type.
@@ -141,6 +151,10 @@ def linear_normalization(x, cost=False):
         ndarray
             One-dimensional numpy array of normalized values.
     """
+    # Input validation: linear normalization cannot handle zeros when using division
+    if np.any(x == 0):
+        raise ValueError('linear_normalization cannot handle zero values.')
+
     if cost:
         return np.min(x) / x
     return x / np.max(x)
