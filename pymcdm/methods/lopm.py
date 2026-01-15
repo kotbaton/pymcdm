@@ -159,8 +159,6 @@ class LoPM(MCDA_method):
         upper = np.sum(weights[upper_mask] * (matrix[:, upper_mask] / limits[upper_mask]), axis=1)
         target = np.sum(weights[target_mask] * np.abs((matrix[:, target_mask] / limits[target_mask]) - 1), axis=1)
 
-        # TODO make proper test for the method
-        # TODO user guide description
         m = lower + upper + target
         return lower, upper, target, m
 
