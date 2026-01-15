@@ -17,7 +17,6 @@ __all__ = [
     'ws',
     'kendall_tau',
     'goodman_kruskal_gamma',
-    'draws',
     'wsc',
     'wsc2'
 ]
@@ -56,6 +55,11 @@ def spearman(x, y):
         -----
             If either input vector has zero variance, the Spearman correlation is undefined.
             In such cases, a UserWarning is emitted.
+
+        References
+        ----------
+        .. [1] Spearman's rank correlation coefficient, Wikipedia.
+               Available at: https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient
     """
     sx = np.std(x)
     sy = np.std(y)
@@ -87,6 +91,11 @@ def pearson(x, y):
         -----
             If either input vector has zero variance, the Pearson correlation is undefined.
             In such cases, a UserWarning is emitted.
+
+        References
+        ----------
+        .. [1] "Pearson correlation coefficient", Wikipedia,
+               Available at: https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
     """
     sx = np.std(x)
     sy = np.std(y)
@@ -113,6 +122,11 @@ def weighted_spearman(x, y):
         -------
             float
                 Correlation between two rankings vectors.
+
+        References
+        ----------
+        .. [1] Pinto da Costa, J., & Soares, C. (2005). A weighted rank measure of correlation.
+               Australian & New Zealand Journal of Statistics, 47(4), 515-529.
     """
     N = len(x)
     n = 6 * np.sum((x-y)**2 * ((N - x + 1) + (N - y + 1)))
@@ -138,6 +152,12 @@ def rank_similarity_coef(x, y):
         -------
             float
                 Correlation between two rankings vectors.
+
+        References
+        ----------
+        .. [1] Sałabun, W., & Urbaniak, K. (2020, June). A new coefficient of rankings similarity in
+               decision-making problems. In International conference on computational science (pp. 632-645).
+               Cham: Springer International Publishing.
     """
     N = len(x)
     n = np.fabs(x - y)
@@ -163,6 +183,11 @@ def kendall_tau(x, y):
         -------
             float
                 Correlation between two rankings vectors.
+
+        References
+        ----------
+        .. [1] Kendall tau rank correlation coefficient, Wikipedia.
+               Available at: https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient
     """
     n = len(x)
     res = 0
@@ -194,6 +219,11 @@ def goodman_kruskal_gamma(x, y):
         -----
             If there are no comparable pairs (i.e., the denominator is zero), Gamma is undefined.
             In such cases, a UserWarning is emitted.
+
+        References
+        ----------
+        .. [1] Goodman and Kruskal's gamma, Wikipedia.
+               Available at: https://en.wikipedia.org/wiki/Goodman_and_Kruskal%27s_gamma
     """
     num = 0
     den = 0
@@ -207,29 +237,6 @@ def goodman_kruskal_gamma(x, y):
     if den == 0:
         warn("Goodman's and Kruskal's Gamma is undefined when there are no comparable pairs (denominator is zero).", UserWarning)
     return num / float(den)
-
-
-@_correlation_decorator
-def draws(x, y):
-    """ Calculate drastic WS distance between the ranking vectors.
-        Rankings should be presented as indices, i.e. for the ranking
-        A2 > A1 > A3 the ranking vector should be [2, 1, 3].
-
-        Parameters
-        ----------
-            x : ndarray
-                First vector of ranks.
-
-            y : ndarray
-                Second vector of ranks.
-
-        Returns
-        -------
-            float
-                Drastic distance between two rankings vectors.
-    """
-    return sum(2 ** -i * int(xi != yi)
-               for i, (xi, yi) in enumerate(zip(x, y), 1)) / (1 - 2**(-len(x)))
 
 
 @_correlation_decorator
@@ -250,6 +257,12 @@ def wsc(w0, w1):
             float
                 The similarity of the weights in range [0, 1], where 0 is
                 different weights, and 1 is the same weights.
+
+        References
+        ----------
+        .. [1] Shekhovtsov, A. (2023). Evaluating the performance of subjective weighting methods for multi-criteria
+               decision-making using a novel weights similarity coefficient.
+               Procedia Computer Science, 225, 4785-4794.
     """
     return 1 - (np.sum(np.abs(w0 - w1)) / 2 * (1 - np.min(w0)))
 
@@ -273,5 +286,11 @@ def wsc2(w0, w1):
             float
                 The similarity of the weights in range [0, 1], where 0 is
                 different weights, and 1 is the same weights.
+
+        References
+        ----------
+        .. [1] Shekhovtsov, A. (2023). Evaluating the performance of subjective weighting methods for multi-criteria
+               decision-making using a novel weights similarity coefficient.
+               Procedia Computer Science, 225, 4785-4794.
     """
     return 1 - (np.sum(np.abs(w0 - w1)) / 2 )

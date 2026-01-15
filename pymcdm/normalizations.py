@@ -103,7 +103,7 @@ def vector_normalization(x, cost=False):
             One-dimensional numpy array of normalized values.
     """
     if cost:
-        return 1 - (x / np.sqrt(sum(x ** 2)))
+        return 1 - (x / np.sqrt(np.sum(x ** 2)))
     return x / np.sqrt(np.sum(x ** 2))
 
 

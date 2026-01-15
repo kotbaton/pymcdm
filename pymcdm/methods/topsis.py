@@ -62,7 +62,7 @@ class TOPSIS(MCDA_method):
     def _method(self, matrix, weights, types):
         nmatrix = helpers.normalize_matrix(matrix, self.normalization, types)
 
-        # Every row of nmatrix is multiplayed by weights
+        # Every row of nmatrix is multiplied by weights
         weighted_matrix = nmatrix * weights
 
         # Vectors of PIS and NIS
