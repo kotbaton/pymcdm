@@ -4,6 +4,7 @@
    pymcdm.methods
    pymcdm.weights
    pymcdm.correlations
+   pymcdm.distances
    pymcdm.normalizations
    pymcdm.visuals
    pymcdm.helpers

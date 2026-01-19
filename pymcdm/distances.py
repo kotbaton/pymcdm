@@ -102,6 +102,10 @@ def kemeny(r1, r2):
     -------
     float
         Kemeny distance between two ranking vectors.
+
+    References
+    ----------
+    .. [1] Kemeny, J. G. (1959). Mathematics without numbers. Daedalus, 88(4), 577-591.
     """
     m1 = _r_to_psm(r1)
     m2 = _r_to_psm(r2)
@@ -127,6 +131,10 @@ def frobenius(r1, r2):
     -------
     float
         Frobenius distance between two ranking vectors.
+
+    References
+    ----------
+    .. [1] Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10(7).
     """
     m1 = _r_to_psm(r1)
     m2 = _r_to_psm(r2)
