@@ -60,6 +60,16 @@ class COMET(MCDA_method):
                in the pymcdm.comet_tools submodule if you want to create your
                own custom expert_function.
 
+           co_ordering : {'product', 'gray_code'}, optional
+               Ordering used to enumerate characteristic objects (COs). If
+               `'product'` (default), COs are generated using the Cartesian
+               product ordering (equivalent to `itertools.product`). If
+               `'gray_code'`, a Gray-code-like ordering produced by internal
+               `_gray_code_product` function; this ordering attempts to make
+               consecutive COs differ in only one criterion value, which can
+               be helpful for expert elicitation and to reduce abrupt changes
+               between successive COs.
+
         References
         ----------
         .. [#comet1] Sałabun, W. (2015). The Characteristic Objects Method: A New Distance‐based Approach to Multicriteria

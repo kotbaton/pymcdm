@@ -163,6 +163,14 @@ class TestCOMET(unittest.TestCase):
 
         self.assertListEqual(output, output_method)
 
+    def test_gray_code(self):
+        from pymcdm.methods.comet import _gray_code_product
+
+        cvalues = np.array([[1, 2], [10, 20]])
+        result = _gray_code_product(*cvalues)
+        expected = [[1, 10], [1, 20], [2, 20], [2, 10]]
+        self.assertListEqual(list(result), expected)
+
 
 class TestCOPRAS(unittest.TestCase):
     """ Test output method with reference:

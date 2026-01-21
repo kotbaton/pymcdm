@@ -14,13 +14,18 @@ def _find_triad(a, b):
 class TriadSupportExpert(ManualExpert):
     """ Create object of the TriadSupportExpert expert function which allows
         to manually identify Matrix of Expert Judgements (MEJ), but with the
-        support of the consistent triads.
+        support of the consistent triads and pre-defined criteria types.
 
         Parameters
         ----------
             criteria_names : list[str]
                 Criteria names which would be used during the procedure of the
                 MEJ identification.
+
+            criteria_types : list[str]
+                Criteria types which would be used during the procedure of the
+                MEJ identification. Supported types are 1 (profit) and -1 (cost).
+                More useful if COMET class created with 'gray_code' CO ordering.
 
             show_MEJ : bool
                 If MEJ should be shown after each question answered.
@@ -53,6 +58,84 @@ class TriadSupportExpert(ManualExpert):
         >>> # other CO will be completed using consistent triads.
         >>> comet = COMET(cvalues, expert_function)
     """
+    def __init__(self, criteria_names, criteria_types=None, show_MEJ=False,
+                 tablefmt='simple_grid', filename='mej.csv',
+                 force_file_use=False):
+        super().__init__(criteria_names, show_MEJ, tablefmt, filename, force_file_use)
+        self.criteria_types = criteria_types
+        if self.criteria_types is not None:
+            if len(self.criteria_types) != len(self.criteria_names):
+                raise ValueError('Length of criteria_types must be equal to '
+                                 'length of criteria_names.')
+            for t in self.criteria_types:
+                if t not in (1, -1):
+                    raise ValueError('Supported criteria types are 1 (profit) '
+                                     'and -1 (cost).')
+
+        # Made some counters for statistics
+        self.user_q = 0
+        self.triads_q = 0
+        self.rules_q = 0
+
+    def _query_helper(self, i, j):
+        """
+        Query helper will solve pairwise comparison question with the provided types
+        or fallback to manual/user questioning if types are not provided or CO differ
+        with more than 1 criterion.
+
+        Parameters
+        ----------
+        i : int
+            Index of the first characteristic object.
+        j : int
+            Index of the second characteristic object.
+
+        Returns
+        -------
+            float
+            Result of the pairwise comparison: 1, 0.5 or 0.
+        """
+        self._show_separator()
+
+        co_i_name = self.co_names[i]
+        co_j_name = self.co_names[j]
+
+        co_i = self.characteristic_objects[i]
+        co_j = self.characteristic_objects[j]
+
+        # Try to solve comparison if criteria types are provided
+        # This work only if CO differ with only one criterion
+        mask = (co_i != co_j)
+        if self.criteria_types is not None and mask.sum() == 1:
+            self.rules_q += 1
+            idx = np.where(mask)[0][0]
+            t = self.criteria_types[idx]
+            v_co_i = co_i[idx]
+            v_co_j = co_j[idx]
+            result = None
+            if (v_co_i - v_co_j) * t > 0:
+                result = 1
+            elif v_co_i == v_co_j:
+                result = 0.5
+            else:
+                result =  0
+            print(f'\nComparison {co_i_name} vs {co_j_name} was completed using criteria types:')
+            print(f'Criterion: {self.criteria_names[idx]}'
+                  f'({"Profit" if t == 1 else "Cost"})')
+            print(f'Values: {v_co_i} vs {v_co_j}')
+            sign = {1: 'better than', 0.5: 'equal to', 0: 'wotse than'}
+            print(f'Result: {self.co_names[i]} is {sign[result]} {self.co_names[j]} '
+                  f'(mej[{co_i_name}][{co_j_name}] = {result})')
+            return result
+
+        # Fallback to manual/user questioning
+        print('\nEvaluate following characteristic objects:')
+        self._show_co(self.characteristic_objects[[i, j]],
+                      [self.co_names[i], self.co_names[j]])
+
+        self.user_q += 1
+        return self._query_user(self.co_names[i], self.co_names[j])
+
     def _identify_manually(self, characteristic_objects):
         n = len(characteristic_objects)
         mej = - np.ones((n, n)) + 1.5 * np.eye(n)
@@ -60,8 +143,9 @@ class TriadSupportExpert(ManualExpert):
         self.q = 0
         self.max_q = (n * (n - 1)) // 2
 
-        user_q = 0
-        triads_q = 0
+        self.user_q = 0
+        self.triads_q = 0
+        self.rules_q = 0
 
         self.characteristic_objects = characteristic_objects
         self.co_names = [self._co_name(i) for i in range(1, n + 1)]
@@ -79,34 +163,43 @@ class TriadSupportExpert(ManualExpert):
               'transition relation. Please review resulted MEJ in the end',
               'and correct it if needed.')
 
+        # Query helper will solve pairwise comparison question with the provided types
+        # or fallback to manual/user questioning if types are not provided or CO differ
+        # with more than 1 criterion.
+        self.q += 1  # Top up the question counter
         mej[0, 1] = self._query_helper(0, 1)
-        user_q += 1
         if self.show_MEJ:
             self._show_mej(mej)
 
         for diag in range(1, n - 1):
+            # In this loop, we are trying to predict mej[i, k] values using triads,
+            # by looking for such j that mej[i, j], mej[j, k] are known.
             for i in range(0, n - diag - 1):
                 k = i + diag + 1
                 for j in range(i + 1, k):
+                    # If mej[j, k] is unknown, we need to ask the expert or use criteria types
                     if mej[j, k] == -1:
+                        self.q += 1
                         mej[j, k] = self._query_helper(j, k)
-                        user_q += 1
                         if self.show_MEJ:
                             self._show_mej(mej)
 
+                    # Now, if mej[i, k] is unknown, we can try to find it using the triad
                     if mej[i, k] == -1:
                         concl = _find_triad(mej[i, j], mej[j, k])
                         if concl is not None:
                             mej[i, k] = concl
+                            self.q += 1
                             self._show_separator()
                             self._triad_support_message(mej, i, j, k)
-                            self.q += 1
-                            triads_q += 1
+                            self.triads_q += 1
                             break
                 else:
+                    # If we could not find any j to support mej[i, k], we need to ask the expert
+                    # or use criteria types (if provided)
                     self._show_separator()
+                    self.q += 1
                     mej[i, k] = self._query_helper(i, k)
-                    user_q += 1
                     if self.show_MEJ:
                         self._show_mej(mej)
 
@@ -116,8 +209,10 @@ class TriadSupportExpert(ManualExpert):
         self._show_mej(mej)
         print('\n')
 
-        print(f'Answered by the expert: {user_q}')
-        print(f'Completed by the triads: {triads_q}')
+        print(f'Answered by the expert: {self.user_q}')
+        print(f'Completed by the triads: {self.triads_q}')
+        if self.criteria_types is not None:
+            print(f'Completed by the rules: {self.rules_q}')
 
         if self.filename is not None:
             np.savetxt(self.filename, mej,
