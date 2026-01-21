@@ -5,6 +5,7 @@ from .copras import COPRAS
 from .promethee_ii import PROMETHEE_II
 from .comet import COMET
 from .spotis import SPOTIS
+from .balanced_spotis import BalancedSPOTIS
 from .aras import ARAS
 from .cocoso import COCOSO
 from .codas import CODAS

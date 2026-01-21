@@ -86,6 +86,12 @@ The library contains:
 | RAM                	  | Root Assesment Method                                                       |              [[62]](#c62)              |
 | LoPM                	 | Limits on Property Method                                                    |              [[67]](#c67)              |
 
+* MCDA Methods' extensions and variations:
+
+| Acronym       	|    Reference         	    |
+|:-----------------|:-------------------------:|
+| Balanced SPOTIS	|   [[68]](#c68)       	    |
+
 * Weighting methods:
 
 | Acronym | Method Name                                           |                Reference                 |
