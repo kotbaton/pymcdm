@@ -10,6 +10,14 @@ from ..validators import cvalues_validator, matrix_cvalues_validator
 from ..io import TableDesc
 
 
+def _gray_code_product(*args):
+    pools = [tuple(pool) for pool in args]
+    result = [[]]
+    for pool in pools:
+        result = [x+[y] for i, x in enumerate(result) for y in (reversed(pool) if i % 2 else pool)]
+    return result
+
+
 def _TFN(a, m, b):
     def tfn(x):
         res = np.zeros(x.shape)
@@ -89,10 +97,13 @@ class COMET(MCDA_method):
                   label='pref', symbol='$P_i$', rows='A', cols=None)
     ]
 
-    def __init__(self, cvalues, expert_function):
+    def __init__(self, cvalues, expert_function, co_ordering='product'):
         cvalues_validator(cvalues)
+        if co_ordering not in ('product', 'gray_code'):
+            raise ValueError("co_ordering must be either 'product' or 'gray_code'")
+        self.co_ordering = product if co_ordering == 'product' else _gray_code_product
 
-        co = product(*cvalues)
+        co = self.co_ordering(*cvalues)
         co = np.array(list(co))
 
         # Determine how MEJ and SJ is calculated
@@ -162,7 +173,7 @@ class COMET(MCDA_method):
         pref_level_vectors = [[tfn(values) for tfn in tfns_icrit]
                               for values, tfns_icrit in zip(matrix.T, tfns)]
 
-        tfns_values_product = product(*pref_level_vectors)
+        tfns_values_product = self.co_ordering(*pref_level_vectors)
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
                           for p, co_values in zip(self.p, tfns_values_product))
         return sum(multiplayed_co),
