@@ -352,3 +352,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c66">[66]</a> Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial Intelligence, 122, 106114.
 
 <a name="c67">[67]</a> Farag, M. M. (2020). Materials and process selection for engineering design. CRC press.
+
+<a name="c68">[68]</a> Shekhovtsov, A., Dezert, J. and Sałabun, W. (2025). Enhancing Personalized Decision-Making with the Balanced SPOTIS Algorithm. In Proceedings of the 17th International Conference on Agents and Artificial Intelligence - Volume 3: ICAART; ISBN 978-989-758-737-5; ISSN 2184-433X, SciTePress, pages 264-271. DOI: 10.5220/0013119800003890
