@@ -2,6 +2,8 @@
 # Copyright (c) 2025-2026 Bartłomiej Kizielewicz
 
 import unittest
+from unittest import TestCase
+
 import numpy as np
 
 from pymcdm import weights
@@ -235,3 +237,43 @@ class TestAHPWeights(unittest.TestCase):
         output = [0.3208, 0.1395, 0.0348, 0.1285, 0.2374, 0.1391]
         output_method = [round(weight, 4) for weight in weights.subjective.AHP(matrix=matrix)()]
         self.assertListEqual(output, output_method)
+
+class TestLOPCOWWeights(unittest.TestCase):
+    """ Test output method with reference:
+
+        [1] Ecer, F., & Pamucar, D. (2022). A novel LOPCOW‐DOBI multi‐criteria sustainability performance
+        assessment methodology: An application in developing country banking sector. Omega, 112, 102690.
+    """
+    def test_output(self):
+            matrix = np.array([
+                # A1
+                [21.8, 14.1, 10.7, 1.6, 1.8, 770, 12750, 18, 5100, 1.5, 9.1, 1.054, 4.196, 29.407, 7.03, 15.08, 9.705],
+                # A2
+                [16.4, 8.5, 13.9, 1.2, 1.3, 524, 12087, 5.7, 2941, 2.208, 15.2, 1.123, 3.86, 5.228, 14.724, 32.103, 19.0],
+                # A3
+                [14.5, 7.0, 2.3, 0.2, 0.2, 238, 3265, 1.9, 320, 2.32, 16.202, 1.008, 3.095, 5.549, 17.34, 65.129, 32.056],
+                # A4
+                [18.2, 10.3, 11.4, 1.2, 1.1, 835, 16037, 21.3, 4332, 0.875, 9.484, 0.856, 2.191, 23.75, 13.1, 58.157, 27.46],
+                # A5
+                [18.5, 8.1, 11.1, 1.0, 1.1, 504, 9464, 1.4, 1743, 2.95, 0.7, 0.479, 2.44, 8.77, 13.48, 33.45, 17.68],
+                # A6
+                [18.7, 11.4, 10.8, 1.3, 1.5, 1227, 24053, 20.0, 6521, 0.733, 1.6, 0.857, 2.377, 4.985, 11.743, 26.732, 24.485],
+                # A7
+                [18.5, 12.6, 10.8, 1.4, 1.8, 912, 18800, 18.2, 5300, 1.29, 8.27, 0.558, 0.635, 5.22, 13.829, 31.914, 7.515],
+                # A8
+                [16.4, 6.7, 12.6, 0.9, 0.9, 951, 16767, 22.0, 3917, 2.46, 3.9, 0.724, 0.568, 4.491, 14.357, 28.869, 7.313],
+                # A9
+                [15.2, 6.3, 6.9, 0.5, 0.5, 1013, 20170, 10.97, 4060, 1.67, 1.7, 0.704, 2.96, 3.24, 10.029, 60.981, 23.541],
+            ], dtype=float)
+
+            # Criteria types: 1 for profit (Max), -1 for cost (Min)
+            # From the prompt: first 10 criteria are Max, last 7 are Min
+            types = np.array([1] * 10 + [-1] * 7, dtype=int)
+
+            # Compute LOPCOW weights
+            w = np.round(weights.lopcow_weights(matrix, types), 4)
+
+            expected = [0.0495, 0.0366, 0.0846, 0.0706, 0.0637, 0.0661, 0.0699, 0.0504, 0.0690, 0.0492, 0.0556,
+                        0.0487, 0.0482, 0.0763, 0.0551, 0.0532, 0.0534]
+
+            self.assertListEqual(list(w), expected)

@@ -17,7 +17,8 @@ __all__ = [
     'idocriw_weights',
     'angle_weights',
     'gini_weights',
-    'variance_weights'
+    'variance_weights',
+    'lopcow_weights'
 ]
 
 
@@ -254,3 +255,33 @@ def variance_weights(matrix, *args, **kwargs):
     nmatrix = normalize_matrix(matrix, minmax_normalization, None)
     var = np.var(nmatrix, axis=0, ddof=1)
     return var / np.sum(var)
+
+
+def lopcow_weights(matrix, types, *args, **kwargs):
+    """ Calculate weights for given `matrix` using LOPCOW method [#lopcow1]_.
+
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
+            types : ndarray
+                Array with definitions of criteria types:
+                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
+
+        Returns
+        -------
+            ndarray
+                Vector of weights.
+
+        References
+        ----------
+        .. [#lopcow1] Ecer, F., & Pamucar, D. (2022). A novel LOPCOW-DOBI multi-criteria sustainability performance assessment methodology: An application in developing country banking sector. Omega, 112, 102690.
+
+    """
+    nmatrix = normalize_matrix(matrix, minmax_normalization, types)
+    m = nmatrix.shape[0]
+    mean_square = np.sqrt(np.sum(nmatrix ** 2, axis=0) / m)
+    std = np.std(nmatrix, axis=0, ddof=1)
+    pv = np.abs(np.log(mean_square / std) * 100)
+    return pv / np.sum(pv)

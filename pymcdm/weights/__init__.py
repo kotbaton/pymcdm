@@ -12,5 +12,6 @@ __all__ = [
     'angle_weights',
     'gini_weights',
     'variance_weights',
+    'lopcow_weights',
     'subjective'
 ]

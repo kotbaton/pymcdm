@@ -298,3 +298,51 @@ three steps:
     w_{j}=\frac{V_{j}}{\sum_{i=1}^{m} V_{j}}
     \end{equation}
     :label: equ:stat3
+
+LOPCOW method
+=======================
+
+The LOgarithmic Percentage Change-driven Objective Weighting (LOPCOW) method is an objective criteria weighting approach that determines weights directly from data characteristics. It reduces scale effects, handles both benefit and cost criteria, and allows the use of negative values in the decision matrix.
+
+**Step 1.** Construction of the initial decision matrix :math:`\mathbf{X} = [x_{ij}]`, where :math:`i = 1, 2, \ldots, m` denotes alternatives and :math:`j = 1, 2, \ldots, n` denotes criteria.
+
+**Step 2.** Normalization of the decision matrix using linear max–min normalization. For benefit criteria, Equation (:eq:`equ:lopcow1`) is used:
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{x_{ij} - x_{j}^{\min}}{x_{j}^{\max} - x_{j}^{\min}}.
+    \end{equation}
+    :label: equ:lopcow1
+
+For cost criteria, Equation (:eq:`equ:lopcow2`) is applied:
+
+.. math::
+    \begin{equation}
+        r_{ij} = \frac{x_{j}^{\max} - x_{ij}}{x_{j}^{\max} - x_{j}^{\min}}.
+    \end{equation}
+    :label: equ:lopcow2
+
+**Step 3.** Computation of the percentage value of each criterion. First, the mean square value of the normalized criterion is calculated and expressed as a percentage of its standard deviation using Equation (:eq:`equ:lopcow3`):
+
+.. math::
+    \begin{equation}
+        PV_{j} = \left| \ln \left( \frac{\sqrt{\frac{1}{m} \sum_{i=1}^{m} r_{ij}^{2}}}{\sigma_{j}} \right) \cdot 100 \right|.
+    \end{equation}
+    :label: equ:lopcow3
+
+where :math:`\sigma_{j}` denotes the standard deviation of criterion :math:`j`.
+
+**Step 4.** Determination of objective criteria weights using Equation (:eq:`equ:lopcow4`):
+
+.. math::
+    \begin{equation}
+        w_{j} = \frac{PV_{j}}{\sum_{k=1}^{n} PV_{k}}.
+    \end{equation}
+    :label: equ:lopcow4
+
+where :math:`\sum_{j=1}^{n} w_{j} = 1`.
+
+References
+-----------------------
+
+Ecer, F., & Pamucar, D. (2022). *A novel LOPCOW‐DOBI multi‐criteria sustainability performance assessment methodology: An application in developing country banking sector*. **Omega**, 112, 102690.
