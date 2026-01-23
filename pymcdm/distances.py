@@ -56,7 +56,7 @@ def _r_to_psm(r: np.ndarray) -> np.ndarray:
 
 @_distance_decorator
 def draWS(x, y):
-    """ Calculate drastic WS distance between the ranking vectors.
+    """ Calculate drastic WS distance between the ranking vectors [#draWS1]_.
         Rankings should be presented as indices, i.e. for the ranking
         A2 > A1 > A3 the ranking vector should be [2, 1, 3].
 
@@ -75,7 +75,7 @@ def draWS(x, y):
 
         References
         ----------
-        .. [1] Sałabun, W., & Shekhovtsov, A. (2023, September). An innovative drastic metric for ranking similarity
+        .. [#draWS1] Sałabun, W., & Shekhovtsov, A. (2023, September). An innovative drastic metric for ranking similarity
                in decision-making problems.
                In 2023 18th Conference on Computer Science and Intelligence Systems (FedCSIS) (pp. 731-738). IEEE.
     """
@@ -86,7 +86,7 @@ def draWS(x, y):
 @_distance_decorator
 def kemeny(r1, r2):
     """
-    Calculate Kemeny distance between two ranking vectors.
+    Calculate Kemeny distance between two ranking vectors [#kemeny1]_.
     Rankings should be presented as indices, i.e. for the given
     objects [A1, A2, A3] and ordering A2 > A1 > A3,
     the ranking vector should be [2, 1, 3].
@@ -105,7 +105,7 @@ def kemeny(r1, r2):
 
     References
     ----------
-    .. [1] Kemeny, J. G. (1959). Mathematics without numbers. Daedalus, 88(4), 577-591.
+    .. [#kemeny1] Kemeny, J. G. (1959). Mathematics without numbers. Daedalus, 88(4), 577-591.
     """
     m1 = _r_to_psm(r1)
     m2 = _r_to_psm(r2)
@@ -115,7 +115,7 @@ def kemeny(r1, r2):
 @_distance_decorator
 def frobenius(r1, r2):
     """
-    Calculate Frobenius distance between two ranking vectors.
+    Calculate Frobenius distance between two ranking vectors [#frobenius1]_.
     Rankings should be presented as indices, i.e. for the given
     objects [A1, A2, A3] and ordering A2 > A1 > A3,
     the ranking vector should be [2, 1, 3].
@@ -134,7 +134,7 @@ def frobenius(r1, r2):
 
     References
     ----------
-    .. [1] Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10(7).
+    .. [#frobenius1] Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10(7).
     """
     m1 = _r_to_psm(r1)
     m2 = _r_to_psm(r2)
