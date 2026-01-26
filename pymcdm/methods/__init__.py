@@ -17,6 +17,7 @@ from .ocra import OCRA
 from .moora import MOORA
 from .rim import RIM
 from .ram import RAM
+from .rafsi import RAFSI
 from .ervd import ERVD
 from .probid import PROBID
 from .sprobid import SPROBID
