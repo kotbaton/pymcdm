@@ -1232,6 +1232,103 @@ of :math:`i-th` alternative by the following equations:
 **Step 6.** Rank the alternatives using the value of :math:`RI_i`. The alternatives with the bigger value
 of :math:`RI_i` are more preferred ones.
 
+
+RAFSI
+=====
+
+*Žižović et al. (2020)* introduce the *Ranking of Alternatives through Functional mapping of
+criterion Sub-intervals into a Single Interval* (RAFSI) method as a multi-attribute decision-making
+(MADM) approach designed to eliminate the rank reversal problem. The key idea of RAFSI is to
+map all criterion values from their original domains into a common, predefined interval using
+functional transformations based on **ideal** and **anti-ideal** reference points. The resulting
+normalized values are aggregated using a weighted linear function to obtain a stable ranking of
+alternatives.
+
+Let there be :math:`m` alternatives :math:`A_i \ (i=1,\dots,m)` evaluated with respect to
+:math:`n` criteria :math:`C_j \ (j=1,\dots,n)` with weights :math:`w_j`, where
+:math:`\sum_{j=1}^n w_j = 1`. Criteria can be of *maximization* or *minimization* type.
+
+Steps of the RAFSI Method
+-------------------------
+
+**Step 1: Define ideal and anti-ideal values**
+
+For each criterion :math:`C_j`, define:
+
+- :math:`a_j^I` – ideal (best) value
+- :math:`a_j^N` – anti-ideal (worst acceptable) value
+
+For maximization criteria: :math:`a_j^I > a_j^N`
+For minimization criteria: :math:`a_j^I < a_j^N`
+
+**Step 2: Functional mapping to a common interval**
+
+All criterion values are mapped into a fixed numerical interval
+:math:`[n_1, n_{2k}]`, where :math:`n_1` and :math:`n_{2k}` represent the relative preference of
+the ideal over the anti-ideal value (e.g. :math:`n_1 = 1`, :math:`n_{2k} = 6`).
+
+Each element :math:`x` of the initial decision matrix is transformed using the linear mapping
+function:
+
+.. math::
+
+   f_s(x) =
+   \frac{n_{2k} - n_1}{a_j^I - a_j^N} \, x
+   + \frac{a_j^I n_1 - a_j^N n_{2k}}{a_j^I - a_j^N}
+
+This produces the standardized decision matrix
+:math:`S = [s_{ij}]`, where :math:`s_{ij} \in [n_1, n_{2k}]`.
+
+**Step 3: Compute arithmetic and harmonic means**
+
+Using the boundary values of the common interval, compute:
+
+.. math::
+
+   A = \frac{n_1 + n_{2k}}{2}
+
+.. math::
+
+   H = \frac{2}{\frac{1}{n_1} + \frac{1}{n_{2k}}}
+
+**Step 4: Normalize the standardized matrix**
+
+The elements of matrix :math:`S` are normalized into the interval :math:`[0,1]`:
+
+- For *maximization* criteria:
+
+.. math::
+
+   \hat{s}_{ij} = \frac{s_{ij}}{2A}
+
+- For *minimization* criteria:
+
+.. math::
+
+   \hat{s}_{ij} = \frac{H}{2 s_{ij}}
+
+This yields the normalized decision matrix
+:math:`\hat{S} = [\hat{s}_{ij}]`.
+
+**Step 5: Calculate the overall performance score**
+
+The final performance (criteria function) of each alternative is computed as a weighted sum:
+
+.. math::
+
+   V(A_i) = \sum_{j=1}^{n} w_j \, \hat{s}_{ij}
+
+Alternatives are ranked in descending order of :math:`V(A_i)`. A higher value indicates a more
+preferred alternative. Due to the functional mapping and normalization scheme, the RAFSI method
+exhibits strong resistance to rank reversal when alternatives are added or removed.
+
+**Reference**
+
+Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020).
+*Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method*.
+Mathematics, 8(6), 1015.
+
+
 RIM
 =======================
 

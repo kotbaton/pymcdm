@@ -12,6 +12,20 @@ class BalancedSPOTIS(SPOTIS):
         and the Expected Solution Point (ESP) in the evaluation of decision alternatives.
         [#balanced_spotis1]_.
 
+        Parameters
+        ----------
+            bounds : ndarray
+                Decision problem bounds / criteria bounds. Should be two-dimensional array with [min, max] value
+                for in criterion in rows.
+
+            esp : ndarray
+                Expected Solution Point for alternatives evaluation. Should be an array with ideal (expected) value
+                for each criterion.
+
+            alpha : float
+                ESP trust parameter, ranging from 0 to 1. A value of 0 means full trust in ISP,
+                while a value of 1 mean full trust in ESP. Default is 0.5.
+
         References
         ----------
         .. [#balanced_spotis1] Shekhovtsov, A., Dezert, J. and Sałabun, W. (2025).

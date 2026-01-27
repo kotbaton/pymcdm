@@ -42,6 +42,14 @@ class RIM(MCDA_method):
 
     RIM is an MCDA method which uses criteria bounds and reference ideal to evaluate alternatives.
 
+    Parameters
+    ----------
+        bounds : ndarray
+            Decision problem bounds / criteria bounds. Should be two dimensional array with [min, max] value for in criterion in rows.
+
+        ref_ideal : ndarray or None
+            Reference ideal for alternatives evaluation. Should be two dimensional array with interval ideal value for each criterion. If None, reference ideal will be calculated based on bounds and criteria types.
+
     References
     ----------
     .. [#rim1] Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.

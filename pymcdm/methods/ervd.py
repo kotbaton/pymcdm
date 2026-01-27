@@ -11,6 +11,18 @@ from ..io import TableDesc
 class ERVD(MCDA_method):
     """ Election based on Relative Value Distances method [#ervd1]_.
 
+    Parameters
+    ----------
+        ref_point : ndarray or None
+            Reference point for alternatives evaluation. Should be one dimension array with reference
+            value for each criterion.
+
+        lam : float
+            Lambda parameter. See [1] for detailed description. Default is 2.25.
+
+        alpha : float
+            Alpha parameter. See [1] for detailed description. Default is 2.25.
+
     References
     ----------
     .. [#ervd1] Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method

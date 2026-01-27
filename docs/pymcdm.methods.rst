@@ -81,12 +81,22 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.RAFSI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.RIM
    :members:
    :undoc-members:
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.SPOTIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.BalancedSPOTIS
    :members:
    :undoc-members:
    :show-inheritance:

@@ -10,7 +10,11 @@ class RAFSI(MCDA_method):
     """ Ranking of Alternatives through Functional mapping
         of criterion sub-intervals into a Single Interval (RAFSI) [#rafsi1]_.
 
-        ...
+        RAFSI method is designed to eliminate the rank reversal problem.
+        The key idea of RAFSI is to map all criterion values from their original domains into a common,
+        predefined interval using functional transformations based on ideal and anti-ideal reference points.
+        The resulting normalized values are aggregated using a weighted linear function
+        to obtain a stable ranking of alternatives.
 
         Parameters
         ----------

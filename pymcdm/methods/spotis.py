@@ -15,6 +15,14 @@ class SPOTIS(MCDA_method):
 
         Read more in the User Guide.
 
+        Parameters
+        ----------
+            bounds : ndarray
+                Decision problem bounds / criteria bounds. Should be two dimensional array with [min, max] value for in criterion in rows.
+
+            esp : ndarray or None
+                Expected Solution Point for alternatives evaluation. Should be array with ideal (expected) value for each criterion. If None, ESP will be calculated based on bounds and criteria types. Default is None.
+
         References
         ----------
         .. [#spotis1] Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The SPOTIS rank reversal free method for multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION) (pp. 1-8). IEEE.
