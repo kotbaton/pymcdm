@@ -96,20 +96,21 @@ The library contains:
 
 * Weighting methods:
 
-| Acronym | Method Name                                           |                Reference                 |
-|:--------|:------------------------------------------------------|:----------------------------------------:|
-| -       | Equal/Mean weights                                    |               [[23]](#c23)               |
-| -       | Entropy weights                                       | [[23]](#c23), [[24]](#c24), [[25]](#c25) |
-| STD     | Standard Deviation weights                            |        [[23]](#c23), [[26]](#c26)        |
-| MEREC   | MEthod based on the Removal Effects of Criteria       |               [[27]](#c27)               |
-| CRITIC  | CRiteria Importance Through Intercriteria Correlation |        [[28]](#c28), [[29]](#c29)        |
-| CILOS   | Criterion Impact LOS                                  |               [[30]](#c30)               |
-| IDOCRIW | Integrated Determination of Objective CRIteria Weight |               [[30]](#c30)               |
-| -       | Angular/Angle weights                                 |               [[31]](#c31)               |
-| -       | Gini Coeficient weights                               |               [[32]](#c32)               |
-| -       | Statistical variance weights                          |               [[33]](#c33)               |
-| AHP     | Analytic Hierarchy Process                            |               [[65]](#c65)               |
-| RANCOM  | RANking COMparison                                    |               [[66]](#c66)               |
+| Acronym | Method Name                                               |                Reference                 |
+|:--------|:----------------------------------------------------------|:----------------------------------------:|
+| -       | Equal/Mean weights                                        |               [[23]](#c23)               |
+| -       | Entropy weights                                           | [[23]](#c23), [[24]](#c24), [[25]](#c25) |
+| STD     | Standard Deviation weights                                |        [[23]](#c23), [[26]](#c26)        |
+| MEREC   | MEthod based on the Removal Effects of Criteria           |               [[27]](#c27)               |
+| CRITIC  | CRiteria Importance Through Intercriteria Correlation     |        [[28]](#c28), [[29]](#c29)        |
+| CILOS   | Criterion Impact LOS                                      |               [[30]](#c30)               |
+| IDOCRIW | Integrated Determination of Objective CRIteria Weight     |               [[30]](#c30)               |
+| LOPCOW  | LOgarithmic Percentage Change-driven Objective Weighting  |               [[71]](#c71)               |
+| -       | Angular/Angle weights                                     |               [[31]](#c31)               |
+| -       | Gini Coeficient weights                                   |               [[32]](#c32)               |
+| -       | Statistical variance weights                              |               [[33]](#c33)               |
+| AHP     | Analytic Hierarchy Process                                |               [[65]](#c65)               |
+| RANCOM  | RANking COMparison                                        |               [[66]](#c66)               |
 
 * Normalization methods:
 
@@ -359,4 +360,7 @@ This will produce output that contains formatted decision matrix, intermediate r
 
 <a name="c69">[69]</a> Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020). Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method. Mathematics, 8(6), 1015.
 
-<a name="c70">[70]</a> 
+<a name="c70">[70]</a> Pamučar, D., Žižović, M., Biswas, S., & Božanić, D. (2021). A new logarithm methodology of additive weights (LMAW) for multi-criteria decision-making: Application in logistics. Facta universitatis, series: mechanical engineering, 19(3), 361-380.
+
+<a name="c71">[71]</a> Ecer, F., & Pamucar, D. (2022). A novel LOPCOW‐DOBI multi‐criteria sustainability performance assessment methodology: An application in developing country banking sector. Omega, 112, 102690. 
+

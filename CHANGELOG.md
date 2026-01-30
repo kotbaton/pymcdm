@@ -1,5 +1,21 @@
 # Release history
 
+## Version 1.4.0
+
+* New MCDM methods, with test and documentation:
+  - LMAW (Logarithmic Methodology of Additive Weights).
+  - RAFSI (Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval).
+  - Balanced SPOTIS (SPOTIS method's extension).
+  - LOPCOW (LOgarithmic Percentage Change-driven Objective Weighting), weighting method.
+* Add gray-code CO order support to COMET, with tests
+* Add weighted ESP Expert for COMET evaluations.
+* Add `param_sensitivity` helper for method parameter sweeps.
+* Add new distance module for different metrics (Kemeny, Frobenius, draWS) with docs and tests.
+* Fix zero-division issues in normalization functions.
+* Small fixes in correlations, helpers and validators; various documentation updates.
+* Update copyright year across the codebase.
+
+
 ## Version 1.3.1
 
 * Add CSV and JSON export options to Table, MCDA_problem and MCDA_results classes.
