@@ -142,6 +142,14 @@ The library contains:
 | Weights Similarity Coefficient (WSC)                 |    [[60]](#c60)       	     |
 | Weights Similarity Coefficient 2 (WSC2)              |    [[60]](#c60)       	     |
 
+* Distance metrics:
+
+| Metric Name                    	 |  Reference           |
+|-----------------------------------|:--------------------:|
+| Kemeny distance              	 |    [[73]](#73) 	    |
+| Frobenius distance              	 |    [[74]](#74) 	    |
+| draWS distance              	     |    [[75]](#75) 	    |
+
 * Helpers
 
 | Helpers submodule    | Description                                                                                                      |
@@ -366,4 +374,10 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c71">[71]</a> Ecer, F., & Pamucar, D. (2022). A novel LOPCOW‐DOBI multi‐criteria sustainability performance assessment methodology: An application in developing country banking sector. Omega, 112, 102690.
 
 <a name="c72">[72]</a> Bošković, S., Švadlenka, L., Jovčić, S., Dobrodolac, M., Simić, V., & Bacanin, N. (2023). An alternative ranking order method accounting for two-step normalization (AROMAN)—A case study of the electric vehicle selection problem. IEEE access, 11, 39496-39507.
+
+<a name="c73">[73]</a> Kemeny, J. G., & Snell, J. L. (1962). Mathematical models in the social sciences. MIT Press.
+
+<a name="c74">[74]</a> Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10, e28265.
+
+<a name="c75">[75]</a> Sałabun, W., & Shekhovtsov, A. (2023). An innovative drastic metric for ranking similarity in decision-making problems. Proceedings of the 18th Conference on Computer Science and Intelligence Systems, 731–738.
 
