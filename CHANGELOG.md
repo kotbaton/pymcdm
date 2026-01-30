@@ -5,6 +5,7 @@
 * New MCDM methods, with test and documentation:
   - LMAW (Logarithmic Methodology of Additive Weights).
   - RAFSI (Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval).
+  - AROMAN (Alternative Ranking Order Method Accounting for Two-Step Normalization).
   - Balanced SPOTIS (SPOTIS method's extension).
   - LOPCOW (LOgarithmic Percentage Change-driven Objective Weighting), weighting method.
 * Add gray-code CO order support to COMET, with tests

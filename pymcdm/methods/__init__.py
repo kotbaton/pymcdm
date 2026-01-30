@@ -26,4 +26,5 @@ from .wpm import WPM
 from .waspas import WASPAS
 from .lopm import LoPM
 from .lmaw import LMAW
+from .aroman import AROMAN
 from . import comet_tools

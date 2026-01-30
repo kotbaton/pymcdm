@@ -88,6 +88,126 @@ this value for the optimal solution but it is not showed in the verbose results.
 where :math:`S_i` and :math:`S_0` are the optimality criterion values. Better alternatives are represented
 with larger values of the utility degree :math:`K_i`.
 
+AROMAN
+======
+
+*Bošković et al. (2023)* propose the *Alternative Ranking Order Method Accounting for
+Two-Step Normalization* (AROMAN) as a novel multi-criteria decision-making (MCDM) method.
+The core contribution of AROMAN lies in coupling two normalization techniques
+(linear and vector normalization) and aggregating them into an averaged normalized
+decision-making matrix, followed by an original final ranking formula that explicitly
+accounts for both minimization and maximization criteria.
+
+Assume a set of :math:`m` alternatives :math:`A_i \ (i=1,\dots,m)` evaluated with respect
+to :math:`n` criteria :math:`C_j \ (j=1,\dots,n)`, with criteria weights
+:math:`w_j` such that :math:`\sum_{j=1}^{n} w_j = 1`. Criteria may be of *benefit*
+(maximization) or *cost* (minimization) type.
+
+Steps of the AROMAN Method
+--------------------------
+
+**Step 1: Construct the initial decision matrix**
+
+The decision problem is represented by the matrix:
+
+.. math::
+
+   X = [x_{ij}], \quad i = 1,\dots,m,\; j = 1,\dots,n
+
+where :math:`x_{ij}` denotes the performance of alternative :math:`A_i` with respect to
+criterion :math:`C_j`.
+
+**Step 2: Normalize the input data**
+
+Two normalization techniques are applied.
+
+**Step 2.1: Linear normalization**
+
+.. math::
+
+   t_{ij} =
+   \frac{x_{ij} - x_{ij}^{\min}}
+        {x_{ij}^{\max} - x_{ij}^{\min}},
+   \quad i = 1,2,\dots,m;\; j = 1,2,\dots,n
+
+**Step 2.2: Vector normalization**
+
+.. math::
+
+   t_{ij}^{*} =
+   \frac{x_{ij}}
+        {\sqrt{\sum_{i=1}^{m} x_{ij}^{2}}},
+   \quad i = 1,2,\dots,m;\; j = 1,2,\dots,n
+
+Both normalization techniques are applied regardless of whether the criteria are of
+*min* or *max* type.
+
+**Step 2.3: Aggregated averaged normalization**
+
+The two normalized matrices are aggregated using the arithmetic mean:
+
+.. math::
+
+   t_{ij}^{\text{norm}} =
+   \frac{\beta t_{ij} + (1-\beta) t_{ij}^{*}}{2},
+   \quad i = 1,2,\dots,m;\; j = 1,2,\dots,n
+
+where :math:`\beta \in [0,1]` is a trade-off parameter. In the original study,
+:math:`\beta = 0.5`.
+
+**Step 3: Construct the weighted normalized decision-making matrix**
+
+The aggregated averaged normalized matrix is multiplied by the criteria weights
+:math:`W_j`:
+
+.. math::
+
+   \hat{t}_{ij} = W_j \cdot t_{ij}^{\text{norm}},
+   \quad i = 1,2,\dots,m;\; j = 1,2,\dots,n
+
+**Step 4: Separate aggregation of min and max criteria**
+
+For each alternative :math:`i`, the normalized weighted values are summed separately
+for criteria of *min* and *max* type:
+
+- Sum of all minimization criteria:
+
+.. math::
+
+   L_i =
+   \sum_{j=1}^{n} \hat{t}_{ij}^{(\min)},
+   \quad i = 1,2,\dots,m
+
+- Sum of all maximization criteria:
+
+.. math::
+
+   A_i =
+   \sum_{j=1}^{n} \hat{t}_{ij}^{(\max)},
+   \quad i = 1,2,\dots,m
+
+**Step 5: Final ranking of alternatives**
+
+The final ranking value :math:`R_i` for each alternative is calculated as:
+
+.. math::
+
+   R_i = L_i^{\lambda} + A_i^{(1-\lambda)},
+   \quad i = 1,2,\dots,m
+
+where :math:`\lambda` is the coefficient representing the proportion of minimization
+criteria. When both criterion types are present in equal importance,
+:math:`\lambda = 0.5`.
+
+Alternatives are ranked in descending order of :math:`R_i`. A higher value of
+:math:`R_i` indicates a more preferable alternative.
+
+**Reference**
+
+Bošković, S., Švadlenka, L., Jovčić, S., Dobrodolac, M., Simić, V., & Bacanin, N. (2023).
+*An alternative ranking order method accounting for two-step normalization (AROMAN)—A
+case study of the electric vehicle selection problem*. IEEE Access, 11, 39496–39507.
+
 
 COCOSO
 =======================
