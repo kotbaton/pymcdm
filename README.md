@@ -86,7 +86,7 @@ The library contains:
 | RAM                	   | Root Assesment Method                                                                                |              [[62]](#c62)              |
 | RAFSI                | Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval |              [[69]](#c69)              |
 | LoPM                	  | Limits on Property Method                                                                            |              [[67]](#c67)              |
-| LMAW                 | Logarithmic Methodology of Additive Weighting                                                        |              [[70]](#c70)               | 
+| LMAW                 | Logarithmic Methodology of Additive Weights                                                          |              [[70]](#c70)               | 
 
 * MCDA Methods' extensions and variations:
 
@@ -359,4 +359,4 @@ This will produce output that contains formatted decision matrix, intermediate r
 
 <a name="c69">[69]</a> Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020). Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method. Mathematics, 8(6), 1015.
 
-<a name="c70">[70]</a> Pamučar, D., Žižović, M., Biswas, S., & Božanić, D. (2021). A new logarithm methodology of additive weights (LMAW) for multi-criteria decision-making: Application in logistics. Facta universitatis, series: mechanical engineering, 19(3), 361-380.
+<a name="c70">[70]</a> 
