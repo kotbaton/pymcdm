@@ -60,32 +60,33 @@ The library contains:
 
 * MCDA methods:
 
-| Acronym            	   | Method Name                                                                 |               Reference                |
-|:-----------------------|-----------------------------------------------------------------------------|:--------------------------------------:|
-| TOPSIS             	   | Technique for the Order of Prioritisation by Similarity to Ideal Solution   |               [[1]](#c1)               |
-| VIKOR              	   | VIseKriterijumska Optimizacija I Kompromisno Resenje                        |               [[2]](#c2)               |
-| COPRAS             	   | COmplex PRoportional ASsessment                                             |               [[3]](#c3)               |
-| PROMETHEE I & II   	   | Preference Ranking Organization METHod for Enrichment of Evaluations I & II |               [[4]](#c4)               |
-| COMET              	   | Characteristic Objects Method                                               |               [[5]](#c5)               |
-| SPOTIS             	   | Stable Preference Ordering Towards Ideal Solution                           |               [[6]](#c6)               |
-| ARAS               	   | Additive Ratio ASsessment                                                   |         [[7]](#c7),[[8]](#c8)          |
-| COCOSO             	   | COmbined COmpromise SOlution                                                |               [[9]](#c9)               |
-| CODAS              	   | COmbinative Distance-based ASsessment                                       |              [[10]](#c10)              |
-| EDAS               	   | Evaluation based on Distance from Average Solution                          |       [[11]](#c11),[[12]](#c12)        |
-| MABAC              	   | Multi-Attributive Border Approximation area Comparison                      |              [[13]](#c13)              |
-| MAIRCA             	   | MultiAttributive Ideal-Real Comparative Analysis                            | [[14]](#c14),[[15]](#c15),[[16]](#c16) |
-| MARCOS             	   | Measurement Alternatives and Ranking according to COmpromise Solution       |       [[17]](#c17),[[18]](#c18)        |
-| OCRA               	   | Operational Competitiveness Ratings                                         |       [[19]](#c19),[[20]](#c20)        |
-| MOORA              	   | Multi-Objective Optimization Method by Ratio Analysis                       |       [[21]](#c21),[[22]](#c22)        |
-| RIM                	   | Reference Ideal Method                                                      |              [[48]](#c48)              |
-| ERVD               	   | Election Based on relative Value Distances                                  |              [[49]](#c49)              |
-| PROBID                 | Preference Ranking On the Basis of Ideal-average Distance                   |              [[50]](#c50)              |
-| WSM                    | Weighted Sum Model                                                          |              [[51]](#c51)              |
-| WPM                    | Weighted Product Model                                                      |              [[52]](#c52)              |
-| WASPAS                 | Weighted Aggregated Sum Product ASSessment                                  |              [[53]](#c53)              |
-| RAM                	   | Root Assesment Method                                                       |              [[62]](#c62)              |
-| RAFSI                | Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval|              [[69]](#c69)              |
-| LoPM                	  | Limits on Property Method                                                    |              [[67]](#c67)              |
+| Acronym            	   | Method Name                                                                                          |               Reference                |
+|:-----------------------|------------------------------------------------------------------------------------------------------|:--------------------------------------:|
+| TOPSIS             	   | Technique for the Order of Prioritisation by Similarity to Ideal Solution                            |               [[1]](#c1)               |
+| VIKOR              	   | VIseKriterijumska Optimizacija I Kompromisno Resenje                                                 |               [[2]](#c2)               |
+| COPRAS             	   | COmplex PRoportional ASsessment                                                                      |               [[3]](#c3)               |
+| PROMETHEE I & II   	   | Preference Ranking Organization METHod for Enrichment of Evaluations I & II                          |               [[4]](#c4)               |
+| COMET              	   | Characteristic Objects Method                                                                        |               [[5]](#c5)               |
+| SPOTIS             	   | Stable Preference Ordering Towards Ideal Solution                                                    |               [[6]](#c6)               |
+| ARAS               	   | Additive Ratio ASsessment                                                                            |         [[7]](#c7),[[8]](#c8)          |
+| COCOSO             	   | COmbined COmpromise SOlution                                                                         |               [[9]](#c9)               |
+| CODAS              	   | COmbinative Distance-based ASsessment                                                                |              [[10]](#c10)              |
+| EDAS               	   | Evaluation based on Distance from Average Solution                                                   |       [[11]](#c11),[[12]](#c12)        |
+| MABAC              	   | Multi-Attributive Border Approximation area Comparison                                               |              [[13]](#c13)              |
+| MAIRCA             	   | MultiAttributive Ideal-Real Comparative Analysis                                                     | [[14]](#c14),[[15]](#c15),[[16]](#c16) |
+| MARCOS             	   | Measurement Alternatives and Ranking according to COmpromise Solution                                |       [[17]](#c17),[[18]](#c18)        |
+| OCRA               	   | Operational Competitiveness Ratings                                                                  |       [[19]](#c19),[[20]](#c20)        |
+| MOORA              	   | Multi-Objective Optimization Method by Ratio Analysis                                                |       [[21]](#c21),[[22]](#c22)        |
+| RIM                	   | Reference Ideal Method                                                                               |              [[48]](#c48)              |
+| ERVD               	   | Election Based on relative Value Distances                                                           |              [[49]](#c49)              |
+| PROBID                 | Preference Ranking On the Basis of Ideal-average Distance                                            |              [[50]](#c50)              |
+| WSM                    | Weighted Sum Model                                                                                   |              [[51]](#c51)              |
+| WPM                    | Weighted Product Model                                                                               |              [[52]](#c52)              |
+| WASPAS                 | Weighted Aggregated Sum Product ASSessment                                                           |              [[53]](#c53)              |
+| RAM                	   | Root Assesment Method                                                                                |              [[62]](#c62)              |
+| RAFSI                | Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval |              [[69]](#c69)              |
+| LoPM                	  | Limits on Property Method                                                                            |              [[67]](#c67)              |
+| LMAW                 | Logarithmic Methodology of Additive Weighting                                                        |              [[70]](#c70)               | 
 
 * MCDA Methods' extensions and variations:
 
@@ -357,3 +358,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c68">[68]</a> Shekhovtsov, A., Dezert, J. and Sałabun, W. (2025). Enhancing Personalized Decision-Making with the Balanced SPOTIS Algorithm. In Proceedings of the 17th International Conference on Agents and Artificial Intelligence - Volume 3: ICAART; ISBN 978-989-758-737-5; ISSN 2184-433X, SciTePress, pages 264-271. DOI: 10.5220/0013119800003890
 
 <a name="c69">[69]</a> Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020). Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method. Mathematics, 8(6), 1015.
+
+<a name="c70">[70]</a> Pamučar, D., Žižović, M., Biswas, S., & Božanić, D. (2021). A new logarithm methodology of additive weights (LMAW) for multi-criteria decision-making: Application in logistics. Facta universitatis, series: mechanical engineering, 19(3), 361-380.
