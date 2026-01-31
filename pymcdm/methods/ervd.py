@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 import numpy as np
 
 from .. import helpers
@@ -10,6 +10,18 @@ from ..io import TableDesc
 
 class ERVD(MCDA_method):
     """ Election based on Relative Value Distances method [#ervd1]_.
+
+    Parameters
+    ----------
+        ref_point : ndarray or None
+            Reference point for alternatives evaluation. Should be one dimension array with reference
+            value for each criterion.
+
+        lam : float
+            Lambda parameter. See [1] for detailed description. Default is 2.25.
+
+        alpha : float
+            Alpha parameter. See [1] for detailed description. Default is 2.25.
 
     References
     ----------

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Andrii Shekhovtsov
+# Copyright (c) 2023-2026 Andrii Shekhovtsov
 
 import numpy as np
 
@@ -41,6 +41,14 @@ class RIM(MCDA_method):
     """ Reference Ideal Method [#rim1]_.
 
     RIM is an MCDA method which uses criteria bounds and reference ideal to evaluate alternatives.
+
+    Parameters
+    ----------
+        bounds : ndarray
+            Decision problem bounds / criteria bounds. Should be two dimensional array with [min, max] value for in criterion in rows.
+
+        ref_ideal : ndarray or None
+            Reference ideal for alternatives evaluation. Should be two dimensional array with interval ideal value for each criterion. If None, reference ideal will be calculated based on bounds and criteria types.
 
     References
     ----------

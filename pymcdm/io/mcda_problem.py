@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 from json import dumps
 from typing import Sequence
 

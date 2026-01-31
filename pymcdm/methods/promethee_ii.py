@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Andrii Shekhovtsov
+# Copyright (c) 2023-2026 Andrii Shekhovtsov
 
 from .partial import PROMETHEE_I
 from ..io import TableDesc, MCDA_results

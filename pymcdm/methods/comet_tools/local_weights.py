@@ -1,3 +1,5 @@
+# Copyright (c) 2025-2026 Andrii Shekhovtsov
+
 import numpy as np
 
 def get_local_weights(comet, alt, percent_step=0.01):

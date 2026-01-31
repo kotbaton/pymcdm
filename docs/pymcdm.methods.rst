@@ -6,6 +6,11 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.AROMAN
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.COCOSO
    :members:
    :undoc-members:
@@ -37,6 +42,11 @@ pymcdm.methods
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.LoPM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.LMAW
    :members:
    :undoc-members:
    :show-inheritance:
@@ -81,12 +91,22 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.RAFSI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.RIM
    :members:
    :undoc-members:
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.SPOTIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.BalancedSPOTIS
    :members:
    :undoc-members:
    :show-inheritance:

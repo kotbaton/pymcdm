@@ -1,8 +1,9 @@
-# Copyright (c) 2023 Andrii Shekhovtsov
-# Copyright (c) 2022 Bartłomiej Kizielewicz
+# Copyright (c) 2023-2026 Andrii Shekhovtsov
+# Copyright (c) 2022-2026 Bartłomiej Kizielewicz
 
 import unittest
 import numpy as np
+from nbformat.v2.rwbase import rejoin_lines
 
 from pymcdm import methods
 from pymcdm.methods.mcda_method import MCDA_method
@@ -162,6 +163,14 @@ class TestCOMET(unittest.TestCase):
         output_method = [round(preference, 4) for preference in body(matrix)]
 
         self.assertListEqual(output, output_method)
+
+    def test_gray_code(self):
+        from pymcdm.methods.comet import _gray_code_product
+
+        cvalues = np.array([[1, 2], [10, 20]])
+        result = _gray_code_product(*cvalues)
+        expected = [[1, 10], [1, 20], [2, 20], [2, 10]]
+        self.assertListEqual(list(result), expected)
 
 
 class TestCOPRAS(unittest.TestCase):
@@ -450,6 +459,63 @@ class TestSPOTIS2(unittest.TestCase):
 
         self.assertListEqual(output, output_method)
 
+
+class TestBalancedSPOTIS(unittest.TestCase):
+    """ Test output method with reference:
+
+        Shekhovtsov, A., Dezert, J. and Sałabun, W. (2025). Enhancing Personalized Decision-Making
+        with the Balanced SPOTIS Algorithm. In Proceedings of the 17th International Conference
+        on Agents and Artificial Intelligence - Volume 3: ICAART; ISBN 978-989-758-737-5;
+        ISSN 2184-433X, SciTePress, pages 264-271. DOI: 10.5220/0013119800003890
+    """
+    def setUp(self):
+        self.matrix = np.array([
+            [94.0, 69.9, 2017.0],
+            [297.0, 42.0, 2013.0],
+            [205.0, 68.9, 2015.0],
+            [360.0, 36.9, 2014.0],
+            [86.0, 59.9, 2017.0],
+            [79.6, 63.8, 2017.0],
+            [113.0, 56.9, 2015.0],
+            [171.0, 58.0, 2016.0]])
+
+        self.bounds = np.array([
+            [70, 360],
+            [35, 70],
+            [2013, 2018]], dtype=float)
+
+        self.weights = np.array([0.33, 0.56, 0.11])
+        self.types = np.array([-1, -1, 1])
+        self.esp = np.array([110, 45, 2018], dtype=float)
+
+    def test_output_balanced(self):
+        matrix, bounds, weights, types, esp = \
+            self.matrix, self.bounds, self.weights, self.types, self.esp
+
+        bspotis = methods.BalancedSPOTIS(bounds, esp, alpha=0.5)
+        results = list(np.round(bspotis(matrix, weights, types), 4))
+        expected = [0.5232, 0.4256, 0.6593, 0.4752, 0.3632, 0.4256, 0.3626, 0.4242]
+        self.assertListEqual(results, expected)
+
+    def test_output_ideal(self):
+        matrix, bounds, weights, types, esp = \
+            self.matrix, self.bounds, self.weights, self.types, self.esp
+
+        spotis_ideal = methods.SPOTIS(bounds)
+        expected_ideal = list(np.round(spotis_ideal(matrix, weights, types), 4))
+        bspotis = methods.BalancedSPOTIS(bounds, esp, alpha=0)
+        results = list(np.round(bspotis(matrix, weights, types), 4))
+        self.assertListEqual(results, expected_ideal)
+
+    def test_output_expected(self):
+        matrix, bounds, weights, types, esp = \
+            self.matrix, self.bounds, self.weights, self.types, self.esp
+
+        spotis_expected = methods.SPOTIS(bounds, esp)
+        expected_expected = list(np.round(spotis_expected(matrix, weights, types), 4))
+        bspotis = methods.BalancedSPOTIS(bounds, esp, alpha=1)
+        results = list(np.round(bspotis(matrix, weights, types), 4))
+        self.assertListEqual(results, expected_expected)
 
 class TestTOPSIS(unittest.TestCase):
     """ Test output method with reference:
@@ -751,3 +817,109 @@ class TestLoPM(unittest.TestCase):
         output_method = list(np.round(lopm(matrix, weights, None), 2))
         output = [0.77, 1.08, 0.81, 0.66, 0.78, 0.68]
         self.assertListEqual(output, output_method)
+
+class TestRAFSI(unittest.TestCase):
+    """ Test output method with reference:
+
+        Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020). Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method. Mathematics, 8(6), 1015.
+    """
+    def test_output(self):
+        matrix = np.array([
+            [180, 10.5, 15.5, 160, 3.7],
+            [165, 9.2, 16.5, 131, 5.0],
+            [160, 8.8, 14.0, 125, 4.5],
+            [170, 9.5, 16.0, 135, 3.4],
+            [185, 10.0, 14.5, 143, 4.3],
+            [167, 8.9, 15.1, 140, 4.1]
+        ])
+
+        weights = np.array([0.35, 0.25, 0.15, 0.15, 0.1])
+        types = np.array([1, 1, -1, -1, 1])
+
+        ideal = np.array([200, 12, 10, 100, 8])
+        anti_ideal = np.array([120, 6, 20, 200, 2])
+
+        body = methods.RAFSI(ideal, anti_ideal)
+        result = body(matrix, weights, types)
+        expected = [0.5081, 0.4522, 0.4381, 0.4560, 0.5299, 0.4373]
+        result_rounded = [round(x, 4) for x in result]
+
+        self.assertListEqual(expected, result_rounded)
+
+class TestLMAW(unittest.TestCase):
+    """ Test LMAW method.
+
+    Reference:
+    Pamučar, D., Žižović, M., Biswas, S., & Božanić, D. (2021). A new logarithm
+    methodology of additive weights (LMAW) for multi-criteria decision-making:
+    Application in logistics. Facta universitatis, series: mechanical engineering,
+    19(3), 361-380.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [647.34, 6.24, 49.87, 19.46, 212.58, 6.75],
+            [115.64, 3.24, 16.26, 9.69, 207.59, 3.00],
+            [373.61, 5.00, 26.43, 12.00, 184.62, 3.74],
+            [37.63, 2.48, 2.85, 9.35, 142.50, 3.24],
+            [858.01, 4.74, 62.85, 45.96, 267.95, 4.00],
+            [222.92, 3.00, 19.24, 21.46, 221.38, 3.49]
+        ], dtype=float)
+
+        weights = np.array([0.215, 0.126, 0.152, 0.09, 0.19, 0.226])
+
+        types = np.array([1, 1, -1, -1, -1, 1])
+
+        lmaw = methods.LMAW()
+        output_method = list(np.round(lmaw(matrix, weights, types), 3))
+        expected = [4.840, 4.681, 4.799, 4.733, 4.736, 4.704]
+        self.assertListEqual(expected, output_method)
+
+    def test_matrix_aggregation(self):
+        matrices = np.array([np.array([[val]]) for val in (3, 4, 4, 3)])
+        expected_matrix = np.array([[3.49]])
+        lmaw = methods.LMAW()
+        aggregated_matrix = lmaw.aggregate_matrices(matrices)
+        aggregated_matrix_rounded = np.round(aggregated_matrix, 2)
+        self.assertTrue(np.array_equal(expected_matrix, aggregated_matrix_rounded))
+
+    def test_weights_aggregation(self):
+        weight_vectors = [
+            np.array([4, 2, 2.5, 1.5, 3.5, 5]),
+            np.array([4.5, 1.5, 2.5, 1, 3, 4.5]),
+            np.array([4, 2, 2, 1.5, 3, 5]),
+            np.array([4, 1.5, 2, 1, 3.5, 4])
+        ]
+
+        expected_weights = np.array([0.215, 0.126, 0.152, 0.09, 0.19, 0.226])
+
+        lmaw = methods.LMAW()
+        aggregated_weights = lmaw.aggregate_weights(weight_vectors)
+        aggregated_weights_rounded = np.round(aggregated_weights, 3)
+        self.assertTrue(np.array_equal(expected_weights, aggregated_weights_rounded))
+
+
+class TestAROMAN(unittest.TestCase):
+    """ Test AROMAN method.
+
+    Reference:
+    Bošković, S., Švadlenka, L., Jovčić, S., Dobrodolac, M., Simić, V., & Bacanin, N. (2023). An alternative
+    ranking order method accounting for two-step normalization (AROMAN)—A case study of the electric vehicle
+    selection problem. IEEE access, 11, 39496-39507.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [40000, 1.200, 1.4, 8, 9],
+            [38500, 1.150, 1.2, 6, 6],
+            [39400, 0.600, 1.1, 7, 5],
+            [48000, 1.300, 1.6, 10, 12]
+        ])
+
+        weights = np.array([0.28, 0.22, 0.26, 0.15, 0.09])
+
+        types = np.array([-1, 1, 1, 1, 1])
+        aroman = methods.AROMAN()
+        output_method = list(np.round(aroman(matrix, weights, types), 4))
+        expected = [0.6727, 0.5535, 0.4721, 0.8718]
+        self.assertListEqual(expected, output_method)

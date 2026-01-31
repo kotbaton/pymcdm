@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 import numpy as np
 
 from .pairwise_weights_base import PairwiseWeightsBase

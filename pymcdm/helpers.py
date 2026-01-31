@@ -1,5 +1,5 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
-# Copyright (c) 2022 Bartłomiej Kizielewicz
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
+# Copyright (c) 2022-2026 Bartłomiej Kizielewicz
 
 from typing import Callable, Iterable
 
@@ -14,7 +14,8 @@ __all__ = [
     'rrankdata',
     'correlation_matrix',
     'normalize_matrix',
-    'leave_one_out_rr'
+    'leave_one_out_rr',
+    'param_sensitivity'
 ]
 
 
@@ -105,8 +106,8 @@ def correlation_matrix(rankings, method, columns=False):
 
 
 def normalize_matrix(matrix: np.ndarray | list | tuple,
-                     method: Callable or Iterable[Callable] or str or Iterable[str],
-                     criteria_types: None or Iterable[int]) -> np.ndarray:
+                     method: Callable | Iterable[Callable] | str | Iterable[str],
+                     criteria_types: None | Iterable[int]) -> np.ndarray:
     """ Normalize each column in `matrix`, using `method`normalization
         function according to `criteria_types`.
 
@@ -154,7 +155,7 @@ def normalize_matrix(matrix: np.ndarray | list | tuple,
         if np.any(np.logical_and(criteria_types != 1, criteria_types != -1)):
             raise ValueError('Types should include only values 1 or -1.')
 
-    if (matrix.shape[1] != len(criteria_types)):
+    if matrix.shape[1] != len(criteria_types):
         raise ValueError(f'Matrix has {matrix.shape[1]} criteria, criteria_types has {len(criteria_types)}. However, those values should be equal.')
     if isinstance(method, Iterable) and matrix.shape[1] != len(method):
         raise ValueError(f'Matrix has {matrix.shape[1]} criteria, but method has {len(method)}. Those values should be equal.')
@@ -300,3 +301,73 @@ def leave_one_out_rr(method, matrix, weights, types,
     corr_values.append(ideal_corr_value)
 
     return np.array(rankings), corr_values, labels
+
+
+def param_sensitivity(Method,
+                      matrix: np.ndarray,
+                      weights: np.ndarray,
+                      types: np.ndarray,
+                      param_name: str,
+                      param_values: list | np.ndarray,
+                      **init_kwargs):
+    """
+    Perform sensitivity analysis on a specified parameter of an MCDA method.
+
+    Parameters
+    ----------
+    Method : MCDA_Method
+        The MCDA method class to be analyzed.
+    matrix : np.ndarray
+        The decision matrix.
+    weights : np.ndarray
+        The weights for the criteria.
+    types : np.ndarray
+        The types of criteria (1 for benefit, -1 for cost).
+    param_name : str
+        The name of the parameter to vary.
+    param_values : list | np.ndarray
+        The values to test for the specified parameter.
+    **init_kwargs
+        Additional keyword arguments for initializing the MCDA method (for example bounds, normalization, etc).
+
+    Returns
+    -------
+        param_values : list | np.ndarray
+            The parameter values tested.
+        prefs : list of np.ndarray
+            List of preference scores for each parameter value.
+        ranks : list of np.ndarray
+            List of ranks for each parameter value.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import matplotlib.pyplot as plt
+    >>> import pymcdm as pm
+    >>> matrix = np.array([...])
+    >>> bounds = np.array([...])
+    >>> types = np.array([...])
+    >>> esp = np.array([...])
+    >>> values, prefs, ranks = param_sensitivity(
+    ...     Method=pm.methods.BalancedSPOTIS,
+    ...     matrix=matrix,
+    ...     weights=weights,
+    ...     types=types,
+    ...     param_name='alpha',
+    ...     param_values=np.linspace(0, 1, 11),
+    ...     bounds=bounds,
+    ...     esp=esp)
+    >>> pm.visuals.ranking_flows(ranks, labels=values)
+    >>> plt.show()
+    """
+    prefs = []
+    ranks = []
+    for value in param_values:
+        init_kwargs[param_name] = value
+        method_instance = Method(**init_kwargs)
+        pref = method_instance(matrix, weights, types)
+        rank = method_instance.rank(pref)
+        prefs.append(pref)
+        ranks.append(rank)
+
+    return param_values, prefs, ranks

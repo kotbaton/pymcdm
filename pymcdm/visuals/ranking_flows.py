@@ -1,5 +1,5 @@
-# Copyright (c) 2022 Bartłomiej Kizielewicz
-# Copyright (c) 2022-2023 Andrii Shekhovtsov
+# Copyright (c) 2022-2026 Bartłomiej Kizielewicz
+# Copyright (c) 2022-2026 Andrii Shekhovtsov
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,6 +14,7 @@ def ranking_flows(rankings,
                   missing_plot_kwargs=dict(),
                   marker_plot_kwargs=dict(),
                   better_grid=False,
+                  invert_yaxis=True,
                   ax=None):
     """ Visualize changes in rankings for several different rankings.
         Could be also used to visualize data from leave_one_out_rr helper
@@ -56,10 +57,14 @@ def ranking_flows(rankings,
             Keyword arguments to pass into plot function (lines). Determine
             style of markers (points) on the lines.
 
-        better_drid : bool
+        better_grid : bool
             If better grid should be used. Here, it means that horizontal grid
             lines will be shorter and not be drawn under text labels on sides
             of the plot. Default is False.
+
+        invert_yaxis : bool
+            If True, y-axis will be inverted, so that the best positions
+            (1, 2, etc.) will be on top of the plot. Default is True.
 
         ax : Axes or None
             Axes object to draw on. If None current Axes will be used.
@@ -208,5 +213,8 @@ def ranking_flows(rankings,
                      linestyle='--', alpha=0.5, zorder=-1, color='#CCCCCC')
     else:
         ax.grid(alpha=0.5, linestyle='--')
+
+    if invert_yaxis:
+        ax.invert_yaxis()
 
     return ax

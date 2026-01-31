@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024 Andrii Shekhovtsov
+# Copyright (c) 2020-2026 Andrii Shekhovtsov
 
 import numpy as np
 from .mcda_method import MCDA_method
@@ -14,6 +14,14 @@ class SPOTIS(MCDA_method):
         ideal solution. [#spotis1]_.
 
         Read more in the User Guide.
+
+        Parameters
+        ----------
+            bounds : ndarray
+                Decision problem bounds / criteria bounds. Should be two dimensional array with [min, max] value for in criterion in rows.
+
+            esp : ndarray or None
+                Expected Solution Point for alternatives evaluation. Should be array with ideal (expected) value for each criterion. If None, ESP will be calculated based on bounds and criteria types. Default is None.
 
         References
         ----------

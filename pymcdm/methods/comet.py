@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023 Andrii Shekhovtsov
+# Copyright (c) 2020-2026 Andrii Shekhovtsov
 
 from itertools import product
 from functools import reduce
@@ -8,6 +8,14 @@ import numpy as np
 from .mcda_method import MCDA_method
 from ..validators import cvalues_validator, matrix_cvalues_validator
 from ..io import TableDesc
+
+
+def _gray_code_product(*args):
+    pools = [tuple(pool) for pool in args]
+    result = [[]]
+    for pool in pools:
+        result = [x+[y] for i, x in enumerate(result) for y in (reversed(pool) if i % 2 else pool)]
+    return result
 
 
 def _TFN(a, m, b):
@@ -52,6 +60,16 @@ class COMET(MCDA_method):
                in the pymcdm.comet_tools submodule if you want to create your
                own custom expert_function.
 
+           co_ordering : {'product', 'gray_code'}, optional
+               Ordering used to enumerate characteristic objects (COs). If
+               `'product'` (default), COs are generated using the Cartesian
+               product ordering (equivalent to `itertools.product`). If
+               `'gray_code'`, a Gray-code-like ordering produced by internal
+               `_gray_code_product` function; this ordering attempts to make
+               consecutive COs differ in only one criterion value, which can
+               be helpful for expert elicitation and to reduce abrupt changes
+               between successive COs.
+
         References
         ----------
         .. [#comet1] Sałabun, W. (2015). The Characteristic Objects Method: A New Distance‐based Approach to Multicriteria
@@ -89,10 +107,13 @@ class COMET(MCDA_method):
                   label='pref', symbol='$P_i$', rows='A', cols=None)
     ]
 
-    def __init__(self, cvalues, expert_function):
+    def __init__(self, cvalues, expert_function, co_ordering='product'):
         cvalues_validator(cvalues)
+        if co_ordering not in ('product', 'gray_code'):
+            raise ValueError("co_ordering must be either 'product' or 'gray_code'")
+        self.co_ordering = product if co_ordering == 'product' else _gray_code_product
 
-        co = product(*cvalues)
+        co = self.co_ordering(*cvalues)
         co = np.array(list(co))
 
         # Determine how MEJ and SJ is calculated
@@ -162,7 +183,7 @@ class COMET(MCDA_method):
         pref_level_vectors = [[tfn(values) for tfn in tfns_icrit]
                               for values, tfns_icrit in zip(matrix.T, tfns)]
 
-        tfns_values_product = product(*pref_level_vectors)
+        tfns_values_product = self.co_ordering(*pref_level_vectors)
         multiplayed_co = (reduce(lambda a, b: a * b, co_values) * p
                           for p, co_values in zip(self.p, tfns_values_product))
         return sum(multiplayed_co),

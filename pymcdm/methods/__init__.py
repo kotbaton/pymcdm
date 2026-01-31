@@ -5,6 +5,7 @@ from .copras import COPRAS
 from .promethee_ii import PROMETHEE_II
 from .comet import COMET
 from .spotis import SPOTIS
+from .balanced_spotis import BalancedSPOTIS
 from .aras import ARAS
 from .cocoso import COCOSO
 from .codas import CODAS
@@ -16,6 +17,7 @@ from .ocra import OCRA
 from .moora import MOORA
 from .rim import RIM
 from .ram import RAM
+from .rafsi import RAFSI
 from .ervd import ERVD
 from .probid import PROBID
 from .sprobid import SPROBID
@@ -23,4 +25,6 @@ from .wsm import WSM
 from .wpm import WPM
 from .waspas import WASPAS
 from .lopm import LoPM
+from .lmaw import LMAW
+from .aroman import AROMAN
 from . import comet_tools

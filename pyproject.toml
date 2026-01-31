@@ -4,13 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pymcdm"
-version = "1.3.1"
+version = "1.4.0"
 authors = [
     {name = "Andrii Shekhovtsov", email = "andrii-shekhovtsov@zut.edu.pl"},
     {name = "Bartłomiej Kizielewicz", email = "bartlomiej-kizielewicz@zut.edu.pl"},
 ]
 description = "Python library for Multi-Criteria Decision-Making"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["MCDM", "Multi-Criteria Decision-Making", "Decision Analysis", "Operations Research"]
 requires-python = ">=3.11"
 dependencies = [
     'numpy',
@@ -21,7 +24,6 @@ dependencies = [
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 
@@ -39,3 +41,5 @@ docs = [
 [project.urls]
 Homepage = "https://github.com/kotbaton/pymcdm"
 Issues = "https://github.com/kotbaton/pymcdm/issues"
+Documentation = "https://pymcdm.readthedocs.io/"
+Changelog = "https://github.com/kotbaton/pymcdm/blob/master/CHANGELOG.md"

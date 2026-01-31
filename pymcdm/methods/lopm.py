@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Andrii Shekhovtsov
+# Copyright (c) 2024-2026 Andrii Shekhovtsov
 import numpy as np
 
 from .mcda_method import MCDA_method
@@ -48,7 +48,9 @@ class LoPM(MCDA_method):
         ...     [21_450, 16, 0.0005, 2.2,  8.6, 1.0]
         ... ])
         >>> weights = np.array([0.20, 0.33, 0.13, 0.07, 0.07, 0.20])
-        >>> lopm = LoPM([10_000, 14, 0.0015, 3.5, 2.3, 9.0], [1, 1, -1, -1, 0, -1])
+        >>> property_limits = [10_000, 14, 0.0015, 3.5, 2.3, 9.0]
+        >>> property_types = [1, 1, -1, -1, 0, -1]
+        >>> lopm = LoPM(property_limits, property_types)
         >>> print(lopm(matrix, weights, None).round(2))
         [0.77 1.08 0.81 0.66 0.78 0.68]
     """
@@ -159,8 +161,6 @@ class LoPM(MCDA_method):
         upper = np.sum(weights[upper_mask] * (matrix[:, upper_mask] / limits[upper_mask]), axis=1)
         target = np.sum(weights[target_mask] * np.abs((matrix[:, target_mask] / limits[target_mask]) - 1), axis=1)
 
-        # TODO make proper test for the method
-        # TODO user guide description
         m = lower + upper + target
         return lower, upper, target, m
 

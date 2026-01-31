@@ -16,5 +16,6 @@ User Guide
     weights.rst
     normalizations.rst
     correlations.rst
+    distances.rst
 
 
