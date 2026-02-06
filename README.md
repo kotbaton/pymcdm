@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="https://raw.githubusercontent.com/kotbaton/pymcdm/dev/branding/logo_text.svg" width="300">
+<img src="https://raw.githubusercontent.com/kotbaton/pymcdm/master/branding/logo_text.svg" width="300">
 </h1><br>
 
 [![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/kotbaton/pymcdm)
