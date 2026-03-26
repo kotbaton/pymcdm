@@ -19,6 +19,7 @@ from .vimm import VIMM
 from .cobrac import COBRAC
 from .itara import ITARA
 from .owcm import OWCM
+from .llsm import LLSM
 
 __all__ = [
     'AHP',
@@ -42,4 +43,5 @@ __all__ = [
     'COBRAC',
     'ITARA',
     'OWCM',
+    'LLSM',
 ]
