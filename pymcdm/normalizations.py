@@ -221,3 +221,34 @@ def zavadskas_turskis_normalization(x, cost=False):
     if cost:
         return 1 - np.abs((np.min(x) - x) / np.min(x))
     return 1 - np.abs((np.max(x) - x) / np.max(x))
+
+
+def todim_normalization(x, cost=False):
+    """Calculate the normalized vector using the TODIM method (Eq. 2).
+
+    For profit criteria: x_i / sum(x).
+    For cost criteria: (1/x_i) / sum(1/x).
+
+    Parameters
+    ----------
+        x : ndarray
+            One-dimensional numpy array of values to be normalized.
+
+        cost : bool, optional
+            Vector type. Default profit type.
+
+    Returns
+    -------
+        ndarray
+            One-dimensional numpy array of normalized values.
+
+    References
+    ----------
+    .. [1] Gomes, L. F. A. M., & Lima, M. M. P. P. (1991). TODIM: Basics and application to
+       multicriteria ranking of projects with environmental impacts. Foundations of Computing
+       and Decision Sciences, 16(4), 113-127.
+    """
+    if cost:
+        inv = 1.0 / x
+        return inv / np.sum(inv)
+    return x / np.sum(x)
