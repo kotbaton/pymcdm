@@ -297,3 +297,20 @@ class TestNormalizeMatrix(unittest.TestCase):
                 ['non_existed_norm', 'non_existed_norm2'],
                 self.good_types
                 )
+
+
+class TestTODIMNormalization(unittest.TestCase):
+    """ Test output method without reference """
+
+    def test_profit(self):
+        x = np.array([2.0, 3.0, 5.0])
+        result = norm.todim_normalization(x, cost=False)
+        expected = [round(v, 8) for v in [2/10, 3/10, 5/10]]
+        self.assertListEqual(expected, [round(v, 8) for v in result])
+
+    def test_cost(self):
+        x = np.array([1.0, 2.0, 4.0])
+        inv = np.array([1.0, 0.5, 0.25])
+        expected = [round(v, 8) for v in inv / inv.sum()]
+        result = norm.todim_normalization(x, cost=True)
+        self.assertListEqual(expected, [round(v, 8) for v in result])

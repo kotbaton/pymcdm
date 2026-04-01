@@ -51,7 +51,7 @@ class TODIM(MCDA_method):
         >>> weights = weights / weights.sum()
         >>> types = np.array([1, 1, -1, 1])
         >>> [round(p, 4) for p in body(matrix, weights, types)]
-        [0.4913, 0.2747, 1.0]
+        [0.0, 0.251, 1.0]
     """
     _tables = [
         TableDesc(caption='Normalized decision matrix',

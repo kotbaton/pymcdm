@@ -12,7 +12,8 @@ __all__ = [
     'linear_normalization',
     'nonlinear_normalization',
     'enhanced_accuracy_normalization',
-    'zavadskas_turskis_normalization'
+    'zavadskas_turskis_normalization',
+    'todim_normalization'
 ]
 
 
