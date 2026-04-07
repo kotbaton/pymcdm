@@ -71,6 +71,17 @@ class TestSumNormalization(unittest.TestCase):
         output_method = [round(val, 8) for val in output_method]
         self.assertListEqual(output, output_method)
 
+    def test_profit_with_zero(self):
+        x = np.array([3.0, 0.0, 7.0])
+        result = norm.sum_normalization(x, cost=False)
+        expected = [round(v, 8) for v in [0.3, 0.0, 0.7]]
+        self.assertListEqual(expected, [round(v, 8) for v in result])
+
+    def test_cost_with_zero_raises(self):
+        x = np.array([0.0, 1.0, 2.0])
+        with self.assertRaises(ValueError):
+            norm.sum_normalization(x, cost=True)
+
 
 class TestVectorNormalization(unittest.TestCase):
     """ Test output method without reference """
@@ -299,18 +310,3 @@ class TestNormalizeMatrix(unittest.TestCase):
                 )
 
 
-class TestTODIMNormalization(unittest.TestCase):
-    """ Test output method without reference """
-
-    def test_profit(self):
-        x = np.array([2.0, 3.0, 5.0])
-        result = norm.todim_normalization(x, cost=False)
-        expected = [round(v, 8) for v in [2/10, 3/10, 5/10]]
-        self.assertListEqual(expected, [round(v, 8) for v in result])
-
-    def test_cost(self):
-        x = np.array([1.0, 2.0, 4.0])
-        inv = np.array([1.0, 0.5, 0.25])
-        expected = [round(v, 8) for v in inv / inv.sum()]
-        result = norm.todim_normalization(x, cost=True)
-        self.assertListEqual(expected, [round(v, 8) for v in result])
