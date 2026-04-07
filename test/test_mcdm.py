@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 from nbformat.v2.rwbase import rejoin_lines
 
-from pymcdm import methods
+from pymcdm import methods, normalizations as norm
 from pymcdm.methods.mcda_method import MCDA_method
 from pymcdm.methods.comet_tools import MethodExpert
 
@@ -955,3 +955,40 @@ class TestTODIM(unittest.TestCase):
         output = [0.9573, 1.0, 0.764, 0.1654, 0.0, 0.491, 0.4412]
         output_method = [round(p, 4) for p in body(matrix, weights, types)]
         self.assertListEqual(output, output_method)
+
+    def test_gomes_rangel_2009(self):
+        """ Test from the original TODIM paper (all-profit, zeros in data, theta=1).
+
+        Reference: Gomes, L. F. A. M., & Rangel, L. A. D. (2009). An application of
+        the TODIM method to the multicriteria rental evaluation of residential
+        properties. European Journal of Operational Research, 193(1), 204-211.
+        https://doi.org/10.1016/j.ejor.2007.10.046
+        Table 8 (decision matrix), Table 7 (weights), Table 10 (results, theta=1).
+        """
+        matrix = np.array([
+            [3, 290, 3, 3, 1, 6, 4, 0],
+            [4, 180, 2, 2, 1, 4, 2, 0],
+            [3, 347, 1, 2, 2, 5, 1, 0],
+            [3, 124, 2, 3, 2, 5, 4, 0],
+            [5, 360, 3, 4, 4, 9, 1, 1],
+            [2,  89, 2, 3, 1, 5, 1, 0],
+            [1,  85, 1, 1, 1, 4, 0, 1],
+            [5,  80, 2, 3, 1, 6, 0, 1],
+            [2, 121, 2, 3, 0, 6, 0, 0],
+            [2, 120, 1, 3, 1, 5, 1, 0],
+            [4, 280, 2, 2, 2, 7, 3, 1],
+            [1,  90, 1, 1, 1, 5, 2, 0],
+            [2, 160, 3, 3, 2, 6, 1, 1],
+            [3, 320, 3, 3, 2, 8, 2, 1],
+            [4, 180, 2, 4, 1, 6, 1, 1],
+        ], dtype=float)
+        weights = np.array([0.25, 0.15, 0.10, 0.20, 0.05, 0.10, 0.05, 0.10])
+        types = np.ones(8, dtype=int)
+
+        body = methods.TODIM(theta=1)
+        output_method = [round(p, 4) for p in body(matrix, weights, types)]
+        # Expected: Table 10 (Gomes & Rangel 2009), 4dp
+        expected = [0.6916, 0.3862, 0.3992, 0.6210, 1.0000,
+                    0.2860, 0.0000, 0.4407, 0.0202, 0.2127,
+                    0.8576, 0.1073, 0.7188, 0.9372, 0.6733]
+        self.assertListEqual(expected, output_method)
