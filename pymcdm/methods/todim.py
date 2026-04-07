@@ -12,7 +12,8 @@ class TODIM(MCDA_method):
 
         The TODIM method is based on prospect theory and evaluates alternatives through
         pairwise dominance degrees that model the psychology of risk — gains are weighted
-        differently from losses, controlled by the attenuation factor theta [#todim1]_.
+        differently from losses, controlled by the attenuation factor theta [#todim1]_
+        [#todim2]_ [#todim3]_.
 
         Parameters
         ----------
@@ -20,7 +21,7 @@ class TODIM(MCDA_method):
                 Function which should be used to normalize `matrix` columns.
                 It should match signature ``foo(x, cost)``, where ``x`` is a vector
                 to be normalized and ``cost`` is a bool indicating a cost criterion.
-                Defaults to :func:`~pymcdm.normalizations.todim_normalization`.
+                Defaults to :func:`~pymcdm.normalizations.sum_normalization`.
 
             theta : float
                 Attenuation factor (risk aversion parameter) for the loss domain.
@@ -29,15 +30,20 @@ class TODIM(MCDA_method):
 
         References
         ----------
-        .. [#todim1] Dutta, V., & Haldar, S. (2025). Performance Comparison of TODIM and
+        .. [#todim1] Gomes, L. F. A. M., & Rangel, L. A. D. (2009). An application of
+           the TODIM method to the multicriteria rental evaluation of residential
+           properties. European Journal of Operational Research, 193(1), 204-211.
+           https://doi.org/10.1016/j.ejor.2007.10.046
+
+        .. [#todim2] Gomes, L. F. A. M., Machado, M. A. S., & Rangel, L. A. D. (2013).
+           Behavioral multi-criteria decision analysis: the TODIM method with criteria
+           interactions. Annals of Operations Research, 211, 531-548.
+           https://doi.org/10.1007/s10479-013-1345-0
+
+        .. [#todim3] Dutta, V., & Haldar, S. (2025). Performance Comparison of TODIM and
            CPT-TODIM in Social Sustainability Assessment for G7 Countries. International
            Journal of Information Technology & Decision Making.
            https://doi.org/10.1142/S021962202550097X
-
-           Based on the original method by Gomes, L. F. A. M., & Lima, M. M. P. P. (1991).
-           TODIM: Basics and application to multicriteria ranking of projects with
-           environmental impacts. Foundations of Computing and Decision Sciences, 16(4),
-           113-127.
 
         Examples
         --------
@@ -66,7 +72,7 @@ class TODIM(MCDA_method):
                   label='pref', symbol='$\\xi_i$', rows='A', cols=None),
     ]
 
-    def __init__(self, normalization_function=normalizations.todim_normalization, theta=2.5):
+    def __init__(self, normalization_function=normalizations.sum_normalization, theta=2.5):
         if theta <= 0:
             raise ValueError(f"Parameter 'theta' must be positive, got {theta}.")
         self.normalization = normalization_function
@@ -87,17 +93,24 @@ class TODIM(MCDA_method):
         # Step 3: Pairwise dominance degrees (Eqs. 4-5)
         dominance = np.zeros((n, n))
         for i in range(n):
-            for j in range(n):
-                if i == j:
-                    continue
-                delta = 0.0
+            for j in range(i + 1, n):
+                delta_ij = 0.0
+                delta_ji = 0.0
                 for c in range(m):
                     diff = nmatrix[i, c] - nmatrix[j, c]
                     if diff > 0:
-                        delta += np.sqrt(diff * rel_weights[c] / sum_rel)
+                        gain = np.sqrt(diff * rel_weights[c] / sum_rel)
+                        loss = (1.0 / theta) * np.sqrt(sum_rel * diff / rel_weights[c])
+                        delta_ij += gain
+                        delta_ji -= loss
                     elif diff < 0:
-                        delta -= (1.0 / theta) * np.sqrt(sum_rel * (-diff) / rel_weights[c])
-                dominance[i, j] = delta
+                        neg_diff = -diff
+                        gain = np.sqrt(neg_diff * rel_weights[c] / sum_rel)
+                        loss = (1.0 / theta) * np.sqrt(sum_rel * neg_diff / rel_weights[c])
+                        delta_ij -= loss
+                        delta_ji += gain
+                dominance[i, j] = delta_ij
+                dominance[j, i] = delta_ji
 
         # Step 4: Global performance score (Eq. 6)
         delta_sum = np.sum(dominance, axis=1)
