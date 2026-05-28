@@ -91,7 +91,8 @@ The library contains:
 | RAFSI                 | Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval |              [[69]](#c69)              |
 | LoPM                	 | Limits on Property Method                                                                            |              [[67]](#c67)              |
 | LMAW                  | Logarithmic Methodology of Additive Weights                                                          |              [[70]](#c70)               | 
-| AROMAN                | Alternative Ranking Order Method Accounting for Two-Step Normalization)                              |              [[72]](#c72)               | 
+| AROMAN                | Alternative Ranking Order Method Accounting for Two-Step Normalization)                              |              [[72]](#c72)               |
+| TODIM                 | TOmada de Decisão Interativa e Multicritério                                                         |       [[76]](#c76),[[77]](#c77),[[78]](#c78),[[79]](#c79)         |
 
 * MCDA Methods' extensions and variations:
 
@@ -384,4 +385,12 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c74">[74]</a> Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10, e28265.
 
 <a name="c75">[75]</a> Sałabun, W., & Shekhovtsov, A. (2023). An innovative drastic metric for ranking similarity in decision-making problems. Proceedings of the 18th Conference on Computer Science and Intelligence Systems, 731–738.
+
+<a name="c76">[76]</a> Dutta, V., & Haldar, S. (2025). Performance Comparison of TODIM and CPT-TODIM in Social Sustainability Assessment for G7 Countries. International Journal of Information Technology & Decision Making. https://doi.org/10.1142/S021962202550097X
+
+<a name="c77">[77]</a> Gomes, L. F. A. M., & Lima, M. M. P. P. (1991). TODIM: Basics and application to multicriteria ranking of projects with environmental impacts. Foundations of Computing and Decision Sciences, 16(4), 113-127.
+
+<a name="c78">[78]</a> Gomes, L. F. A. M., & Rangel, L. A. D. (2009). An application of the TODIM method to the multicriteria rental evaluation of residential properties. European Journal of Operational Research, 193(1), 204–211. https://doi.org/10.1016/j.ejor.2007.10.046
+
+<a name="c79">[79]</a> Gomes, L. F. A. M., Machado, M. A. S., & Rangel, L. A. D. (2013). Behavioral multi-criteria decision analysis: the TODIM method with criteria interactions. Annals of Operations Research, 211(1), 531–548. https://doi.org/10.1007/s10479-013-1345-0
 

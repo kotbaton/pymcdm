@@ -38,6 +38,9 @@ docs = [
     "pandoc"
 ]
 
+[tool.setuptools.packages.find]
+include = ["pymcdm*"]
+
 [project.urls]
 Homepage = "https://github.com/kotbaton/pymcdm"
 Issues = "https://github.com/kotbaton/pymcdm/issues"
