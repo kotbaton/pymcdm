@@ -3,7 +3,7 @@
 
 import unittest
 import numpy as np
-from nbformat.v2.rwbase import rejoin_lines
+import warnings
 
 from pymcdm import methods, normalizations as norm
 from pymcdm.methods.mcda_method import MCDA_method
@@ -13,12 +13,17 @@ from pymcdm.methods.comet_tools import MethodExpert
 class TestMCDA(unittest.TestCase):
 
     def test_validation(self):
-        with self.assertRaises(ValueError):
-            body = methods.TOPSIS()
-            matrix = np.array([[1, 2, 3], [1, 2, 3]])
-            weights = np.array([0.5, 0.5])
-            types = np.array([1, -1, -1])
-            body(matrix=matrix, weights=weights, types=types)
+        # Catch warning about dominated alternatives
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+
+            with self.assertRaises(ValueError):
+                body = methods.TOPSIS()
+                matrix = np.array([[1, 2, 3], [1, 2, 3]])
+                weights = np.array([0.5, 0.5])
+                types = np.array([1, -1, -1])
+
+                body(matrix=matrix, weights=weights, types=types)
 
 
 class TestARAS(unittest.TestCase):
@@ -172,63 +177,134 @@ class TestCOMET(unittest.TestCase):
         expected = [[1, 10], [1, 20], [2, 20], [2, 10]]
         self.assertListEqual(list(result), expected)
 
+import unittest
+
+import numpy as np
+
+from pymcdm import methods
+
 
 class TestCOPRAS(unittest.TestCase):
-    """ Test output method with reference:
-    [1] Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis, Z. (2007).
-    Multi-attribute assessment of road design solutions by using the COPRAS
-    method. The Baltic journal of Road and Bridge engineering, 2(4), 195-203.
-    """
+    """Reference tests for the COPRAS method."""
 
-    def test_output(self):
+    def test_zavadskas_1994(self):
+        """Test from the original COPRAS paper.
+
+        Reference:
+        Zavadskas, E. K., Kaklauskas, A., & Šarka, V. (1994).
+        The new method of multicriteria complex proportional assessment
+        of projects.
+        Technological and Economic Development of Economy, 1(3), 131-139.
+        """
+
+        matrix = np.array([
+            [223.0, 25.1, 0.7, 0.7, 0.5, 0.8, 0.9, 0.3, 1.0,  2902.3, 6150.0, 0.3, 0.5],
+            [203.0, 14.9, 0.8, 0.8, 0.4, 0.5, 0.7, 0.2, 0.2,  2880.0, 6040.0, 0.2, 0.5],
+            [410.0, 100.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.3, 19230.0, 1005.0, 1.0, 1.0],
+        ])
+
+        weights = np.array([
+            0.2869, 0.0480, 0.0287, 0.0230, 0.0086, 0.0345, 0.2238,
+            0.0143, 0.3242, 0.2575, 0.4075, 0.0287, 0.0143,
+        ])
+
+        types = np.array([
+            -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1,
+        ])
+
         body = methods.COPRAS()
 
-        # The alternatives are in columns in the referenced paper,
-        # so we transpose the matrix to fit the pymcdm input format.
-        matrix = np.array([
-                [30, 20, 27, 18, 24, 16],
-                [12.487, 12.372, 11.096, 10.982, 11.017, 10.903],
-                [6.261, 5.961, 6.262, 5.962, 6.283, 5.983],
-                [10.880, 10.880, 9.920, 9.920, 9.980, 9.980],
-                [7.610, 7.460, 6.690, 6.540, 7.000, 6.850]
-            ]).T
-
-        types = np.array([1, -1, -1, -1, -1])
-        weights = np.array([0.5300, 0.1175, 0.1175, 0.1175, 0.1175])
-
-        output = [1.0, 0.797, 0.9078, 0.7243, 0.8537, 0.6898]
-        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
+        # Skip validation as sum of the weights in the paper is 1.7
+        output = [1.0000, 0.7415, 0.7178]
+        output_method = [
+            round(preference, 4)
+            for preference in body(matrix, weights, types, validation=False)
+        ]
 
         self.assertListEqual(output, output_method)
 
+    def test_kaklauskas_2006(self):
+        """Test from a COPRAS application to low-e window selection.
 
-class TestCOPRAS2(unittest.TestCase):
-    """ Test output method with reference:
-    [1] Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis, Z. (2007).
-    Multi-attribute assessment of road design solutions by using the COPRAS
-    method. The Baltic journal of Road and Bridge engineering, 2(4), 195-203.
-    """
+        Reference:
+        Kaklauskas, A., Zavadskas, E. K., Raslanas, S., Ginevicius, R.,
+        Komka, A., & Malinauskas, P. (2006).
+        Selection of low-e windows in retrofit of public buildings by
+        applying multiple criteria method COPRAS: A Lithuanian case.
+        Energy and Buildings, 38(5), 454-462.
+        """
 
-    def test_output(self):
+        matrix = np.array([
+            [1.0, 10000.0, 1.2, 1.10, 0.05, 34.0, 0.18, 600.0, 10.0, 35.0, 81.0, 60.0, 78.50, 78.50],
+            [1.0, 10000.0, 1.4, 1.20, 0.10, 33.0, 0.15, 300.0,  5.0, 30.0, 78.0, 50.0, 100.0, 100.0],
+            [1.0, 10000.0, 1.4, 1.10, 0.05, 34.0, 0.18, 600.0,  5.0, 50.0, 81.0, 60.0, 37.00, 37.00],
+            [1.0, 1000.0,  1.4, 1.10, 0.05, 33.0, 0.30, 250.0,  5.0, 40.0, 79.0, 60.0, 100.0, 100.0],
+            [1.0, 10000.0, 1.4, 1.14, 0.05, 32.0, 0.31, 250.0,  5.0, 30.0, 78.0, 60.0, 27.43, 27.43],
+        ])
+
+        weights = np.array([
+            0.06875, 0.07275, 0.09100, 0.10800, 0.05750, 0.08275, 0.06150,
+            0.07550, 0.07550, 0.07725, 0.05500, 0.05625, 0.05375, 0.06450,
+        ])
+
+        types = np.array([
+            1, 1, -1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
+        ])
+
         body = methods.COPRAS()
 
-        # The alternatives are in columns in the referenced paper,
-        # so we transpose the matrix to fit the pymcdm input format.
+        expected = np.array([1.0000, 0.8687, 0.8977, 0.8154, 0.7504])
+
+        output = body(matrix, weights, types)
+
+        np.testing.assert_allclose(
+            output,
+            expected,
+            atol=1e-2,
+        )
+
+    def test_kundakci_isik_2016(self):
+        """Test from COPRAS application to air compressor selection.
+
+        Reference:
+        Kundakcı, N., & Işık, A. (2016).
+        Integration of MACBETH and COPRAS methods to select air compressor
+        for a textile company.
+        Decision Science Letters, 5(3), 381-394.
+        https://doi.org/10.5267/j.dsl.2016.2.003
+        """
+
         matrix = np.array([
-                [30, 20, 27, 18, 24, 16],
-                [12.487, 12.372, 11.096, 10.982, 11.017, 10.903],
-                [6.261, 5.961, 6.262, 5.962, 6.283, 5.983],
-                [10.880, 10.880, 9.920, 9.920, 9.980, 9.980],
-                [7.610, 7.460, 6.690, 6.540, 7.000, 6.850]
-            ]).T
+            [1543, 2000, 39000, 15, 13.76, 3.86, 5, 3, 5000],
+            [1496, 3600, 43000, 14, 14.00, 2.50, 4, 4, 4000],
+            [1584, 3100, 24500, 10, 13.10, 3.70, 2, 2, 3500],
+            [1560, 2700, 36000, 12, 13.20, 3.20, 3, 3, 3500],
+            [1572, 2500, 31500, 13, 13.30, 3.40, 3, 2, 3500],
+            [1580, 2400, 20000, 12, 12.80, 3.90, 2, 2, 3000],
+        ])
 
-        types = np.array([1, -1, -1, -1, -1])
-        weights = np.array([0.075, 0.700, 0.075, 0.075, 0.075])
+        weights = np.array([
+            0.2027, 0.1757, 0.1622, 0.1351, 0.1081,
+            0.0946, 0.0676, 0.0405, 0.0135,
+        ])
 
-        output = [1.0, 0.9585, 0.8984, 0.86, 0.8886, 0.8532]
-        output_method = [round(preference, 4) for preference in body(matrix, weights, types)]
+        types = np.array([
+            -1, -1, -1, 1, 1, -1, 1, 1, 1,
+        ])
+
+        body = methods.COPRAS()
+
+        # Expected utility degrees from the paper.
+        # Rounded to 4 decimal places.
+        output = [1.0000, 0.9167, 0.8675, 0.9084, 0.9315, 0.9486]
+
+        output_method = [
+            round(preference, 4)
+            for preference in body(matrix, weights, types)
+        ]
 
         self.assertListEqual(output, output_method)
+
 
 class TestEDAS(unittest.TestCase):
     """ Test output method with reference:
