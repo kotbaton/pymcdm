@@ -49,9 +49,7 @@ The weights vector (:math:`w`) is derived as the geometric mean of each row in t
 .. math::
     :label: ahp_priority_vector
 
-    \begin{equation}
     w_i = \frac{\prod_{j=1}^{n} \left(a_{ij}\right)^{\frac{1}{n}}}{\sum_{k=1}^{n} \prod_{j=1}^{n} \left(a_{kj}\right)^{\frac{1}{n}}}
-    \end{equation}
 
 
 **Step 5.** Check the Consistency of the Matrix.
@@ -130,14 +128,12 @@ where :math:`n` is the number of criteria taken into account in the problem, and
 .. math::
     :label: p1
 
-    \begin{equation}
-        \alpha_{ij} = \left\{ \begin{array}{lccr}
-            IF & f \left( C_i\right)   <  f \left( C_j\right) & THEN & 1  \\
-            IF & f \left( C_i\right) =  f \left( C_j\right) & THEN & 0.5 \\
-            IF & f \left( C_i\right)  >   f \left( C_j\right) & THEN & 0  \\
-        \end{array}
-        \right.
-    \end{equation}
+    \alpha_{ij} = \left\{ \begin{array}{lccr}
+        IF & f \left( C_i\right)   <  f \left( C_j\right) & THEN & 1  \\
+        IF & f \left( C_i\right) =  f \left( C_j\right) & THEN & 0.5 \\
+        IF & f \left( C_i\right)  >   f \left( C_j\right) & THEN & 0  \\
+    \end{array}
+    \right.
 
 where :math:`f \left(C\right)` is a position in ranking for criterion :math:`C` (lower value is better).
 
@@ -147,9 +143,8 @@ Based on the obtained :math:`MAC`, the horizontal vector of the Summed Criteria 
 follows:
 
 .. math::
-    \begin{equation}
+
     SCW_i=\sum^{n}_{j=1}\alpha_{ij}
-    \end{equation}
 
 
 **Step 4.** Calculate the final criteria weights.
@@ -159,6 +154,5 @@ where the :math:`i-th` row contains the approximate preference value for :math:`
 criteria are obtained as:
 
 .. math::
-    \begin{equation}
+
         w_{i} = \frac{SCW_{i}}{\sum^{n}_{i=1} SCW_{i}}
-    \end{equation}
