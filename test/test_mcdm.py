@@ -952,3 +952,76 @@ class TestAROMAN(unittest.TestCase):
         output_method = list(np.round(aroman(matrix, weights, types), 4))
         expected = [0.6727, 0.5535, 0.4721, 0.8718]
         self.assertListEqual(expected, output_method)
+
+
+class TestRTOPSIS(unittest.TestCase):
+    """ Test output method with reference:
+    [1] de Farias Aires, R. F., & Ferreira, L. (2019). A new approach to avoid rank reversal cases in the TOPSIS
+    method. Computers & Industrial Engineering, 132, 84-97.
+
+    Case study from Appendix C: decision matrix and weights from Table B.4, domains from Table C.11.
+    """
+    # Alternatives A1, A2, A5, A8, A12, A13, A54, A55, A56, A59, A61, A67, A71, A72, A76, A83, A87, A88, A90, A91
+    matrix = np.array([
+        [8.5218, 1.0000, 1.0000],
+        [7.0455, 1.0000, 1.0000],
+        [7.9625, 0.9821, 1.0000],
+        [8.4073, 0.9649, 1.0000],
+        [8.5000, 1.0000, 1.0000],
+        [7.0291, 1.0000, 1.0000],
+        [8.3702, 0.9649, 1.0000],
+        [6.7018, 1.0000, 1.0000],
+        [7.8455, 1.0000, 1.0000],
+        [8.2291, 1.0000, 1.0000],
+        [7.7618, 1.0000, 1.0000],
+        [7.5909, 1.0000, 1.0000],
+        [7.6564, 1.0000, 1.0000],
+        [7.5273, 1.0000, 1.0000],
+        [8.6286, 0.9821, 1.0000],
+        [7.7673, 1.0000, 1.0000],
+        [8.3273, 1.0000, 1.0000],
+        [7.0983, 0.9483, 1.0000],
+        [7.4224, 0.9483, 1.0000],
+        [8.3304, 0.9821, 1.0000],
+    ])
+    weights = np.array([0.3633, 0.3298, 0.3069])
+    types = np.array([1, 1, 1])
+    bounds = np.array([[0, 10], [0, 1], [0, 1]], dtype=float)
+
+    def test_output(self):
+        """ Closeness coefficients and ordering from Table C.11 (Max normalization). """
+        body = methods.RTOPSIS(self.bounds)
+        preferences = body(self.matrix, self.weights, self.types)
+
+        output = [0.9105, 0.8284, 0.8775, 0.9011, 0.9093, 0.8275, 0.8989, 0.8104, 0.8720, 0.8937,
+                  0.8673, 0.8579, 0.8615, 0.8544, 0.9157, 0.8676, 0.8993, 0.8264, 0.8439, 0.8984]
+        output_method = [round(preference, 4) for preference in preferences]
+        self.assertListEqual(output, output_method)
+
+        output = [2, 17, 9, 4, 3, 18, 6, 20, 10, 8, 12, 14, 13, 15, 1, 11, 5, 19, 16, 7]
+        output_method = [int(r) for r in body.rank(preferences)]
+        self.assertListEqual(output, output_method)
+
+    def test_addition_of_alternative(self):
+        """ Adding a copy of A12 (alternative AA, Table C.12) does not change the other evaluations. """
+        body = methods.RTOPSIS(self.bounds)
+        preferences = body(self.matrix, self.weights, self.types)
+        extended = np.vstack((self.matrix, self.matrix[4]))
+        preferences_extended = body(extended, self.weights, self.types)
+
+        np.testing.assert_array_equal(preferences, preferences_extended[:-1])
+        self.assertEqual(round(preferences_extended[-1], 4), 0.9093)
+
+    def test_values_outside_domain(self):
+        body = methods.RTOPSIS(self.bounds)
+        matrix = self.matrix.copy()
+        matrix[1, 1] = 1.2
+        with self.assertRaises(ValueError):
+            body(matrix, self.weights, self.types)
+
+    def test_minmax_normalization(self):
+        """ With domains starting at zero, Max and Max-Min normalizations (Steps 5.1 and 5.2) coincide. """
+        preferences_max = methods.RTOPSIS(self.bounds, normalization='max')(self.matrix, self.weights, self.types)
+        preferences_minmax = methods.RTOPSIS(self.bounds, normalization='minmax')(self.matrix, self.weights,
+                                                                                   self.types)
+        np.testing.assert_allclose(preferences_max, preferences_minmax)

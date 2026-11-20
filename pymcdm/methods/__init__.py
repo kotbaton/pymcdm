@@ -16,6 +16,7 @@ from .marcos import MARCOS
 from .ocra import OCRA
 from .moora import MOORA
 from .rim import RIM
+from .r_topsis import RTOPSIS
 from .ram import RAM
 from .rafsi import RAFSI
 from .ervd import ERVD
