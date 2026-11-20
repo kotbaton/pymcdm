@@ -151,9 +151,9 @@ The library contains:
 
 | Metric Name                    	 |  Reference           |
 |-----------------------------------|:--------------------:|
-| Kemeny distance              	 |    [[73]](#73) 	    |
-| Frobenius distance              	 |    [[74]](#74) 	    |
-| draWS distance              	     |    [[75]](#75) 	    |
+| Kemeny distance              	 |    [[73]](#c73) 	    |
+| Frobenius distance              	 |    [[74]](#c74) 	    |
+| draWS distance              	     |    [[75]](#c75) 	    |
 
 * Helpers
 
