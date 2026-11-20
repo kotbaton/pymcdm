@@ -306,6 +306,64 @@ class TestAHPGeometricMeanWeights(unittest.TestCase):
 
 
 
+class TestSWARAWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Keršulienė, V., Zavadskas, E. K., & Turskis, Z. (2010). Selection of rational dispute resolution method
+        by applying new step-wise weight assessment ratio analysis (SWARA). Journal of Business Economics and
+        Management, 11(2), 243-258.
+    """
+
+    def test_output(self):
+        """ Weights of the dispute resolution attributes from Table 1. """
+        swara = weights.subjective.SWARA(s=[0, 1, 2, 3, 4, 5], s_v=[0.15, 0.04, 0.29, 0.02, 0.04])
+
+        output = [0.22, 0.19, 0.18, 0.14, 0.14, 0.13]
+        output_method = [round(weight, 2) for weight in swara()]
+        self.assertListEqual(output, output_method)
+
+    def test_order_with_gaps(self):
+        """ Every criterion has to be in the ordering, otherwise it would silently get a zero weight. """
+        with self.assertRaises(ValueError):
+            weights.subjective.SWARA(s=[0, 2], s_v=[0.1])
+        with self.assertRaises(ValueError):
+            weights.subjective.SWARA(s=[1, 2], s_v=[0.1])
+
+
+class TestFUCOMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Pamučar, D., Stević, Ž., & Sremac, S. (2018). A new model for determining weight coefficients of
+        criteria in MCDM models: Full Consistency Method (FUCOM). Symmetry, 10(9), 393.
+    """
+
+    def test_output(self):
+        """ Example 1: comparative priorities given directly (Step 2a, Table 1). """
+        fucom = weights.subjective.FUCOM(o=[0, 1, 2, 3], i=[1.08, 1.25, 1.45])
+
+        output = [0.315, 0.291, 0.233, 0.161]
+        output_method = [round(weight, 3) for weight in fucom()]
+        self.assertListEqual(output, output_method)
+        self.assertEqual(round(fucom.dfc, 2), 0.0)
+
+    def test_output_significance(self):
+        """ Example 2: ranking C2 > C1 > C4 > C3 > C5 and significance scores (Step 2b, Table 2).
+            The exact solution gives w2 = 0.4375 and w5 = 0.0625, which the paper prints as 0.437 and 0.063,
+            so the weights are compared with two decimals.
+        """
+        fucom = weights.subjective.FUCOM(o=[1, 0, 3, 2, 4], v=[1, 2.1, 3, 3, 7])
+
+        output = [0.21, 0.44, 0.15, 0.15, 0.06]
+        output_method = [round(weight, 2) for weight in fucom()]
+        self.assertListEqual(output, output_method)
+
+    def test_output_ties(self):
+        """ Example 3: eight criteria with ties, C3 = C5 = C7 > C1 > C2 = C4 = C6 = C8 (Tables 5 and 6). """
+        fucom = weights.subjective.FUCOM(o=[2, 4, 6, 0, 1, 3, 5, 7], v=[1, 1, 1, 2, 4, 4, 4, 4])
+
+        output = [0.1111, 0.0556, 0.2222, 0.0556, 0.2222, 0.0556, 0.2222, 0.0556]
+        output_method = [round(weight, 4) for weight in fucom()]
+        self.assertListEqual(output, output_method)
+
+
 class TestBWMWeights(unittest.TestCase):
     """ Test output method with reference:
         [1] Rezaei, J. (2015). Best-worst multi-criteria decision-making method. Omega, 53, 49-57.
