@@ -100,20 +100,30 @@ class PROMETHEE_I(MCDA_method):
 
     def __init__(self, preference_function, p=None, q=None):
         pf = getattr(_PreferenceFunctions, preference_function)
-        # p and q can be provided as list of values or list of functions
+        # p and q can be provided as list of values or list of functions.
+        # Per-criterion functions are stored in a list, not a generator,
+        # so that the same object can be called more than once.
         if p is None and q is None:
             pfs = repeat(partial(pf, p=None, q=None))
         elif p is None and q is not None:
-            pfs = (partial(_preference_function_wrapper(pf), p=None, q=q_)
-                   for q_ in q)
+            pfs = [partial(_preference_function_wrapper(pf), p=None, q=q_)
+                   for q_ in q]
         elif p is not None and q is None:
-            pfs = (partial(_preference_function_wrapper(pf), p=p_, q=None)
-                   for p_ in p)
+            pfs = [partial(_preference_function_wrapper(pf), p=p_, q=None)
+                   for p_ in p]
         else:
-            pfs = (partial(_preference_function_wrapper(pf), p=p_, q=q_)
-                   for p_, q_ in zip(p, q))
+            if len(p) != len(q):
+                raise ValueError(f'p and q should have the same length, '
+                                 f'but have lengths {len(p)} and {len(q)}.')
+            pfs = [partial(_preference_function_wrapper(pf), p=p_, q=q_)
+                   for p_, q_ in zip(p, q)]
 
         self.pfs = pfs
+
+    def _additional_validation(self, matrix, weights, types):
+        if isinstance(self.pfs, list) and len(self.pfs) != matrix.shape[1]:
+            raise ValueError(f'Number of p or q values ({len(self.pfs)}) should be equal '
+                             f'to the number of criteria ({matrix.shape[1]}).')
 
     def _method(self, matrix, weights, types, save_results=False):
         pfs = self.pfs
