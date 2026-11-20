@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Bartłomiej Kizielewicz
 
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import minimize, linprog
 from .subjective_weights_base import SubjectiveWeightsBase
 
 
@@ -73,6 +73,44 @@ class OptimizationWeightsBase(SubjectiveWeightsBase):
         if not result.success:
             raise ValueError(
                 f"{self.__class__.__name__} optimization failed: {result.message}"
+            )
+        return result
+
+    def _solve_lp(self, c, A_ub=None, b_ub=None, A_eq=None, b_eq=None, bounds=None):
+        """
+        Run ``scipy.optimize.linprog`` (HiGHS solver) with common error handling.
+
+        The problem is ``min c @ x`` subject to ``A_ub @ x <= b_ub``,
+        ``A_eq @ x == b_eq`` and ``bounds``. Linear models (e.g. OPA) should
+        use this helper instead of ``_solve_optimization`` to obtain the exact
+        global optimum.
+
+        Parameters
+        ----------
+        c : np.ndarray
+            Coefficients of the linear objective function to minimise.
+        A_ub, b_ub : np.ndarray, optional
+            Inequality constraints.
+        A_eq, b_eq : np.ndarray, optional
+            Equality constraints.
+        bounds : sequence of (min, max), optional
+            Variable bounds. Default is ``(0, None)`` for every variable.
+
+        Returns
+        -------
+        scipy.optimize.OptimizeResult
+            The optimisation result.
+
+        Raises
+        ------
+        ValueError
+            If the solver reports failure.
+        """
+        result = linprog(c, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq,
+                         bounds=bounds, method='highs')
+        if not result.success:
+            raise ValueError(
+                f"{self.__class__.__name__} linear programming failed: {result.message}"
             )
         return result
 
