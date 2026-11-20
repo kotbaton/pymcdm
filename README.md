@@ -117,6 +117,18 @@ The library contains:
 | -       | Statistical variance weights                              |               [[33]](#c33)               |
 | AHP     | Analytic Hierarchy Process                                |        [[65]](#c65), [[77]](#c77)        |
 | RANCOM  | RANking COMparison                                        |               [[66]](#c66)               |
+| SWARA   | Step-wise Weight Assessment Ratio Analysis                |               [[78]](#c78)               |
+| PIPRECIA | PIvot Pairwise RElative Criteria Importance Assessment    |               [[79]](#c79)               |
+| FUCOM   | FUll COnsistency Method                                   |               [[80]](#c80)               |
+| BWM     | Best-Worst Method                                         |               [[81]](#c81)               |
+| BCM     | Base-Criterion Method                                     |               [[82]](#c82)               |
+| LBWA    | Level Based Weight Assessment                             |               [[83]](#c83)               |
+| SIMOS   | Simos procedure (cards method)                            |               [[84]](#c84)               |
+| SRF     | Simos-Roy-Figueira (revised Simos procedure)              |               [[84]](#c84)               |
+| VIMM    | Vital-Immaterial-Mediocre Method                          |               [[85]](#c85)               |
+| COBRAC  | COmparisons Between RAnked Criteria                       |               [[86]](#c86)               |
+| ITARA   | Indifference Threshold-based Attribute RAtio Analysis     |               [[87]](#c87)               |
+| OWCM    | Opinion Weight Criteria Method                            |               [[88]](#c88)               |
 
 * Normalization methods:
 
@@ -389,3 +401,25 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c76">[76]</a> de Farias Aires, R. F., & Ferreira, L. (2019). A new approach to avoid rank reversal cases in the TOPSIS method. Computers & Industrial Engineering, 132, 84-97.
 
 <a name="c77">[77]</a> Crawford, G., & Williams, C. (1985). A note on the analysis of subjective judgment matrices. Journal of Mathematical Psychology, 29(4), 387-405.
+
+<a name="c78">[78]</a> Keršulienė, V., Zavadskas, E. K., & Turskis, Z. (2010). Selection of rational dispute resolution method by applying new step-wise weight assessment ratio analysis (SWARA). Journal of Business Economics and Management, 11(2), 243-258.
+
+<a name="c79">[79]</a> Stanujkić, D., Zavadskas, E. K., Karabašević, D., Smarandache, F., & Turskis, Z. (2017). The use of the PIvot Pairwise RElative Criteria Importance Assessment method for determining the weights of criteria. Romanian Journal of Economic Forecasting, 20(4), 116-133.
+
+<a name="c80">[80]</a> Pamučar, D., Stević, Ž., & Sremac, S. (2018). A new model for determining weight coefficients of criteria in MCDM models: Full Consistency Method (FUCOM). Symmetry, 10(9), 393. https://doi.org/10.1016/j.cie.2019.04.023
+
+<a name="c81">[81]</a> Rezaei, J. (2015). Best-worst multi-criteria decision-making method. Omega, 53, 49-57. https://doi.org/10.1016/0022-2496(85)90002-1
+
+<a name="c82">[82]</a> Haseli, G., Sheikh, R., & Sana, S. S. (2019). Base-criterion on multi-criteria decision-making method and its applications. International Journal of Management Science and Engineering Management, DOI: 10.1080/17509653.2019.1633964. https://doi.org/10.3846/jbem.2010.12
+
+<a name="c83">[83]</a> Žižović, M., & Pamučar, D. (2019). New model for determining criteria weights: Level Based Weight Assessment (LBWA) model. Decision Making: Applications in Management and Engineering, 2(2), 126-137.
+
+<a name="c84">[84]</a> Figueira, J., & Roy, B. (2002). Determining the weights of criteria in the ELECTRE type methods with a revised Simos' procedure. European Journal of Operational Research, 139(2), 317-326. https://doi.org/10.3390/sym10090393
+
+<a name="c85">[85]</a> Zakeri, S., Ecer, F., Konstantas, D., & Cheikhrouhou, N. (2023). The vital-immaterial-mediocre multi-criteria decision-making method. Kybernetes, 52(3), 937-963. https://doi.org/10.1016/j.omega.2014.11.009
+
+<a name="c86">[86]</a> Pamucar, D., Simic, V., Gorcun, O. F., & Kucukonder, H. (2024). Selection of the best Big Data platform using COBRAC-ARTASI methodology with adaptive standardized intervals. Expert Systems with Applications, 239, 122312. https://doi.org/10.1080/17509653.2019.1633964
+
+<a name="c87">[87]</a> Hatefi, M. A. (2019). Indifference threshold-based attribute ratio analysis: A method for assigning the weights to the attributes in multiple attribute decision making. Applied Soft Computing, 74, 643-651. https://doi.org/10.31181/dmame1902102z
+
+<a name="c88">[88]</a> Mandil, A. D. A., Salih, M. M., & Muhsen, Y. R. (2024). Opinion Weight Criteria Method (OWCM): A New Method for Weighting Criteria With Zero Inconsistency. IEEE Access, 12, 5605-5619. https://doi.org/10.1016/S0377-2217(01)00370-8

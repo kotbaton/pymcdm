@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+* New subjective weighting methods, available under `pymcdm.weights.subjective`:
+  - SWARA (Step-wise Weight Assessment Ratio Analysis), PIPRECIA (PIvot Pairwise RElative Criteria Importance
+    Assessment) and FUCOM (FUll COnsistency Method), based on ordered criteria.
+  - BWM (Best-Worst Method), BCM (Base-Criterion Method) and COBRAC (COmparisons Between RAnked Criteria), based on
+    optimization.
+  - SIMOS (Simos procedure) and SRF (revised Simos procedure), based on grouped ranks.
+  - LBWA (Level Based Weight Assessment) and VIMM (Vital-Immaterial-Mediocre Method).
+  - ITARA (Indifference Threshold-based Attribute RAtio Analysis) and OWCM (Opinion Weight Criteria Method), which
+    also use the decision matrix.
+* New base classes for subjective weighting methods: `SubjectiveWeightsBase`, `OrderedCriteriaWeightsBase`,
+  `GroupedRanksBase`, `OptimizationWeightsBase` and `DecisionMatrixWeightsBase`.
 * New MCDM method, with tests and documentation:
   - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
     option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of
