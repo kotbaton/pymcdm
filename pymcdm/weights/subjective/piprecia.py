@@ -29,7 +29,7 @@ class PIPRECIA(OrderedCriteriaWeightsBase):
     >>> s_v = [1.0, 1.0, 0.75, 1.0, 0.8]
     >>> piprecia = PIPRECIA(s=s, s_v=s_v)
     >>> weights = piprecia()
-    >>> print(weights)
+    >>> print(np.round(weights, 2))
     [0.19 0.19 0.19 0.15 0.15 0.13]
 
     References

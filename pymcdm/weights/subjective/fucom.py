@@ -41,7 +41,8 @@ class FUCOM(OrderedCriteriaWeightsBase, OptimizationWeightsBase):
     >>> weights = fucom()
     >>> print(np.round(weights, 4))
     [0.3147 0.2914 0.2331 0.1608]
-    >>> print(fucom.dfc)  # 0.0
+    >>> print(round(fucom.dfc, 4))
+    0.0
 
     References
     ----------

@@ -45,7 +45,8 @@ class SWAN(OrderedCriteriaWeightsBase):
     >>> bridges = [(0, 5, 1.7)]  # position 0 is 1.7× more important than position 5
     >>> sb = SWAN(s=s, s_v=s_v, bridges=bridges)
     >>> weights = sb()
-    >>> print(sb.bci)
+    >>> print(round(sb.bci, 4))
+    0.0063
 
     References
     ----------

@@ -29,7 +29,7 @@ class SWARA(OrderedCriteriaWeightsBase):
     >>> s_v = [0.15, 0.04, 0.29, 0.02, 0.04]
     >>> swara = SWARA(s=s, s_v=s_v)
     >>> weights = swara()
-    >>> print(weights)
+    >>> print(np.round(weights, 2))
     [0.22 0.19 0.18 0.14 0.14 0.13]
 
     References

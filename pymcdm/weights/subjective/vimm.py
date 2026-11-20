@@ -39,7 +39,7 @@ class VIMM(SubjectiveWeightsBase):
     >>> vimm = VIMM(n_criteria=7, vital_index=0, immaterial_index=4,
     ...             c_vital=c_vital, c_immaterial=c_immaterial)
     >>> weights = vimm()
-    >>> print(weights)
+    >>> print(np.round(weights, 3))
     [0.286 0.243 0.186 0.192 0.014 0.027 0.05 ]
 
     References

@@ -24,7 +24,8 @@ class BWM(OptimizationWeightsBase):
     >>> from pymcdm.weights.subjective import BWM
     >>> bwm = BWM(a_b=[1, 3, 5, 7], a_w=[7, 5, 3, 1])
     >>> weights = bwm()
-    >>> print(weights)
+    >>> print(np.round(weights, 4))
+    [0.5333 0.2667 0.1333 0.0667]
 
     References
     ----------

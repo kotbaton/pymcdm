@@ -37,7 +37,8 @@ class BCM(OptimizationWeightsBase):
     >>> weights = bcm()
     >>> print(np.round(weights, 4))
     [0.0769 0.3077 0.6154]
-    >>> print(bcm.xi)  # 0.0
+    >>> print(round(bcm.xi, 4))
+    0.0
 
     References
     ----------
