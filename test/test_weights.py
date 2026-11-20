@@ -238,6 +238,63 @@ class TestAHPWeights(unittest.TestCase):
         output_method = [round(weight, 4) for weight in weights.subjective.AHP(matrix=matrix)()]
         self.assertListEqual(output, output_method)
 
+    def test_prioritization_attribute_clears_cache(self):
+        # For n = 3 both methods always coincide, so an inconsistent 4x4 matrix is needed
+        matrix = np.array([
+            [1, 3, 5, 1],
+            [1/3, 1, 4, 1/2],
+            [1/5, 1/4, 1, 1/7],
+            [1, 2, 7, 1]
+        ])
+        ahp = weights.subjective.AHP(matrix=matrix)
+        w_ev = ahp()
+        ahp.prioritization = 'geometric_mean'
+        w_gm = ahp()
+        np.testing.assert_allclose(w_gm, weights.subjective.AHP(matrix=matrix, prioritization='geometric_mean')())
+        self.assertFalse(np.allclose(w_ev, w_gm))
+
+    def test_unknown_prioritization(self):
+        with self.assertRaises(ValueError):
+            weights.subjective.AHP(matrix=np.ones((3, 3)), prioritization='row_sum')
+
+
+class TestAHPGeometricMeanWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Wang, Y. M., Parkan, C., & Luo, Y. (2007). Priority estimation in the AHP through maximization of
+        correlation coefficient. Applied Mathematical Modelling, 31(12), 2711-2718.
+    """
+
+    def test_output(self):
+        matrix = np.array([
+            [1, 4, 3, 1, 3, 4],
+            [1/4, 1, 7, 3, 1/5, 1],
+            [1/3, 1/7, 1, 1/5, 1/5, 1/6],
+            [1, 1/3, 5, 1, 1, 1/3],
+            [1/3, 5, 5, 1, 1, 3],
+            [1/4, 1, 6, 3, 1/3, 1]
+        ])
+        output = [0.3160, 0.1391, 0.0360, 0.1251, 0.2360, 0.1477]
+        output_method = [round(weight, 4) for weight in
+                         weights.subjective.AHP(matrix=matrix, prioritization='geometric_mean')()]
+        self.assertListEqual(output, output_method)
+
+    def test_output_example_2(self):
+        matrix = np.array([
+            [1, 5, 3, 7, 6, 6, 1/3, 1/4],
+            [1/5, 1, 1/3, 5, 3, 3, 1/5, 1/7],
+            [1/3, 3, 1, 6, 3, 4, 6, 1/5],
+            [1/7, 1/5, 1/6, 1, 1/3, 1/4, 1/7, 1/8],
+            [1/6, 1/3, 1/3, 3, 1, 1/2, 1/5, 1/6],
+            [1/6, 1/3, 1/4, 4, 2, 1, 1/5, 1/6],
+            [3, 5, 1/6, 7, 5, 5, 1, 1/2],
+            [4, 7, 5, 8, 6, 6, 2, 1]
+        ])
+        output = [0.1748, 0.0626, 0.1487, 0.0193, 0.0356, 0.0423, 0.1670, 0.3496]
+        output_method = [round(weight, 4) for weight in
+                         weights.subjective.AHP(matrix=matrix, prioritization='geometric_mean')()]
+        self.assertListEqual(output, output_method)
+
+
 class TestLOPCOWWeights(unittest.TestCase):
     """ Test output method with reference:
 
