@@ -100,12 +100,12 @@ class AHP(PairwiseWeightsBase):
         """
         m = self.matrix
         if m is None:
-            ValueError('Matrix is not existed. Model if not identified yet!')
+            raise ValueError('Matrix does not exist. Model is not identified yet!')
 
         if m.shape[0] < 3:
             return 0
         if m.shape[0] > len(self.RI_M):
-            ValueError(f"Can't calculate CR for the matrix of this size. Max size is {len(self.RI_M)}.")
+            raise ValueError(f"Can't calculate CR for the matrix of this size. Max size is {len(self.RI_M)}.")
 
         eig, _ = np.linalg.eig(m)
         lambda_max = max(eig.real)

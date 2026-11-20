@@ -253,6 +253,16 @@ class TestAHPWeights(unittest.TestCase):
         np.testing.assert_allclose(w_gm, weights.subjective.AHP(matrix=matrix, prioritization='geometric_mean')())
         self.assertFalse(np.allclose(w_ev, w_gm))
 
+    def test_get_cr_without_matrix(self):
+        ahp = weights.subjective.AHP(object_names=['A', 'B', 'C'])
+        with self.assertRaises(ValueError):
+            ahp.get_cr()
+
+    def test_get_cr_too_large_matrix(self):
+        ahp = weights.subjective.AHP(matrix=np.ones((16, 16)))
+        with self.assertRaises(ValueError):
+            ahp.get_cr()
+
     def test_unknown_prioritization(self):
         with self.assertRaises(ValueError):
             weights.subjective.AHP(matrix=np.ones((3, 3)), prioritization='row_sum')
