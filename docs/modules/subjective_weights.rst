@@ -44,14 +44,28 @@ importance of criterion :math:`C_i` relative to criterion :math:`C_j`.
 
 **Step 4.** Calculate the Priority Vector of Criteria.
 
-The weights vector (:math:`w`) is derived as the geometric mean of each row in the pairwise comparison matrix:
+By default (``prioritization='eigenvector'``), the weights vector (:math:`w`) is the principal right eigenvector of the
+pairwise comparison matrix, normalized to sum up to one:
 
 .. math::
     :label: ahp_priority_vector
 
     \begin{equation}
+    A w = \lambda_{\max} w, \qquad \sum_{i=1}^{n} w_i = 1
+    \end{equation}
+
+With ``prioritization='geometric_mean'``, the weights are derived with the Logarithmic Least Squares Method (LLSM), i.e.
+as the normalized geometric mean of each row in the pairwise comparison matrix:
+
+.. math::
+    :label: ahp_priority_vector_llsm
+
+    \begin{equation}
     w_i = \frac{\prod_{j=1}^{n} \left(a_{ij}\right)^{\frac{1}{n}}}{\sum_{k=1}^{n} \prod_{j=1}^{n} \left(a_{kj}\right)^{\frac{1}{n}}}
     \end{equation}
+
+Both methods give the same weights for a fully consistent matrix and for any matrix with three criteria. The method can
+also be changed later by setting the ``prioritization`` attribute.
 
 
 **Step 5.** Check the Consistency of the Matrix.

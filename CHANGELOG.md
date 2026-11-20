@@ -1,5 +1,17 @@
 # Release history
 
+## Unreleased
+
+* New MCDM method, with tests and documentation:
+  - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
+    option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of
+    IE-TOPSIS and TOPSIS-RAD are obtained with these parameters.
+* Add `prioritization` argument to `AHP`: weights from the principal eigenvector (default) or from the geometric mean
+  of rows (LLSM).
+* Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
+* Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and
+  validate the number of thresholds against the number of criteria.
+
 ## Version 1.4.0
 
 * New MCDM methods, with test and documentation:

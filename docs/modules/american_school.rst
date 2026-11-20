@@ -1678,6 +1678,66 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
 
 Alternative with the highest value of :math:`P_i` considered the best.
 
+R-TOPSIS
+=======================
+
+``RTOPSIS`` (Robust TOPSIS) removes the dependence of TOPSIS on the set of alternatives. Every criterion is normalized
+on a domain :math:`[d_{1j}, d_{2j}]` given by the decision maker instead of on the values in the decision matrix, and the
+ideal solutions are fixed at the ends of that domain. The evaluation of an alternative therefore does not change when
+other alternatives are added or removed. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]` of dimension :math:`n \times m` and of a domain
+:math:`D_j = [d_{1j}, d_{2j}]` for every criterion, where :math:`d_{1j} \leq x_{ij} \leq d_{2j}`.
+
+**Step 2.** Normalize the decision matrix with the Max (:eq:`rtopsis_max`) or the Max-Min (:eq:`rtopsis_minmax`)
+normalization. Both are applied in the same way to benefit and cost criteria.
+
+.. math::
+    \begin{equation}
+        n_{ij} = \frac{x_{ij}}{d_{2j}}
+    \end{equation}
+    :label: rtopsis_max
+
+.. math::
+    \begin{equation}
+        n_{ij} = \frac{x_{ij} - d_{1j}}{d_{2j} - d_{1j}}
+    \end{equation}
+    :label: rtopsis_minmax
+
+**Step 3.** Calculate the weighted normalized decision matrix :math:`r_{ij} = w_j n_{ij}`.
+
+**Step 4.** Set the positive and negative ideal solutions at the weighted normalized ends of the domain, where
+:math:`N(\cdot)` is the normalization from Step 2:
+
+.. math::
+    \begin{equation}
+        r_{j}^{+} = \begin{cases} w_j N(d_{2j}) & \text{for benefit criteria} \\ w_j N(d_{1j}) & \text{for cost criteria} \end{cases}
+        \qquad
+        r_{j}^{-} = \begin{cases} w_j N(d_{1j}) & \text{for benefit criteria} \\ w_j N(d_{2j}) & \text{for cost criteria} \end{cases}
+    \end{equation}
+    :label: rtopsis_ideals
+
+For the Max normalization this gives :math:`w_j` and :math:`w_j d_{1j}/d_{2j}`, as in the original method, and for the
+Max-Min normalization :math:`w_j` and 0.
+
+**Step 5.** Determine the Euclidean distances :math:`S_i^{+}` and :math:`S_i^{-}` of every alternative from the
+:math:`PIS` and the :math:`NIS`, as in TOPSIS.
+
+**Step 6.** Calculate the closeness coefficient :math:`CC_i = S_i^{-} / (S_i^{+} + S_i^{-})`. The alternative with the
+highest value is the best.
+
+Several other rank-reversal-free variants of TOPSIS differ from R-TOPSIS only in the source of the domain and can be
+obtained with its parameters:
+
+* NR-TOPSIS: historical minimum and maximum of every criterion (:meth:`RTOPSIS.make_bounds`) with the Max-Min
+  normalization;
+* the absolute mode of García-Cascales and Lamata: one common scale :math:`[Z_0, Z_t]` for all criteria with the Max
+  normalization;
+* the domain of IE-TOPSIS: observed extremes extended by :math:`\alpha` sample standard deviations
+  (:meth:`RTOPSIS.expand_bounds`) with the Max-Min normalization; the domain should be computed once and kept fixed;
+* TOPSIS-RAD: vetoed and desired performance levels as the domain, the Max-Min normalization and ``clip=True``, which
+  clips performances above the desired levels; vetoed alternatives are removed from the decision matrix beforehand.
+
 VIKOR
 =======================
 

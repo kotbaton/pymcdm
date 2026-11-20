@@ -98,6 +98,7 @@ The library contains:
 | Acronym       	|    Reference         	    |
 |:-----------------|:-------------------------:|
 | Balanced SPOTIS	|   [[68]](#c68)       	    |
+| R-TOPSIS        	|   [[76]](#c76)       	    |
 
 * Weighting methods:
 
@@ -114,7 +115,7 @@ The library contains:
 | -       | Angular/Angle weights                                     |               [[31]](#c31)               |
 | -       | Gini Coeficient weights                                   |               [[32]](#c32)               |
 | -       | Statistical variance weights                              |               [[33]](#c33)               |
-| AHP     | Analytic Hierarchy Process                                |               [[65]](#c65)               |
+| AHP     | Analytic Hierarchy Process                                |        [[65]](#c65), [[77]](#c77)        |
 | RANCOM  | RANking COMparison                                        |               [[66]](#c66)               |
 
 * Normalization methods:
@@ -385,3 +386,6 @@ This will produce output that contains formatted decision matrix, intermediate r
 
 <a name="c75">[75]</a> Sałabun, W., & Shekhovtsov, A. (2023). An innovative drastic metric for ranking similarity in decision-making problems. Proceedings of the 18th Conference on Computer Science and Intelligence Systems, 731–738.
 
+<a name="c76">[76]</a> de Farias Aires, R. F., & Ferreira, L. (2019). A new approach to avoid rank reversal cases in the TOPSIS method. Computers & Industrial Engineering, 132, 84-97.
+
+<a name="c77">[77]</a> Crawford, G., & Williams, C. (1985). A note on the analysis of subjective judgment matrices. Journal of Mathematical Psychology, 29(4), 387-405.
