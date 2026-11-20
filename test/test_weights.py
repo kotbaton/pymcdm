@@ -305,6 +305,76 @@ class TestAHPGeometricMeanWeights(unittest.TestCase):
         self.assertListEqual(output, output_method)
 
 
+
+class TestBWMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Rezaei, J. (2015). Best-worst multi-criteria decision-making method. Omega, 53, 49-57.
+    """
+
+    def test_output(self):
+        """ Example 1: transportation mode, C3 is the best and C1 the worst criterion. """
+        bwm = weights.subjective.BWM(a_b=[8, 2, 1], a_w=[1, 5, 8])
+
+        output = [0.0714, 0.3387, 0.5899]
+        output_method = [round(weight, 4) for weight in bwm()]
+        self.assertListEqual(output, output_method)
+        self.assertEqual(round(bwm.get_xi(), 2), 0.26)
+
+    def test_output_all_combinations(self):
+        """ Example 2 (Table 5): xi and weights for a_32, a_21 in {1, ..., 8} with a_31 = 8.
+            Rows are a_21, columns are a_32. The table includes inputs with two criteria
+            equal to the best one (a_32 = 1). Weights are rounded to two decimals in the paper,
+            hence the tolerance.
+        """
+        xi = np.array([
+            [1.54, 1.16, 0.85, 0.61, 0.41, 0.24, 0.11, 0.00],
+            [1.16, 0.70, 0.32, 0.00, 0.26, 0.47, 0.64, 0.78],
+            [0.85, 0.32, 0.15, 0.54, 0.86, 1.13, 1.35, 1.53],
+            [0.61, 0.00, 0.54, 1.00, 1.39, 1.73, 2.00, 2.23],
+            [0.41, 0.26, 0.86, 1.39, 1.86, 2.26, 2.59, 2.88],
+            [0.24, 0.47, 1.13, 1.73, 2.26, 2.73, 3.13, 3.47],
+            [0.11, 0.64, 1.35, 2.00, 2.59, 3.13, 3.59, 4.00],
+            [0.00, 0.78, 1.53, 2.23, 2.88, 3.47, 4.00, 4.47],
+        ])
+        w1 = np.array([
+            [0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10],
+            [0.09, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
+            [0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08],
+            [0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08],
+            [0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07],
+            [0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07],
+            [0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06],
+            [0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06],
+        ])
+        w2 = np.array([
+            [0.25, 0.22, 0.19, 0.16, 0.14, 0.12, 0.11, 0.10],
+            [0.29, 0.25, 0.21, 0.18, 0.16, 0.14, 0.12, 0.11],
+            [0.32, 0.28, 0.24, 0.21, 0.18, 0.16, 0.14, 0.12],
+            [0.35, 0.31, 0.27, 0.23, 0.20, 0.17, 0.15, 0.14],
+            [0.39, 0.34, 0.30, 0.26, 0.22, 0.20, 0.17, 0.15],
+            [0.42, 0.37, 0.32, 0.28, 0.25, 0.22, 0.19, 0.17],
+            [0.44, 0.40, 0.35, 0.31, 0.28, 0.24, 0.21, 0.19],
+            [0.47, 0.42, 0.38, 0.34, 0.30, 0.27, 0.24, 0.21],
+        ])
+        w3 = np.array([
+            [0.65, 0.68, 0.71, 0.74, 0.76, 0.78, 0.79, 0.80],
+            [0.62, 0.66, 0.70, 0.73, 0.75, 0.77, 0.79, 0.80],
+            [0.60, 0.64, 0.68, 0.71, 0.74, 0.76, 0.78, 0.79],
+            [0.57, 0.62, 0.66, 0.69, 0.72, 0.75, 0.77, 0.79],
+            [0.54, 0.59, 0.63, 0.67, 0.70, 0.73, 0.76, 0.78],
+            [0.52, 0.56, 0.61, 0.65, 0.68, 0.72, 0.74, 0.76],
+            [0.49, 0.54, 0.58, 0.62, 0.66, 0.70, 0.72, 0.75],
+            [0.47, 0.52, 0.56, 0.60, 0.64, 0.67, 0.71, 0.73],
+        ])
+        for a21 in range(1, 9):
+            for a32 in range(1, 9):
+                with self.subTest(a21=a21, a32=a32):
+                    bwm = weights.subjective.BWM(a_b=[8, a32, 1], a_w=[1, a21, 8])
+                    output = [xi[a21 - 1, a32 - 1], w1[a21 - 1, a32 - 1], w2[a21 - 1, a32 - 1], w3[a21 - 1, a32 - 1]]
+                    output_method = [bwm.get_xi(), *bwm()]
+                    np.testing.assert_allclose(output_method, output, atol=0.0051)
+
+
 class TestLOPCOWWeights(unittest.TestCase):
     """ Test output method with reference:
 
