@@ -36,7 +36,7 @@ class COPRAS(MCDA_method):
         >>> weights = np.array([0.2027, 0.1757, 0.1622, 0.1351, 0.1081, 0.0946, 0.0676, 0.0405, 0.0135])
         >>> types = np.array([-1, -1, -1, 1, 1, -1, 1, 1, 1])
         >>> [round(preference, 4) for preference in body(matrix, weights, types)]
-        [0.9459, 1.0, 0.8192, 0.8839, 0.8556, 0.7789]
+        [1, 0.9167, 0.8675, 0.9084, 0.9315, 0.9486]
     """
     _tables = [
         TableDesc(caption='Normalized decision matrix',
@@ -67,6 +67,6 @@ class COPRAS(MCDA_method):
         Sp = np.sum(wmatrix[:, types == 1], axis=1)
         Sm = np.sum(wmatrix[:, types == -1], axis=1)
 
-        Q = Sp + ((np.min(Sm) * Sm) / (Sm * (np.min(Sm) / Sm)))
+        Q = Sp + ((np.min(Sm) * np.sum(Sm)) / (Sm * np.sum(np.min(Sm) / Sm)))
 
         return nmatrix, wmatrix, Sm, Sp, Q, Q / np.max(Q)

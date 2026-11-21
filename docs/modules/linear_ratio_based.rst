@@ -14,16 +14,14 @@ be defined by the Equation (:eq:`equ:maxben`) for profit-type criteria and by th
 criteria.
 
 .. math::
-    \begin{equation}
-    r_{i j}=\frac{x_{i j}}{\max _{j}\left(x_{i j}\right)}
-    \end{equation}
     :label: equ:maxben
 
+    r_{i j}=\frac{x_{i j}}{\max _{j}\left(x_{i j}\right)}
+
 .. math::
-    \begin{equation}
-    r_{i j}=1-\frac{x_{i j}}{\max _{j}\left(x_{i j}\right)}
-    \end{equation}
     :label: equ:maxcost
+
+    r_{i j}=1-\frac{x_{i j}}{\max _{j}\left(x_{i j}\right)}
 
 
 where :math:`x_{ij}` is the :math:`i-th` value of the alternative and the :math:`j-th` value of the criterion in the
@@ -38,11 +36,9 @@ normalization, while cost-type criteria are normalized using the Equation (:eq:`
 
 
 .. math::
-    \begin{equation}
-    \label{equ:maxben}
-    r_{i j}=\frac{\min _{j}\left(x_{i j}\right)}{x_{i j}}
-    \end{equation}
     :label: equ:mmcost
+
+    r_{i j}=\frac{\min _{j}\left(x_{i j}\right)}{x_{i j}}
 
 where :math:`x_{ij}` is the :math:`i-th` value of the alternative and the :math:`j-th` value of the criterion in the
 decision matrix.
@@ -56,16 +52,14 @@ exponentiation. This normalization can be defined by the Equation (:eq:`equ:nieb
 Equation (:eq:`equ:niekost`) for cost-type criteria.
 
 .. math::
-    \begin{equation}
-    r_{i j}= \left ( \frac{x_{ij} }{ \max_i x_{ij}}  \right )^2
-    \end{equation}
     :label: equ:nieben
 
+    r_{i j}= \left ( \frac{x_{ij} }{ \max_i x_{ij}}  \right )^2
+
 .. math::
-    \begin{equation}
-    r_{i j}= \left ( \frac{ \min_i x_{ij}}{ x_{ij}}  \right )^3
-    \end{equation}
     :label: equ:niekost
+
+    r_{i j}= \left ( \frac{ \min_i x_{ij}}{ x_{ij}}  \right )^3
 
 where :math:`x_{ij}` is the :math:`i-th` value of the alternative and the :math:`j-th` value of the criterion in the
 decision matrix.

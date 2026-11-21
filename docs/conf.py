@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pymcdm'
-copyright = '2024, shekhand & kiziub'
+copyright = '2026, shekhand & kiziub'
 author = 'shekhand & kiziub'
 
 # -- General configuration ---------------------------------------------------

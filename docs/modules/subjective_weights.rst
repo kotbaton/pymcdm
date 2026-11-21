@@ -50,9 +50,7 @@ pairwise comparison matrix, normalized to sum up to one:
 .. math::
     :label: ahp_priority_vector
 
-    \begin{equation}
     A w = \lambda_{\max} w, \qquad \sum_{i=1}^{n} w_i = 1
-    \end{equation}
 
 With ``prioritization='geometric_mean'``, the weights are derived with the Logarithmic Least Squares Method (LLSM), i.e.
 as the normalized geometric mean of each row in the pairwise comparison matrix:
@@ -60,9 +58,7 @@ as the normalized geometric mean of each row in the pairwise comparison matrix:
 .. math::
     :label: ahp_priority_vector_llsm
 
-    \begin{equation}
     w_i = \frac{\prod_{j=1}^{n} \left(a_{ij}\right)^{\frac{1}{n}}}{\sum_{k=1}^{n} \prod_{j=1}^{n} \left(a_{kj}\right)^{\frac{1}{n}}}
-    \end{equation}
 
 Both methods give the same weights for a fully consistent matrix and for any matrix with three criteria. The method can
 also be changed later by setting the ``prioritization`` attribute.
@@ -144,14 +140,12 @@ where :math:`n` is the number of criteria taken into account in the problem, and
 .. math::
     :label: p1
 
-    \begin{equation}
-        \alpha_{ij} = \left\{ \begin{array}{lccr}
-            IF & f \left( C_i\right)   <  f \left( C_j\right) & THEN & 1  \\
-            IF & f \left( C_i\right) =  f \left( C_j\right) & THEN & 0.5 \\
-            IF & f \left( C_i\right)  >   f \left( C_j\right) & THEN & 0  \\
-        \end{array}
-        \right.
-    \end{equation}
+    \alpha_{ij} = \left\{ \begin{array}{lccr}
+        IF & f \left( C_i\right)   <  f \left( C_j\right) & THEN & 1  \\
+        IF & f \left( C_i\right) =  f \left( C_j\right) & THEN & 0.5 \\
+        IF & f \left( C_i\right)  >   f \left( C_j\right) & THEN & 0  \\
+    \end{array}
+    \right.
 
 where :math:`f \left(C\right)` is a position in ranking for criterion :math:`C` (lower value is better).
 
@@ -161,9 +155,8 @@ Based on the obtained :math:`MAC`, the horizontal vector of the Summed Criteria 
 follows:
 
 .. math::
-    \begin{equation}
+
     SCW_i=\sum^{n}_{j=1}\alpha_{ij}
-    \end{equation}
 
 
 **Step 4.** Calculate the final criteria weights.
@@ -173,9 +166,8 @@ where the :math:`i-th` row contains the approximate preference value for :math:`
 criteria are obtained as:
 
 .. math::
-    \begin{equation}
+
         w_{i} = \frac{SCW_{i}}{\sum^{n}_{i=1} SCW_{i}}
-    \end{equation}
 
 SWARA
 =======================
@@ -197,27 +189,21 @@ current one. The comparative importance :math:`s_j \geq 0` is given for every cr
 .. math::
     :label: swara_k
 
-    \begin{equation}
     k_j = \begin{cases} 1 & j = 1 \\ s_j + 1 & j > 1 \end{cases}
-    \end{equation}
 
 **Step 4.** Calculate the recalculated weights.
 
 .. math::
     :label: swara_q
 
-    \begin{equation}
     q_j = \begin{cases} 1 & j = 1 \\ \frac{q_{j-1}}{k_j} & j > 1 \end{cases}
-    \end{equation}
 
 **Step 5.** Calculate the final criteria weights.
 
 .. math::
     :label: swara_w
 
-    \begin{equation}
     w_j = \frac{q_j}{\sum_{k=1}^{n} q_k}
-    \end{equation}
 
 PIPRECIA
 =======================
@@ -236,10 +222,8 @@ Starting from the second criterion, the expert compares each criterion with the 
 .. math::
     :label: piprecia_s
 
-    \begin{equation}
     s_j = \begin{cases} > 1 & \text{if } C_j \succ C_{j-1} \\ 1 & \text{if } C_j = C_{j-1} \\
     < 1 & \text{if } C_j \prec C_{j-1} \end{cases}
-    \end{equation}
 
 with :math:`0 < s_j < 2`.
 
@@ -248,27 +232,21 @@ with :math:`0 < s_j < 2`.
 .. math::
     :label: piprecia_k
 
-    \begin{equation}
     k_j = \begin{cases} 1 & j = 1 \\ 2 - s_j & j > 1 \end{cases}
-    \end{equation}
 
 **Step 4.** Calculate the recalculated weights.
 
 .. math::
     :label: piprecia_q
 
-    \begin{equation}
     q_j = \begin{cases} 1 & j = 1 \\ \frac{q_{j-1}}{k_j} & j > 1 \end{cases}
-    \end{equation}
 
 **Step 5.** Calculate the final criteria weights.
 
 .. math::
     :label: piprecia_w
 
-    \begin{equation}
     w_j = \frac{q_j}{\sum_{k=1}^{n} q_k}
-    \end{equation}
 
 **Simplified PIPRECIA (PIPRECIA-S).** Some respondents find it easier to always compare a criterion with the first
 one. In PIPRECIA-S (``comparison='first'``) :math:`s_j` compares the criterion :math:`C_j` with :math:`C_1`, the
@@ -278,9 +256,7 @@ first criterion:
 .. math::
     :label: piprecia_s_q
 
-    \begin{equation}
     q_j = \frac{1}{k_j}
-    \end{equation}
 
 The final weights are obtained with Eq. :eq:`piprecia_w`.
 
@@ -305,9 +281,7 @@ significance scores :math:`v_k` of the ranked criteria (parameter ``v``), where 
 .. math::
     :label: fucom_phi
 
-    \begin{equation}
     \varphi_{k/(k+1)} = \frac{v_{k+1}}{v_k}
-    \end{equation}
 
 **Step 3.** Calculate the weights.
 
@@ -318,14 +292,12 @@ obtained from the model:
 .. math::
     :label: fucom_model
 
-    \begin{equation}
     \begin{aligned}
     \min \ & \chi \\
     \text{s.t.} \ & \left| \frac{w_k}{w_{k+1}} - \varphi_{k/(k+1)} \right| \leq \chi, \quad \forall k \\
     & \left| \frac{w_k}{w_{k+2}} - \varphi_{k/(k+1)} \cdot \varphi_{(k+1)/(k+2)} \right| \leq \chi, \quad \forall k \\
     & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
     \end{aligned}
-    \end{equation}
 
 The optimal value :math:`\chi` is the Deviation from Full Consistency (attribute ``dfc``). The value 0 means full
 consistency of the comparisons.
@@ -349,9 +321,7 @@ The comparisons are made on a scale from 1 to 9 and give the Best-to-Others vect
 .. math::
     :label: bwm_ab
 
-    \begin{equation}
     A_B = \left( a_{B1}, a_{B2}, \ldots, a_{Bn} \right)
-    \end{equation}
 
 **Step 4.** Determine the preference of all the criteria over the worst criterion.
 
@@ -360,9 +330,7 @@ This gives the Others-to-Worst vector (parameter ``a_w``), where :math:`a_{WW} =
 .. math::
     :label: bwm_aw
 
-    \begin{equation}
     A_W = \left( a_{1W}, a_{2W}, \ldots, a_{nW} \right)
-    \end{equation}
 
 **Step 5.** Calculate the weights.
 
@@ -371,14 +339,12 @@ The weights minimize the maximum absolute difference between the weight ratios a
 .. math::
     :label: bwm_model
 
-    \begin{equation}
     \begin{aligned}
     \min \ & \xi \\
     \text{s.t.} \ & \left| \frac{w_B}{w_j} - a_{Bj} \right| \leq \xi, \quad \forall j \\
     & \left| \frac{w_j}{w_W} - a_{jW} \right| \leq \xi, \quad \forall j \\
     & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
     \end{aligned}
-    \end{equation}
 
 For a fixed :math:`\xi` the constraints are linear in the weights, so the model is solved to its global optimum by
 bisection on :math:`\xi`. If several criteria have the value 1 in :math:`A_B` (or :math:`A_W`), the best (worst)
@@ -423,9 +389,7 @@ degree of preference (method ``get_interval_preference_degrees``):
 .. math::
     :label: bwm_dp
 
-    \begin{equation}
     P(A > B) = \frac{\max(0, a^R - b^L) - \max(0, a^L - b^R)}{(a^R - a^L) + (b^R - b^L)}
-    \end{equation}
 
 where :math:`A = [a^L, a^R]` and :math:`B = [b^L, b^R]`. The criteria are ranked by the number of criteria over
 which their degree of preference exceeds 0.5.
@@ -436,14 +400,12 @@ solution:
 .. math::
     :label: bwm_linear
 
-    \begin{equation}
     \begin{aligned}
     \min \ & \xi^L \\
     \text{s.t.} \ & \left| w_B - a_{Bj} w_j \right| \leq \xi^L, \quad \forall j \\
     & \left| w_j - a_{jW} w_W \right| \leq \xi^L, \quad \forall j \\
     & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
     \end{aligned}
-    \end{equation}
 
 The value :math:`\xi^L` (method ``get_xi``) is used directly as the indicator of consistency; values close to 0 show
 high consistency.
@@ -471,9 +433,7 @@ of the scale is the size of the largest level:
 .. math::
     :label: lbwa_r
 
-    \begin{equation}
     r = \max \left\{ |S_1|, |S_2|, \ldots, |S_k| \right\}
-    \end{equation}
 
 **Step 4.** Define the elasticity coefficient :math:`r_0 > r` (parameter ``r0``, by default :math:`r + 1`).
 
@@ -482,18 +442,14 @@ of the scale is the size of the largest level:
 .. math::
     :label: lbwa_f
 
-    \begin{equation}
     f(C_{i_p}) = \frac{r_0}{i \cdot r_0 + I_{i_p}}
-    \end{equation}
 
 **Step 6.** Calculate the weights.
 
 .. math::
     :label: lbwa_w
 
-    \begin{equation}
     w_1 = \frac{1}{1 + f(C_2) + \ldots + f(C_n)}, \quad w_j = f(C_j) \cdot w_1
-    \end{equation}
 
 SIMOS
 =======================
@@ -537,18 +493,14 @@ With :math:`e'_r` white cards between the ranks :math:`r` and :math:`r + 1` and 
 .. math::
     :label: srf_u
 
-    \begin{equation}
     e_r = e'_r + 1, \quad e = \sum_{r=1}^{\bar{n}-1} e_r, \quad u = \frac{z - 1}{e}
-    \end{equation}
 
 **Step 2.** Calculate the non-normalized weights of the ranks.
 
 .. math::
     :label: srf_k
 
-    \begin{equation}
     k(r) = 1 + u \left( e_0 + e_1 + \ldots + e_{r-1} \right), \quad e_0 = 0
-    \end{equation}
 
 The value :math:`u` is rounded to six and :math:`k(r)` to two decimal places. All criteria of the rank :math:`r`
 receive the weight :math:`k'_i = k(r)`.
@@ -558,9 +510,7 @@ receive the weight :math:`k'_i = k(r)`.
 .. math::
     :label: srf_kstar
 
-    \begin{equation}
     k^*_i = \frac{100}{K'} k'_i, \quad K' = \sum_{i=1}^{n} k'_i
-    \end{equation}
 
 **Step 4.** Round the normalized weights.
 
@@ -585,23 +535,19 @@ to be adjacent, and the shares are given with the parameter ``xis``. This gives 
 .. math::
     :label: cobrac_ratio
 
-    \begin{equation}
     w_j : w_{j+1} = \xi_{j,j+1} : \left( 1 - \xi_{j,j+1} \right)
-    \end{equation}
 
 **Step 3.** Calculate the weights.
 
 .. math::
     :label: cobrac_model
 
-    \begin{equation}
     \begin{aligned}
     \min \ & \partial \\
     \text{s.t.} \ & \left| \frac{w_j}{w_{j+1}} - \frac{\xi_{j,j+1}}{1 - \xi_{j,j+1}} \right| \leq \partial,
     \quad \forall j \\
     & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
     \end{aligned}
-    \end{equation}
 
 For a fixed :math:`\partial` the constraints are linear in the weights, so the model is solved to its global optimum
 by bisection on :math:`\partial`. The optimal value (method ``get_delta``) is 0 when the comparisons are consistent,
@@ -621,9 +567,7 @@ weights. The weights are determined according to the following steps:
 .. math::
     :label: itara_norm
 
-    \begin{equation}
     \alpha_{ij} = \frac{a_{ij}}{\sum_{i=1}^{m} a_{ij}}, \quad NIT_j = \frac{IT_j}{\sum_{i=1}^{m} a_{ij}}
-    \end{equation}
 
 **Step 3.** Sort the normalized values of each criterion in ascending order, obtaining
 :math:`\beta_{1j} \leq \beta_{2j} \leq \ldots \leq \beta_{mj}`.
@@ -633,18 +577,14 @@ weights. The weights are determined according to the following steps:
 .. math::
     :label: itara_gamma
 
-    \begin{equation}
     \gamma_{ij} = \beta_{i+1,j} - \beta_{ij}, \quad i = 1, 2, \ldots, m - 1
-    \end{equation}
 
 **Step 5.** Calculate the considerable differences.
 
 .. math::
     :label: itara_delta
 
-    \begin{equation}
     \delta_{ij} = \begin{cases} \gamma_{ij} - NIT_j & \gamma_{ij} > NIT_j \\ 0 & \gamma_{ij} \leq NIT_j \end{cases}
-    \end{equation}
 
 **Step 6.** Calculate the weights with the :math:`l_p` metric (parameter ``p``, :math:`p = \infty` gives the largest
 :math:`\delta_{ij}`).
@@ -652,9 +592,7 @@ weights. The weights are determined according to the following steps:
 .. math::
     :label: itara_w
 
-    \begin{equation}
     \omega_j = \frac{v_j}{\sum_{j=1}^{n} v_j}, \quad v_j = \left( \sum_{i=1}^{m-1} \delta_{ij}^p \right)^{1/p}
-    \end{equation}
 
 BCM
 =======================
@@ -676,9 +614,7 @@ The comparisons are made on a scale from 1/9 to 9 and give the base-comparison v
 .. math::
     :label: bcm_ab
 
-    \begin{equation}
     A_B = \left( a_{B1}, a_{B2}, \ldots, a_{Bn} \right)
-    \end{equation}
 
 The other comparisons (final comparisons, method ``get_full_matrix``) follow from the base-comparisons, so the
 decision-maker should choose them so that they stay within the scale:
@@ -686,22 +622,18 @@ decision-maker should choose them so that they stay within the scale:
 .. math::
     :label: bcm_aij
 
-    \begin{equation}
     a_{ij} = \frac{a_{Bj}}{a_{Bi}}, \quad \frac{1}{9} \leq a_{ij} \leq 9
-    \end{equation}
 
 **Step 4.** Calculate the weights.
 
 .. math::
     :label: bcm_model
 
-    \begin{equation}
     \begin{aligned}
     \min \ & \xi \\
     \text{s.t.} \ & \left| \frac{w_B}{w_j} - a_{Bj} \right| \leq \xi, \quad \forall j \\
     & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
     \end{aligned}
-    \end{equation}
 
 For a fixed :math:`\xi` the constraints are linear in the weights, so the model is solved to its global optimum by
 bisection on :math:`\xi`. Because only the base-comparisons are given, the comparisons are always fully consistent
@@ -731,18 +663,14 @@ The distance :math:`d^+_{xy}` of the criterion :math:`y` from the immaterial cri
 .. math::
     :label: vimm_d
 
-    \begin{equation}
     d^+_{xy} = c^{I}_{xy} - 1, \quad d^-_{xy} = 10 - c^{V}_{xy}
-    \end{equation}
 
 **Step 4.** Normalize the distances and calculate the scores.
 
 .. math::
     :label: vimm_s
 
-    \begin{equation}
     S_{xy} = \frac{d^+_{xy}}{\max_y d^+_{xy}} + \frac{\min_y d^-_{xy}}{d^-_{xy}}
-    \end{equation}
 
 The criterion with the highest score becomes the next vital criterion and the criterion with the lowest score the
 next immaterial criterion.
@@ -761,9 +689,7 @@ weights are:
 .. math::
     :label: vimm_w
 
-    \begin{equation}
     W_j = \frac{S_j}{\sum_{j=1}^{n} S_j}
-    \end{equation}
 
 OWCM
 =======================
@@ -797,42 +723,32 @@ difference on a five-point scale, which gives the crisp opinion matrix (paramete
 .. math::
     :label: owcm_r
 
-    \begin{equation}
     R_{ij} = \frac{x_{ij}}{\max_i x_{ij}}
-    \end{equation}
 
 **Step 3.** Calculate the mean of each criterion.
 
 .. math::
     :label: owcm_mean
 
-    \begin{equation}
     \bar{N}_j = \frac{1}{m} \sum_{i=1}^{m} R_{ij}
-    \end{equation}
 
 **Step 4.** Calculate the preference variation.
 
 .. math::
     :label: owcm_phi
 
-    \begin{equation}
     \phi_j = \sum_{i=1}^{m} \left( R_{ij} - \bar{N}_j \right)^2
-    \end{equation}
 
 **Step 5.** Calculate the deviation of the preference values.
 
 .. math::
     :label: owcm_omega
 
-    \begin{equation}
     \Omega_j = 1 - \phi_j
-    \end{equation}
 
 **Step 6.** Calculate the weights.
 
 .. math::
     :label: owcm_w
 
-    \begin{equation}
     w_j = \frac{\Omega_j}{\sum_{j=1}^{n} \Omega_j}
-    \end{equation}
