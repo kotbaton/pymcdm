@@ -567,6 +567,34 @@ class TestVIMMWeights(unittest.TestCase):
             vimm()
 
 
+class TestOWCMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Ahmed Mandil, A. D., Salih, M. M., & Muhsen, Y. R. (2024). Opinion Weight Criteria Method (OWCM): A New
+        Method for Weighting Criteria With Zero Inconsistency. IEEE Access, 12, 5605-5616.
+    """
+
+    def test_output(self):
+        """ Machine learning methods for COVID-19 classification from Table 6. The crisp matrix of Table 4 gives
+            Train time of Neural Network as 1, but the opinion matrix (Table 3) gives H_D, i.e. 5, which is also
+            the value used in Table 5 (normalized value 1) and in the mean of Train time (0.575).
+        """
+        matrix = np.array([
+            [5, 4, 1, 1, 1, 1, 1, 2, 1],
+            [4, 5, 1, 2, 2, 2, 2, 1, 2],
+            [2, 4, 2, 2, 3, 2, 3, 2, 3],
+            [1, 5, 2, 3, 4, 3, 4, 3, 3],
+            [3, 4, 2, 3, 4, 3, 4, 2, 3],
+            [2, 4, 3, 4, 5, 4, 5, 5, 4],
+            [3, 1, 5, 4, 5, 4, 5, 4, 4],
+            [3, 3, 5, 5, 5, 5, 5, 5, 5],
+        ])
+        owcm = weights.subjective.OWCM(M=matrix)
+
+        output = [0.1383109, 0.1321909, 0.0697674, 0.127295, 0.0893513, 0.127295, 0.0893513, 0.0881273, 0.1383109]
+        output_method = [round(weight, 7) for weight in owcm()]
+        self.assertListEqual(output, output_method)
+
+
 class TestLBWAWeights(unittest.TestCase):
     """ Test output method with reference:
         [1] Žižović, M., & Pamučar, D. (2019). New model for determining criteria weights: Level Based Weight

@@ -730,3 +730,75 @@ weights are:
     \begin{equation}
     W_j = \frac{S_j}{\sum_{j=1}^{n} S_j}
     \end{equation}
+
+OWCM
+=======================
+:class:`OWCM` (Opinion Weight Criteria Method) derives the weights from the opinions of the decision-maker about the
+alternatives, according to the following steps:
+
+**Step 1.** Build the opinion matrix.
+
+For each criterion, the decision-maker compares the value of each alternative with the ideal value of the criterion
+(the maximum for benefit criteria, the minimum for cost criteria, or a critical value between them) and assesses the
+difference on a five-point scale, which gives the crisp opinion matrix (parameter ``M``):
+
+.. list-table::
+   :header-rows: 1
+
+   * - Linguistic term
+     - No difference
+     - Slight difference
+     - Difference
+     - Big difference
+     - Huge difference
+   * - Value
+     - 1
+     - 2
+     - 3
+     - 4
+     - 5
+
+**Step 2.** Normalize the opinion matrix.
+
+.. math::
+    :label: owcm_r
+
+    \begin{equation}
+    R_{ij} = \frac{x_{ij}}{\max_i x_{ij}}
+    \end{equation}
+
+**Step 3.** Calculate the mean of each criterion.
+
+.. math::
+    :label: owcm_mean
+
+    \begin{equation}
+    \bar{N}_j = \frac{1}{m} \sum_{i=1}^{m} R_{ij}
+    \end{equation}
+
+**Step 4.** Calculate the preference variation.
+
+.. math::
+    :label: owcm_phi
+
+    \begin{equation}
+    \phi_j = \sum_{i=1}^{m} \left( R_{ij} - \bar{N}_j \right)^2
+    \end{equation}
+
+**Step 5.** Calculate the deviation of the preference values.
+
+.. math::
+    :label: owcm_omega
+
+    \begin{equation}
+    \Omega_j = 1 - \phi_j
+    \end{equation}
+
+**Step 6.** Calculate the weights.
+
+.. math::
+    :label: owcm_w
+
+    \begin{equation}
+    w_j = \frac{\Omega_j}{\sum_{j=1}^{n} \Omega_j}
+    \end{equation}

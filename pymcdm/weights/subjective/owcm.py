@@ -32,6 +32,8 @@ class OWCM(DecisionMatrixWeightsBase):
     ... ])
     >>> owcm = OWCM(M=M)
     >>> weights = owcm()
+    >>> print(np.round(weights, 4))
+    [0.3333 0.3333 0.3333]
 
     References
     ----------
