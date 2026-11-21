@@ -10,7 +10,8 @@ class FUCOM(OrderedCriteriaWeightsBase, OptimizationWeightsBase):
     A subclass implementing the FUCOM (Full Consistency Method) [#fucom1]_.
 
     FUCOM determines criteria weights by solving a constrained nonlinear optimization problem
-    that ensures full consistency of pairwise comparisons. The decision-maker ranks criteria by
+    that ensures full consistency of pairwise comparisons. The model is solved to its global
+    optimum by bisection with linear feasibility problems. The decision-maker ranks criteria by
     importance and specifies comparative priorities between consecutive criteria.
 
     Parameters
@@ -100,6 +101,9 @@ class FUCOM(OrderedCriteriaWeightsBase, OptimizationWeightsBase):
         """
         Solve the FUCOM nonlinear optimisation model (5) from [#fucom1]_.
 
+        For a fixed chi the constraints are linear in the weights, so the model is solved to its
+        global optimum by bisection on chi, each step being a linear feasibility problem.
+
         Returns
         -------
         np.ndarray
@@ -111,55 +115,10 @@ class FUCOM(OrderedCriteriaWeightsBase, OptimizationWeightsBase):
             self.dfc = 0.0
             return self._reindex_from_order(np.array([1.0]))
 
-        phi = self.phi
-        num_vars = n + 1  # w_0, ..., w_{n-1}, chi
+        # Condition (3): |w_(k) / w_(k+1) - phi_k| <= chi
+        ratios = [(k, k + 1, self.phi[k]) for k in range(n - 1)]
+        # Condition (4): |w_(k) / w_(k+2) - phi_k * phi_(k+1)| <= chi
+        ratios += [(k, k + 2, self.phi[k] * self.phi[k + 1]) for k in range(n - 2)]
 
-        constraints = []
-
-        # Condition (3): |w_{(k)}/w_{(k+1)} - phi_k| <= chi
-        for k in range(n - 1):
-            p = phi[k]
-            constraints.append({
-                'type': 'ineq',
-                'fun': lambda x, k=k, p=p: x[-1] - (x[k] / x[k + 1] - p)
-            })
-            constraints.append({
-                'type': 'ineq',
-                'fun': lambda x, k=k, p=p: x[-1] + (x[k] / x[k + 1] - p)
-            })
-
-        # Condition (4): |w_{(k)}/w_{(k+2)} - phi_k*phi_{k+1}| <= chi
-        for k in range(n - 2):
-            prod = phi[k] * phi[k + 1]
-            constraints.append({
-                'type': 'ineq',
-                'fun': lambda x, k=k, prod=prod: x[-1] - (x[k] / x[k + 2] - prod)
-            })
-            constraints.append({
-                'type': 'ineq',
-                'fun': lambda x, k=k, prod=prod: x[-1] + (x[k] / x[k + 2] - prod)
-            })
-
-        # sum(w) = 1
-        constraints.append({
-            'type': 'eq',
-            'fun': lambda x: np.sum(x[:n]) - 1.0
-        })
-
-        bounds = [(1e-9, None)] * n + [(0.0, None)]
-
-        x0 = np.ones(num_vars)
-        x0[:n] = 1.0 / n
-        x0[-1] = 0.01
-
-        result = self._solve_optimization(
-            lambda x: x[-1], x0, bounds, constraints,
-            options={'ftol': 1e-12, 'maxiter': 2000, 'disp': False}
-        )
-
-        w_ordered = np.maximum(result.x[:n], 0.0)
-        w_ordered /= w_ordered.sum()
-
-        self.dfc = float(max(result.x[-1], 0.0))
-
+        w_ordered, self.dfc = self._minimize_ratio_deviation(ratios, n)
         return self._reindex_from_order(w_ordered)

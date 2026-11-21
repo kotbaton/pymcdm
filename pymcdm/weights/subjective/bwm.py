@@ -68,7 +68,8 @@ class BWM(OptimizationWeightsBase):
 
         For a fixed xi the constraints |w_B / w_j - a_Bj| <= xi and |w_j / w_W - a_jW| <= xi are
         linear in the weights, because w_j > 0. The smallest feasible xi is therefore found by
-        bisection, each step being a linear feasibility problem. This yields the global optimum
+        bisection, each step being a linear feasibility problem (see
+        ``OptimizationWeightsBase._minimize_ratio_deviation``). This yields the global optimum
         of the nonconvex model, which a local nonlinear solver may miss.
 
         If several criteria have a value of 1 in ``a_b`` (or ``a_w``), the best (worst) criterion is
@@ -86,79 +87,16 @@ class BWM(OptimizationWeightsBase):
         best_idx = self._reference_index(a_b, a_w)
         worst_idx = self._reference_index(a_w, a_b)
 
-        # Any positive weight vector is feasible for a large enough xi; start from the reciprocals of a_b
-        w0 = (1.0 / a_b) / np.sum(1.0 / a_b)
-        upper = float(np.max(np.concatenate([
-            np.abs(w0[best_idx] / w0 - a_b),
-            np.abs(w0 / w0[worst_idx] - a_w),
-        ])))
-
-        weights = self._feasible_weights(0.0, best_idx, worst_idx)
-        if weights is None:
-            lower = 0.0
-            weights = w0
-            while upper - lower > self._xi_tolerance * max(1.0, upper):
-                middle = (lower + upper) / 2
-                candidate = self._feasible_weights(middle, best_idx, worst_idx)
-                if candidate is None:
-                    lower = middle
-                else:
-                    upper, weights = middle, candidate
-        else:
-            upper = 0.0
-
-        weights = self._normalize_weights(weights)
-        # xi of the returned weights; the bisection bound may differ by the solver tolerance
-        self._xi = float(np.max(np.concatenate([
-            np.abs(weights[best_idx] / weights - a_b),
-            np.abs(weights / weights[worst_idx] - a_w),
-        ])))
+        ratios = [(best_idx, j, a_b[j]) for j in range(n) if j != best_idx]
+        ratios += [(j, worst_idx, a_w[j]) for j in range(n) if j != worst_idx]
+        weights, self._xi = self._minimize_ratio_deviation(ratios, n)
         return weights
-
-    _xi_tolerance = 1e-10
 
     @staticmethod
     def _reference_index(a_ref: np.ndarray, a_other: np.ndarray) -> int:
         """ Index of the reference (best or worst) criterion, resolving ties by a_BW = a_WB. """
         candidates = np.where(np.isclose(a_ref, 1.0))[0]
         return int(candidates[np.argmax(a_other[candidates])])
-
-    def _feasible_weights(self, xi: float, best_idx: int, worst_idx: int) -> np.ndarray | None:
-        """
-        Find weights satisfying all BWM constraints for a given xi, or return None.
-
-        Parameters
-        ----------
-        xi : float
-            Allowed maximum absolute deviation.
-        best_idx, worst_idx : int
-            Indices of the best and the worst criterion.
-
-        Returns
-        -------
-        np.ndarray or None
-            Feasible weights, or None if the linear problem is infeasible.
-        """
-        n = len(self.a_b)
-        A_ub = []
-        for j in range(n):
-            for a, num, den in ((self.a_b[j], best_idx, j), (self.a_w[j], j, worst_idx)):
-                if num == den:
-                    continue
-                # w_num / w_den <= a + xi  and  w_num / w_den >= a - xi
-                row = np.zeros(n)
-                row[num], row[den] = 1.0, -(a + xi)
-                A_ub.append(row)
-                row = np.zeros(n)
-                row[num], row[den] = -1.0, a - xi
-                A_ub.append(row)
-
-        try:
-            result = self._solve_lp(np.zeros(n), A_ub=np.array(A_ub), b_ub=np.zeros(len(A_ub)),
-                                    A_eq=np.ones((1, n)), b_eq=[1.0], bounds=[(1e-12, 1.0)] * n)
-        except ValueError:
-            return None
-        return result.x
 
     def get_xi(self) -> float:
         """

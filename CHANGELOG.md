@@ -24,6 +24,8 @@
 * Fix `BWM` failing or returning a local optimum for some inputs: the model is now solved to its global optimum by
   bisection with linear feasibility problems, and ties of the best or worst criterion are resolved by
   a_BW = a_WB.
+* `FUCOM` is solved to its global optimum with linear feasibility problems, like `BWM`, instead of the nonlinear
+  SLSQP solver, which could emit warnings about values outside bounds.
 * Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
 * Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and
   validate the number of thresholds against the number of criteria.

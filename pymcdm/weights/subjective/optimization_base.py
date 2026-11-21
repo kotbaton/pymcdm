@@ -114,6 +114,71 @@ class OptimizationWeightsBase(SubjectiveWeightsBase):
             )
         return result
 
+    _ratio_tolerance = 1e-10
+
+    def _minimize_ratio_deviation(self, ratios, n):
+        """
+        Find weights minimizing the largest deviation of weight ratios from target values.
+
+        The model is ``min xi`` subject to ``|w_num / w_den - a| <= xi`` for every
+        ``(num, den, a)`` in ``ratios``, ``sum(w) = 1`` and ``w > 0`` (e.g. BWM, FUCOM).
+        For a fixed xi the constraints ``(a - xi) w_den <= w_num <= (a + xi) w_den`` are
+        linear, so the smallest feasible xi is found by bisection, each step being a linear
+        feasibility problem. This yields the global optimum of the nonconvex model, which
+        a local nonlinear solver may miss.
+
+        Parameters
+        ----------
+        ratios : sequence of (int, int, float)
+            Index of the numerator weight, index of the denominator weight and the
+            target value of their ratio.
+        n : int
+            Number of weights.
+
+        Returns
+        -------
+        tuple[np.ndarray, float]
+            Normalized weights and the largest deviation of their ratios from the targets.
+        """
+        num = np.array([r[0] for r in ratios], dtype=int)
+        den = np.array([r[1] for r in ratios], dtype=int)
+        a = np.array([r[2] for r in ratios], dtype=float)
+
+        def deviation(w):
+            return float(np.max(np.abs(w[num] / w[den] - a))) if len(a) else 0.0
+
+        def feasible(xi):
+            A_ub = np.zeros((2 * len(a), n))
+            rows = np.arange(len(a))
+            # w_num - (a + xi) w_den <= 0  and  -w_num + (a - xi) w_den <= 0
+            A_ub[rows, num] += 1.0
+            A_ub[rows, den] -= a + xi
+            A_ub[len(a) + rows, num] -= 1.0
+            A_ub[len(a) + rows, den] += a - xi
+            try:
+                result = self._solve_lp(np.zeros(n), A_ub=A_ub, b_ub=np.zeros(len(A_ub)),
+                                        A_eq=np.ones((1, n)), b_eq=[1.0], bounds=[(1e-12, 1.0)] * n)
+            except ValueError:
+                return None
+            return result.x
+
+        weights = feasible(0.0)
+        if weights is None:
+            # Equal weights are feasible for xi equal to their deviation
+            weights = np.full(n, 1.0 / n)
+            lower, upper = 0.0, deviation(weights)
+            while upper - lower > self._ratio_tolerance * max(1.0, upper):
+                middle = (lower + upper) / 2
+                candidate = feasible(middle)
+                if candidate is None:
+                    lower = middle
+                else:
+                    upper, weights = middle, candidate
+
+        weights = self._normalize_weights(weights)
+        # Deviation of the returned weights; the bisection bound may differ by the solver tolerance
+        return weights, deviation(weights)
+
     @staticmethod
     def _normalize_weights(w: np.ndarray) -> np.ndarray:
         """

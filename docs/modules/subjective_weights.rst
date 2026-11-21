@@ -330,6 +330,9 @@ obtained from the model:
 The optimal value :math:`\chi` is the Deviation from Full Consistency (attribute ``dfc``). The value 0 means full
 consistency of the comparisons.
 
+For a fixed :math:`\chi` the constraints are linear in the weights, so the model is solved to its global optimum by
+bisection on :math:`\chi`, each step being a linear feasibility problem.
+
 BWM
 =======================
 :class:`BWM` (Best-Worst Method) is designed to evaluate decision criteria according to the following steps:
