@@ -126,7 +126,7 @@ implemented.
 | AHP     | Analytic Hierarchy Process                                |        [[65]](#c65), [[77]](#c77)        |
 | RANCOM  | RANking COMparison                                        |               [[66]](#c66)               |
 | SWARA   | Step-wise Weight Assessment Ratio Analysis                |               [[78]](#c78)               |
-| PIPRECIA | PIvot Pairwise RElative Criteria Importance Assessment    |               [[79]](#c79)               |
+| PIPRECIA | PIvot Pairwise RElative Criteria Importance Assessment    |        [[79]](#c79), [[93]](#c93)        |
 | FUCOM   | FUll COnsistency Method                                   |               [[80]](#c80)               |
 | BWM     | Best-Worst Method                                         |               [[81]](#c81)               |
 | BCM     | Base-Criterion Method                                     |               [[82]](#c82)               |
@@ -439,3 +439,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c91">[91]</a> Yang, B., Zhao, J., & Zhao, H. (2022). A robust method for avoiding rank reversal in the TOPSIS. Computers & Industrial Engineering, 174, 108776. https://doi.org/10.1016/j.asoc.2018.10.050
 
 <a name="c92">[92]</a> Costa, L. F., Costa, H. G., Rodrigues, B., & Lima, D. (2026). TOPSIS-RAD: Ranking According to Desires. arXiv preprint arXiv:2606.07253. https://doi.org/10.1109/ACCESS.2024.3349472
+
+<a name="c93">[93]</a> Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified pivot pairwise relative criteria importance assessment (PIPRECIA-S) method. Romanian Journal of Economic Forecasting, 24(4), 141-154. https://doi.org/10.1155/2020/9676518

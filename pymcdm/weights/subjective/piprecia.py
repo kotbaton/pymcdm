@@ -7,7 +7,8 @@ from .ordered_criteria_base import OrderedCriteriaWeightsBase
 class PIPRECIA(OrderedCriteriaWeightsBase):
     """
     A subclass of OrderedCriteriaWeightsBase implementing the PIPRECIA (PIvot Pairwise RElative
-    Criteria Importance Assessment) method [#piprecia1]_.
+    Criteria Importance Assessment) method [#piprecia1]_ and its simplified variant
+    PIPRECIA-S [#piprecia2]_.
 
     PIPRECIA extends the SWARA method by allowing the decision-maker to indicate that a
     criterion at position ``j+1`` is more important than at position ``j``. Values > 1 mean
@@ -20,7 +21,14 @@ class PIPRECIA(OrderedCriteriaWeightsBase):
         Criteria indices in decreasing order of expected importance.
     s_v : np.ndarray | list | tuple
         Relative significance values. Length must be ``len(s) - 1``.
-        Each ``s_v[j]`` compares criterion at position ``j+1`` to criterion at position ``j``.
+        Each ``s_v[j]`` compares criterion at position ``j+1`` to criterion at position ``j``
+        (``comparison='previous'``) or to the first criterion (``comparison='first'``).
+    comparison : str, optional
+        Reference criterion of the comparisons. 'previous' compares each criterion with the
+        previous one, as in the original PIPRECIA method [#piprecia1]_ (default). 'first'
+        compares each criterion with the first one, as in the Simplified PIPRECIA (PIPRECIA-S)
+        method [#piprecia2]_. Can also be changed later by setting the `comparison` attribute,
+        which clears cached weights.
 
     Examples
     --------
@@ -31,6 +39,9 @@ class PIPRECIA(OrderedCriteriaWeightsBase):
     >>> weights = piprecia()
     >>> print(np.round(weights, 2))
     [0.19 0.19 0.19 0.15 0.15 0.13]
+    >>> piprecia_s = PIPRECIA(s=[0, 1, 2, 3, 4], s_v=[0.9, 0.8, 0.65, 0.6], comparison='first')
+    >>> print(np.round(piprecia_s(), 2))
+    [0.24 0.22 0.2  0.18 0.17]
 
     References
     ----------
@@ -38,12 +49,19 @@ class PIPRECIA(OrderedCriteriaWeightsBase):
                     & Turskis, Z. (2017). The use of the PIvot Pairwise RElative Criteria
                     Importance Assessment method for determining the weights of criteria.
                     Romanian Journal of Economic Forecasting, 20(4), 116-133.
+    .. [#piprecia2] Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified
+                    pivot pairwise relative criteria importance assessment (PIPRECIA-S) method.
+                    Romanian Journal of Economic Forecasting, 24(4), 141-154.
     """
+
+    COMPARISONS = ('previous', 'first')
 
     def __init__(self,
                  s: np.ndarray | list | tuple,
-                 s_v: np.ndarray | list | tuple):
+                 s_v: np.ndarray | list | tuple,
+                 comparison: str = 'previous'):
         super().__init__(order=s)
+        self.comparison = comparison
 
         self.s_v = np.asarray(s_v, dtype=float)
 
@@ -60,6 +78,20 @@ class PIPRECIA(OrderedCriteriaWeightsBase):
             raise ValueError(
                 'All values in s_v must be < 2 to ensure a positive coefficient '
                 'k_j = 2 - s_v[j] > 0 (see Eq. 7 in Stanujkić et al. 2017).')
+
+    @property
+    def comparison(self) -> str:
+        """ Reference criterion of the comparisons ('previous' or 'first'). """
+        return self._comparison
+
+    @comparison.setter
+    def comparison(self, value: str):
+        if value not in self.COMPARISONS:
+            raise ValueError(f'Unknown comparison {value!r}. '
+                             f'Available comparisons: {", ".join(self.COMPARISONS)}.')
+        self._comparison = value
+        # Cached weights were derived with the previous comparison
+        self._weights = None
 
     # backward-compatible alias
     @property
@@ -79,10 +111,13 @@ class PIPRECIA(OrderedCriteriaWeightsBase):
         k = np.ones(self.n)
         k[1:] = 2 - self.s_v
 
-        # Calculate recalculated weight q_j (Eq. 8)
-        q = np.ones(self.n)
-        for j in range(1, self.n):
-            q[j] = q[j - 1] / k[j]
+        # Calculate recalculated weight q_j (Eq. 8, or Eq. 7 of PIPRECIA-S)
+        if self.comparison == 'first':
+            q = 1 / k
+        else:
+            q = np.ones(self.n)
+            for j in range(1, self.n):
+                q[j] = q[j - 1] / k[j]
 
         # Normalize and reindex (Eq. 9)
         w_ordered = q / np.sum(q)

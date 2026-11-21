@@ -344,6 +344,34 @@ class TestPIPRECIAWeights(unittest.TestCase):
         output_method = [round(weight, 2) for weight in piprecia()]
         self.assertListEqual(output, output_method)
 
+    def test_output_simplified(self):
+        """ Weights obtained using the Simplified PIPRECIA method from Table 3. """
+        piprecia = weights.subjective.PIPRECIA(s=[0, 1, 2, 3], s_v=[1.0, 0.5, 0.25], comparison='first')
+
+        output = [0.31, 0.31, 0.21, 0.18]
+        output_method = [round(weight, 2) for weight in piprecia()]
+        self.assertListEqual(output, output_method)
+
+    def test_output_simplified_websites(self):
+        """ Weights of the winery website criteria obtained using the Simplified PIPRECIA method from Table 4. """
+        piprecia = weights.subjective.PIPRECIA(s=[0, 1, 2, 3, 4], s_v=[0.9, 0.8, 0.65, 0.6], comparison='first')
+
+        output = [0.24, 0.22, 0.2, 0.18, 0.17]
+        output_method = [round(weight, 2) for weight in piprecia()]
+        self.assertListEqual(output, output_method)
+
+    def test_comparison_change(self):
+        """ Changing the comparison clears the cached weights. """
+        piprecia = weights.subjective.PIPRECIA(s=[0, 1, 2, 3], s_v=[1.0, 0.5, 0.25])
+        piprecia()
+        piprecia.comparison = 'first'
+
+        output = [0.31, 0.31, 0.21, 0.18]
+        output_method = [round(weight, 2) for weight in piprecia()]
+        self.assertListEqual(output, output_method)
+        with self.assertRaises(ValueError):
+            piprecia.comparison = 'last'
+
 
 class TestFUCOMWeights(unittest.TestCase):
     """ Test output method with reference:

@@ -270,6 +270,20 @@ with :math:`0 < s_j < 2`.
     w_j = \frac{q_j}{\sum_{k=1}^{n} q_k}
     \end{equation}
 
+**Simplified PIPRECIA (PIPRECIA-S).** Some respondents find it easier to always compare a criterion with the first
+one. In PIPRECIA-S (``comparison='first'``) :math:`s_j` compares the criterion :math:`C_j` with :math:`C_1`, the
+coefficients :math:`k_j` are calculated with Eq. :eq:`piprecia_k`, and the recalculated weights are relative to the
+first criterion:
+
+.. math::
+    :label: piprecia_s_q
+
+    \begin{equation}
+    q_j = \frac{1}{k_j}
+    \end{equation}
+
+The final weights are obtained with Eq. :eq:`piprecia_w`.
+
 In group decision-making, the weights obtained from :math:`R` experts can be aggregated with the geometric mean
 :math:`w_j = \left(\prod_{r=1}^{R} w_j^r\right)^{1/R}` and normalized to sum to one.
 

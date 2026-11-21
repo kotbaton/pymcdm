@@ -17,6 +17,8 @@
   - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
     option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of
     IE-TOPSIS and TOPSIS-RAD are obtained with these parameters.
+* Add `comparison` argument to `PIPRECIA`: comparisons with the previous criterion (default) or with the first
+  criterion (Simplified PIPRECIA, PIPRECIA-S).
 * Add `prioritization` argument to `AHP`: weights from the principal eigenvector (default) or from the geometric mean
   of rows (LLSM).
 * Fix `BWM` failing or returning a local optimum for some inputs: the model is now solved to its global optimum by
