@@ -16,6 +16,8 @@ class PROBID(MCDA_method):
 
     Examples
     --------
+    >>> import numpy as np
+    >>> from pymcdm.methods import PROBID
     >>> matrix = np.array([
     ...     [1.679 * 10**6, 1.525 * 10**(-7), 3.747 * 10**(-5), 0.251, 2.917],
     ...     [2.213 * 10**6, 1.304 * 10**(-7), 3.250 * 10**(-5), 0.218, 6.633],
@@ -31,9 +33,9 @@ class PROBID(MCDA_method):
     ... ])
     >>> weights = np.array([0.1819, 0.2131, 0.1838, 0.1832, 0.2379])
     >>> types = np.array([1, -1, -1, -1, -1])
-    >>> pr = methods.PROBID()
+    >>> pr = PROBID()
     >>> pref = np.round(pr(matrix, weights, types), 4)
-    >>> print(pref)
+    >>> print(pref.tolist())
     [0.8568, 0.7826, 0.9362, 0.9369, 0.9379, 0.8716, 0.5489, 0.7231, 0.7792, 0.3331, 0.3387]
     """
     _tables = [

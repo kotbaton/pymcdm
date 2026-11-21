@@ -41,7 +41,7 @@ class SPOTIS(MCDA_method):
         >>> weights = np.array([0.2, 0.3, 0.5])
         >>> types = np.array([1, -1, 1])
         >>> body = SPOTIS(bounds)
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.1989, 0.3705, 0.3063, 0.7491]
     """
     _reverse_ranking = False
@@ -110,14 +110,19 @@ class SPOTIS(MCDA_method):
             >>> import numpy as np
             >>> from pymcdm.methods import SPOTIS
             >>> matrix = np.array([[ 96, 145, 200],
-                                   [100, 145, 200],
-                                   [120, 170,  80],
-                                   [140, 180, 140],
-                                   [100, 110,  30]])
+            ...                    [100, 145, 200],
+            ...                    [120, 170,  80],
+            ...                    [140, 180, 140],
+            ...                    [100, 110,  30]])
             >>> types = np.ones(3)
             >>> weights = np.ones(3)/3
-            >>> body = SPOTIS()
-            >>> preferences = body(matrix, weights, types, bounds=bounds)
+            >>> bounds = SPOTIS.make_bounds(matrix)
+            >>> print(bounds)
+            [[ 96 140]
+             [110 180]
+             [ 30 200]]
+            >>> body = SPOTIS(bounds)
+            >>> preferences = body(matrix, weights, types)
             >>> np.round(preferences, 4)
             array([0.5   , 0.4697, 0.4344, 0.1176, 0.9697])
             """

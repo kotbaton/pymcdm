@@ -43,7 +43,7 @@ class COCOSO(MCDA_method):
         ...                    [3, 0.1, 1778, 1000, 920]])
         >>> weights = np.array([0.036, 0.192, 0.326, 0.326, 0.12])
         >>> types = np.array([1, -1, 1, 1, 1])
-        >>> [round(preference, 3) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 3).tolist()
         [2.041, 2.788, 2.882, 2.416, 1.299, 1.443, 2.519]
     """
     _captions = [

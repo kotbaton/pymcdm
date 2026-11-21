@@ -35,8 +35,8 @@ class COPRAS(MCDA_method):
         ...                    [1580, 2400, 20000, 12, 12.8, 3.9, 2, 2, 3000]])
         >>> weights = np.array([0.2027, 0.1757, 0.1622, 0.1351, 0.1081, 0.0946, 0.0676, 0.0405, 0.0135])
         >>> types = np.array([-1, -1, -1, 1, 1, -1, 1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
-        [1, 0.9167, 0.8675, 0.9084, 0.9315, 0.9486]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
+        [1.0, 0.9167, 0.8675, 0.9084, 0.9315, 0.9486]
     """
     _tables = [
         TableDesc(caption='Normalized decision matrix',

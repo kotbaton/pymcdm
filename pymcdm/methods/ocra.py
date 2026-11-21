@@ -45,8 +45,8 @@ class OCRA(MCDA_method):
         ...                    [6.8, 228, 7.1, 7.2, 6.5]])
         >>> weights = np.array([0.239, 0.225, 0.197, 0.186, 0.153])
         >>> types = np.array([1, -1, 1, 1, 1])
-        >>> [round(preference, 3) for preference in body(matrix, weights, types)]
-        [0.143, 0.210, 0.164, 0.167, 0, 0.112]
+        >>> np.round(body(matrix, weights, types), 3).tolist()
+        [0.143, 0.21, 0.164, 0.167, 0.0, 0.112]
     """
     _tables = [
         TableDesc(caption='The aggregate performance of $i^{th}$ alternative with respect'

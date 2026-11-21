@@ -36,7 +36,7 @@ class PROMETHEE_II(PROMETHEE_I):
         ...                     [5, 1, 3]])
         >>> weights = np.array([0.5, 0.3, 0.2])
         >>> types = np.ones(3)
-        >>> [round(preference, 2) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 2).tolist()
         [0.1, -0.3, 0.2]
     """
     _tables = PROMETHEE_I._tables[:-1] + [

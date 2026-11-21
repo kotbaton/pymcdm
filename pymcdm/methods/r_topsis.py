@@ -79,7 +79,7 @@ class RTOPSIS(MCDA_method):
         >>> weights = np.array([0.3633, 0.3298, 0.3069])
         >>> types = np.array([1, 1, 1])
         >>> body = RTOPSIS(bounds)
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.9105, 0.8284, 0.8775, 0.9157]
     """
     _tables = [

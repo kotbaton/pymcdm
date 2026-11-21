@@ -68,28 +68,28 @@ class RIM(MCDA_method):
     >>> weights = np.array([0.2262, 0.2143, 0.1786, 0.1429, 0.1190, 0.1190])
     >>> types = np.array([1, 1, -1, 1, 1, 1])
     >>> range_t = np.array([
-    ...      [23, 60],
-    ...      [0, 15],
-    ...      [0, 10],
-    ...      [1, 3],
-    ...      [1, 3],
-    ...      [1, 5]
-    ...  ])
-    >>>  ref_s = [
-    ...      [30, 35],
-    ...      [10, 15],
-    ...      [0, 0],
-    ...      [3, 3],
-    ...      [3, 3],
-    ...      [4, 5]
-    ...  ]
-    >>>  pr = RIM(range_t, ref_s)
-    >>>  pref = pr(matrix, weights, types)
-    >>>  rank = pr.rank(pref)
-    >>>  print(pref)
-    ...  [0.5866 0.7558 0.3716 0.4666 0.7401]
-    >>>  print(rank)
-    ...  [3. 1. 5. 4. 2.]
+    ...     [23, 60],
+    ...     [0, 15],
+    ...     [0, 10],
+    ...     [1, 3],
+    ...     [1, 3],
+    ...     [1, 5]
+    ... ])
+    >>> ref_s = [
+    ...     [30, 35],
+    ...     [10, 15],
+    ...     [0, 0],
+    ...     [3, 3],
+    ...     [3, 3],
+    ...     [4, 5]
+    ... ]
+    >>> pr = RIM(range_t, ref_s)
+    >>> pref = pr(matrix, weights, types)
+    >>> rank = pr.rank(pref)
+    >>> print(np.round(pref, 4))
+    [0.5866 0.7558 0.3716 0.4666 0.7401]
+    >>> print(rank)
+    [3. 1. 5. 4. 2.]
     """
     _tables = [
         TableDesc(caption='Reference ideal',

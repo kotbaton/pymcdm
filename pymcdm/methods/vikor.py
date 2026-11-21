@@ -44,8 +44,8 @@ class VIKOR(MCDA_method):
         ...                    [85, 9, 100, 29]])
         >>> weights = np.array([0.25, 0.25, 0.25, 0.25])
         >>> types = np.array([1, 1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
-        [0.5679, 0.7667, 1, 0.7493, 0]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
+        [0.5679, 0.7667, 1.0, 0.7493, 0.0]
     """
     _reverse_ranking = False
     _tables = [

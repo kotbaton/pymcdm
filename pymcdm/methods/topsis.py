@@ -33,11 +33,11 @@ class TOPSIS(MCDA_method):
         >>> import numpy as np
         >>> body = TOPSIS()
         >>> matrix = np.array([[1, 2, 5],
-        ...                     3000, 3750, 4500]]).T
+        ...                    [3000, 3750, 4500]]).T
         >>> weights = np.array([0.5, 0.5])
         >>> types = np.array([-1, 1])
-        >>> [round(preference, 3) for preference in body(matrix, weights, types)]
-        [0.500, 0.617, 0.500]
+        >>> np.round(body(matrix, weights, types), 3).tolist()
+        [0.5, 0.617, 0.5]
     """
     _tables = [
         TableDesc(caption='Normalized decision matrix',

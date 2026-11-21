@@ -41,7 +41,7 @@ class MABAC(MCDA_method):
         ...                    [20300, 3850, 2, 5, 0.90, 3.25, 3.0, 2.6, 21.5, 6.0]])
         >>> weights = np.array([0.146, 0.144, 0.119, 0.121, 0.115, 0.101, 0.088, 0.068, 0.050, 0.048])
         >>> types = np.array([-1, 1, 1, 1, -1, -1, 1, 1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.0826, 0.2183, -0.0488, 0.0246, -0.0704, 0.0465, 0.0464]
     """
     _tables = [

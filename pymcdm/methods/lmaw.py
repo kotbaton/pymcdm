@@ -31,7 +31,7 @@ class LMAW(MCDA_method):
     >>> body = LMAW()
     >>> prefs = body(matrix, weights, types)
     >>> print(prefs.round(4))
-    [4.840 4.681 4.799 4.733 4.736 4.704]
+    [4.8404 4.6808 4.7989 4.7328 4.736  4.7037]
 
     References
     ----------
