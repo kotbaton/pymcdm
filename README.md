@@ -99,6 +99,14 @@ The library contains:
 |:-----------------|:-------------------------:|
 | Balanced SPOTIS	|   [[68]](#c68)       	    |
 | R-TOPSIS        	|   [[76]](#c76)       	    |
+| NR-TOPSIS\* | [[89]](#c89) |
+| TOPSIS (García-Cascales & Lamata)\* | [[90]](#c90) |
+| IE-TOPSIS (domain)\* | [[91]](#c91) |
+| TOPSIS-RAD\* | [[92]](#c92) |
+
+\* Obtained with the parameters of R-TOPSIS (`RTOPSIS`), see its documentation. For IE-TOPSIS only the expansion of
+the criteria domains is available; its PRC ranking index, which depends on the whole set of alternatives, is not
+implemented.
 
 * Weighting methods:
 
@@ -423,3 +431,11 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c87">[87]</a> Hatefi, M. A. (2019). Indifference threshold-based attribute ratio analysis: A method for assigning the weights to the attributes in multiple attribute decision making. Applied Soft Computing, 74, 643-651. https://doi.org/10.31181/dmame1902102z
 
 <a name="c88">[88]</a> Mandil, A. D. A., Salih, M. M., & Muhsen, Y. R. (2024). Opinion Weight Criteria Method (OWCM): A New Method for Weighting Criteria With Zero Inconsistency. IEEE Access, 12, 5605-5619. https://doi.org/10.1016/S0377-2217(01)00370-8
+
+<a name="c89">[89]</a> Yang, W. (2020). Ingenious solution for the rank reversal problem of TOPSIS method. Mathematical Problems in Engineering, 2020, 9676518. https://doi.org/10.1108/K-05-2021-0403
+
+<a name="c90">[90]</a> García-Cascales, M. S., & Lamata, M. T. (2012). On rank reversal and TOPSIS method. Mathematical and Computer Modelling, 56, 123-132. https://doi.org/10.1016/j.eswa.2023.122312
+
+<a name="c91">[91]</a> Yang, B., Zhao, J., & Zhao, H. (2022). A robust method for avoiding rank reversal in the TOPSIS. Computers & Industrial Engineering, 174, 108776. https://doi.org/10.1016/j.asoc.2018.10.050
+
+<a name="c92">[92]</a> Costa, L. F., Costa, H. G., Rodrigues, B., & Lima, D. (2026). TOPSIS-RAD: Ranking According to Desires. arXiv preprint arXiv:2606.07253. https://doi.org/10.1109/ACCESS.2024.3349472
