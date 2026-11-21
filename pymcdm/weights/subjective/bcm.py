@@ -87,6 +87,9 @@ class BCM(OptimizationWeightsBase):
         """
         Calculate weights by solving the BCM min-max optimization problem (Eq. 6 from [#bcm1]_).
 
+        For a fixed xi the constraints are linear in the weights, so the model is solved to its
+        global optimum by bisection on xi, each step being a linear feasibility problem.
+
         Returns
         -------
         np.ndarray
@@ -94,38 +97,9 @@ class BCM(OptimizationWeightsBase):
         """
         n = len(self.a_b)
         B = self._base_index
-
-        reciprocals = 1.0 / self.a_b
-        w_init = reciprocals / np.sum(reciprocals)
-        x0 = np.zeros(n + 1)
-        x0[:n] = w_init
-        x0[-1] = 0.0
-
-        constraints = [{'type': 'eq', 'fun': lambda x: np.sum(x[:n]) - 1.0}]
-
-        for j in range(n):
-            if j == B:
-                continue
-            a_Bj = self.a_b[j]
-
-            def _make_con_upper(jj, ab):
-                return lambda x: x[-1] - (x[B] / x[jj] - ab)
-            def _make_con_lower(jj, ab):
-                return lambda x: x[-1] - (ab - x[B] / x[jj])
-
-            constraints.append({'type': 'ineq', 'fun': _make_con_upper(j, a_Bj)})
-            constraints.append({'type': 'ineq', 'fun': _make_con_lower(j, a_Bj)})
-
-        bounds = [(1e-10, None)] * n + [(0.0, None)]
-
-        result = self._solve_optimization(
-            lambda x: x[-1], x0, bounds, constraints,
-            options={'ftol': 1e-15, 'maxiter': 1000}
-        )
-
-        w = result.x[:n]
-        self.xi = float(result.x[-1])
-        return self._normalize_weights(w)
+        ratios = [(B, j, self.a_b[j]) for j in range(n) if j != B]
+        w, self.xi = self._minimize_ratio_deviation(ratios, n)
+        return w
 
     def get_xi(self) -> float:
         """

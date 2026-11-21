@@ -28,6 +28,8 @@
   SLSQP solver, which could emit warnings about values outside bounds.
 * Fix `COBRAC` failing for larger models (e.g. the 30 criteria of the reference paper): the model is solved to its
   global optimum with linear feasibility problems, like `BWM` and `FUCOM`.
+* `BCM` is solved with linear feasibility problems, like `BWM`, `FUCOM` and `COBRAC`, instead of the nonlinear
+  SLSQP solver.
 * Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
 * Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and
   validate the number of thresholds against the number of criteria.
