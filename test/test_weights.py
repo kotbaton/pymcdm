@@ -329,6 +329,22 @@ class TestSWARAWeights(unittest.TestCase):
             weights.subjective.SWARA(s=[1, 2], s_v=[0.1])
 
 
+class TestPIPRECIAWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified pivot pairwise relative
+        criteria importance assessment (PIPRECIA-S) method. Romanian Journal of Economic Forecasting, 24(4),
+        141-154.
+    """
+
+    def test_output(self):
+        """ Weights obtained using the PIPRECIA method from Table 2. """
+        piprecia = weights.subjective.PIPRECIA(s=[0, 1, 2, 3], s_v=[1.0, 0.5, 0.5])
+
+        output = [0.32, 0.32, 0.21, 0.14]
+        output_method = [round(weight, 2) for weight in piprecia()]
+        self.assertListEqual(output, output_method)
+
+
 class TestFUCOMWeights(unittest.TestCase):
     """ Test output method with reference:
         [1] Pamučar, D., Stević, Ž., & Sremac, S. (2018). A new model for determining weight coefficients of

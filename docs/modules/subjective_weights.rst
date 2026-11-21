@@ -219,6 +219,60 @@ current one. The comparative importance :math:`s_j \geq 0` is given for every cr
     w_j = \frac{q_j}{\sum_{k=1}^{n} q_k}
     \end{equation}
 
+PIPRECIA
+=======================
+:class:`PIPRECIA` (PIvot Pairwise RElative Criteria Importance Assessment) is designed to evaluate decision criteria
+according to the following steps:
+
+**Step 1.** List the criteria.
+
+Unlike SWARA, the criteria do not have to be sorted by their expected significance (parameter ``s`` gives the order in
+which they are evaluated).
+
+**Step 2.** Determine the relative importance of the criteria.
+
+Starting from the second criterion, the expert compares each criterion with the previous one (parameter ``s_v``):
+
+.. math::
+    :label: piprecia_s
+
+    \begin{equation}
+    s_j = \begin{cases} > 1 & \text{if } C_j \succ C_{j-1} \\ 1 & \text{if } C_j = C_{j-1} \\
+    < 1 & \text{if } C_j \prec C_{j-1} \end{cases}
+    \end{equation}
+
+with :math:`0 < s_j < 2`.
+
+**Step 3.** Calculate the coefficients.
+
+.. math::
+    :label: piprecia_k
+
+    \begin{equation}
+    k_j = \begin{cases} 1 & j = 1 \\ 2 - s_j & j > 1 \end{cases}
+    \end{equation}
+
+**Step 4.** Calculate the recalculated weights.
+
+.. math::
+    :label: piprecia_q
+
+    \begin{equation}
+    q_j = \begin{cases} 1 & j = 1 \\ \frac{q_{j-1}}{k_j} & j > 1 \end{cases}
+    \end{equation}
+
+**Step 5.** Calculate the final criteria weights.
+
+.. math::
+    :label: piprecia_w
+
+    \begin{equation}
+    w_j = \frac{q_j}{\sum_{k=1}^{n} q_k}
+    \end{equation}
+
+In group decision-making, the weights obtained from :math:`R` experts can be aggregated with the geometric mean
+:math:`w_j = \left(\prod_{r=1}^{R} w_j^r\right)^{1/R}` and normalized to sum to one.
+
 FUCOM
 =======================
 :class:`FUCOM` (FUll COnsistency Method) is designed to evaluate decision criteria according to the following steps:
