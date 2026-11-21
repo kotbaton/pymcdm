@@ -286,7 +286,7 @@ def wsc(w0, w1):
                decision-making using a novel weights similarity coefficient.
                Procedia Computer Science, 225, 4785-4794.
     """
-    return 1 - (np.sum(np.abs(w0 - w1)) / 2 * (1 - np.min(w0)))
+    return 1 - np.sum(np.abs(w0 - w1)) / (2 * (1 - np.min(w0)))
 
 
 @_correlation_decorator
