@@ -26,6 +26,8 @@
   a_BW = a_WB.
 * `FUCOM` is solved to its global optimum with linear feasibility problems, like `BWM`, instead of the nonlinear
   SLSQP solver, which could emit warnings about values outside bounds.
+* Fix `COBRAC` failing for larger models (e.g. the 30 criteria of the reference paper): the model is solved to its
+  global optimum with linear feasibility problems, like `BWM` and `FUCOM`.
 * Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
 * Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and
   validate the number of thresholds against the number of criteria.

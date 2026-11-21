@@ -28,6 +28,8 @@ class COBRAC(OptimizationWeightsBase):
     >>> from pymcdm.weights.subjective import COBRAC
     >>> cobrac = COBRAC(n_criteria=3, pairs=[(0, 1), (1, 2)], xis=[0.7, 0.6])
     >>> weights = cobrac()
+    >>> print(np.round(weights, 4))
+    [0.5833 0.25   0.1667]
 
     References
     ----------
@@ -66,43 +68,18 @@ class COBRAC(OptimizationWeightsBase):
 
     def _calculate_weights(self) -> np.ndarray:
         """
-        Solve the COBRAC nonlinear optimization problem from [#cobrac1]_.
+        Solve the COBRAC nonlinear optimization problem (model (4) in [#cobrac1]_).
+
+        For a fixed delta the constraints are linear in the weights, so the model is solved to its
+        global optimum by bisection on delta, each step being a linear feasibility problem.
 
         Returns
         -------
         np.ndarray
             Vector of criteria weights summing to 1.
         """
-        n = self.n_criteria
-
-        w0 = np.full(n, 1.0 / n, dtype=float)
-
-        def max_deviation(w):
-            vals = [abs(w[i] / w[j] - r) for (i, j), r in zip(self.pairs, self._ratios, strict=False)]
-            return max(vals) if vals else 0.0
-
-        delta0 = max_deviation(w0)
-        x0 = np.concatenate([w0, [delta0]])
-
-        constraints = [{'type': 'eq', 'fun': lambda x: float(np.sum(x[:n]) - 1.0)}]
-
-        for (i, j), r_ij in zip(self.pairs, self._ratios, strict=False):
-            def make_c1(i=i, j=j, r=r_ij):
-                return lambda x: float(x[-1] - (x[i] / x[j] - r))
-            def make_c2(i=i, j=j, r=r_ij):
-                return lambda x: float(x[-1] - (r - x[i] / x[j]))
-            constraints.append({'type': 'ineq', 'fun': make_c1()})
-            constraints.append({'type': 'ineq', 'fun': make_c2()})
-
-        bounds = [(1e-8, 1.0)] * n + [(0.0, None)]
-
-        result = self._solve_optimization(
-            lambda x: float(x[-1]), x0, bounds, constraints,
-            options={'ftol': 1e-12, 'maxiter': 5000}
-        )
-
-        w = self._normalize_weights(result.x[:n])
-        self._delta = float(result.x[-1])
+        ratios = [(i, j, r) for (i, j), r in zip(self.pairs, self._ratios, strict=True)]
+        w, self._delta = self._minimize_ratio_deviation(ratios, self.n_criteria)
         return w
 
     def get_delta(self) -> float:
