@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2026 Andrii Shekhovtsov
 # Copyright (c) 2022-2026 Bartlomiej Kizielewicz
 import unittest
+import warnings
+
 import numpy as np
 
 from pymcdm.methods.sorting import ELECTRE_TRI
@@ -115,6 +117,14 @@ class TestELECTRE_TRIRules(unittest.TestCase):
 
         self.assertEqual(3, without_veto(matrix, self.weights, self.types)[0])
         self.assertEqual(1, with_veto(matrix, self.weights, self.types)[0])
+
+    def test_no_dominance_warnings(self):
+        """ Dominance does not matter in sorting, so no warnings about dominant or dominated alternatives. """
+        matrix = np.array([[10, 10, 10], [1, 1, 1], [5, 6, 7]])
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            ELECTRE_TRI(self.profiles)(matrix, self.weights, self.types)
+            ELECTRE_TRI(self.profiles)(matrix[:1], self.weights, self.types)
 
     def test_validation(self):
         with self.assertRaises(ValueError):

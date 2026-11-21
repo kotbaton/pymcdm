@@ -16,6 +16,8 @@
 * New module `pymcdm.methods.sorting` for sorting methods, which assign alternatives to predefined ordered
   categories instead of ranking them, with the ELECTRE TRI method (pessimistic and optimistic procedures,
   thresholds per profile and veto), tests and documentation.
+* Add `check_dominance` argument to `matrix_validator` and `validate_decision_problem`; it is disabled for sorting
+  methods, which compare alternatives with profiles instead of each other.
 * New MCDM method, with tests and documentation:
   - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
     option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of

@@ -82,6 +82,8 @@ class ELECTRE_TRI(MCDA_method):
     PROCEDURES = ('pessimistic', 'optimistic')
     # Results are category numbers, not preferences to rank
     _produces_ranking = False
+    # Alternatives are compared with the profiles, not with each other, so dominance does not matter
+    _check_dominance = False
 
     def __init__(self, profiles, q=None, p=None, v=None, cutting_level=0.75, procedure='pessimistic'):
         self.profiles = np.atleast_2d(np.asarray(profiles, dtype=float))

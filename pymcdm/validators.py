@@ -452,7 +452,7 @@ def esp_bounds_validator(esp: np.ndarray, bounds: np.ndarray):
         raise ValueError('ESP values should be in range of min and max values (bounds) for each criterion.')
 
 
-def matrix_validator(matrix: np.ndarray, types: np.ndarray | list | tuple):
+def matrix_validator(matrix: np.ndarray, types: np.ndarray | list | tuple, check_dominance: bool = True):
     """
     Validates the decision matrix and checks for dominant or dominated alternatives.
 
@@ -473,6 +473,9 @@ def matrix_validator(matrix: np.ndarray, types: np.ndarray | list | tuple):
         A sequence indicating the type of optimization for each criterion. Each element should be:
         - `1` for maximization (profit) criteria.
         - `-1` for minimization (cost) criteria.
+    check_dominance : bool, optional
+        Whether to warn about dominant and dominated alternatives. Sorting methods, which compare alternatives with
+        profiles instead of each other, disable it. Default is True.
 
     Returns
     -------
@@ -507,6 +510,9 @@ def matrix_validator(matrix: np.ndarray, types: np.ndarray | list | tuple):
     Alternatives with indices [1] are dominated. Consider removing them, as such alternatives can cause numerical errors in some methods.
     """
     array_dimension_validator(matrix, 2, 'Matrix')
+
+    if not check_dominance:
+        return
 
     types = np.asarray(types)
 
@@ -640,7 +646,8 @@ def types_validator(matrix: np.ndarray, types: np.ndarray):
                          'or 1.')
 
 
-def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np.ndarray):
+def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np.ndarray,
+                              check_dominance: bool = True):
     """
     Validates the components of a decision problem, including the decision matrix, weights, and types.
 
@@ -663,6 +670,8 @@ def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np
         A 1D array where each element represents the optimization direction for a criterion:
         - `1` for maximization (profit).
         - `-1` for minimization (cost).
+    check_dominance : bool, optional
+        Whether to warn about dominant and dominated alternatives (see `matrix_validator`). Default is True.
 
     Returns
     -------
@@ -692,7 +701,7 @@ def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np
     >>> print(caught[0].message)
     Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
     """
-    matrix_validator(matrix, types)
+    matrix_validator(matrix, types, check_dominance=check_dominance)
     weights_validator(matrix, weights)
     types_validator(matrix, types)
 
