@@ -36,6 +36,8 @@
   missing imports, outdated `SPOTIS.make_bounds` example).
 * Fix examples in the documentation of COMET and COMET tools (`COMET.make_cvalues`, `ESPExpert.make_cvalues_psi`);
   interactive expert examples are skipped in doctests.
+* Fix typos in error messages of `matrix_ref_point_validator` and `types_validator`, and examples of helpers and
+  validators (warnings are captured, `param_sensitivity` has a complete example).
 * Fix `AHP` and `RANCOM` failing when the pairwise comparison matrix is given as a list.
 * Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
 * Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and

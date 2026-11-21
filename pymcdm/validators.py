@@ -124,7 +124,7 @@ def matrix_ref_point_validator(matrix: np.ndarray, ref_point: np.ndarray) -> Non
 
     if ref_point.shape[0] != matrix.shape[1]:
         raise ValueError(
-            f'Len of the ref_point {ref_point.shape[0]} should be the same'
+            f'Len of the ref_point {ref_point.shape[0]} should be the same '
             f'as number of the criteria {matrix.shape[1]}.')
 
 
@@ -282,8 +282,7 @@ def matrix_bounds_validator(matrix: np.ndarray, bounds: np.ndarray):
     >>> matrix_bounds_validator(invalid_matrix, bounds)
     Traceback (most recent call last):
         ...
-    ValueError: Every alternative values should be in range of min and max values (bounds) for each criterion.
-    Some values of alternative with index 0 is out of range.
+    ValueError: Every alternative values should be in range of min and max values (bounds) for each criterion. Some values of alternative with index 0 is out of range.
     """
     min_, max_ = bounds[:, 0], bounds[:, 1]
 
@@ -330,15 +329,13 @@ def cvalues_validator(cvalues: list | tuple | np.ndarray):
     >>> cvalues_validator(invalid_cvalues)
     Traceback (most recent call last):
         ...
-    ValueError: Characteristic values must be sorted in ascending order and does not contain repeated elements.
-    Check criterion with index 1.
+    ValueError: Characteristic values must be sorted in ascending order and does not contain repeated elements. Check criterion with index 1.
 
     >>> non_iterable_cvalues = [0, [10, 20]]
     >>> cvalues_validator(non_iterable_cvalues)
     Traceback (most recent call last):
         ...
-    ValueError: Characteristic values should be represented with nested lists or other iterables.
-    However, "0" is not iterable.
+    ValueError: Characteristic values should be represented with nested lists or other iterables. However, "0" is not iterable.
     """
     for i, cv in enumerate(cvalues):
         if not isinstance(cv, (np.ndarray, list, tuple)):
@@ -500,14 +497,14 @@ def matrix_validator(matrix: np.ndarray, types: np.ndarray | list | tuple):
 
     >>> dominant_matrix = np.array([[5, 10], [1, 2], [3, 4]])
     >>> types = [1, 1]
-    >>> matrix_validator(dominant_matrix, types)
-    UserWarning: Alternatives with indices [np.int64(0)] are dominated. Consider removing them,
-    as such alternatives can cause numerical errors in some methods.
-
-    >>> dominated_matrix = np.array([[1, 2], [5, 10], [3, 4]])
-    >>> matrix_validator(dominated_matrix, types)
-    UserWarning: Alternatives with indices [np.int64(0)] are dominant. Consider removing them,
-    as such alternatives can cause numerical errors in some methods.
+    >>> import warnings
+    >>> with warnings.catch_warnings(record=True) as caught:
+    ...     warnings.simplefilter('always')
+    ...     matrix_validator(dominant_matrix, types)
+    >>> for warning in caught:
+    ...     print(warning.message)
+    Alternatives with indices [0] are dominant. Consider removing them, as such alternatives can cause numerical errors in some methods.
+    Alternatives with indices [1] are dominated. Consider removing them, as such alternatives can cause numerical errors in some methods.
     """
     array_dimension_validator(matrix, 2, 'Matrix')
 
@@ -572,8 +569,12 @@ def weights_validator(matrix: np.ndarray, weights: np.ndarray):
     >>> weights_validator(matrix, weights) # No output, as validation passes.
 
     >>> invalid_weights = np.array([0.2, 0.3, 0.4])
-    >>> weights_validator(matrix, invalid_weights)
-    UserWarning: Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
+    >>> import warnings
+    >>> with warnings.catch_warnings(record=True) as caught:
+    ...     warnings.simplefilter('always')
+    ...     weights_validator(matrix, invalid_weights)
+    >>> print(caught[0].message)
+    Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
     """
     array_dimension_validator(weights, 1, 'Weights')
 
@@ -635,7 +636,7 @@ def types_validator(matrix: np.ndarray, types: np.ndarray):
         raise ValueError('Number of criteria should be same as number of criteria types.')
 
     if np.sum(np.abs(types)) != types.shape[0]:
-        raise ValueError('Types array should only contains values -1 '
+        raise ValueError('Types array should only contain values -1 '
                          'or 1.')
 
 
@@ -681,12 +682,15 @@ def validate_decision_problem(matrix: np.ndarray, weights: np.ndarray, types: np
     >>> matrix = np.array([[1, 2], [3, 4]])
     >>> weights = np.array([0.5, 0.5])
     >>> types = np.array([1, -1])  # Maximize first criterion, minimize second criterion
-    >>> validate_decision_problem(matrix, weights, types)
-    # No output, as validation passes.
+    >>> validate_decision_problem(matrix, weights, types)  # No output, as validation passes.
 
+    >>> import warnings
     >>> invalid_weights = np.array([0.5, 0.4])
-    >>> validate_decision_problem(matrix, invalid_weights, types)
-    UserWarning: Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
+    >>> with warnings.catch_warnings(record=True) as caught:
+    ...     warnings.simplefilter('always')
+    ...     validate_decision_problem(matrix, invalid_weights, types)
+    >>> print(caught[0].message)
+    Weights should be positive and its sum should be equal one. Now, sum of the weights is 0.9.
     """
     matrix_validator(matrix, types)
     weights_validator(matrix, weights)
