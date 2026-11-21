@@ -66,7 +66,7 @@ class ESPExpert:
             ...                                           bounds,
             ...                                           cvalues_psi=0.2)
             >>> # Generate ESP-guided cvalues based on provided ESP and psi
-            >>> cvalues = expert.make_cvalues()
+            >>> cvalues = expert.make_cvalues_psi()
             >>> # Create and identify COMET model
             >>> comet = pm.methods.COMET(cvalues, expert)
             >>> # Create a visualization of the characteriscic values,

@@ -34,6 +34,8 @@
   SLSQP solver.
 * Fix examples in the documentation of MCDA methods so that they run as doctests (NumPy 2 output, syntax errors,
   missing imports, outdated `SPOTIS.make_bounds` example).
+* Fix examples in the documentation of COMET and COMET tools (`COMET.make_cvalues`, `ESPExpert.make_cvalues_psi`);
+  interactive expert examples are skipped in doctests.
 * Fix `AHP` and `RANCOM` failing when the pairwise comparison matrix is given as a list.
 * Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
 * Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and
