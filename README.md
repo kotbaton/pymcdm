@@ -91,18 +91,19 @@ The library contains:
 | RAFSI                 | Ranking of Alternatives through Functional mapping of criterion sub-intervals into a Single Interval |              [[69]](#c69)              |
 | LoPM                	 | Limits on Property Method                                                                            |              [[67]](#c67)              |
 | LMAW                  | Logarithmic Methodology of Additive Weights                                                          |              [[70]](#c70)               | 
-| AROMAN                | Alternative Ranking Order Method Accounting for Two-Step Normalization)                              |              [[72]](#c72)               | 
+| AROMAN                | Alternative Ranking Order Method Accounting for Two-Step Normalization)                              |              [[72]](#c72)               |
+| TODIM                 | TOmada de Decisão Interativa e Multicritério                                                         |       [[76]](#c76),[[77]](#c77),[[78]](#c78),[[79]](#c79)         |
 
 * MCDA Methods' extensions and variations:
 
 | Acronym       	|    Reference         	    |
 |:-----------------|:-------------------------:|
 | Balanced SPOTIS	|   [[68]](#c68)       	    |
-| R-TOPSIS        	|   [[76]](#c76)       	    |
-| NR-TOPSIS\* | [[89]](#c89) |
-| TOPSIS (García-Cascales & Lamata)\* | [[90]](#c90) |
-| IE-TOPSIS (domain)\* | [[91]](#c91) |
-| TOPSIS-RAD\* | [[92]](#c92) |
+| R-TOPSIS        	|   [[80]](#c80)       	    |
+| NR-TOPSIS\* | [[93]](#c93) |
+| TOPSIS (García-Cascales & Lamata)\* | [[94]](#c94) |
+| IE-TOPSIS (domain)\* | [[95]](#c95) |
+| TOPSIS-RAD\* | [[96]](#c96) |
 
 \* Obtained with the parameters of R-TOPSIS (`RTOPSIS`), see its documentation. For IE-TOPSIS only the expansion of
 the criteria domains is available; its PRC ranking index, which depends on the whole set of alternatives, is not
@@ -123,20 +124,20 @@ implemented.
 | -       | Angular/Angle weights                                     |               [[31]](#c31)               |
 | -       | Gini Coeficient weights                                   |               [[32]](#c32)               |
 | -       | Statistical variance weights                              |               [[33]](#c33)               |
-| AHP     | Analytic Hierarchy Process                                |        [[65]](#c65), [[77]](#c77)        |
+| AHP     | Analytic Hierarchy Process                                |        [[65]](#c65), [[81]](#c81)        |
 | RANCOM  | RANking COMparison                                        |               [[66]](#c66)               |
-| SWARA   | Step-wise Weight Assessment Ratio Analysis                |               [[78]](#c78)               |
-| PIPRECIA | PIvot Pairwise RElative Criteria Importance Assessment    |        [[79]](#c79), [[93]](#c93)        |
-| FUCOM   | FUll COnsistency Method                                   |               [[80]](#c80)               |
-| BWM     | Best-Worst Method                                         |        [[81]](#c81), [[94]](#c94)        |
-| BCM     | Base-Criterion Method                                     |               [[82]](#c82)               |
-| LBWA    | Level Based Weight Assessment                             |               [[83]](#c83)               |
-| SIMOS   | Simos procedure (cards method)                            |               [[84]](#c84)               |
-| SRF     | Simos-Roy-Figueira (revised Simos procedure)              |               [[84]](#c84)               |
-| VIMM    | Vital-Immaterial-Mediocre Method                          |               [[85]](#c85)               |
-| COBRAC  | COmparisons Between RAnked Criteria                       |               [[86]](#c86)               |
-| ITARA   | Indifference Threshold-based Attribute RAtio Analysis     |               [[87]](#c87)               |
-| OWCM    | Opinion Weight Criteria Method                            |               [[88]](#c88)               |
+| SWARA   | Step-wise Weight Assessment Ratio Analysis                |               [[82]](#c82)               |
+| PIPRECIA | PIvot Pairwise RElative Criteria Importance Assessment    |        [[83]](#c83), [[97]](#c97)        |
+| FUCOM   | FUll COnsistency Method                                   |               [[84]](#c84)               |
+| BWM     | Best-Worst Method                                         |        [[85]](#c85), [[98]](#c98)        |
+| BCM     | Base-Criterion Method                                     |               [[86]](#c86)               |
+| LBWA    | Level Based Weight Assessment                             |               [[87]](#c87)               |
+| SIMOS   | Simos procedure (cards method)                            |               [[88]](#c88)               |
+| SRF     | Simos-Roy-Figueira (revised Simos procedure)              |               [[88]](#c88)               |
+| VIMM    | Vital-Immaterial-Mediocre Method                          |               [[89]](#c89)               |
+| COBRAC  | COmparisons Between RAnked Criteria                       |               [[90]](#c90)               |
+| ITARA   | Indifference Threshold-based Attribute RAtio Analysis     |               [[91]](#c91)               |
+| OWCM    | Opinion Weight Criteria Method                            |               [[92]](#c92)               |
 
 * Normalization methods:
 
@@ -406,40 +407,48 @@ This will produce output that contains formatted decision matrix, intermediate r
 
 <a name="c75">[75]</a> Sałabun, W., & Shekhovtsov, A. (2023). An innovative drastic metric for ranking similarity in decision-making problems. Proceedings of the 18th Conference on Computer Science and Intelligence Systems, 731–738.
 
-<a name="c76">[76]</a> de Farias Aires, R. F., & Ferreira, L. (2019). A new approach to avoid rank reversal cases in the TOPSIS method. Computers & Industrial Engineering, 132, 84-97.
+<a name="c76">[76]</a> Dutta, V., & Haldar, S. (2025). Performance Comparison of TODIM and CPT-TODIM in Social Sustainability Assessment for G7 Countries. International Journal of Information Technology & Decision Making. https://doi.org/10.1142/S021962202550097X
 
-<a name="c77">[77]</a> Crawford, G., & Williams, C. (1985). A note on the analysis of subjective judgment matrices. Journal of Mathematical Psychology, 29(4), 387-405.
+<a name="c77">[77]</a> Gomes, L. F. A. M., & Lima, M. M. P. P. (1991). TODIM: Basics and application to multicriteria ranking of projects with environmental impacts. Foundations of Computing and Decision Sciences, 16(4), 113-127.
 
-<a name="c78">[78]</a> Keršulienė, V., Zavadskas, E. K., & Turskis, Z. (2010). Selection of rational dispute resolution method by applying new step-wise weight assessment ratio analysis (SWARA). Journal of Business Economics and Management, 11(2), 243-258.
+<a name="c78">[78]</a> Gomes, L. F. A. M., & Rangel, L. A. D. (2009). An application of the TODIM method to the multicriteria rental evaluation of residential properties. European Journal of Operational Research, 193(1), 204–211. https://doi.org/10.1016/j.ejor.2007.10.046
 
-<a name="c79">[79]</a> Stanujkić, D., Zavadskas, E. K., Karabašević, D., Smarandache, F., & Turskis, Z. (2017). The use of the PIvot Pairwise RElative Criteria Importance Assessment method for determining the weights of criteria. Romanian Journal of Economic Forecasting, 20(4), 116-133.
+<a name="c79">[79]</a> Gomes, L. F. A. M., Machado, M. A. S., & Rangel, L. A. D. (2013). Behavioral multi-criteria decision analysis: the TODIM method with criteria interactions. Annals of Operations Research, 211(1), 531–548. https://doi.org/10.1007/s10479-013-1345-0
 
-<a name="c80">[80]</a> Pamučar, D., Stević, Ž., & Sremac, S. (2018). A new model for determining weight coefficients of criteria in MCDM models: Full Consistency Method (FUCOM). Symmetry, 10(9), 393. https://doi.org/10.1016/j.cie.2019.04.023
+<a name="c80">[80]</a> de Farias Aires, R. F., & Ferreira, L. (2019). A new approach to avoid rank reversal cases in the TOPSIS method. Computers & Industrial Engineering, 132, 84-97. https://doi.org/10.1016/j.cie.2019.04.023
 
-<a name="c81">[81]</a> Rezaei, J. (2015). Best-worst multi-criteria decision-making method. Omega, 53, 49-57. https://doi.org/10.1016/0022-2496(85)90002-1
+<a name="c81">[81]</a> Crawford, G., & Williams, C. (1985). A note on the analysis of subjective judgment matrices. Journal of Mathematical Psychology, 29(4), 387-405. https://doi.org/10.1016/0022-2496(85)90002-1
 
-<a name="c82">[82]</a> Haseli, G., Sheikh, R., & Sana, S. S. (2019). Base-criterion on multi-criteria decision-making method and its applications. International Journal of Management Science and Engineering Management, DOI: 10.1080/17509653.2019.1633964. https://doi.org/10.3846/jbem.2010.12
+<a name="c82">[82]</a> Keršulienė, V., Zavadskas, E. K., & Turskis, Z. (2010). Selection of rational dispute resolution method by applying new step-wise weight assessment ratio analysis (SWARA). Journal of Business Economics and Management, 11(2), 243-258. https://doi.org/10.3846/jbem.2010.12
 
-<a name="c83">[83]</a> Žižović, M., & Pamučar, D. (2019). New model for determining criteria weights: Level Based Weight Assessment (LBWA) model. Decision Making: Applications in Management and Engineering, 2(2), 126-137.
+<a name="c83">[83]</a> Stanujkić, D., Zavadskas, E. K., Karabašević, D., Smarandache, F., & Turskis, Z. (2017). The use of the PIvot Pairwise RElative Criteria Importance Assessment method for determining the weights of criteria. Romanian Journal of Economic Forecasting, 20(4), 116-133.
 
-<a name="c84">[84]</a> Figueira, J., & Roy, B. (2002). Determining the weights of criteria in the ELECTRE type methods with a revised Simos' procedure. European Journal of Operational Research, 139(2), 317-326. https://doi.org/10.3390/sym10090393
+<a name="c84">[84]</a> Pamučar, D., Stević, Ž., & Sremac, S. (2018). A new model for determining weight coefficients of criteria in MCDM models: Full Consistency Method (FUCOM). Symmetry, 10(9), 393. https://doi.org/10.3390/sym10090393
 
-<a name="c85">[85]</a> Zakeri, S., Ecer, F., Konstantas, D., & Cheikhrouhou, N. (2023). The vital-immaterial-mediocre multi-criteria decision-making method. Kybernetes, 52(3), 937-963. https://doi.org/10.1016/j.omega.2014.11.009
+<a name="c85">[85]</a> Rezaei, J. (2015). Best-worst multi-criteria decision-making method. Omega, 53, 49-57. https://doi.org/10.1016/j.omega.2014.11.009
 
-<a name="c86">[86]</a> Pamucar, D., Simic, V., Gorcun, O. F., & Kucukonder, H. (2024). Selection of the best Big Data platform using COBRAC-ARTASI methodology with adaptive standardized intervals. Expert Systems with Applications, 239, 122312. https://doi.org/10.1080/17509653.2019.1633964
+<a name="c86">[86]</a> Haseli, G., Sheikh, R., & Sana, S. S. (2020). Base-criterion on multi-criteria decision-making method and its applications. International Journal of Management Science and Engineering Management, 15(2), 79-88. https://doi.org/10.1080/17509653.2019.1633964
 
-<a name="c87">[87]</a> Hatefi, M. A. (2019). Indifference threshold-based attribute ratio analysis: A method for assigning the weights to the attributes in multiple attribute decision making. Applied Soft Computing, 74, 643-651. https://doi.org/10.31181/dmame1902102z
+<a name="c87">[87]</a> Žižović, M., & Pamučar, D. (2019). New model for determining criteria weights: Level Based Weight Assessment (LBWA) model. Decision Making: Applications in Management and Engineering, 2(2), 126-137. https://doi.org/10.31181/dmame1902102z
 
-<a name="c88">[88]</a> Mandil, A. D. A., Salih, M. M., & Muhsen, Y. R. (2024). Opinion Weight Criteria Method (OWCM): A New Method for Weighting Criteria With Zero Inconsistency. IEEE Access, 12, 5605-5619. https://doi.org/10.1016/S0377-2217(01)00370-8
+<a name="c88">[88]</a> Figueira, J., & Roy, B. (2002). Determining the weights of criteria in the ELECTRE type methods with a revised Simos' procedure. European Journal of Operational Research, 139(2), 317-326. https://doi.org/10.1016/S0377-2217(01)00370-8
 
-<a name="c89">[89]</a> Yang, W. (2020). Ingenious solution for the rank reversal problem of TOPSIS method. Mathematical Problems in Engineering, 2020, 9676518. https://doi.org/10.1108/K-05-2021-0403
+<a name="c89">[89]</a> Zakeri, S., Ecer, F., Konstantas, D., & Cheikhrouhou, N. (2023). The vital-immaterial-mediocre multi-criteria decision-making method. Kybernetes, 52(3), 937-963. https://doi.org/10.1108/K-05-2021-0403
 
-<a name="c90">[90]</a> García-Cascales, M. S., & Lamata, M. T. (2012). On rank reversal and TOPSIS method. Mathematical and Computer Modelling, 56, 123-132. https://doi.org/10.1016/j.eswa.2023.122312
+<a name="c90">[90]</a> Pamucar, D., Simic, V., Gorcun, O. F., & Kucukonder, H. (2024). Selection of the best Big Data platform using COBRAC-ARTASI methodology with adaptive standardized intervals. Expert Systems with Applications, 239, 122312. https://doi.org/10.1016/j.eswa.2023.122312
 
-<a name="c91">[91]</a> Yang, B., Zhao, J., & Zhao, H. (2022). A robust method for avoiding rank reversal in the TOPSIS. Computers & Industrial Engineering, 174, 108776. https://doi.org/10.1016/j.asoc.2018.10.050
+<a name="c91">[91]</a> Hatefi, M. A. (2019). Indifference threshold-based attribute ratio analysis: A method for assigning the weights to the attributes in multiple attribute decision making. Applied Soft Computing, 74, 643-651. https://doi.org/10.1016/j.asoc.2018.10.050
 
-<a name="c92">[92]</a> Costa, L. F., Costa, H. G., Rodrigues, B., & Lima, D. (2026). TOPSIS-RAD: Ranking According to Desires. arXiv preprint arXiv:2606.07253. https://doi.org/10.1109/ACCESS.2024.3349472
+<a name="c92">[92]</a> Ahmed Mandil, A. D., Salih, M. M., & Muhsen, Y. R. (2024). Opinion Weight Criteria Method (OWCM): A New Method for Weighting Criteria With Zero Inconsistency. IEEE Access, 12, 5605-5616. https://doi.org/10.1109/ACCESS.2024.3349472
 
-<a name="c93">[93]</a> Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified pivot pairwise relative criteria importance assessment (PIPRECIA-S) method. Romanian Journal of Economic Forecasting, 24(4), 141-154. https://doi.org/10.1155/2020/9676518
+<a name="c93">[93]</a> Yang, W. (2020). Ingenious solution for the rank reversal problem of TOPSIS method. Mathematical Problems in Engineering, 2020, 9676518. https://doi.org/10.1155/2020/9676518
 
-<a name="c94">[94]</a> Rezaei, J. (2016). Best-worst multi-criteria decision-making method: Some properties and a linear model. Omega, 64, 126-130. https://doi.org/10.1016/j.mcm.2011.12.022
+<a name="c94">[94]</a> García-Cascales, M. S., & Lamata, M. T. (2012). On rank reversal and TOPSIS method. Mathematical and Computer Modelling, 56(5-6), 123-132. https://doi.org/10.1016/j.mcm.2011.12.022
+
+<a name="c95">[95]</a> Yang, B., Zhao, J., & Zhao, H. (2022). A robust method for avoiding rank reversal in the TOPSIS. Computers & Industrial Engineering, 174, 108776. https://doi.org/10.1016/j.cie.2022.108776
+
+<a name="c96">[96]</a> Costa, L. F., Costa, H. G., Lima, D., & Rodrigues, B. (2026). TOPSIS-RAD: Ranking According to Desires. arXiv preprint arXiv:2606.07253. https://doi.org/10.48550/arXiv.2606.07253
+
+<a name="c97">[97]</a> Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified pivot pairwise relative criteria importance assessment (PIPRECIA-S) method. Romanian Journal of Economic Forecasting, 24(4), 141-154.
+
+<a name="c98">[98]</a> Rezaei, J. (2016). Best-worst multi-criteria decision-making method: Some properties and a linear model. Omega, 64, 126-130. https://doi.org/10.1016/j.omega.2015.12.001

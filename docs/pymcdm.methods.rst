@@ -111,6 +111,11 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.TODIM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.TOPSIS
    :members:
    :undoc-members:

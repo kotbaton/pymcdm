@@ -12,7 +12,7 @@ __all__ = [
     'linear_normalization',
     'nonlinear_normalization',
     'enhanced_accuracy_normalization',
-    'zavadskas_turskis_normalization'
+    'zavadskas_turskis_normalization',
 ]
 
 
@@ -67,7 +67,10 @@ def sum_normalization(x, cost=False):
     Parameters
     ----------
         x : ndarray
-            One-dimensional numpy array of values to be normalized. All values must be strictly positive (> 0).
+            One-dimensional numpy array of values to be normalized.
+            For profit criteria, values must be non-negative (>= 0).
+            For cost criteria, values must be strictly positive (> 0),
+            since the cost formula computes 1/x which is undefined for zero.
 
         cost : bool, optional
             Vector type. Default profit type.
@@ -77,12 +80,12 @@ def sum_normalization(x, cost=False):
         ndarray
             One-dimensional numpy array of normalized values.
     """
-    # Input validation: sum normalization requires strictly positive values
-    if np.any(x <= 0):
-        raise ValueError('sum_normalization requires all positive values.')
-
     if cost:
+        if np.any(x <= 0):
+            raise ValueError('sum_normalization requires strictly positive values for cost criteria.')
         return (1 / x) / np.sum(1 / x)
+    if np.any(x < 0):
+        raise ValueError('sum_normalization requires non-negative values for profit criteria.')
     return x / np.sum(x)
 
 
@@ -221,3 +224,5 @@ def zavadskas_turskis_normalization(x, cost=False):
     if cost:
         return 1 - np.abs((np.min(x) - x) / np.min(x))
     return 1 - np.abs((np.max(x) - x) / np.max(x))
+
+
