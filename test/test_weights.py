@@ -218,6 +218,12 @@ class TestRANCOMWeights(unittest.TestCase):
         output_method = [round(weight, 4) for weight in weights.subjective.RANCOM(matrix=matrix)()]
         self.assertListEqual(output, output_method)
 
+    def test_matrix_as_list(self):
+        """ The matrix can be given as a list, as documented. """
+        matrix = [[0.5, 1, 1, 1], [0, 0.5, 1, 1], [0, 0, 0.5, 0], [0, 0, 1, 0.5]]
+        np.testing.assert_allclose(weights.subjective.RANCOM(matrix=matrix)(),
+                                   weights.subjective.RANCOM(matrix=np.array(matrix))())
+
 
 class TestAHPWeights(unittest.TestCase):
     """ Test output method with reference:
@@ -252,6 +258,12 @@ class TestAHPWeights(unittest.TestCase):
         w_gm = ahp()
         np.testing.assert_allclose(w_gm, weights.subjective.AHP(matrix=matrix, prioritization='geometric_mean')())
         self.assertFalse(np.allclose(w_ev, w_gm))
+
+    def test_matrix_as_list(self):
+        """ The matrix can be given as a list, as documented. """
+        matrix = [[1, 3, 7, 5], [1/3, 1, 5, 3], [1/7, 1/5, 1, 1/3], [1/5, 1/3, 3, 1]]
+        np.testing.assert_allclose(weights.subjective.AHP(matrix=matrix)(),
+                                   weights.subjective.AHP(matrix=np.array(matrix))())
 
     def test_get_cr_without_matrix(self):
         ahp = weights.subjective.AHP(object_names=['A', 'B', 'C'])

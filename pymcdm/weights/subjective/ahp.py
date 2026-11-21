@@ -40,14 +40,24 @@ class AHP(PairwiseWeightsBase):
     >>> from pymcdm.weights.subjective import AHP
     >>> ahp = AHP(ranking=[1, 2, 4, 3]) # Identify weights for four criteria based on ranking
     >>> weights = ahp()
-    [0.48144852 0.21998235 0.13073309 0.16783605]
-    >>> ahp = AHP(object_names=['Price', 'Mileage', 'HP', 'Year']) # Identify weights based on manual comparisons
-    >>> weights = ahp()
-    >>> print(weights)
-    [0.52407767 0.26268171 0.03742414 0.17581648]
-    >>> print(ahp.get_cr())  # To calculate CR use get_cr() method
-    0.5021601824872032
+    >>> print(np.round(weights, 4))
+    [0.4814 0.22   0.1307 0.1678]
     >>> ahp = AHP(ranking=[1, 2, 4, 3], prioritization='geometric_mean')  # LLSM weights
+    >>> print(np.round(ahp(), 4))
+    [0.4846 0.2189 0.1302 0.1663]
+
+    Weights from a pairwise comparison matrix on the Saaty scale:
+
+    >>> ahp = AHP(matrix=[[1, 3, 7, 5], [1/3, 1, 5, 3], [1/7, 1/5, 1, 1/3], [1/5, 1/3, 3, 1]])
+    >>> print(np.round(ahp(), 4))
+    [0.565  0.2622 0.0553 0.1175]
+    >>> print(round(ahp.get_cr(), 4))  # To calculate CR use get_cr() method
+    0.0437
+
+    Weights based on manual comparisons, asked interactively in the console:
+
+    >>> ahp = AHP(object_names=['Price', 'Mileage', 'HP', 'Year'])  # doctest: +SKIP
+    >>> weights = ahp()  # doctest: +SKIP
 
     References
     ----------
