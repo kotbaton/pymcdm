@@ -491,6 +491,82 @@ class TestBWMWeights(unittest.TestCase):
                     np.testing.assert_allclose(output_method, output, atol=0.0051)
 
 
+class TestBCMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Haseli, G., Sheikh, R., & Sana, S. S. (2020). Base-criterion on multi-criteria decision-making method and
+        its applications. International Journal of Management Science and Engineering Management, 15(2), 79-88.
+    """
+
+    def test_output(self):
+        """ Example 1: transportation mode selection, cost (C3) is the base-criterion (Table 1). """
+        bcm = weights.subjective.BCM(a_b=[8, 2, 1])
+
+        output = [0.0769, 0.3077, 0.6154]
+        output_method = [round(weight, 4) for weight in bcm()]
+        self.assertListEqual(output, output_method)
+        self.assertEqual(round(bcm.get_xi(), 4), 0.0)
+
+    def test_output_full_matrix(self):
+        """ Example 1: complete pairwise comparison matrix, e.g. a21 = 4 (Table 2). """
+        bcm = weights.subjective.BCM(a_b=[8, 2, 1])
+
+        output = [[1, 0.25, 0.125], [4, 1, 0.5], [8, 2, 1]]
+        output_method = np.round(bcm.get_full_matrix(), 4).tolist()
+        self.assertListEqual(output, output_method)
+
+    def test_output_car(self):
+        """ Example 2: car selection, safety (C) is the base-criterion (Tables 3 and 4). """
+        bcm = weights.subjective.BCM(a_b=[1, 1 / 3, 1, 2, 1 / 2, 1 / 4], base_index=2)
+
+        output = [0.0870, 0.2609, 0.0870, 0.0435, 0.1739, 0.3478]
+        output_method = [round(weight, 4) for weight in bcm()]
+        self.assertListEqual(output, output_method)
+        self.assertEqual(round(bcm.get_xi(), 4), 0.0)
+
+        output = [[1, 0.3333, 1, 2, 0.5, 0.25],
+                  [3, 1, 3, 6, 1.5, 0.75],
+                  [1, 0.3333, 1, 2, 0.5, 0.25],
+                  [0.5, 0.1667, 0.5, 1, 0.25, 0.125],
+                  [2, 0.6667, 2, 4, 1, 0.5],
+                  [4, 1.3333, 4, 8, 2, 1]]
+        output_method = np.round(bcm.get_full_matrix(), 4).tolist()
+        self.assertListEqual(output, output_method)
+
+
+class TestVIMMWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Zakeri, S., Ecer, F., Konstantas, D., & Cheikhrouhou, N. (2023). The vital-immaterial-mediocre
+        multi-criteria decision-making method. Kybernetes, 52(3), 937-963.
+    """
+
+    def setUp(self):
+        # Criteria: cost, quality, delivery, service, social responsibility, risk, agility (Example 1)
+        self.vimm = weights.subjective.VIMM(n_criteria=7, vital_index=0, immaterial_index=4,
+                                            c_vital=[[9, 7.5, 8, 6.5, 7], [8, 8.5, 7]],
+                                            c_immaterial=[[9, 8, 8.5, 6, 7.5], [8.5, 9, 8]])
+
+    def test_output(self):
+        """ Weights of the supplier selection criteria from Table 11. """
+        output = [0.286, 0.243, 0.186, 0.192, 0.014, 0.027, 0.05]
+        output_method = [round(weight, 3) for weight in self.vimm()]
+        self.assertListEqual(output, output_method)
+
+    def test_output_scores(self):
+        """ Scores of the criteria from Table 11. The score of delivery is 12.9625, which the paper rounds up to
+            12.963 and Python's round down to 12.962, so the scores are compared with two decimals.
+        """
+        output = [20.0, 17.0, 12.96, 13.44, 1.0, 1.91, 3.52]
+        output_method = [round(score, 2) for score in self.vimm.get_scores()]
+        self.assertListEqual(output, output_method)
+
+    def test_tied_scores(self):
+        """ When all remaining criteria have the same score, a vital and an immaterial criterion cannot be chosen. """
+        vimm = weights.subjective.VIMM(n_criteria=6, vital_index=0, immaterial_index=1,
+                                       c_vital=[[5, 5, 5, 5], [6, 7]], c_immaterial=[[5, 5, 5, 5], [6, 7]])
+        with self.assertRaises(ValueError):
+            vimm()
+
+
 class TestLBWAWeights(unittest.TestCase):
     """ Test output method with reference:
         [1] Žižović, M., & Pamučar, D. (2019). New model for determining criteria weights: Level Based Weight

@@ -621,3 +621,112 @@ weights. The weights are determined according to the following steps:
     \begin{equation}
     \omega_j = \frac{v_j}{\sum_{j=1}^{n} v_j}, \quad v_j = \left( \sum_{i=1}^{m-1} \delta_{ij}^p \right)^{1/p}
     \end{equation}
+
+BCM
+=======================
+:class:`BCM` (Base-Criterion Method) is designed to evaluate decision criteria according to the following steps:
+
+**Step 1.** Determine the set of decision criteria.
+
+**Step 2.** Select the base-criterion.
+
+Unlike in BWM, the base-criterion does not have to be the best or the worst criterion; it can be any criterion
+preferred by the decision-maker.
+
+**Step 3.** Determine the relative importance of the base-criterion over the other criteria.
+
+The comparisons are made on a scale from 1/9 to 9 and give the base-comparison vector (parameter ``a_b``), where
+:math:`a_{BB} = 1`. If several elements are equal to 1, the base-criterion has to be indicated with the parameter
+``base_index``.
+
+.. math::
+    :label: bcm_ab
+
+    \begin{equation}
+    A_B = \left( a_{B1}, a_{B2}, \ldots, a_{Bn} \right)
+    \end{equation}
+
+The other comparisons (final comparisons, method ``get_full_matrix``) follow from the base-comparisons, so the
+decision-maker should choose them so that they stay within the scale:
+
+.. math::
+    :label: bcm_aij
+
+    \begin{equation}
+    a_{ij} = \frac{a_{Bj}}{a_{Bi}}, \quad \frac{1}{9} \leq a_{ij} \leq 9
+    \end{equation}
+
+**Step 4.** Calculate the weights.
+
+.. math::
+    :label: bcm_model
+
+    \begin{equation}
+    \begin{aligned}
+    \min \ & \xi \\
+    \text{s.t.} \ & \left| \frac{w_B}{w_j} - a_{Bj} \right| \leq \xi, \quad \forall j \\
+    & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
+    \end{aligned}
+    \end{equation}
+
+For a fixed :math:`\xi` the constraints are linear in the weights, so the model is solved to its global optimum by
+bisection on :math:`\xi`. Because only the base-comparisons are given, the comparisons are always fully consistent
+(:math:`\xi = 0`, method ``get_xi``) and :math:`w_j \propto 1 / a_{Bj}`.
+
+VIMM
+=======================
+:class:`VIMM` (Vital-Immaterial-Mediocre Method) is designed to evaluate decision criteria according to the following
+steps (the first scenario, one decision-making goal):
+
+**Step 1.** Determine the vital and the immaterial criteria.
+
+The vital criterion has the largest and the immaterial criterion the smallest impact on the decision (parameters
+``vital_index`` and ``immaterial_index``). They receive the scores :math:`\alpha_1 = 5` and :math:`\beta_1 = 1`.
+
+**Step 2.** Compare the remaining criteria with the vital and the immaterial criteria.
+
+The comparisons are made on a scale from 2 (less importance) through 5 (equal importance) to 9 (more importance);
+fractions are allowed. The comparisons of round :math:`x` are given as ``c_vital[x]`` and ``c_immaterial[x]``, in the
+order of the indices of the remaining criteria.
+
+**Step 3.** Calculate the distances.
+
+The distance :math:`d^+_{xy}` of the criterion :math:`y` from the immaterial criterion and the distance
+:math:`d^-_{xy}` from the vital criterion in round :math:`x` are:
+
+.. math::
+    :label: vimm_d
+
+    \begin{equation}
+    d^+_{xy} = c^{I}_{xy} - 1, \quad d^-_{xy} = 10 - c^{V}_{xy}
+    \end{equation}
+
+**Step 4.** Normalize the distances and calculate the scores.
+
+.. math::
+    :label: vimm_s
+
+    \begin{equation}
+    S_{xy} = \frac{d^+_{xy}}{\max_y d^+_{xy}} + \frac{\min_y d^-_{xy}}{d^-_{xy}}
+    \end{equation}
+
+The criterion with the highest score becomes the next vital criterion and the criterion with the lowest score the
+next immaterial criterion.
+
+**Step 5.** Repeat Steps 2–4 until two criteria (even number of criteria) or one criterion (odd number of criteria)
+remain.
+
+In each subsequent round, every vital criterion receives the score 5 and the latest immaterial criterion the score 1;
+the earlier immaterial criteria receive 0. The last remaining criterion is treated as vital.
+
+**Step 6.** Calculate the weights.
+
+The total score :math:`S_j` of each criterion is the sum of its scores in all rounds (method ``get_scores``), and the
+weights are:
+
+.. math::
+    :label: vimm_w
+
+    \begin{equation}
+    W_j = \frac{S_j}{\sum_{j=1}^{n} S_j}
+    \end{equation}
