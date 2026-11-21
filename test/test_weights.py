@@ -378,6 +378,20 @@ class TestBWMWeights(unittest.TestCase):
         self.assertListEqual(output, output_method)
         self.assertEqual(round(bwm.get_xi(), 2), 0.26)
 
+    def test_output_multiple_optima(self):
+        """ Buying a car (Rezaei, J. (2019). Best Worst Method (BWM), presentation, slides 22-23):
+            five criteria with multiple optimal solutions. The weights must be optimal (xi* = 1) and
+            lie within the intervals obtained with the post-optimality models (3a) and (3b).
+        """
+        bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 4, 2, 1])
+        w = bwm()
+
+        self.assertEqual(round(bwm.get_xi(), 4), 1.0)
+        lower = [0.1579, 0.4286, 0.1429, 0.1111, 0.0476]
+        upper = [0.2469, 0.4932, 0.1644, 0.1579, 0.0548]
+        for weight, lo, up in zip(w, lower, upper):
+            self.assertTrue(lo - 1e-4 <= weight <= up + 1e-4)
+
     def test_output_all_combinations(self):
         """ Example 2 (Table 5): xi and weights for a_32, a_21 in {1, ..., 8} with a_31 = 8.
             Rows are a_21, columns are a_32. The table includes inputs with two criteria

@@ -107,8 +107,13 @@ class BWM(OptimizationWeightsBase):
         else:
             upper = 0.0
 
-        self._xi = upper
-        return self._normalize_weights(weights)
+        weights = self._normalize_weights(weights)
+        # xi of the returned weights; the bisection bound may differ by the solver tolerance
+        self._xi = float(np.max(np.concatenate([
+            np.abs(weights[best_idx] / weights - a_b),
+            np.abs(weights / weights[worst_idx] - a_w),
+        ])))
+        return weights
 
     _xi_tolerance = 1e-10
 
