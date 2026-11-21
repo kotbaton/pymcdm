@@ -44,14 +44,16 @@ def polar_weights(weights,
             >>> from pymcdm.visuals import polar_weights
             >>> w = np.array([[0.3, 0.2, 0.5],
             ...              [0.2, 0.5, 0.3]])
-            >>> polar_weights(w)
+            >>> ax = polar_weights(w)
             >>> plt.show()
     """
 
     weights = np.array(weights).T
 
     if ax is None:
-        ax = plt.gca(polar=True)
+        # plt.gca(projection=...) was removed in Matplotlib 3.6
+        fig = plt.gcf()
+        ax = fig.gca() if fig.axes and fig.gca().name == 'polar' else fig.add_subplot(projection='polar')
 
     if xticklabels is None:
         xticklabels = [f'$M_{{{i + 1}}}$' for i in range(weights.shape[1])]

@@ -50,7 +50,7 @@ def mej_plot(mej, grid_width=2, cmap=None, colorbar=False, ax=None):
         >>> weights = np.ones(n) / n
         >>> types = np.ones(n)
         >>> comet = COMET(cvalues, MethodExpert(TOPSIS(), weights, types))
-        >>> mej_plot(comet.get_MEJ(), grid_width=4)
+        >>> ax = mej_plot(comet.get_MEJ(), grid_width=4)
         >>> plt.show()
     """
     if ax is None:

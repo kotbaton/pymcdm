@@ -57,7 +57,8 @@ def comet_contourf(comet,
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
         >>> from pymcdm.visuals import comet_contourf
-        >>> from pymcdm.methods import COMET
+        >>> from pymcdm.methods import COMET, TOPSIS
+        >>> from pymcdm.methods.comet_tools import MethodExpert
 
         >>> w = np.array([[1, 2, 3],
         ...               [4, 4.5, 5]])
@@ -69,8 +70,8 @@ def comet_contourf(comet,
         ...               [3, 4.2],
         ...               [2.5, 4.25]])
 
-        >>> c = COMET(w, rate_function=COMET.topsis_rate_function(np.ones(2)/2, np.ones(2)))
-        >>> comet_contourf(c, a, 10)
+        >>> c = COMET(w, MethodExpert(TOPSIS(), np.ones(2)/2, np.ones(2)))
+        >>> ax = comet_contourf(c, a, 10)
         >>> plt.show()
     """
     if ax is None:

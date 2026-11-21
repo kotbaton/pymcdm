@@ -67,13 +67,13 @@ def comet_3d_esp_plot(comet,
             ...                                           bounds,
             ...                                           cvalues_psi=0.2)
             >>> # Generate ESP-guided cvalues based on provided ESP and psi
-            >>> cvalues = expert.make_cvalues()
+            >>> cvalues = expert.make_cvalues_psi()
             >>> # Create and identify COMET model
             >>> comet = pm.methods.COMET(cvalues, expert)
             >>> # Create a visualization of the characteriscic values,
             >>> # ESP and preference function
             >>> fig, ax = plt.subplots(figsize=(5, 5), dpi=150, tight_layout=True, subplot_kw=dict(projection='3d'))
-            >>> ax pm.visuals.comet_3d_esp_plot(comet, esps, cvalues=cvalues, ax=ax)
+            >>> ax = pm.visuals.comet_3d_esp_plot(comet, esps, cvalues=cvalues, ax=ax)
             >>> plt.tight_layout()
             >>> plt.show()
     """

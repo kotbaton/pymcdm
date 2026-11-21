@@ -57,9 +57,9 @@ def ranking_bar(rankings, labels=None, colors=None, compromise=None,
             ...     [2, 3, 1, 5, 4],
             ...     [3, 2, 5, 1, 4]
             ... ])
-            >>> ranking_bar(rankings)
+            >>> ax = ranking_bar(rankings)
             >>> plt.show()
-            >>> ranking_bar(rankings, compromise=np.mean(rankings, axis=0).astype('int'))
+            >>> ax = ranking_bar(rankings, compromise=np.mean(rankings, axis=0).astype('int'))
             >>> plt.show()
     """
     if ax is None:

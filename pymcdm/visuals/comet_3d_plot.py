@@ -43,16 +43,16 @@ def comet_3d_plot(cvalues,
             >>> import numpy as np
             >>> import matplotlib.pyplot as plt
             >>> from pymcdm.visuals import comet_3d_plot
-            >>> cvalues = np.array([[0, 0.5, 1],
-            ...                    [2, 2.5, 3],
-            ...                    [4, 5]])
+            >>> cvalues = [[0, 0.5, 1],
+            ...            [2, 2.5, 3],
+            ...            [4, 5]]
             >>> a = np.array([[0.3, 2.3, 4.5],
             ...              [0.2, 2.8, 4.3],
             ...              [0.2, 2.9,4.6],
             ...              [0.3, 2.1, 4.7],
             ...              [0.3, 2.2, 4.1],
             ...              [0.5, 2.25, 4.9]])
-            >>> comet_3d_plot(cvalues, a)
+            >>> ax = comet_3d_plot(cvalues, a)
             >>> plt.show()
     """
 

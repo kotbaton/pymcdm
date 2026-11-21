@@ -54,12 +54,14 @@ def comet_tfns(comet,
         --------
             >>> import numpy as np
             >>> import matplotlib.pyplot as plt
-            >>> from pymcdm.methods import COMET
+            >>> from pymcdm.methods import COMET, TOPSIS
+            >>> from pymcdm.methods.comet_tools import MethodExpert
+            >>> from pymcdm.visuals import comet_tfns
             >>> cvalues = [[100, 150, 180], [400, 900, 3000],]
-            >>> comet = COMET(cvalues, rate_function=COMET.topsis_rate_function(np.ones(2) / 2, [1, -1]))
+            >>> comet = COMET(cvalues, MethodExpert(TOPSIS(), np.ones(2) / 2, np.array([1, -1])))
             >>> fig, axes = plt.subplots(2, 1, figsize=(5, 4), dpi=200)
             >>> for i in range(2):
-            ...     comet_tfns(comet,
+            ...     ax = comet_tfns(comet,
             ...                criterion_index=i,
             ...                ax=axes[i])
             ...

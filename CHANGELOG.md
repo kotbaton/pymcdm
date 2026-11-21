@@ -38,6 +38,8 @@
   interactive expert examples are skipped in doctests.
 * Fix typos in error messages of `matrix_ref_point_validator` and `types_validator`, and examples of helpers and
   validators (warnings are captured, `param_sensitivity` has a complete example).
+* Fix `polar_plot` and `polar_weights` failing with Matplotlib 3.6 or newer (`plt.gca(projection=...)` was removed),
+  and examples of the visualizations (outdated COMET API, axes returned by the plots).
 * Fix `AHP` and `RANCOM` failing when the pairwise comparison matrix is given as a list.
 * Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
 * Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and

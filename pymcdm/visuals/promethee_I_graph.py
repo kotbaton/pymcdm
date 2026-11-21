@@ -70,7 +70,7 @@ def promethee_I_graph(Fp,
         >>> N = 7
         >>> Fp = np.random.rand(N)
         >>> Fm = np.random.rand(N)
-        >>> promethee_I_graph(Fp, Fm)
+        >>> ax = promethee_I_graph(Fp, Fm)
         >>> plt.show()
     """
     if ax is None:

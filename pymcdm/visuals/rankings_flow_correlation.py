@@ -82,7 +82,7 @@ def rankings_flow_correlation(rankings,
         >>> types = np.ones(5)
         >>> args = pm.helpers.leave_one_out_rr(topsis, matrix, weights, types, pm.correlations.weighted_spearman, only_rr=False)
         >>> fig, ax = plt.subplots(figsize=(8, 4))
-        >>> pm.visuals.rankings_flow_correlation(*args, ax=ax)
+        >>> axes = pm.visuals.rankings_flow_correlation(*args, ax=ax)
         >>> plt.tight_layout()
         >>> plt.show()
     """

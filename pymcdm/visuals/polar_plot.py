@@ -63,7 +63,7 @@ def polar_plot(rankings,
     ...     [2.5, 2.5, 5, 1, 4],
     ...     [2, 3, 1, 5, 4],
     ... ])
-    >>> polar_plot(rankings)
+    >>> ax = polar_plot(rankings)
     >>> plt.show()
     """
 
@@ -73,7 +73,9 @@ def polar_plot(rankings,
         raise TypeError(f'Wrong type of axes. Pass projection="polar" when creating the axes.')
 
     if ax is None:
-        ax = plt.gca(projection='polar')
+        # plt.gca(projection=...) was removed in Matplotlib 3.6
+        fig = plt.gcf()
+        ax = fig.gca() if fig.axes and fig.gca().name == 'polar' else fig.add_subplot(projection='polar')
 
     if labels is None:
         labels = [f'$R_{{{i + 1}}}$' for i in range(rankings.shape[0])]

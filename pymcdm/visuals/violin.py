@@ -32,7 +32,7 @@ def violin(data, labels=None, violin_kwargs=dict(), ax=None):
             >>> import matplotlib.pyplot as plt
             >>> from pymcdm.visuals import violin
             >>> data = [np.random.rand(100) for i in range(3)]
-            >>> violin(data)
+            >>> ax = violin(data)
             >>> plt.show()
     """
     if ax is None:
