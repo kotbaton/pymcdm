@@ -17,6 +17,9 @@
   - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
     option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of
     IE-TOPSIS and TOPSIS-RAD are obtained with these parameters.
+* `PROMETHEE_I` and `PROMETHEE_II` accept a different preference function for each criterion (a list of names),
+  the Gaussian preference function (`'gaussian'`, parameter `s`) and `None` thresholds for criteria that do not
+  need them, as in Brans et al. (1986); missing thresholds raise a clear `ValueError`.
 * Add `model` argument to `BWM` with the linear BWM model, and `BWM.get_weight_intervals()` and
   `BWM.get_interval_preference_degrees()` for multiple optimal solutions of the nonlinear model (Rezaei, 2016).
 * Add `comparison` argument to `PIPRECIA`: comparisons with the previous criterion (default) or with the first

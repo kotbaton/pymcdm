@@ -9,7 +9,7 @@ European school
 PROMETHEE II
 =======================
 
-``PROMEHTEE II`` is designed to evaluate decision alternatives according to the following steps:
+``PROMETHEE II`` is designed to evaluate decision alternatives according to the following steps:
 
 **Step 1.** After defining the problem, calculate the preference function values.
 It is defined as (:eq:`promstep1a`) for profit criteria.
@@ -26,16 +26,44 @@ where :math:`d(a, b)` is the difference between two actions (pairwise comparison
 
         d(a,b) = g(a) - g(b)
 
-and the value of the preference function :math:`P` is always between 0 and 1 and it is calculating for
-each criterion according to the Equation~(:eq:`promstep1c`):
+and the value of the preference function :math:`P` is always between 0 and 1. For cost criteria the difference is
+reversed. Six types of preference functions (generalized criteria) are available [#promref1]_. They can be selected with
+the ``preference_function`` parameter, either one for all criteria or a list with one function for each criterion, and
+use the thresholds of indifference :math:`q`, preference :math:`p` and the parameter :math:`s` of the Gaussian
+function (parameters ``q``, ``p`` and ``s``, with ``None`` for criteria that do not need them):
 
-.. math::
-    :label: promstep1c
+.. list-table::
+   :header-rows: 1
+   :widths: 10 22 12 56
 
-        P(d) = \left\{\begin{array}{cc}
-    0, & d \leq 0 \\
-    1, & d > 0
-    \end{array}\right.
+   * - Type
+     - ``preference_function``
+     - Parameters
+     - :math:`P(d)` for :math:`d > 0` (:math:`P(d) = 0` for :math:`d \leq 0`)
+   * - I. Usual criterion
+     - ``'usual'``
+     - --
+     - :math:`1`
+   * - II. Quasi-criterion (U-shape)
+     - ``'ushape'``
+     - :math:`q`
+     - :math:`0` if :math:`d \leq q`, otherwise :math:`1`
+   * - III. Linear preference (V-shape)
+     - ``'vshape'``
+     - :math:`p`
+     - :math:`d / p` if :math:`d \leq p`, otherwise :math:`1`
+   * - IV. Level criterion
+     - ``'level'``
+     - :math:`q, p`
+     - :math:`0` if :math:`d \leq q`, :math:`1/2` if :math:`q < d \leq p`, otherwise :math:`1`
+   * - V. Linear preference and indifference area
+     - ``'vshape_2'``
+     - :math:`q, p`
+     - :math:`0` if :math:`d \leq q`, :math:`(d - q) / (p - q)` if :math:`q < d \leq p`, otherwise :math:`1`
+   * - VI. Gaussian criterion
+     - ``'gaussian'``
+     - :math:`s`
+     - :math:`1 - e^{-d^2 / (2 s^2)}`
 
 **Step 2.** Calculate the aggregated preference indices (:eq:`promstep2a`).
 
@@ -82,6 +110,14 @@ alternatives set :math:`A`.
         \Phi(a) = \Phi^{+}(a) - \Phi^{-}(a)
 
 where larger value of :math:`\Phi(a)` means better alternative.
+
+The positive and negative outranking flows are also returned by :class:`PROMETHEE_I`
+(``pymcdm.methods.partial.PROMETHEE_I``). Alternative :math:`a` outranks :math:`b` in the PROMETHEE I partial preorder
+if it is not worse in both flows and better in at least one of them; if it is better in one flow and worse in the
+other, the alternatives are incomparable.
+
+.. [#promref1] Brans, J. P., Vincke, P., & Mareschal, B. (1986). How to select and how to rank projects: The PROMETHEE
+   method. European Journal of Operational Research, 24(2), 228-238.
 
 
 TODIM

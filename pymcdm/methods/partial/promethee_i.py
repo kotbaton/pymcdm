@@ -9,28 +9,41 @@ from ...io import TableDesc, MCDA_results
 
 def _preference_function_wrapper(f):
     @wraps(f)
-    def wrapper(d, q, p):
+    def wrapper(d, q, p, s=None):
         if callable(q):
             q = q(d)
 
         if callable(p):
             p = p(d)
 
-        return f(d, q, p)
+        if callable(s):
+            s = s(d)
+
+        return f(d, q, p, s)
     return wrapper
 
 
 class _PreferenceFunctions:
+    # Thresholds required by each preference function (generalized criteria of Brans et al., 1986)
+    PARAMETERS = {
+        'usual': (),
+        'ushape': ('q',),
+        'vshape': ('p',),
+        'level': ('q', 'p'),
+        'vshape_2': ('q', 'p'),
+        'gaussian': ('s',),
+    }
+
     @staticmethod
-    def usual(d, q, p):
+    def usual(d, q, p, s=None):
         return (d > 0).astype(np.int8)
 
     @staticmethod
-    def ushape(d, q, p):
+    def ushape(d, q, p, s=None):
         return (d > q).astype(np.int8)
 
     @staticmethod
-    def vshape(d, q, p):
+    def vshape(d, q, p, s=None):
         d_ = d.copy()
         cond = np.logical_and(0 < d, d <= p)
         np.putmask(d_, cond, d/p)
@@ -38,7 +51,7 @@ class _PreferenceFunctions:
         return d_
 
     @staticmethod
-    def level(d, q, p):
+    def level(d, q, p, s=None):
         d_ = d.copy()
         cond = np.logical_and(q < d, d <= p)
         np.putmask(d_, cond, 0.5)
@@ -46,12 +59,16 @@ class _PreferenceFunctions:
         return d_
 
     @staticmethod
-    def vshape_2(d, q, p):
+    def vshape_2(d, q, p, s=None):
         d_ = d.copy()
         cond = np.logical_and(q < d, d <= p)
         np.putmask(d_, cond, (d-q)/(p-q))
         np.putmask(d_, np.logical_not(cond), d > p)
         return d_
+
+    @staticmethod
+    def gaussian(d, q, p, s):
+        return np.where(d > 0, 1 - np.exp(-np.square(d) / (2 * s ** 2)), 0.0)
 
 
 class PROMETHEE_I(MCDA_method):
@@ -61,14 +78,24 @@ class PROMETHEE_I(MCDA_method):
 
         Parameters
         ----------
-            preference_function: str
-                Name of the preference function ('usual', 'ushape', 'vshape', 'level', 'vshape_2')
+            preference_function: str or list of str
+                Name of the preference function ('usual', 'ushape', 'vshape', 'level', 'vshape_2', 'gaussian'),
+                used for all criteria, or a list with the name of the preference function for each criterion
+                (generalized criteria of types I-VI from [#promethee1b]_).
 
             p : ndarray or list
-                p values for each criterion. Can be either float values or function. If function, p value will be calculated based on difference table.
+                Preference thresholds for each criterion, required by 'vshape', 'level' and 'vshape_2'. Can be either
+                float values or functions. If function, p value will be calculated based on difference table. Use None
+                for criteria whose preference function does not need it.
 
             q : ndarray or list
-                q values for each criterion. Can be either float values or function. If function, q value will be calculated based on difference table.
+                Indifference thresholds for each criterion, required by 'ushape', 'level' and 'vshape_2'. Can be either
+                float values or functions. If function, q value will be calculated based on difference table. Use None
+                for criteria whose preference function does not need it.
+
+            s : ndarray or list
+                Parameters of the Gaussian preference function (standard deviation) for each criterion, required by
+                'gaussian'. Can be either float values or functions. Use None for other criteria.
 
 
         References
@@ -76,6 +103,8 @@ class PROMETHEE_I(MCDA_method):
             .. [#promethee1] Mareschal, B., De Smet, Y., & Nemery, P. (2008, December). Rank reversal in the PROMETHEE II method:
                    some new results. In 2008 IEEE International Conference on Industrial Engineering and Engineering
                    Management (pp. 959-963). IEEE.
+            .. [#promethee1b] Brans, J. P., Vincke, P., & Mareschal, B. (1986). How to select and how to rank projects:
+                   The PROMETHEE method. European Journal of Operational Research, 24(2), 228-238.
 
         Examples
         --------
@@ -89,6 +118,13 @@ class PROMETHEE_I(MCDA_method):
         >>> types = np.ones(3)
         >>> body(matrix, weights, types)
         (array([0.55, 0.35, 0.6 ]), array([0.45, 0.65, 0.4 ]))
+
+        Different preference function for each criterion:
+
+        >>> body = PROMETHEE_I(['ushape', 'vshape', 'gaussian'], q=[1, None, None], p=[None, 2, None], s=[None, None, 1])
+        >>> F_plus, F_minus = body(matrix, weights, types)
+        >>> print(np.round(F_plus, 4), np.round(F_minus, 4))
+        [0.225  0.2008 0.2893] [0.1258 0.325  0.2643]
     """
     _tables = [
         # Additionally there will be a group of difference tables which will generated dynamically
@@ -98,31 +134,54 @@ class PROMETHEE_I(MCDA_method):
                   label='flows', symbol=None, rows='A', cols=('$\\phi^+(A_i)$', '$\\phi^-(A_i)$'))
     ]
 
-    def __init__(self, preference_function, p=None, q=None):
-        pf = getattr(_PreferenceFunctions, preference_function)
-        # p and q can be provided as list of values or list of functions.
+    def __init__(self, preference_function, p=None, q=None, s=None):
+        thresholds = {'p': p, 'q': q, 's': s}
+        given = {name: list(values) for name, values in thresholds.items() if values is not None}
+        lengths = {len(values) for values in given.values()}
+        if isinstance(preference_function, str):
+            names = None
+        else:
+            names = list(preference_function)
+            lengths.add(len(names))
+        if len(lengths) > 1:
+            raise ValueError('Preference functions and p, q and s values should have the same length, '
+                             f'but have lengths {sorted(lengths)}.')
+
+        for name in ([preference_function] if names is None else names):
+            if name not in _PreferenceFunctions.PARAMETERS:
+                raise ValueError(f'Unknown preference function {name!r}. Available preference functions: '
+                                 f'{", ".join(_PreferenceFunctions.PARAMETERS)}.')
+
+        if not lengths:
+            # The same preference function without thresholds for all criteria
+            missing = _PreferenceFunctions.PARAMETERS[preference_function]
+            if missing:
+                raise ValueError(f'Preference function {preference_function!r} requires '
+                                 f'{" and ".join(missing)} value.')
+            pf = getattr(_PreferenceFunctions, preference_function)
+            self.pfs = repeat(partial(pf, p=None, q=None))
+            return
+
+        n = lengths.pop()
+        if names is None:
+            names = [preference_function] * n
+
         # Per-criterion functions are stored in a list, not a generator,
         # so that the same object can be called more than once.
-        if p is None and q is None:
-            pfs = repeat(partial(pf, p=None, q=None))
-        elif p is None and q is not None:
-            pfs = [partial(_preference_function_wrapper(pf), p=None, q=q_)
-                   for q_ in q]
-        elif p is not None and q is None:
-            pfs = [partial(_preference_function_wrapper(pf), p=p_, q=None)
-                   for p_ in p]
-        else:
-            if len(p) != len(q):
-                raise ValueError(f'p and q should have the same length, '
-                                 f'but have lengths {len(p)} and {len(q)}.')
-            pfs = [partial(_preference_function_wrapper(pf), p=p_, q=q_)
-                   for p_, q_ in zip(p, q)]
-
+        pfs = []
+        for i, name in enumerate(names):
+            values = {key: given[key][i] if key in given else None for key in thresholds}
+            missing = [key for key in _PreferenceFunctions.PARAMETERS[name] if values[key] is None]
+            if missing:
+                raise ValueError(f'Preference function {name!r} of criterion {i} requires '
+                                 f'{" and ".join(missing)} value.')
+            pf = _preference_function_wrapper(getattr(_PreferenceFunctions, name))
+            pfs.append(partial(pf, **values))
         self.pfs = pfs
 
     def _additional_validation(self, matrix, weights, types):
         if isinstance(self.pfs, list) and len(self.pfs) != matrix.shape[1]:
-            raise ValueError(f'Number of p or q values ({len(self.pfs)}) should be equal '
+            raise ValueError(f'Number of preference functions or p, q, s values ({len(self.pfs)}) should be equal '
                              f'to the number of criteria ({matrix.shape[1]}).')
 
     def _method(self, matrix, weights, types, save_results=False):
