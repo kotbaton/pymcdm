@@ -34,6 +34,9 @@ class SIMOS(GroupedRanksBase):
     >>> w_c = [0, 1, 0, 0, 0]
     >>> simos = SIMOS(r=r, w_c=w_c)
     >>> weights = simos()
+    >>> print(np.round(100 * weights, 3))
+    [13.372  8.721  2.326  4.651 11.628  8.721  2.326 13.372  8.721  8.721
+     15.116  2.326]
 
     References
     ----------

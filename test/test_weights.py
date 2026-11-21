@@ -491,6 +491,150 @@ class TestBWMWeights(unittest.TestCase):
                     np.testing.assert_allclose(output_method, output, atol=0.0051)
 
 
+class TestLBWAWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Žižović, M., & Pamučar, D. (2019). New model for determining criteria weights: Level Based Weight
+        Assessment (LBWA) model. Decision Making: Applications in Management and Engineering, 2(2), 126-137.
+    """
+
+    def test_output(self):
+        """ Example 1: criteria for the evaluation of level crossings, r0 = 7. """
+        lbwa = weights.subjective.LBWA(i=[[1, 4, 6, 5, 0, 2], [7, 3]], l=[0, 2, 3, 4, 4, 5, 1, 2], r0=7)
+
+        output = [0.121, 0.191, 0.111, 0.084, 0.148, 0.121, 0.134, 0.089]
+        output_method = [round(weight, 3) for weight in lbwa()]
+        self.assertListEqual(output, output_method)
+
+    def test_output_empty_levels(self):
+        """ Example 2: advisors in the transport of dangerous goods, levels S3, S5 and S6 are empty, r0 = 5.
+            The final vector in the paper gives w2 with two decimals (0.03); Step 6 gives 0.031.
+        """
+        lbwa = weights.subjective.LBWA(i=[[4, 7, 8, 0], [2, 3], [], [5], [], [], [1, 6]],
+                                       l=[0, 1, 2, 4, 1, 2, 2, 1, 3], r0=5)
+
+        output = [0.124, 0.031, 0.102, 0.093, 0.224, 0.051, 0.029, 0.186, 0.16]
+        output_method = [round(weight, 3) for weight in lbwa()]
+        self.assertListEqual(output, output_method)
+
+
+class TestSIMOSWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Figueira, J., & Roy, B. (2002). Determining the weights of criteria in the ELECTRE type methods with
+        a revised Simos' procedure. European Journal of Operational Research, 139(2), 317-326.
+    """
+
+    def test_output(self):
+        """ Normalized weights before rounding from Table 2, criteria a, ..., l are 0, ..., 11. """
+        simos = weights.subjective.SIMOS(r=[[2, 6, 11], [3], [1, 5, 8, 9], [4], [0, 7], [10]], w_c=[0, 1, 0, 0, 0])
+
+        output = [13.372, 8.721, 2.326, 4.651, 11.628, 8.721, 2.326, 13.372, 8.721, 8.721, 15.116, 2.326]
+        output_method = [round(100 * weight, 3) for weight in simos()]
+        self.assertListEqual(output, output_method)
+
+    def test_output_subfamily(self):
+        """ Subfamily of Table 3: criteria c, g, l, d, b, f, i, j are 0, ..., 7. """
+        simos = weights.subjective.SIMOS(r=[[0, 1, 2], [3], [4, 5, 6, 7]], w_c=[0, 1])
+
+        output = [5.0, 5.0, 5.0, 10.0, 18.75, 18.75, 18.75, 18.75]
+        output_method = [round(100 * weight, 3) for weight in simos()]
+        self.assertListEqual(output, output_method)
+
+
+class TestSRFWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Figueira, J., & Roy, B. (2002). Determining the weights of criteria in the ELECTRE type methods with
+        a revised Simos' procedure. European Journal of Operational Research, 139(2), 317-326.
+    """
+
+    def test_output(self):
+        """ Normalized weights for w = 1 and z = 6.5 from Table 5, criteria a, ..., l are 0, ..., 11. """
+        srf = weights.subjective.SRF(r=[[2, 6, 11], [3], [1, 5, 8, 9], [4], [0, 7], [10]], w_c=[0, 1, 0, 0, 0],
+                                     z=6.5, w=1)
+
+        output = [13.2, 8.9, 2.4, 4.5, 11.0, 8.9, 2.4, 13.2, 8.9, 8.9, 15.3, 2.4]
+        output_method = [round(100 * weight, 1) for weight in srf()]
+        self.assertListEqual(output, output_method)
+        self.assertAlmostEqual(sum(output_method), 100.0)
+
+    def test_rounding_ties(self):
+        """ When only a part of an ex aequo subset is rounded up, the criteria with the higher subscripts are
+            selected (Section 3.2.2). Here two of the three criteria of the first subset are rounded up.
+        """
+        srf = weights.subjective.SRF(r=[[0, 1, 2], [3], [4]], w_c=[1, 0], z=1.5, w=1)
+
+        output = [17.1, 17.2, 17.2, 22.8, 25.7]
+        output_method = [round(100 * weight, 1) for weight in srf()]
+        self.assertListEqual(output, output_method)
+
+
+class TestCOBRACWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Pamucar, D., Simic, V., Gorcun, O. F., & Kucukonder, H. (2024). Selection of the best Big Data platform
+        using COBRAC-ARTASI methodology with adaptive standardized intervals. Expert Systems with Applications,
+        239, 122312.
+    """
+
+    criteria = ['C11', 'C12', 'C13', 'C14', 'C15', 'C16', 'C17', 'C21', 'C22', 'C23', 'C31', 'C32', 'C41', 'C42',
+                'C43', 'C51', 'C52', 'C53', 'C54', 'C55', 'C56', 'C57', 'C61', 'C62', 'C71', 'C72', 'C73', 'C74',
+                'C81', 'C82']
+    ranking = ['C11', 'C12', 'C21', 'C71', 'C13', 'C72', 'C14', 'C31', 'C51', 'C52', 'C22', 'C61', 'C23', 'C41',
+               'C15', 'C32', 'C42', 'C62', 'C73', 'C16', 'C53', 'C74', 'C43', 'C17', 'C54', 'C55', 'C56', 'C57',
+               'C81', 'C82']
+    xis = [0.53, 0.50, 0.58, 0.55, 0.50, 0.54, 0.50, 0.50, 0.50, 0.60, 0.50, 0.55, 0.50, 0.60, 0.51, 0.51, 0.52,
+           0.52, 0.62, 0.53, 0.56, 0.64, 0.61, 0.68, 0.52, 0.58, 0.59, 0.55, 0.65]
+
+    def test_output(self):
+        """ Comparisons of adjacently ranked sub-criteria from Table 6. The paper reports the weights only as
+            a bar chart (Fig. 2), so the test checks that all relations (2) hold exactly (delta = 0), that C11,
+            C12 and C21 have the highest and C81 and C82 the lowest weights, as stated in the paper.
+        """
+        idx = {c: i for i, c in enumerate(self.criteria)}
+        pairs = [(idx[a], idx[b]) for a, b in zip(self.ranking, self.ranking[1:])]
+        cobrac = weights.subjective.COBRAC(n_criteria=30, pairs=pairs, xis=self.xis)
+        w = cobrac()
+
+        self.assertAlmostEqual(cobrac.get_delta(), 0.0, places=8)
+        self.assertAlmostEqual(w.sum(), 1.0)
+        for (i, j), xi in zip(pairs, self.xis):
+            self.assertAlmostEqual(w[i] / w[j], xi / (1 - xi), places=8)
+
+        order = [self.criteria[i] for i in np.argsort(-w, kind='stable')]
+        self.assertSetEqual(set(order[:3]), {'C11', 'C12', 'C21'})
+        self.assertSetEqual(set(order[-2:]), {'C81', 'C82'})
+
+    def test_output_inconsistent(self):
+        """ Additional non-adjacent comparison makes the comparisons inconsistent: the optimal delta is the
+            largest deviation of the returned weights.
+        """
+        cobrac = weights.subjective.COBRAC(n_criteria=3, pairs=[(0, 1), (1, 2), (0, 2)], xis=[0.7, 0.6, 0.6])
+        w = cobrac()
+        ratios = [w[0] / w[1] - 7 / 3, w[1] / w[2] - 1.5, w[0] / w[2] - 1.5]
+
+        self.assertAlmostEqual(cobrac.get_delta(), max(abs(r) for r in ratios))
+        self.assertEqual(round(cobrac.get_delta(), 3), 0.457)
+
+
+class TestITARAWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Hatefi, M. A. (2019). Indifference threshold-based attribute ratio analysis: A method for assigning the
+        weights to the attributes in multiple attribute decision making. Applied Soft Computing, 74, 643-651.
+    """
+
+    def test_output(self):
+        """ Location selection in banking with p = 1 from Table 1. """
+        matrix = np.array([
+            [7400000, 98.4, 73.1, 50800, 4.1, 90.1, 2.4, 20.4, 393, 10.6, 3.5],
+            [33500000, 78.2, 66.5, 144600, 4.1, 84, 6.4, 10.1, 347, 8, 1.83],
+            [10850000, 96, 61.4, 255000, 4, 75.6, 1.1, 10.4, 275, 6.3, 7.52],
+            [29200, 86.6, 82.3, 657000, 5.6, 89.3, 4.6, 21.4, 150, 12.9, 3.99],
+        ])
+        itara = weights.subjective.ITARA(t=[1000000, 10, 10, 50000, 0, 0, 2, 7, 50, 2, 3], p=1)
+
+        output = [0.441, 0.0, 0.0, 0.309, 0.067, 0.032, 0.01, 0.036, 0.062, 0.018, 0.024]
+        output_method = [round(weight, 3) for weight in itara(matrix)]
+        self.assertListEqual(output, output_method)
+
+
 class TestLOPCOWWeights(unittest.TestCase):
     """ Test output method with reference:
 

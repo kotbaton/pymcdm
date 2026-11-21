@@ -34,6 +34,8 @@ class ITARA(DecisionMatrixWeightsBase):
     >>> t = [30, 3, 2, 1]
     >>> itara = ITARA(t=t, p=1)
     >>> weights = itara(matrix)
+    >>> print(np.round(weights, 4))
+    [0.2497 0.1939 0.5564 0.    ]
 
     References
     ----------

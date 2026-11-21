@@ -34,6 +34,8 @@ class SRF(GroupedRanksBase):
     >>> w_c = [0, 1, 0, 0, 0]
     >>> srf = SRF(r=r, w_c=w_c, z=6.5, w=1)
     >>> weights = srf()
+    >>> print(np.round(100 * weights, 1))
+    [13.2  8.9  2.4  4.5 11.   8.9  2.4 13.2  8.9  8.9 15.3  2.4]
 
     References
     ----------

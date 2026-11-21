@@ -413,3 +413,211 @@ to obtain the Consistency Ratio:
      - 3.73
      - 4.47
      - 5.23
+
+LBWA
+=======================
+:class:`LBWA` (Level Based Weight Assessment) is designed to evaluate decision criteria according to the following
+steps:
+
+**Step 1.** Determine the most important criterion :math:`C_1`.
+
+**Step 2.** Group the criteria by levels of significance.
+
+The level :math:`S_i` contains the criteria whose significance is from :math:`i` to :math:`i + 1` times lower than
+the significance of :math:`C_1`; the most important criterion belongs to :math:`S_1`. Levels may be empty. The
+criteria grouped by levels are given as a list of lists (parameter ``i``), e.g. ``[[1, 4], [], [0, 2]]``.
+
+**Step 3.** Compare the criteria within the levels.
+
+Each criterion :math:`C_{i_p}` of the level :math:`S_i` is assigned an integer :math:`I_{i_p} \in \{0, 1, \ldots, r\}`
+(parameter ``l``, in the order of the criteria in ``i``), where :math:`I = 0` for the most important criterion,
+a more important criterion gets a smaller value and equally important criteria get equal values. The largest value
+of the scale is the size of the largest level:
+
+.. math::
+    :label: lbwa_r
+
+    \begin{equation}
+    r = \max \left\{ |S_1|, |S_2|, \ldots, |S_k| \right\}
+    \end{equation}
+
+**Step 4.** Define the elasticity coefficient :math:`r_0 > r` (parameter ``r0``, by default :math:`r + 1`).
+
+**Step 5.** Calculate the influence function of the criteria.
+
+.. math::
+    :label: lbwa_f
+
+    \begin{equation}
+    f(C_{i_p}) = \frac{r_0}{i \cdot r_0 + I_{i_p}}
+    \end{equation}
+
+**Step 6.** Calculate the weights.
+
+.. math::
+    :label: lbwa_w
+
+    \begin{equation}
+    w_1 = \frac{1}{1 + f(C_2) + \ldots + f(C_n)}, \quad w_j = f(C_j) \cdot w_1
+    \end{equation}
+
+SIMOS
+=======================
+:class:`SIMOS` (the original Simos procedure, also called the cards method) is designed to evaluate decision criteria
+according to the following steps:
+
+**Step 1.** Rank the criteria.
+
+The decision-maker ranks the cards with the criteria from the least to the most important one; criteria of equal
+importance are placed in one subset of ex aequo (parameter ``r``, e.g. ``[[2, 6], 3, [0, 1]]``).
+
+**Step 2.** Insert white cards.
+
+The larger the difference of importance between two successive subsets, the more white cards are inserted between
+them (parameter ``w_c``).
+
+**Step 3.** Assign positions.
+
+Every criterion and every white card receives a position: the least important card has the position 1, the next one
+the position 2, and so on.
+
+**Step 4.** Calculate the non-normalized weights.
+
+The non-normalized weight of a subset of ex aequo is the average of the positions of its criteria.
+
+**Step 5.** Calculate the normalized weights.
+
+The non-normalized weight of each criterion is divided by the sum of the positions of all criteria (white cards are
+not included).
+
+SRF
+=======================
+:class:`SRF` (the revised Simos procedure, Simos-Roy-Figueira) collects the same information as :class:`SIMOS`
+(parameters ``r`` and ``w_c``) and additionally asks how many times the most important criterion is more important
+than the least important one (parameter ``z``). The weights are determined according to the following steps:
+
+**Step 1.** Calculate the units.
+
+With :math:`e'_r` white cards between the ranks :math:`r` and :math:`r + 1` and :math:`\bar{n}` ranks:
+
+.. math::
+    :label: srf_u
+
+    \begin{equation}
+    e_r = e'_r + 1, \quad e = \sum_{r=1}^{\bar{n}-1} e_r, \quad u = \frac{z - 1}{e}
+    \end{equation}
+
+**Step 2.** Calculate the non-normalized weights of the ranks.
+
+.. math::
+    :label: srf_k
+
+    \begin{equation}
+    k(r) = 1 + u \left( e_0 + e_1 + \ldots + e_{r-1} \right), \quad e_0 = 0
+    \end{equation}
+
+The value :math:`u` is rounded to six and :math:`k(r)` to two decimal places. All criteria of the rank :math:`r`
+receive the weight :math:`k'_i = k(r)`.
+
+**Step 3.** Calculate the normalized weights.
+
+.. math::
+    :label: srf_kstar
+
+    \begin{equation}
+    k^*_i = \frac{100}{K'} k'_i, \quad K' = \sum_{i=1}^{n} k'_i
+    \end{equation}
+
+**Step 4.** Round the normalized weights.
+
+The weights :math:`k^*_i` are truncated to :math:`w` decimal places (parameter ``w``) and the missing amount up to 100
+is distributed among the criteria with the smallest relative rounding errors, so that the rounded weights sum to
+exactly 100. The weights returned by the method are divided by 100.
+
+COBRAC
+=======================
+:class:`COBRAC` (COmparisons Between RAnked Criteria) is designed to evaluate decision criteria according to the
+following steps:
+
+**Step 1.** Rank the criteria from the most to the least important one.
+
+**Step 2.** Compare the adjacent criteria.
+
+For each pair of adjacent criteria the decision-maker gives the share :math:`\xi_{j,j+1} \in (0, 1)` of the more
+important criterion, e.g. :math:`\xi = 0.72` means that it takes 72% and the less important criterion 28% of the
+interval :math:`[0, 1]`; :math:`\xi = 0.5` means equal importance. The compared pairs (parameter ``pairs``) do not have
+to be adjacent, and the shares are given with the parameter ``xis``. This gives the relations:
+
+.. math::
+    :label: cobrac_ratio
+
+    \begin{equation}
+    w_j : w_{j+1} = \xi_{j,j+1} : \left( 1 - \xi_{j,j+1} \right)
+    \end{equation}
+
+**Step 3.** Calculate the weights.
+
+.. math::
+    :label: cobrac_model
+
+    \begin{equation}
+    \begin{aligned}
+    \min \ & \partial \\
+    \text{s.t.} \ & \left| \frac{w_j}{w_{j+1}} - \frac{\xi_{j,j+1}}{1 - \xi_{j,j+1}} \right| \leq \partial,
+    \quad \forall j \\
+    & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
+    \end{aligned}
+    \end{equation}
+
+For a fixed :math:`\partial` the constraints are linear in the weights, so the model is solved to its global optimum
+by bisection on :math:`\partial`. The optimal value (method ``get_delta``) is 0 when the comparisons are consistent,
+which is always the case when only adjacent criteria are compared.
+
+ITARA
+=======================
+:class:`ITARA` (Indifference Threshold-based Attribute RAtio Analysis) uses the decision matrix and the indifference
+thresholds given by the decision-maker. Criteria whose values differ more than the thresholds receive higher
+weights. The weights are determined according to the following steps:
+
+**Step 1.** Determine the decision matrix and the indifference threshold :math:`IT_j` of each criterion
+(parameter ``t``).
+
+**Step 2.** Normalize the decision matrix and the indifference thresholds.
+
+.. math::
+    :label: itara_norm
+
+    \begin{equation}
+    \alpha_{ij} = \frac{a_{ij}}{\sum_{i=1}^{m} a_{ij}}, \quad NIT_j = \frac{IT_j}{\sum_{i=1}^{m} a_{ij}}
+    \end{equation}
+
+**Step 3.** Sort the normalized values of each criterion in ascending order, obtaining
+:math:`\beta_{1j} \leq \beta_{2j} \leq \ldots \leq \beta_{mj}`.
+
+**Step 4.** Calculate the distances between adjacent values.
+
+.. math::
+    :label: itara_gamma
+
+    \begin{equation}
+    \gamma_{ij} = \beta_{i+1,j} - \beta_{ij}, \quad i = 1, 2, \ldots, m - 1
+    \end{equation}
+
+**Step 5.** Calculate the considerable differences.
+
+.. math::
+    :label: itara_delta
+
+    \begin{equation}
+    \delta_{ij} = \begin{cases} \gamma_{ij} - NIT_j & \gamma_{ij} > NIT_j \\ 0 & \gamma_{ij} \leq NIT_j \end{cases}
+    \end{equation}
+
+**Step 6.** Calculate the weights with the :math:`l_p` metric (parameter ``p``, :math:`p = \infty` gives the largest
+:math:`\delta_{ij}`).
+
+.. math::
+    :label: itara_w
+
+    \begin{equation}
+    \omega_j = \frac{v_j}{\sum_{j=1}^{n} v_j}, \quad v_j = \left( \sum_{i=1}^{m-1} \delta_{ij}^p \right)^{1/p}
+    \end{equation}
