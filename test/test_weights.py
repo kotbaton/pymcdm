@@ -306,6 +306,89 @@ class TestAHPGeometricMeanWeights(unittest.TestCase):
 
 
 
+class TestBWMIntervalsAndLinearModel(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Rezaei, J. (2016). Best-worst multi-criteria decision-making method: Some properties and a linear
+        model. Omega, 64, 126-130.
+    """
+
+    def test_output_consistent(self):
+        """ Example 1 (Table 2): fully consistent comparisons, both models give the same unique solution. """
+        output = [0.2105, 0.4211, 0.1053, 0.2105, 0.0526]
+        for model in ('nonlinear', 'linear'):
+            with self.subTest(model=model):
+                bwm = weights.subjective.BWM(a_b=[2, 1, 4, 2, 8], a_w=[4, 8, 2, 4, 1], model=model)
+                output_method = [round(weight, 4) for weight in bwm()]
+                self.assertListEqual(output, output_method)
+                self.assertEqual(round(bwm.get_xi(), 4), 0.0)
+
+        lower, upper = weights.subjective.BWM(a_b=[2, 1, 4, 2, 8], a_w=[4, 8, 2, 4, 1]).get_weight_intervals()
+        self.assertListEqual(output, [round(v, 4) for v in lower])
+        self.assertListEqual(output, [round(v, 4) for v in upper])
+
+    def test_output_intervals(self):
+        """ Example 2 (Table 3): xi* = 0.1459 and the intervals of the optimal weights from models (5)-(6). """
+        bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 2, 3, 1])
+        lower, upper = bwm.get_weight_intervals()
+
+        self.assertEqual(round(bwm.get_xi(), 4), 0.1459)
+        self.assertListEqual([0.2145, 0.4461, 0.1085, 0.1563, 0.0548], [round(v, 4) for v in lower])
+        self.assertListEqual([0.2289, 0.4571, 0.1176, 0.1602, 0.0561], [round(v, 4) for v in upper])
+
+    def test_output_preference_degrees(self):
+        """ Example 2: matrix of degrees of preference (16); price > quality > safety > comfort > style. """
+        bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 2, 3, 1])
+        dp = bwm.get_interval_preference_degrees()
+
+        output = [[0.5, 0, 1, 1, 1],
+                  [1, 0.5, 1, 1, 1],
+                  [0, 0, 0.5, 0, 1],
+                  [0, 0, 1, 0.5, 1],
+                  [0, 0, 0, 0, 0.5]]
+        self.assertListEqual(output, np.round(dp, 4).tolist())
+        self.assertListEqual([3, 4, 1, 2, 0], (dp > 0.5).sum(axis=1).tolist())
+
+    def test_output_intervals_overlapping(self):
+        """ Example 3 (Table 4): xi* = 1, overlapping intervals and their degrees of preference;
+            price > quality > comfort > safety > style.
+        """
+        bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 4, 2, 1])
+        lower, upper = bwm.get_weight_intervals()
+
+        self.assertListEqual([0.1579, 0.4286, 0.1429, 0.1111, 0.0476], [round(v, 4) for v in lower])
+        self.assertListEqual([0.2469, 0.4932, 0.1644, 0.1579, 0.0548], [round(v, 4) for v in upper])
+
+        output = [[0.5, 0, 0.9413, 1, 1],
+                  [1, 0.5, 1, 1, 1],
+                  [0.0587, 0, 0.5, 0.7799, 1],
+                  [0, 0, 0.2201, 0.5, 1],
+                  [0, 0, 0, 0, 0.5]]
+        dp = bwm.get_interval_preference_degrees()
+        self.assertListEqual(output, np.round(dp, 4).tolist())
+        self.assertListEqual([3, 4, 2, 1, 0], (dp > 0.5).sum(axis=1).tolist())
+
+    def test_output_linear(self):
+        """ Example 2 of Section 4.1: unique solution of the linear model (19). """
+        bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 2, 3, 1], model='linear')
+
+        output = [0.2295, 0.4481, 0.1148, 0.153, 0.0546]
+        output_method = [round(weight, 4) for weight in bwm()]
+        self.assertListEqual(output, output_method)
+        self.assertEqual(round(bwm.get_xi(), 4), 0.0109)
+
+    def test_model_change(self):
+        """ Changing the model clears the cached weights; intervals are defined for the nonlinear model only. """
+        bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 2, 3, 1])
+        bwm()
+        bwm.model = 'linear'
+
+        self.assertEqual(round(bwm()[0], 4), 0.2295)
+        with self.assertRaises(ValueError):
+            bwm.get_weight_intervals()
+        with self.assertRaises(ValueError):
+            bwm.model = 'quadratic'
+
+
 class TestSWARAWeights(unittest.TestCase):
     """ Test output method with reference:
         [1] Keršulienė, V., Zavadskas, E. K., & Turskis, Z. (2010). Selection of rational dispute resolution method
@@ -423,9 +506,9 @@ class TestBWMWeights(unittest.TestCase):
         self.assertEqual(round(bwm.get_xi(), 2), 0.26)
 
     def test_output_multiple_optima(self):
-        """ Buying a car (Rezaei, J. (2019). Best Worst Method (BWM), presentation, slides 22-23):
-            five criteria with multiple optimal solutions. The weights must be optimal (xi* = 1) and
-            lie within the intervals obtained with the post-optimality models (3a) and (3b).
+        """ Example 3 of Rezaei, J. (2016). Best-worst multi-criteria decision-making method: Some properties
+            and a linear model. Omega, 64, 126-130 (Table 4): five criteria with multiple optimal solutions.
+            The weights must be optimal (xi* = 1) and lie within the intervals obtained with models (5) and (6).
         """
         bwm = weights.subjective.BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 4, 2, 1])
         w = bwm()

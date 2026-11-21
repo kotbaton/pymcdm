@@ -414,6 +414,40 @@ to obtain the Consistency Ratio:
      - 4.47
      - 5.23
 
+**Multiple optimal solutions.** For not fully consistent comparisons of more than three criteria the model may have
+multiple optimal solutions. The range of the weight :math:`w_j` among them (method ``get_weight_intervals``) is
+obtained by minimizing and maximizing :math:`w_j` subject to the constraints of the model with :math:`\xi = \xi^*`.
+The centers of the intervals can be used as representative weights. The intervals can also be compared with the
+degree of preference (method ``get_interval_preference_degrees``):
+
+.. math::
+    :label: bwm_dp
+
+    \begin{equation}
+    P(A > B) = \frac{\max(0, a^R - b^L) - \max(0, a^L - b^R)}{(a^R - a^L) + (b^R - b^L)}
+    \end{equation}
+
+where :math:`A = [a^L, a^R]` and :math:`B = [b^L, b^R]`. The criteria are ranked by the number of criteria over
+which their degree of preference exceeds 0.5.
+
+**Linear model.** With ``model='linear'`` the weights are obtained from the linear model, which always has a unique
+solution:
+
+.. math::
+    :label: bwm_linear
+
+    \begin{equation}
+    \begin{aligned}
+    \min \ & \xi^L \\
+    \text{s.t.} \ & \left| w_B - a_{Bj} w_j \right| \leq \xi^L, \quad \forall j \\
+    & \left| w_j - a_{jW} w_W \right| \leq \xi^L, \quad \forall j \\
+    & \sum_{j=1}^{n} w_j = 1, \quad w_j \geq 0, \quad \forall j
+    \end{aligned}
+    \end{equation}
+
+The value :math:`\xi^L` (method ``get_xi``) is used directly as the indicator of consistency; values close to 0 show
+high consistency.
+
 LBWA
 =======================
 :class:`LBWA` (Level Based Weight Assessment) is designed to evaluate decision criteria according to the following

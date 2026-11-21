@@ -128,7 +128,7 @@ implemented.
 | SWARA   | Step-wise Weight Assessment Ratio Analysis                |               [[78]](#c78)               |
 | PIPRECIA | PIvot Pairwise RElative Criteria Importance Assessment    |        [[79]](#c79), [[93]](#c93)        |
 | FUCOM   | FUll COnsistency Method                                   |               [[80]](#c80)               |
-| BWM     | Best-Worst Method                                         |               [[81]](#c81)               |
+| BWM     | Best-Worst Method                                         |        [[81]](#c81), [[94]](#c94)        |
 | BCM     | Base-Criterion Method                                     |               [[82]](#c82)               |
 | LBWA    | Level Based Weight Assessment                             |               [[83]](#c83)               |
 | SIMOS   | Simos procedure (cards method)                            |               [[84]](#c84)               |
@@ -441,3 +441,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c92">[92]</a> Costa, L. F., Costa, H. G., Rodrigues, B., & Lima, D. (2026). TOPSIS-RAD: Ranking According to Desires. arXiv preprint arXiv:2606.07253. https://doi.org/10.1109/ACCESS.2024.3349472
 
 <a name="c93">[93]</a> Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified pivot pairwise relative criteria importance assessment (PIPRECIA-S) method. Romanian Journal of Economic Forecasting, 24(4), 141-154. https://doi.org/10.1155/2020/9676518
+
+<a name="c94">[94]</a> Rezaei, J. (2016). Best-worst multi-criteria decision-making method: Some properties and a linear model. Omega, 64, 126-130. https://doi.org/10.1016/j.mcm.2011.12.022

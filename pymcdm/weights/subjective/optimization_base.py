@@ -140,24 +140,16 @@ class OptimizationWeightsBase(SubjectiveWeightsBase):
         tuple[np.ndarray, float]
             Normalized weights and the largest deviation of their ratios from the targets.
         """
-        num = np.array([r[0] for r in ratios], dtype=int)
-        den = np.array([r[1] for r in ratios], dtype=int)
-        a = np.array([r[2] for r in ratios], dtype=float)
+        num, den, a = self._split_ratios(ratios)
 
         def deviation(w):
             return float(np.max(np.abs(w[num] / w[den] - a))) if len(a) else 0.0
 
         def feasible(xi):
-            A_ub = np.zeros((2 * len(a), n))
-            rows = np.arange(len(a))
-            # w_num - (a + xi) w_den <= 0  and  -w_num + (a - xi) w_den <= 0
-            A_ub[rows, num] += 1.0
-            A_ub[rows, den] -= a + xi
-            A_ub[len(a) + rows, num] -= 1.0
-            A_ub[len(a) + rows, den] += a - xi
             try:
-                result = self._solve_lp(np.zeros(n), A_ub=A_ub, b_ub=np.zeros(len(A_ub)),
-                                        A_eq=np.ones((1, n)), b_eq=[1.0], bounds=[(1e-12, 1.0)] * n)
+                result = self._solve_lp(np.zeros(n), A_ub=self._ratio_constraints(num, den, a, xi, n),
+                                        b_ub=np.zeros(2 * len(a)), A_eq=np.ones((1, n)), b_eq=[1.0],
+                                        bounds=[(1e-12, 1.0)] * n)
             except ValueError:
                 return None
             return result.x
@@ -178,6 +170,102 @@ class OptimizationWeightsBase(SubjectiveWeightsBase):
         weights = self._normalize_weights(weights)
         # Deviation of the returned weights; the bisection bound may differ by the solver tolerance
         return weights, deviation(weights)
+
+    @staticmethod
+    def _split_ratios(ratios):
+        """ Split ``(num, den, a)`` triples into index and value arrays. """
+        num = np.array([r[0] for r in ratios], dtype=int)
+        den = np.array([r[1] for r in ratios], dtype=int)
+        a = np.array([r[2] for r in ratios], dtype=float)
+        return num, den, a
+
+    @staticmethod
+    def _ratio_constraints(num, den, a, xi, n):
+        """
+        Inequality matrix of ``(a - xi) w_den <= w_num <= (a + xi) w_den`` (right-hand side 0).
+        """
+        A_ub = np.zeros((2 * len(a), n))
+        rows = np.arange(len(a))
+        # w_num - (a + xi) w_den <= 0  and  -w_num + (a - xi) w_den <= 0
+        A_ub[rows, num] += 1.0
+        A_ub[rows, den] -= a + xi
+        A_ub[len(a) + rows, num] -= 1.0
+        A_ub[len(a) + rows, den] += a - xi
+        return A_ub
+
+    def _ratio_weight_bounds(self, ratios, n, xi):
+        """
+        Smallest and largest value of each weight over all weight vectors whose ratios deviate
+        from the targets by at most ``xi`` (e.g. models (5) and (6) in Rezaei (2016) for BWM).
+
+        Parameters
+        ----------
+        ratios : sequence of (int, int, float)
+            Index of the numerator weight, index of the denominator weight and the
+            target value of their ratio.
+        n : int
+            Number of weights.
+        xi : float
+            Allowed deviation, usually the optimal value of ``_minimize_ratio_deviation``.
+
+        Returns
+        -------
+        tuple[np.ndarray, np.ndarray]
+            Lower and upper bounds of the weights.
+        """
+        num, den, a = self._split_ratios(ratios)
+        # Small relative slack keeps the optimal solution feasible despite rounding of xi
+        xi = xi + self._ratio_tolerance * max(1.0, xi)
+        A_ub = self._ratio_constraints(num, den, a, xi, n)
+        lower, upper = np.empty(n), np.empty(n)
+        for j in range(n):
+            c = np.zeros(n)
+            for sign, bound in ((1.0, lower), (-1.0, upper)):
+                c[j] = sign
+                result = self._solve_lp(c, A_ub=A_ub, b_ub=np.zeros(len(A_ub)), A_eq=np.ones((1, n)),
+                                        b_eq=[1.0], bounds=[(0.0, 1.0)] * n)
+                bound[j] = result.x[j]
+        return lower, upper
+
+    def _minimize_linear_deviation(self, ratios, n):
+        """
+        Find weights minimizing the largest absolute value of ``w_num - a w_den``.
+
+        The model is ``min xi`` subject to ``|w_num - a w_den| <= xi`` for every ``(num, den, a)``
+        in ``ratios``, ``sum(w) = 1`` and ``w >= 0`` (e.g. the linear BWM model). It is a
+        linear programming problem.
+
+        Parameters
+        ----------
+        ratios : sequence of (int, int, float)
+            Index of the numerator weight, index of the denominator weight and the
+            target value of their ratio.
+        n : int
+            Number of weights.
+
+        Returns
+        -------
+        tuple[np.ndarray, float]
+            Weights and the optimal value of xi.
+        """
+        num, den, a = self._split_ratios(ratios)
+        rows = np.arange(len(a))
+        # Variables: w_1, ..., w_n, xi
+        A_ub = np.zeros((2 * len(a), n + 1))
+        A_ub[rows, num] += 1.0
+        A_ub[rows, den] -= a
+        A_ub[len(a) + rows, num] -= 1.0
+        A_ub[len(a) + rows, den] += a
+        A_ub[:, n] = -1.0
+        A_eq = np.zeros((1, n + 1))
+        A_eq[0, :n] = 1.0
+        c = np.zeros(n + 1)
+        c[n] = 1.0
+        result = self._solve_lp(c, A_ub=A_ub, b_ub=np.zeros(len(A_ub)), A_eq=A_eq, b_eq=[1.0],
+                                bounds=[(0.0, 1.0)] * n + [(0.0, None)])
+        weights = np.clip(result.x[:n], 0.0, None)
+        weights = weights / weights.sum()
+        return weights, float(np.max(np.abs(weights[num] - a * weights[den]))) if len(a) else 0.0
 
     @staticmethod
     def _normalize_weights(w: np.ndarray) -> np.ndarray:
