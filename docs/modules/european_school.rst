@@ -183,3 +183,74 @@ where larger :math:`\xi_i` indicates a better-performing alternative.
    the TODIM method to the multicriteria rental evaluation of residential properties.
    *European Journal of Operational Research*, 193(1), 204–211.
    https://doi.org/10.1016/j.ejor.2007.10.046
+
+
+ELECTRE TRI
+===========
+
+:class:`ELECTRE_TRI` (``pymcdm.methods.sorting.ELECTRE_TRI``) is a sorting method: instead of ranking the
+alternatives, it assigns each of them to one of :math:`k + 1` predefined, ordered categories
+:math:`C_1, \ldots, C_{k+1}` (from the worst to the best) [#electretriref1]_, [#electretriref2]_. The categories are
+separated by :math:`k` profiles :math:`b_1, \ldots, b_k` (parameter ``profiles``), where :math:`b_h` is the upper limit
+of :math:`C_h` and the lower limit of :math:`C_{h+1}`. Each alternative is compared only with the profiles, so its
+category does not depend on the other alternatives. The method returns the numbers of the categories.
+
+The formulas below are written for benefit criteria; for cost criteria the evaluations and the profiles are
+multiplied by :math:`-1`.
+
+**Step 1.** Calculate the partial concordance indices with the indifference (:math:`q_j`) and preference
+(:math:`p_j`) thresholds of the profile (parameters ``q`` and ``p``, one value for each criterion or one row for
+each profile):
+
+.. math::
+    :label: electretri1
+
+    c_j(a, b_h) = \left\{\begin{array}{ll}
+    1, & g_j(a) \geq g_j(b_h) - q_j(b_h) \\
+    0, & g_j(a) < g_j(b_h) - p_j(b_h) \\
+    \frac{p_j(b_h) - (g_j(b_h) - g_j(a))}{p_j(b_h) - q_j(b_h)}, & \text{otherwise}
+    \end{array}\right.
+
+and analogously :math:`c_j(b_h, a)`. The comprehensive concordance index is the weighted average
+:math:`c(a, b_h) = \sum_{j} w_j c_j(a, b_h)`.
+
+**Step 2.** Calculate the partial discordance indices with the veto thresholds :math:`v_j` (parameter ``v``):
+
+.. math::
+    :label: electretri2
+
+    d_j(a, b_h) = \left\{\begin{array}{ll}
+    1, & g_j(a) < g_j(b_h) - v_j(b_h) \\
+    0, & g_j(a) \geq g_j(b_h) - p_j(b_h) \\
+    \frac{g_j(b_h) - g_j(a) - p_j(b_h)}{v_j(b_h) - p_j(b_h)}, & \text{otherwise}
+    \end{array}\right.
+
+**Step 3.** Calculate the credibility of the outranking :math:`a S b_h` (and analogously :math:`b_h S a`):
+
+.. math::
+    :label: electretri3
+
+    \sigma(a, b_h) = c(a, b_h) \prod_{j: d_j(a, b_h) > c(a, b_h)} \frac{1 - d_j(a, b_h)}{1 - c(a, b_h)}
+
+**Step 4.** Apply the cutting level :math:`\lambda \in [0.5, 1]` (parameter ``cutting_level``): :math:`a S b_h` is
+valid if :math:`\sigma(a, b_h) \geq \lambda`. The alternative :math:`a` is preferred to :math:`b_h` if
+:math:`a S b_h` and not :math:`b_h S a`, and incomparable with it if neither holds.
+
+**Step 5.** Assign the alternatives to the categories (parameter ``procedure``):
+
+* pessimistic (conjunctive) procedure: compare :math:`a` with :math:`b_k, b_{k-1}, \ldots, b_1`; if :math:`b_h` is the
+  first profile such that :math:`a S b_h`, assign :math:`a` to :math:`C_{h+1}`, otherwise to :math:`C_1`;
+* optimistic (disjunctive) procedure: compare :math:`a` with :math:`b_1, b_2, \ldots, b_k`; if :math:`b_h` is the
+  first profile preferred to :math:`a`, assign :math:`a` to :math:`C_h`, otherwise to :math:`C_{k+1}`.
+
+The optimistic procedure never assigns an alternative to a worse category than the pessimistic one; they differ for
+alternatives incomparable with some profiles. With :math:`\lambda = 1` and no thresholds, the pessimistic procedure
+assigns :math:`a` to a category only if it is at least as good as its lower limit on every criterion, and the
+optimistic one if it is better on at least one criterion. The intermediate results (concordance and credibility
+indices) are available with ``verbose=True``.
+
+.. [#electretriref1] Mousseau, V., Słowiński, R., & Zielniewicz, P. (2000). A user-oriented implementation of the
+   ELECTRE-TRI method integrating preference elicitation support. Computers & Operations Research, 27(7-8), 757-777.
+
+.. [#electretriref2] Figueira, J. R., Mousseau, V., & Roy, B. (2016). ELECTRE methods. In S. Greco, M. Ehrgott, &
+   J. R. Figueira (Eds.), Multiple Criteria Decision Analysis: State of the Art Surveys (pp. 155-185). Springer.

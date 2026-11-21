@@ -168,3 +168,10 @@ pymcdm.methods.partial
    :undoc-members:
    :show-inheritance:
 
+pymcdm.methods.sorting
+--------------------------
+
+.. automodule:: pymcdm.methods.sorting
+   :members:
+   :undoc-members:
+   :show-inheritance:

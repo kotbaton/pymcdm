@@ -11,6 +11,7 @@ from ..io import MCDA_results
 
 class MCDA_method(ABC):
     _reverse_ranking = True
+    _produces_ranking = True
     _tables = None
 
     def __call__(self, matrix: np.ndarray | list | tuple, weights: np.ndarray | list | tuple, types: np.ndarray | list | tuple,

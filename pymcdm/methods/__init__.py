@@ -1,4 +1,5 @@
 from . import partial
+from . import sorting
 from .todim import TODIM
 from .topsis import TOPSIS
 from .vikor import VIKOR

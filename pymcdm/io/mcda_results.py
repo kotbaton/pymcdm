@@ -101,7 +101,8 @@ class MCDA_results:
                     last_group_spec = t_spec
                     grouped_tables.append([t])
 
-        if ranking:
+        # Sorting methods return categories, which are not ranked
+        if ranking and getattr(self.method, '_produces_ranking', True):
             ranking_table = Table(data=self.method.rank(self.results[-1].data),
                                   desc=TableDesc(caption='Final ranking',
                                                  label='ranking', symbol='$R_{i}$', rows='A', cols=None))

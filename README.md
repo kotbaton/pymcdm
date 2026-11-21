@@ -93,6 +93,7 @@ The library contains:
 | LMAW                  | Logarithmic Methodology of Additive Weights                                                          |              [[70]](#c70)               | 
 | AROMAN                | Alternative Ranking Order Method Accounting for Two-Step Normalization)                              |              [[72]](#c72)               |
 | TODIM                 | TOmada de Decisão Interativa e Multicritério                                                         |       [[76]](#c76),[[77]](#c77),[[78]](#c78),[[79]](#c79)         |
+| ELECTRE TRI           | ELimination Et Choix Traduisant la REalité TRI (sorting into ordered categories)                     |       [[99]](#c99),[[100]](#c100)      |
 
 * MCDA Methods' extensions and variations:
 
@@ -452,3 +453,7 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c97">[97]</a> Stanujkić, D., Karabašević, D., Popović, G., & Sava, C. (2021). Simplified pivot pairwise relative criteria importance assessment (PIPRECIA-S) method. Romanian Journal of Economic Forecasting, 24(4), 141-154.
 
 <a name="c98">[98]</a> Rezaei, J. (2016). Best-worst multi-criteria decision-making method: Some properties and a linear model. Omega, 64, 126-130. https://doi.org/10.1016/j.omega.2015.12.001
+
+<a name="c99">[99]</a> Mousseau, V., Słowiński, R., & Zielniewicz, P. (2000). A user-oriented implementation of the ELECTRE-TRI method integrating preference elicitation support. Computers & Operations Research, 27(7-8), 757-777. https://doi.org/10.1016/S0305-0548(99)00117-3
+
+<a name="c100">[100]</a> Figueira, J. R., Mousseau, V., & Roy, B. (2016). ELECTRE methods. In S. Greco, M. Ehrgott, & J. R. Figueira (Eds.), Multiple Criteria Decision Analysis: State of the Art Surveys (pp. 155-185). Springer. https://doi.org/10.1007/978-1-4939-3094-4_5

@@ -13,6 +13,9 @@
     also use the decision matrix.
 * New base classes for subjective weighting methods: `SubjectiveWeightsBase`, `OrderedCriteriaWeightsBase`,
   `GroupedRanksBase`, `OptimizationWeightsBase` and `DecisionMatrixWeightsBase`.
+* New module `pymcdm.methods.sorting` for sorting methods, which assign alternatives to predefined ordered
+  categories instead of ranking them, with the ELECTRE TRI method (pessimistic and optimistic procedures,
+  thresholds per profile and veto), tests and documentation.
 * New MCDM method, with tests and documentation:
   - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
     option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of
