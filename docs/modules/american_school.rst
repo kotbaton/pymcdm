@@ -1646,6 +1646,41 @@ obtained with its parameters:
 * TOPSIS-RAD: vetoed and desired performance levels as the domain, the Max-Min normalization and ``clip=True``, which
   clips performances above the desired levels; vetoed alternatives are removed from the decision matrix beforehand.
 
+TOPSIS-Sort
+=======================
+
+:class:`TOPSIS_SORT` (``pymcdm.methods.sorting.TOPSIS_SORT``) is a sorting method based on R-TOPSIS: it assigns the
+alternatives to predefined, ordered categories :math:`C_1, \ldots, C_q` (from the worst to the best) instead of
+ranking them [#topsissortref1]_. Because the ideal and anti-ideal solutions are fixed by the domain of the criteria,
+the category of an alternative does not depend on the other alternatives. Two variants are available (parameter
+``profiles_type``):
+
+* TOPSIS-Sort-B (``'boundary'``): :math:`q - 1` boundary profiles :math:`b_1, \ldots, b_{q-1}`, where :math:`b_h` is
+  the upper limit of :math:`C_h` and the lower limit of :math:`C_{h+1}`;
+* TOPSIS-Sort-C (``'characteristic'``): :math:`q` characteristic profiles :math:`p_1, \ldots, p_q`, where
+  :math:`p_h` is a typical alternative of :math:`C_h`.
+
+The profiles (parameter ``profiles``) are ordered from the worst category to the best one, and each profile should be
+at least as good as the previous one on every criterion.
+
+**Step 1.** Determine the domain of every criterion (parameter ``bounds``), as in Step 3 of R-TOPSIS.
+
+**Step 2.** Calculate the closeness coefficients :math:`Cl(a_i)` of the alternatives and :math:`Cl(P_h)` of the
+profiles with R-TOPSIS (normalization by the maximum or interval normalization, weighted normalized matrix,
+distances to the ideal and anti-ideal solutions fixed at the ends of the domain).
+
+**Step 3.** Assign the alternatives to the categories:
+
+* TOPSIS-Sort-B: :math:`a_i \in C_1` if :math:`Cl(a_i) < Cl(b_1)`, :math:`a_i \in C_h` if
+  :math:`Cl(b_{h-1}) \leq Cl(a_i) < Cl(b_h)`, and :math:`a_i \in C_q` if :math:`Cl(a_i) \geq Cl(b_{q-1})`;
+* TOPSIS-Sort-C: :math:`a_i` is assigned to the category of the profile with the closest coefficient,
+  :math:`\min_h |Cl(a_i) - Cl(p_h)|`; ties are resolved in favor of the better category.
+
+The closeness coefficients of the alternatives and the profiles are available with ``verbose=True``.
+
+.. [#topsissortref1] de Lima Silva, D. F., & de Almeida Filho, A. T. (2020). Sorting with TOPSIS through boundary and
+   characteristic profiles. Computers & Industrial Engineering, 141, 106328.
+
 VIKOR
 =======================
 

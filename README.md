@@ -105,6 +105,7 @@ The library contains:
 | TOPSIS (García-Cascales & Lamata)\* | [[94]](#c94) |
 | IE-TOPSIS (domain)\* | [[95]](#c95) |
 | TOPSIS-RAD\* | [[96]](#c96) |
+| TOPSIS-Sort-B, TOPSIS-Sort-C (sorting) | [[101]](#c101) |
 
 \* Obtained with the parameters of R-TOPSIS (`RTOPSIS`), see its documentation. For IE-TOPSIS only the expansion of
 the criteria domains is available; its PRC ranking index, which depends on the whole set of alternatives, is not
@@ -457,3 +458,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c99">[99]</a> Mousseau, V., Słowiński, R., & Zielniewicz, P. (2000). A user-oriented implementation of the ELECTRE-TRI method integrating preference elicitation support. Computers & Operations Research, 27(7-8), 757-777. https://doi.org/10.1016/S0305-0548(99)00117-3
 
 <a name="c100">[100]</a> Figueira, J. R., Mousseau, V., & Roy, B. (2016). ELECTRE methods. In S. Greco, M. Ehrgott, & J. R. Figueira (Eds.), Multiple Criteria Decision Analysis: State of the Art Surveys (pp. 155-185). Springer. https://doi.org/10.1007/978-1-4939-3094-4_5
+
+<a name="c101">[101]</a> de Lima Silva, D. F., & de Almeida Filho, A. T. (2020). Sorting with TOPSIS through boundary and characteristic profiles. Computers & Industrial Engineering, 141, 106328. https://doi.org/10.1016/j.cie.2020.106328
