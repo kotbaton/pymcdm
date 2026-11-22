@@ -86,6 +86,10 @@ The library contains:
 | RIM                	  | Reference Ideal Method                                                                               |              [[48]](#c48)              |
 | ERVD               	  | Election Based on relative Value Distances                                                           |              [[49]](#c49)              |
 | GRA                	  | Grey Relational Analysis                                                                             |             [[106]](#c106)             |
+| HELLWIG            	  | Hellwig's taxonomic measure of development (Euclidean or Mahalanobis distance)                       |     [[110]](#c110),[[111]](#c111)      |
+| MIDIA              	  | Multi-criteria method Integrating Distances to Ideal and Anti-ideal points                           |             [[112]](#c112)             |
+| DARP               	  | Distances to Aspiration Reference Points                                                             |             [[113]](#c113)             |
+| RPM                	  | Reference Point Method (objective ranking)                                                           |     [[114]](#c114),[[115]](#c115)      |
 | PROBID                | Preference Ranking On the Basis of Ideal-average Distance                                            |              [[50]](#c50)              |
 | WSM                   | Weighted Sum Model                                                                                   |              [[51]](#c51)              |
 | WPM                   | Weighted Product Model                                                                               |              [[52]](#c52)              |
@@ -485,3 +489,15 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c108">[108]</a> Barron, F. H., & Barrett, B. E. (1996). Decision quality using ranked attribute weights. Management Science, 42(11), 1515-1523. https://doi.org/10.1287/mnsc.42.11.1515
 
 <a name="c109">[109]</a> Stillwell, W. G., Seaver, D. A., & Edwards, W. (1981). A comparison of weight approximation techniques in multiattribute utility decision making. Organizational Behavior and Human Performance, 28(1), 62-77. https://doi.org/10.1016/0030-5073(81)90015-5
+
+<a name="c110">[110]</a> Hellwig, Z. (1968). Zastosowanie metody taksonomicznej do typologicznego podziału krajów ze względu na poziom ich rozwoju oraz zasoby i strukturę wykwalifikowanych kadr. Przegląd Statystyczny, 4, 307-326.
+
+<a name="c111">[111]</a> Roszkowska, E. (2024). Modifying Hellwig's method for multi-criteria decision-making with Mahalanobis distance for addressing asymmetrical relationships. Symmetry, 16(1), 77. https://doi.org/10.3390/sym16010077
+
+<a name="c112">[112]</a> Roszkowska, E., & Filipowicz-Chomko, M. (2024). A multi-criteria method integrating distances to ideal and anti-ideal points. Symmetry, 16(8), 1025. https://doi.org/10.3390/sym16081025
+
+<a name="c113">[113]</a> Roszkowska, E., Filipowicz-Chomko, M., & Wachowicz, T. (2020). Using individual and common reference points to measure the performance of alternatives in multiple criteria evaluation. Operations Research and Decisions, 30(3), 77-96. https://doi.org/10.37190/ord200305
+
+<a name="c114">[114]</a> Wierzbicki, A. P., Granat, J., & Makowski, M. (2007). Discrete decision problems with large number of criteria. IIASA Interim Report IR-07-025. International Institute for Applied Systems Analysis, Laxenburg. https://pure.iiasa.ac.at/8432/
+
+<a name="c115">[115]</a> Wierzbicki, A. P. (2007). Reference point approaches and objective ranking. In Practical Approaches to Multi-Objective Optimization, Dagstuhl Seminar Proceedings 06501 (pp. 1-20). https://doi.org/10.4230/DagSemProc.06501.2

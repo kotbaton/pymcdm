@@ -23,6 +23,12 @@
 * Add `psi_weights` (Preference Selection Index), with tests and documentation; the PSI index is
   `WSM(linear_normalization)` with these weights. `psi_weights` and `OWCM` raise a `ValueError` instead of returning
   negative weights when a preference variation value exceeds 1.
+* Add Hellwig's method (`HELLWIG`, Euclidean or Mahalanobis distance, any normalization of the Euclidean variant) and its extension MIDIA
+  (`MIDIA`, distances to the ideal and anti-ideal points), with tests and documentation.
+* Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
+* Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration
+  levels, importance factors and the overall achievement, Lorenz quantile and OWA aggregations, with tests and
+  documentation.
 * Add rank-based subjective weights `ROC`, `RS`, `RR` and `RE` (rank order centroid, rank sum, rank reciprocal and
   rank exponent), with tests and documentation.
 * Add the R-VIKOR method (`RVIKOR`), a rank-reversal-free VIKOR on the criteria domains, with tests and

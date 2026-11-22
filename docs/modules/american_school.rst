@@ -500,6 +500,49 @@ The alternative with the highest value of :math:`Q_i` is the best.
    incinerators using extended sustainability criteria and multi-criteria analysis methods. Environment, Development
    and Sustainability, 24(9), 11195-11225.
 
+DARP
+=======================
+
+``DARP`` (Distances to Aspiration Reference Points) measures the distance of every alternative from an aspiration
+reference point [#darpref1]_. The reference point can be common for all alternatives (the best performance of the
+alternatives, or external targets) or individual for each of them (e.g. national targets of countries), parameter
+``reference``. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]`, the weights and the aspiration reference points
+:math:`RP_i = [x_{i1}^{+}, \ldots, x_{im}^{+}]`.
+
+**Step 2.** Determine the worst performance :math:`x_j^{-}` of every criterion (the minimum for benefit and the
+maximum for cost criteria).
+
+**Step 3.** Normalize the decision matrix between the worst performance and the aspiration level:
+
+.. math::
+        \bar{x}_{ij} = \begin{cases} \dfrac{x_{ij} - x_j^{-}}{x_{ij}^{+} - x_j^{-}} &
+        \text{if } 0 \leq \dfrac{x_{ij} - x_j^{-}}{x_{ij}^{+} - x_j^{-}} < 1 \\[2ex] 1 & \text{otherwise} \end{cases}
+    :label: darp_norm
+
+The value 1 means that the aspiration level is reached, so a surplus on one criterion does not compensate
+shortages on the others.
+
+**Step 4.** Calculate the distance of the weighted normalized alternative from the weighted reference point
+:math:`[w_1, \ldots, w_m]`:
+
+.. math::
+        d_{i0} = \sqrt{\sum_{j=1}^{m} \left(w_j \bar{x}_{ij} - w_j\right)^2}
+    :label: darp_d
+
+**Step 5.** Calculate the measure, which lies in :math:`[0, 1]`:
+
+.. math::
+        DARP_i = 1 - \frac{d_{i0}}{\sqrt{\sum_{j=1}^{m} w_j^2}}
+    :label: darp_measure
+
+The alternative with the highest value is the best; it is equal to 1 if all aspiration levels are reached.
+
+.. [#darpref1] Roszkowska, E., Filipowicz-Chomko, M., & Wachowicz, T. (2020). Using individual and common reference
+   points to measure the performance of alternatives in multiple criteria evaluation. Operations Research and
+   Decisions, 30(3), 77-96.
+
 EDAS
 =======================
 
@@ -751,6 +794,84 @@ The alternative with the highest grade is the best.
 
 .. [#graref1] Kuo, Y., Yang, T., & Huang, G. W. (2008). The use of grey relational analysis in solving multiple
    attribute decision-making problems. Computers & Industrial Engineering, 55(1), 80-93.
+
+Hellwig's method
+=======================
+
+``HELLWIG`` (taxonomic measure of development) [#hellwigref1]_ ranks the alternatives by their distance from the
+pattern of development, built from the best value of every criterion. The method evaluates decision alternatives
+according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]` of dimension :math:`m \times n` and of the weights.
+
+**Step 2.** Normalize the decision matrix. The original method uses the standardization (default):
+
+.. math::
+        z_{ij} = \frac{x_{ij} - \bar{x}_j}{S_j}, \qquad
+        S_j = \sqrt{\frac{1}{m} \sum_{i=1}^{m} (x_{ij} - \bar{x}_j)^2}
+    :label: hellwig_std
+
+Other normalizations, e.g. the vector, max-min or sum normalization, can be used with the parameter
+``normalization_function``; they are applied to all criteria in the same way.
+
+**Step 3.** Calculate the weighted normalized matrix :math:`\tilde{x}_{ij} = w_j z_{ij}` and the pattern of
+development :math:`\tilde{x}_j^{+}`, the largest value for benefit and the smallest value for cost criteria.
+
+**Step 4.** Calculate the Euclidean distances of the alternatives from the pattern:
+
+.. math::
+        d_i = \sqrt{\sum_{j=1}^{n} \left(\tilde{x}_{ij} - \tilde{x}_j^{+}\right)^2}
+    :label: hellwig_d
+
+**Step 5.** Calculate the critical distance and Hellwig's measure:
+
+.. math::
+        d_0 = \bar{d} + 2 S_d, \qquad H_i = 1 - \frac{d_i}{d_0}
+    :label: hellwig_h
+
+where :math:`\bar{d}` and :math:`S_d` are the mean and the (population) standard deviation of the distances. The
+alternative with the highest value of :math:`H_i` is the best.
+
+With ``distance='mahalanobis'`` [#hellwigref2]_ the distance from the pattern takes into account the correlations
+between criteria:
+
+.. math::
+        d_i = \sqrt{(A_i - I) W C^{-1} W^T (A_i - I)^T}
+    :label: hellwig_mahalanobis
+
+where :math:`C` is the sample covariance matrix of the decision matrix and :math:`W = diag(\sqrt{w_1}, \ldots,
+\sqrt{w_n})`. This variant is computed on the decision matrix (the ``normalization_function`` is not used); by Property 2 of
+[#hellwigref2]_ its result is the same for the linear normalizations considered there. It requires more alternatives
+than criteria. Note that the two variants weight the criteria differently:
+the Euclidean distance of :math:`\tilde{x}_{ij} = w_j z_{ij}` weights the squared differences by :math:`w_j^2`, the
+Mahalanobis distance with :math:`W` by :math:`w_j`.
+
+.. [#hellwigref1] Hellwig, Z. (1968). Zastosowanie metody taksonomicznej do typologicznego podziału krajów ze
+   względu na poziom ich rozwoju oraz zasoby i strukturę wykwalifikowanych kadr. Przegląd Statystyczny, 4, 307-326.
+
+.. [#hellwigref2] Roszkowska, E. (2024). Modifying Hellwig's method for multi-criteria decision-making with
+   Mahalanobis distance for addressing asymmetrical relationships. Symmetry, 16(1), 77.
+
+MIDIA
+=======================
+
+``MIDIA`` (Multi-criteria method Integrating Distances to Ideal and Anti-ideal points) [#midiaref1]_ extends
+Hellwig's method with the distance to the anti-ideal solution. After Steps 1-3 of Hellwig's method, which give the
+weighted normalized ideal :math:`\tilde{x}_j^{+}` and anti-ideal :math:`\tilde{x}_j^{-}` solutions, the Euclidean
+distances :math:`dI_i` and :math:`dAI_i` of the alternatives from them and the distance :math:`d^{+-}` between them
+are calculated. The closeness to the ideal and to the anti-ideal solution are aggregated with the coefficient
+:math:`\alpha \in [0, 1]` (parameter ``alpha``):
+
+.. math::
+        DI_i = 1 - \frac{dI_i}{d^{+-}}, \qquad DAI_i = \frac{dAI_i}{d^{+-}}, \qquad
+        D(\alpha)_i = \alpha DI_i + (1 - \alpha) DAI_i
+    :label: midia
+
+:math:`\alpha = 1` gives the pure aggressive (ideal-based) and :math:`\alpha = 0` the pure conservative
+(anti-ideal-based) strategy. The alternative with the highest value of :math:`D(\alpha)_i` is the best.
+
+.. [#midiaref1] Roszkowska, E., & Filipowicz-Chomko, M. (2024). A multi-criteria method integrating distances to
+   ideal and anti-ideal points. Symmetry, 16(8), 1025.
 
 MABAC
 =======================
@@ -1593,6 +1714,60 @@ This normalization allows to map value :math:`x` to range :math:`[0, 1]` in the 
 Order the alternative :math:`A_i` in descending order with regard to :math:`P_i`. The alternatives with the bigger value
 of :math:`P_i` are more preferred ones.
 
+
+RPM
+=======================
+
+``RPM`` (Reference Point Method) with objective ranking [#rpmref1]_ [#rpmref2]_ evaluates every criterion with respect
+to the reservation and aspiration levels and aggregates the partial achievements in a way determined mostly by the
+worst of them. The method does not use weights; the importance of criteria is expressed by the parameters
+:math:`\alpha` and :math:`\beta`. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`Q = [q_{ij}]`, of the lower and upper bounds :math:`q_j^{lo}`,
+:math:`q_j^{up}` of the criteria (parameter ``bounds``, by default the minimum and the maximum of the data) and of
+the reservation :math:`r_j` and aspiration :math:`a_j` levels. By default, they are determined statistically
+(objective ranking), for benefit criteria:
+
+.. math::
+        q_j^{av} = \frac{1}{m} \sum_{i=1}^{m} q_{ij}, \qquad r_j = \frac{q_j^{lo} + q_j^{av}}{2}, \qquad
+        a_j = \frac{q_j^{up} + q_j^{av}}{2}
+    :label: rpm_levels
+
+**Step 2.** Calculate the partial achievements on the scale 0-10, for benefit criteria (cost criteria are mirrored):
+
+.. math::
+        \sigma_{ij} = \begin{cases} \alpha_j \dfrac{q_{ij} - q_j^{lo}}{r_j - q_j^{lo}} & q_j^{lo} \leq q_{ij} < r_j
+        \\[2ex] \alpha_j + (\beta_j - \alpha_j) \dfrac{q_{ij} - r_j}{a_j - r_j} & r_j \leq q_{ij} < a_j \\[2ex]
+        \beta_j + (10 - \beta_j) \dfrac{q_{ij} - a_j}{q_j^{up} - a_j} & a_j \leq q_{ij} \leq q_j^{up} \end{cases}
+    :label: rpm_partial
+
+:math:`\alpha = 3`, :math:`\beta = 7` are the default (normal importance); (5, 9), (4, 8), (2, 6) and (1, 5)
+express very low, low, high and very high importance of a criterion.
+
+**Step 3.** Aggregate the partial achievements (parameter ``aggregation``):
+
+* ``'achievement'`` (default), the overall achievement function with the regularizing coefficient :math:`\varepsilon`:
+
+.. math::
+        \sigma_i = \min_j \sigma_{ij} + \frac{\varepsilon}{n} \sum_{j=1}^{n} \sigma_{ij}
+    :label: rpm_achievement
+
+* ``'lorenz'``, the Lorenz quantile, the mean of the :math:`k` worst partial achievements :math:`\theta_{i1} \leq
+  \theta_{i2} \leq \ldots` (parameter ``quantile``, by default :math:`n / 3`):
+
+.. math::
+        L_{ik} = \frac{1}{k} \sum_{l=1}^{k} \theta_{il}
+    :label: rpm_lorenz
+
+* ``'owa'``, the ordered weighted average :math:`\sigma_i^{owa} = \sum_{l=1}^{n} 2^{-l} \theta_{il}`.
+
+The alternative with the highest value is the best.
+
+.. [#rpmref1] Wierzbicki, A. P., Granat, J., & Makowski, M. (2007). Discrete decision problems with large number of
+   criteria. IIASA Interim Report IR-07-025. International Institute for Applied Systems Analysis, Laxenburg.
+
+.. [#rpmref2] Wierzbicki, A. P. (2007). Reference point approaches and objective ranking. In Practical Approaches to
+   Multi-Objective Optimization, Dagstuhl Seminar Proceedings 06501.
 
 SPOTIS
 =======================

@@ -11,9 +11,11 @@ from .balanced_spotis import BalancedSPOTIS
 from .aras import ARAS
 from .cocoso import COCOSO
 from .cradis import CRADIS
+from .darp import DARP
 from .codas import CODAS
 from .edas import EDAS
 from .gra import GRA
+from .hellwig import HELLWIG, MIDIA
 from .mabac import MABAC
 from .mairca import MAIRCA
 from .marcos import MARCOS
@@ -21,6 +23,7 @@ from .ocra import OCRA
 from .moora import MOORA
 from .multimoora import MULTIMOORA
 from .rim import RIM
+from .rpm import RPM
 from .r_topsis import RTOPSIS
 from .r_vikor import RVIKOR
 from .ram import RAM

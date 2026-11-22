@@ -36,6 +36,11 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.DARP
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.EDAS
    :members:
    :undoc-members:
@@ -57,6 +62,16 @@ pymcdm.methods
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.GRA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.HELLWIG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.MIDIA
    :members:
    :undoc-members:
    :show-inheritance:
@@ -112,6 +127,11 @@ pymcdm.methods
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.RIM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.RPM
    :members:
    :undoc-members:
    :show-inheritance:
