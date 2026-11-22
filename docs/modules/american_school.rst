@@ -1348,6 +1348,42 @@ and :math:`\overline{O}_{i}` is a measure of of relative performance for the :ma
 
 Alternatives with the highest overall performance rating receives the first rank.
 
+PIV
+=======================
+
+``PIV`` (Proximity Indexed Value) [#pivref1]_ evaluates every alternative by its linear deviations from the best value
+of each criterion, which reduces the chances of rank reversal compared to the Euclidean distances of TOPSIS. The method
+evaluates decision alternatives according to the following steps:
+
+**Step 1.** Normalize the decision matrix with the vector normalization.
+
+.. math::
+    :label: piv1
+
+    r_{ij} = \frac{x_{ij}}{\sqrt{\sum_{i=1}^{m} x_{ij}^2}}
+
+**Step 2.** Calculate the weighted normalized decision matrix :math:`v_{ij} = w_j r_{ij}`.
+
+**Step 3.** Calculate the weighted proximity index, the deviation from the best value of each criterion.
+
+.. math::
+    :label: piv2
+
+    u_{ij} = \begin{cases} \max_i v_{ij} - v_{ij} & \text{for benefit criteria} \\
+    v_{ij} - \min_i v_{ij} & \text{for cost criteria} \end{cases}
+
+**Step 4.** Calculate the overall proximity value.
+
+.. math::
+    :label: piv3
+
+    d_i = \sum_{j=1}^{n} u_{ij}
+
+The alternative with the lowest value of :math:`d_i` is the best.
+
+.. [#pivref1] Mufazzal, S., & Muzakkir, S. M. (2018). A new multi-criterion decision making (MCDM) method based on
+   proximity indexed value for minimizing rank reversals. Computers & Industrial Engineering, 119, 427-438.
+
 PROBID
 =======================
 

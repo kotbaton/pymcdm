@@ -81,6 +81,7 @@ The library contains:
 | MAIRCA             	  | MultiAttributive Ideal-Real Comparative Analysis                                                     | [[14]](#c14),[[15]](#c15),[[16]](#c16) |
 | MARCOS             	  | Measurement Alternatives and Ranking according to COmpromise Solution                                |       [[17]](#c17),[[18]](#c18)        |
 | OCRA               	  | Operational Competitiveness Ratings                                                                  |       [[19]](#c19),[[20]](#c20)        |
+| PIV                   | Proximity Indexed Value                                                                              |             [[114]](#c114)             |
 | MOORA              	  | Multi-Objective Optimization Method by Ratio Analysis                                                |       [[21]](#c21),[[22]](#c22)        |
 | MULTIMOORA         	  | MOORA plus the Full Multiplicative Form with the dominance theory                                    |       [[99]](#c99),[[100]](#c100)        |
 | RIM                	  | Reference Ideal Method                                                                               |              [[47]](#c47)              |
@@ -498,3 +499,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c112">[112]</a> Wierzbicki, A. P. (2007). Reference point approaches and objective ranking. In Practical Approaches to Multi-Objective Optimization, Dagstuhl Seminar Proceedings 06501 (pp. 1-20). https://doi.org/10.4230/DagSemProc.06501.2
 
 <a name="c113">[113]</a> Yang, W., Pang, X., Kong, D., & Shang, H. (2026). BP-TOPSIS: A Boxplot-Based Approach to Reducing Rank Reversal in the TOPSIS Method. International Journal of Information Technology & Decision Making, 25(10), 3509-3538. https://doi.org/10.1142/S0219622026500483
+
+<a name="c114">[114]</a> Mufazzal, S., & Muzakkir, S. M. (2018). A new multi-criterion decision making (MCDM) method based on proximity indexed value for minimizing rank reversals. Computers & Industrial Engineering, 119, 427-438. https://doi.org/10.1016/j.cie.2018.03.045

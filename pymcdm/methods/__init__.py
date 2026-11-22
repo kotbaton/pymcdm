@@ -21,6 +21,7 @@ from .mabac import MABAC
 from .mairca import MAIRCA
 from .marcos import MARCOS
 from .ocra import OCRA
+from .piv import PIV
 from .moora import MOORA
 from .multimoora import MULTIMOORA
 from .rim import RIM
