@@ -20,6 +20,7 @@ from .moora import MOORA
 from .multimoora import MULTIMOORA
 from .rim import RIM
 from .r_topsis import RTOPSIS
+from .r_vikor import RVIKOR
 from .ram import RAM
 from .rafsi import RAFSI
 from .ervd import ERVD

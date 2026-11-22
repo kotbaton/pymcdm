@@ -107,6 +107,7 @@ The library contains:
 | IE-TOPSIS (domain)\* | [[95]](#c95) |
 | TOPSIS-RAD\* | [[96]](#c96) |
 | TOPSIS-Sort-B, TOPSIS-Sort-C (sorting) | [[101]](#c101) |
+| R-VIKOR | [[104]](#c104) |
 
 \* Obtained with the parameters of R-TOPSIS (`RTOPSIS`), see its documentation. For IE-TOPSIS only the expansion of
 the criteria domains is available; its PRC ranking index, which depends on the whole set of alternatives, is not
@@ -465,3 +466,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c102">[102]</a> Brauers, W. K. M., & Zavadskas, E. K. (2010). Project management by MULTIMOORA as an instrument for transition economies. Technological and Economic Development of Economy, 16(1), 5-24. https://doi.org/10.3846/tede.2010.01
 
 <a name="c103">[103]</a> Brauers, W. K. M., & Zavadskas, E. K. (2011). MULTIMOORA optimization used to decide on a bank loan to buy property. Technological and Economic Development of Economy, 17(1), 174-188. https://doi.org/10.3846/13928619.2011.560632
+
+<a name="c104">[104]</a> Yang, W., & Wu, Y. (2020). A new improvement method to avoid rank reversal in VIKOR. IEEE Access, 8, 21261-21271. https://doi.org/10.1109/ACCESS.2020.2969681

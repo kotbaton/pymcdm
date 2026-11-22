@@ -17,6 +17,8 @@
   categories instead of ranking them, with the ELECTRE TRI method (pessimistic and optimistic procedures,
   thresholds per profile and veto), tests and documentation.
 * Add the MULTIMOORA method, with tests and documentation.
+* Add the R-VIKOR method (`RVIKOR`), a rank-reversal-free VIKOR on the criteria domains, with tests and
+  documentation.
 * Add the TOPSIS-Sort-B and TOPSIS-Sort-C sorting methods (`pymcdm.methods.sorting.TOPSIS_SORT`), based on R-TOPSIS,
   with tests and documentation.
 * Add `check_dominance` argument to `matrix_validator` and `validate_decision_problem`; it is disabled for sorting

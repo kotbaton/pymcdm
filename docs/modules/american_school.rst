@@ -1809,6 +1809,47 @@ within the three vectors obtained in the previous step. The best alternative is 
 of :math:`Q` and the leading position in the ranking :math:`Q`. In ``pymcdm`` only :math:`Q` ranking is returned by
 default.
 
+R-VIKOR
+=======================
+
+``RVIKOR`` (R-VIKOR) removes the dependence of VIKOR on the set of alternatives in the same way as R-TOPSIS does for
+TOPSIS [#rvikorref1]_. Every criterion is normalized on its domain :math:`[m_j, M_j]` (historical or admissible minimum
+and maximum, parameter ``bounds``) instead of on the values in the decision matrix, and the ideal solutions are fixed
+at the ends of that domain. The score of an alternative therefore does not change when other alternatives are added,
+removed or replaced, and the method is defined also when all alternatives have the same :math:`R_i` and classical
+VIKOR divides by zero. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [f_{ij}]` of dimension :math:`n \times m` and of a domain
+:math:`[m_j, M_j]` for every criterion, where :math:`m_j \leq f_{ij} \leq M_j`.
+
+**Step 2.** Normalize the decision matrix on the domain:
+
+.. math::
+        n_{ij} = \begin{cases} \dfrac{f_{ij} - m_j}{M_j - m_j} & \text{for benefit criteria} \\[2ex]
+        \dfrac{M_j - f_{ij}}{M_j - m_j} & \text{for cost criteria} \end{cases}
+    :label: rvikor_norm
+
+**Step 3.** Calculate the group utility :math:`S_i` and the individual regret :math:`R_i`:
+
+.. math::
+        S_i = \sum_{j=1}^{m} w_j (1 - n_{ij}), \qquad R_i = \max_j w_j (1 - n_{ij})
+    :label: rvikor_sr
+
+**Step 4.** Calculate the score of every alternative, where :math:`v \in [0, 1]` is the weight of the strategy of the
+maximum group utility (parameter ``v``):
+
+.. math::
+        NQ_i = v S_i + (1 - v) \frac{R_i}{\max_j w_j}
+    :label: rvikor_nq
+
+For weights which sum to 1, both :math:`S_i` and :math:`R_i / \max_j w_j` lie in :math:`[0, 1]`, with 0 for the
+positive ideal solution (otherwise :math:`S_i` lies in :math:`[0, \sum_j w_j]`). The
+alternative with the lowest value of :math:`NQ_i` is the best. The domain can be obtained with
+:meth:`RTOPSIS.make_bounds` or :meth:`RTOPSIS.expand_bounds`, and ``clip=True`` clips values outside of it.
+
+.. [#rvikorref1] Yang, W., & Wu, Y. (2020). A new improvement method to avoid rank reversal in VIKOR. IEEE Access, 8,
+   21261-21271.
+
 WASPAS
 =======================
 
