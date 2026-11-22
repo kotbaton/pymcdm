@@ -17,6 +17,7 @@ from .mairca import MAIRCA
 from .marcos import MARCOS
 from .ocra import OCRA
 from .moora import MOORA
+from .multimoora import MULTIMOORA
 from .rim import RIM
 from .r_topsis import RTOPSIS
 from .ram import RAM

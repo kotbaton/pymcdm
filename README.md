@@ -81,6 +81,7 @@ The library contains:
 | MARCOS             	  | Measurement Alternatives and Ranking according to COmpromise Solution                                |       [[17]](#c17),[[18]](#c18)        |
 | OCRA               	  | Operational Competitiveness Ratings                                                                  |       [[19]](#c19),[[20]](#c20)        |
 | MOORA              	  | Multi-Objective Optimization Method by Ratio Analysis                                                |       [[21]](#c21),[[22]](#c22)        |
+| MULTIMOORA         	  | MOORA plus the Full Multiplicative Form with the dominance theory                                    |       [[102]](#c102),[[103]](#c103)        |
 | RIM                	  | Reference Ideal Method                                                                               |              [[48]](#c48)              |
 | ERVD               	  | Election Based on relative Value Distances                                                           |              [[49]](#c49)              |
 | PROBID                | Preference Ranking On the Basis of Ideal-average Distance                                            |              [[50]](#c50)              |
@@ -460,3 +461,7 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c100">[100]</a> Figueira, J. R., Mousseau, V., & Roy, B. (2016). ELECTRE methods. In S. Greco, M. Ehrgott, & J. R. Figueira (Eds.), Multiple Criteria Decision Analysis: State of the Art Surveys (pp. 155-185). Springer. https://doi.org/10.1007/978-1-4939-3094-4_5
 
 <a name="c101">[101]</a> de Lima Silva, D. F., & de Almeida Filho, A. T. (2020). Sorting with TOPSIS through boundary and characteristic profiles. Computers & Industrial Engineering, 141, 106328. https://doi.org/10.1016/j.cie.2020.106328
+
+<a name="c102">[102]</a> Brauers, W. K. M., & Zavadskas, E. K. (2010). Project management by MULTIMOORA as an instrument for transition economies. Technological and Economic Development of Economy, 16(1), 5-24. https://doi.org/10.3846/tede.2010.01
+
+<a name="c103">[103]</a> Brauers, W. K. M., & Zavadskas, E. K. (2011). MULTIMOORA optimization used to decide on a bank loan to buy property. Technological and Economic Development of Economy, 17(1), 174-188. https://doi.org/10.3846/13928619.2011.560632

@@ -1026,6 +1026,60 @@ follows :math:`j = 1, 2, \dots, g` and :math:`j = g + 1, g + 2,\dots,n`.
 
 Higher values of :math:`P_i` corresponds to better alternatives.
 
+MULTIMOORA
+=======================
+
+``MULTIMOORA`` combines three approaches on the matrix normalized as in MOORA [#multimooraref1]_ and aggregates their
+rankings with the dominance theory [#multimooraref2]_. It is designed to evaluate decision alternatives according to
+the following steps:
+
+**Step 1.** Normalize the decision matrix.
+
+.. math::
+    :label: multimoora1
+
+    x^*_{ij} = \frac{x_{ij}}{\sqrt{\sum_{i=1}^{m} x_{ij}^2}}
+
+**Step 2.** Calculate the ratio system: benefit criteria are added and cost criteria are subtracted.
+
+.. math::
+    :label: multimoora2
+
+    y^*_i = \sum_{j \in G^+} w_j x^*_{ij} - \sum_{j \in G^-} w_j x^*_{ij}
+
+**Step 3.** Calculate the reference point: the maximal (benefit criteria) or minimal (cost criteria) normalized
+values :math:`r_j`, and the largest weighted deviation from it (Min-Max metric of Tchebycheff).
+
+.. math::
+    :label: multimoora3
+
+    z_i = \max_j w_j \left| r_j - x^*_{ij} \right|
+
+**Step 4.** Calculate the full multiplicative form.
+
+.. math::
+    :label: multimoora4
+
+    U_i = \frac{\prod_{j \in G^+} x_{ij}^{w_j}}{\prod_{j \in G^-} x_{ij}^{w_j}}
+
+**Step 5.** Rank the alternatives in each part (descending :math:`y^*_i` and :math:`U_i`, ascending :math:`z_i`) and
+aggregate the three rankings with the dominance theory: alternative :math:`a` dominates :math:`b` if it is better in
+at least two of the three rankings (absolute dominance, better in all three, is a special case), and dominance is
+transitive: if :math:`a` dominates :math:`b` and :math:`b` dominates :math:`c`, then :math:`a` dominates :math:`c`.
+Alternatives in a circular dominance get the same rank. The preference :math:`P_i` is the number of alternatives
+minus the number of alternatives which dominate :math:`A_i`, directly or through transitivity, outside its circle;
+higher values correspond to better alternatives, so an alternative is always ranked above every alternative it
+dominates. Alternatives which neither dominate each other nor are in one circle (e.g. because of ties in the rankings)
+may share a position.
+
+The original method uses no weights; equal weights give the same rankings.
+
+.. [#multimooraref1] Brauers, W. K. M., & Zavadskas, E. K. (2010). Project management by MULTIMOORA as an instrument
+   for transition economies. Technological and Economic Development of Economy, 16(1), 5-24.
+
+.. [#multimooraref2] Brauers, W. K. M., & Zavadskas, E. K. (2011). MULTIMOORA optimization used to decide on a bank
+   loan to buy property. Technological and Economic Development of Economy, 17(1), 174-188.
+
 OCRA
 =======================
 

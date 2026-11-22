@@ -71,6 +71,11 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.MULTIMOORA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.OCRA
    :members:
    :undoc-members:
