@@ -102,6 +102,7 @@ The library contains:
 | AROMAN                | Alternative Ranking Order Method Accounting for Two-Step Normalization)                              |              [[70]](#c70)               |
 | TODIM                 | TOmada de Decisão Interativa e Multicritério                                                         |       [[73]](#c73),[[74]](#c74),[[75]](#c75),[[76]](#c76)         |
 | ELECTRE TRI           | ELimination Et Choix Traduisant la REalité TRI (sorting into ordered categories)                     |       [[96]](#c96),[[97]](#c97)      |
+| FlowSort              | FlowSort (PROMETHEE-based sorting with limiting or central profiles)                                 |             [[115]](#c115)             |
 
 * MCDA Methods' extensions and variations:
 
@@ -501,3 +502,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c113">[113]</a> Yang, W., Pang, X., Kong, D., & Shang, H. (2026). BP-TOPSIS: A Boxplot-Based Approach to Reducing Rank Reversal in the TOPSIS Method. International Journal of Information Technology & Decision Making, 25(10), 3509-3538. https://doi.org/10.1142/S0219622026500483
 
 <a name="c114">[114]</a> Mufazzal, S., & Muzakkir, S. M. (2018). A new multi-criterion decision making (MCDM) method based on proximity indexed value for minimizing rank reversals. Computers & Industrial Engineering, 119, 427-438. https://doi.org/10.1016/j.cie.2018.03.045
+
+<a name="c115">[115]</a> Nemery, P., & Lamboray, C. (2008). FlowSort: a flow-based sorting method with limiting or central profiles. TOP, 16(1), 90-113. https://doi.org/10.1007/s11750-007-0036-x

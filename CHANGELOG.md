@@ -27,6 +27,8 @@
   (`MIDIA`, distances to the ideal and anti-ideal points), with tests and documentation.
 * Add `RTOPSIS.boxplot_bounds`, the domain of BP-TOPSIS (boxplot fences of every criterion), with tests and
   documentation.
+* Add the FlowSort sorting method (`pymcdm.methods.sorting.FLOWSORT`) with limiting or central profiles and the
+  positive, negative or net flow assignment rules, with tests and documentation.
 * Add the PIV (Proximity Indexed Value) method, with tests and documentation.
 * Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
 * Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration

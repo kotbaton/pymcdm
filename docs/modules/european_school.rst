@@ -254,3 +254,42 @@ indices) are available with ``verbose=True``.
 
 .. [#electretriref2] Figueira, J. R., Mousseau, V., & Roy, B. (2016). ELECTRE methods. In S. Greco, M. Ehrgott, &
    J. R. Figueira (Eds.), Multiple Criteria Decision Analysis: State of the Art Surveys (pp. 155-185). Springer.
+
+FlowSort
+========
+
+:class:`FLOWSORT` (``pymcdm.methods.sorting.FLOWSORT``) is a sorting method based on the flows of PROMETHEE
+[#flowsortref1]_. It assigns the alternatives to :math:`K` predefined, ordered categories :math:`C_1, \ldots, C_K`
+(from the worst to the best), defined either by :math:`K + 1` limiting profiles :math:`r_0, \ldots, r_K`
+(``profiles_type='limiting'``), where :math:`C_h` lies between :math:`r_{h-1}` and :math:`r_h`, or by :math:`K` central
+profiles :math:`r_1, \ldots, r_K` (``profiles_type='central'``), where :math:`r_h` is the centroid of :math:`C_h`. The
+profiles have to be ordered and each of them strictly preferred to the worse ones. Each alternative is compared only
+with the profiles, so its category does not depend on the other alternatives. The method returns the numbers of the
+categories.
+
+**Step 1.** For every alternative :math:`a_i`, compute the preference degrees :math:`\pi(x, y)` of PROMETHEE (parameters
+``preference_function``, ``p``, ``q`` and ``s``) between all elements of :math:`R_i = R \cup \{a_i\}`, the set of the
+profiles and :math:`a_i`.
+
+**Step 2.** Compute the positive, negative and net flows in :math:`R_i`:
+
+.. math::
+    :label: flowsort1
+
+    \phi^+(x) = \frac{1}{|R_i| - 1} \sum_{y \in R_i} \pi(x, y), \quad
+    \phi^-(x) = \frac{1}{|R_i| - 1} \sum_{y \in R_i} \pi(y, x), \quad
+    \phi(x) = \phi^+(x) - \phi^-(x)
+
+**Step 3.** Assign :math:`a_i` to a category (parameter ``rule``). With limiting profiles, by the positive flow
+:math:`a_i \in C_h` if :math:`\phi^+(r_{h-1}) < \phi^+(a_i) \leq \phi^+(r_h)`, by the negative flow if
+:math:`\phi^-(r_h) < \phi^-(a_i) \leq \phi^-(r_{h-1})`, and by the net flow as by the positive one. With central
+profiles, the bounds of :math:`C_h` are the midpoints between the flows of :math:`r_h` and of its neighbours, e.g.
+:math:`\frac{\phi^+(r_h) + \phi^+(r_{h-1})}{2} < \phi^+(a_i) \leq \frac{\phi^+(r_h) + \phi^+(r_{h+1})}{2}`.
+
+The positive and negative flows can give two different, neighbouring categories; the net flow gives one category
+between them. If the better profiles are strongly preferred to the worse ones (e.g. with the usual criterion), the
+category from the negative flow is at least as good as the category from the positive flow. All three assignments
+and the flows are available with ``verbose=True``.
+
+.. [#flowsortref1] Nemery, P., & Lamboray, C. (2008). FlowSort: a flow-based sorting method with limiting or central
+   profiles. TOP, 16(1), 90-113.
