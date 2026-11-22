@@ -272,155 +272,155 @@ This will produce output that contains formatted decision matrix, intermediate r
 ---
 # References
 
-<a name="c1">[1]</a> Hwang, C. L., & Yoon, K. (1981). Methods for multiple attribute decision making. In Multiple attribute decision making (pp. 58-191). Springer, Berlin, Heidelberg.
+<a name="c1">[1]</a> Hwang, C. L., & Yoon, K. (1981). Methods for multiple attribute decision making. In Multiple attribute decision making (pp. 58-191). Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-642-48318-9_3
 
-<a name="c2">[2]</a> Duckstein, L., & Opricovic, S. (1980). Multiobjective optimization in river basin development. Water resources research, 16(1), 14-20.
+<a name="c2">[2]</a> Duckstein, L., & Opricovic, S. (1980). Multiobjective optimization in river basin development. Water resources research, 16(1), 14-20. https://doi.org/10.1029/WR016i001p00014
 
 <a name="c3">[3]</a> Zavadskas, E. K., Kaklauskas, A., Peldschus, F., & Turskis, Z. (2007). Multi-attribute assessment of road design solutions by using the COPRAS method. The Baltic Journal of Road and Bridge Engineering, 2(4), 195-203.
 
-<a name="c4">[4]</a> Brans, J. P., Vincke, P., & Mareschal, B. (1986). How to select and how to rank projects: The PROMETHEE method. European journal of operational research, 24(2), 228-238.
+<a name="c4">[4]</a> Brans, J. P., Vincke, P., & Mareschal, B. (1986). How to select and how to rank projects: The PROMETHEE method. European journal of operational research, 24(2), 228-238. https://doi.org/10.1016/0377-2217(86)90044-5
 
-<a name="c5">[5]</a> Sałabun, W., Karczmarczyk, A., Wątróbski, J., & Jankowski, J. (2018, November). Handling data uncertainty in decision making with COMET. In 2018 IEEE Symposium Series on Computational Intelligence (SSCI) (pp. 1478-1484). IEEE.
+<a name="c5">[5]</a> Sałabun, W., Karczmarczyk, A., Wątróbski, J., & Jankowski, J. (2018, November). Handling data uncertainty in decision making with COMET. In 2018 IEEE Symposium Series on Computational Intelligence (SSCI) (pp. 1478-1484). IEEE. https://doi.org/10.1109/SSCI.2018.8628934
 
-<a name="c6">[6]</a> Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The spotis rank reversal free method for multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION) (pp. 1-8). IEEE.
+<a name="c6">[6]</a> Dezert, J., Tchamova, A., Han, D., & Tacnet, J. M. (2020, July). The spotis rank reversal free method for multi-criteria decision-making support. In 2020 IEEE 23rd International Conference on Information Fusion (FUSION) (pp. 1-8). IEEE. https://doi.org/10.23919/FUSION45008.2020.9190347
 
-<a name="c7">[7]</a> Zavadskas, E. K., & Turskis, Z. (2010). A new additive ratio assessment (ARAS) method in multicriteria decision‐making. Technological and economic development of economy, 16(2), 159-172.
+<a name="c7">[7]</a> Zavadskas, E. K., & Turskis, Z. (2010). A new additive ratio assessment (ARAS) method in multicriteria decision‐making. Technological and economic development of economy, 16(2), 159-172. https://doi.org/10.3846/tede.2010.10
 
 <a name="c8">[8]</a> Stanujkic, D., Djordjevic, B., & Karabasevic, D. (2015). Selection of candidates in the process of recruitment and selection of personnel based on the SWARA and ARAS methods. Quaestus, (7), 53.
 
-<a name="c9">[9]</a> Yazdani, M., Zarate, P., Zavadskas, E. K., & Turskis, Z. (2019). A Combined Compromise Solution (CoCoSo) method for multi-criteria decision-making problems. Management Decision.
+<a name="c9">[9]</a> Yazdani, M., Zarate, P., Zavadskas, E. K., & Turskis, Z. (2019). A Combined Compromise Solution (CoCoSo) method for multi-criteria decision-making problems. Management Decision. https://doi.org/10.1108/MD-05-2017-0458
 
 <a name="c10">[10]</a> Badi, I., Shetwan, A. G., & Abdulshahed, A. M. (2017, September). Supplier selection using COmbinative Distance-based ASsessment (CODAS) method for multi-criteria decision-making. In Proceedings of The 1st International Conference on Management, Engineering and Environment (ICMNEE) (pp. 395-407).
 
-<a name="c11">[11]</a> Keshavarz Ghorabaee, M., Zavadskas, E. K., Olfat, L., & Turskis, Z. (2015). Multi-criteria inventory classification using a new method of evaluation based on distance from average solution (EDAS). Informatica, 26(3), 435-451.
+<a name="c11">[11]</a> Keshavarz Ghorabaee, M., Zavadskas, E. K., Olfat, L., & Turskis, Z. (2015). Multi-criteria inventory classification using a new method of evaluation based on distance from average solution (EDAS). Informatica, 26(3), 435-451. https://doi.org/10.15388/Informatica.2015.57
 
-<a name="c12">[12]</a> Yazdani, M., Torkayesh, A. E., Santibanez-Gonzalez, E. D., & Otaghsara, S. K. (2020). Evaluation of renewable energy resources using integrated Shannon Entropy—EDAS model. Sustainable Operations and Computers, 1, 35-42.
+<a name="c12">[12]</a> Yazdani, M., Torkayesh, A. E., Santibanez-Gonzalez, E. D., & Otaghsara, S. K. (2020). Evaluation of renewable energy resources using integrated Shannon Entropy—EDAS model. Sustainable Operations and Computers, 1, 35-42. https://doi.org/10.1016/j.susoc.2020.12.002
 
-<a name="c13">[13]</a> Pamučar, D., & Ćirović, G. (2015). The selection of transport and handling resources in logistics centers using Multi-Attributive Border Approximation area Comparison (MABAC). Expert systems with applications, 42(6), 3016-3028.
+<a name="c13">[13]</a> Pamučar, D., & Ćirović, G. (2015). The selection of transport and handling resources in logistics centers using Multi-Attributive Border Approximation area Comparison (MABAC). Expert systems with applications, 42(6), 3016-3028. https://doi.org/10.1016/j.eswa.2014.11.057
 
-<a name="c14">[14]</a> Gigović, L., Pamučar, D., Bajić, Z., & Milićević, M. (2016). The combination of expert judgment and GIS-MAIRCA analysis for the selection of sites for ammunition depots. Sustainability, 8(4), 372.
+<a name="c14">[14]</a> Gigović, L., Pamučar, D., Bajić, Z., & Milićević, M. (2016). The combination of expert judgment and GIS-MAIRCA analysis for the selection of sites for ammunition depots. Sustainability, 8(4), 372. https://doi.org/10.3390/su8040372
 
-<a name="c15">[15]</a> Pamucar, D. S., Pejcic Tarle, S., & Parezanovic, T. (2018). New hybrid multi-criteria decision-making DEMATELMAIRCA model: sustainable selection of a location for the development of multimodal logistics centre. Economic research-Ekonomska istraživanja, 31(1), 1641-1665.
+<a name="c15">[15]</a> Pamucar, D. S., Pejcic Tarle, S., & Parezanovic, T. (2018). New hybrid multi-criteria decision-making DEMATELMAIRCA model: sustainable selection of a location for the development of multimodal logistics centre. Economic research-Ekonomska istraživanja, 31(1), 1641-1665. https://doi.org/10.1080/1331677X.2018.1506706
 
 <a name="c16">[16]</a> Aksoy, E. (2021). An Analysis on Turkey's Merger and Acquisition Activities: MAIRCA Method. Gümüşhane Üniversitesi Sosyal Bilimler Enstitüsü Elektronik Dergisi, 12(1), 1-11.
 
-<a name="c17">[17]</a> Stević, Ž., Pamučar, D., Puška, A., & Chatterjee, P. (2020). Sustainable supplier selection in healthcare industries using a new MCDM method: Measurement of alternatives and ranking according to COmpromise solution (MARCOS). Computers & Industrial Engineering, 140, 106231.
+<a name="c17">[17]</a> Stević, Ž., Pamučar, D., Puška, A., & Chatterjee, P. (2020). Sustainable supplier selection in healthcare industries using a new MCDM method: Measurement of alternatives and ranking according to COmpromise solution (MARCOS). Computers & Industrial Engineering, 140, 106231. https://doi.org/10.1016/j.cie.2019.106231
 
-<a name="c18">[18]</a> Ulutaş, A., Karabasevic, D., Popovic, G., Stanujkic, D., Nguyen, P. T., & Karaköy, Ç. (2020). Development of a novel integrated CCSD-ITARA-MARCOS decision-making approach for stackers selection in a logistics system. Mathematics, 8(10), 1672.
+<a name="c18">[18]</a> Ulutaş, A., Karabasevic, D., Popovic, G., Stanujkic, D., Nguyen, P. T., & Karaköy, Ç. (2020). Development of a novel integrated CCSD-ITARA-MARCOS decision-making approach for stackers selection in a logistics system. Mathematics, 8(10), 1672. https://doi.org/10.3390/math8101672
 
-<a name="c19">[19]</a> Parkan, C. (1994). Operational competitiveness ratings of production units. Managerial and Decision Economics, 15(3), 201-221.
+<a name="c19">[19]</a> Parkan, C. (1994). Operational competitiveness ratings of production units. Managerial and Decision Economics, 15(3), 201-221. https://doi.org/10.1002/mde.4090150303
 
-<a name="c20">[20]</a> Işık, A. T., & Adalı, E. A. (2016). A new integrated decision making approach based on SWARA and OCRA methods for the hotel selection problem. International Journal of Advanced Operations Management, 8(2), 140-151.
+<a name="c20">[20]</a> Işık, A. T., & Adalı, E. A. (2016). A new integrated decision making approach based on SWARA and OCRA methods for the hotel selection problem. International Journal of Advanced Operations Management, 8(2), 140-151. https://doi.org/10.1504/IJAOM.2016.079681
 
-<a name="c21">[21]</a> Brauers, W. K. (2003). Optimization methods for a stakeholder society: a revolution in economic thinking by multi-objective optimization (Vol. 73). Springer Science & Business Media.
+<a name="c21">[21]</a> Brauers, W. K. (2004). Optimization methods for a stakeholder society: a revolution in economic thinking by multi-objective optimization (Vol. 73). Springer Science & Business Media. https://doi.org/10.1007/978-1-4419-9178-2
 
 <a name="c22">[22]</a> Hussain, S. A. I., & Mandal, U. K. (2016). Entropy based MCDM approach for Selection of material. In National Level Conference on Engineering Problems and Application of Mathematics (pp. 1-6).
 
-<a name="c23">[23]</a> Sałabun, W., Wątróbski, J., & Shekhovtsov, A. (2020). Are mcda methods benchmarkable? a comparative study of topsis, vikor, copras, and promethee ii methods. Symmetry, 12(9), 1549.
+<a name="c23">[23]</a> Sałabun, W., Wątróbski, J., & Shekhovtsov, A. (2020). Are mcda methods benchmarkable? a comparative study of topsis, vikor, copras, and promethee ii methods. Symmetry, 12(9), 1549. https://doi.org/10.3390/sym12091549
 
-<a name="c24">[24]</a> Lotfi, F. H., & Fallahnejad, R. (2010). Imprecise Shannon’s entropy and multi attribute decision making. Entropy, 12(1), 53-62.
+<a name="c24">[24]</a> Lotfi, F. H., & Fallahnejad, R. (2010). Imprecise Shannon’s entropy and multi attribute decision making. Entropy, 12(1), 53-62. https://doi.org/10.3390/e12010053
 
-<a name="c25">[25]</a> Li, X., Wang, K., Liu, L., Xin, J., Yang, H., & Gao, C. (2011). Application of the entropy weight and TOPSIS method in safety evaluation of coal mines. Procedia engineering, 26, 2085-2091.
+<a name="c25">[25]</a> Li, X., Wang, K., Liu, L., Xin, J., Yang, H., & Gao, C. (2011). Application of the entropy weight and TOPSIS method in safety evaluation of coal mines. Procedia engineering, 26, 2085-2091. https://doi.org/10.1016/j.proeng.2011.11.2410
 
-<a name="c26">[26]</a> Wang, Y. M., & Luo, Y. (2010). Integration of correlations with standard deviations for determining attribute weights in multiple attribute decision making. Mathematical and Computer Modelling, 51(1-2), 1-12.
+<a name="c26">[26]</a> Wang, Y. M., & Luo, Y. (2010). Integration of correlations with standard deviations for determining attribute weights in multiple attribute decision making. Mathematical and Computer Modelling, 51(1-2), 1-12. https://doi.org/10.1016/j.mcm.2009.07.016
 
-<a name="c27">[27]</a> Keshavarz-Ghorabaee, M., Amiri, M., Zavadskas, E. K., Turskis, Z., & Antucheviciene, J. (2021). Determination of Objective Weights Using a New Method Based on the Removal Effects of Criteria (MEREC). Symmetry, 13(4), 525.
+<a name="c27">[27]</a> Keshavarz-Ghorabaee, M., Amiri, M., Zavadskas, E. K., Turskis, Z., & Antucheviciene, J. (2021). Determination of Objective Weights Using a New Method Based on the Removal Effects of Criteria (MEREC). Symmetry, 13(4), 525. https://doi.org/10.3390/sym13040525
 
-<a name="c28">[28]</a> Diakoulaki, D., Mavrotas, G., & Papayannakis, L. (1995). Determining objective weights in multiple criteria problems: The critic method. Computers & Operations Research, 22(7), 763-770.
+<a name="c28">[28]</a> Diakoulaki, D., Mavrotas, G., & Papayannakis, L. (1995). Determining objective weights in multiple criteria problems: The critic method. Computers & Operations Research, 22(7), 763-770. https://doi.org/10.1016/0305-0548(94)00059-H
 
-<a name="c29">[29]</a> Tuş, A., & Adalı, E. A. (2019). The new combination with CRITIC and WASPAS methods for the time and attendance software selection problem. Opsearch, 56(2), 528-538.
+<a name="c29">[29]</a> Tuş, A., & Adalı, E. A. (2019). The new combination with CRITIC and WASPAS methods for the time and attendance software selection problem. Opsearch, 56(2), 528-538. https://doi.org/10.1007/s12597-019-00371-6
 
-<a name="c30">[30]</a> Zavadskas, E. K., & Podvezko, V. (2016). Integrated determination of objective criteria weights in MCDM. International Journal of Information Technology & Decision Making, 15(02), 267-283.
+<a name="c30">[30]</a> Zavadskas, E. K., & Podvezko, V. (2016). Integrated determination of objective criteria weights in MCDM. International Journal of Information Technology & Decision Making, 15(02), 267-283. https://doi.org/10.1142/S0219622016500036
 
-<a name="c31">[31]</a> Shuai, D., Zongzhun, Z., Yongji, W., & Lei, L. (2012, May). A new angular method to determine the objective weights. In 2012 24th Chinese Control and Decision Conference (CCDC) (pp. 3889-3892). IEEE.
+<a name="c31">[31]</a> Shuai, D., Zongzhun, Z., Yongji, W., & Lei, L. (2012, May). A new angular method to determine the objective weights. In 2012 24th Chinese Control and Decision Conference (CCDC) (pp. 3889-3892). IEEE. https://doi.org/10.1109/CCDC.2012.6244621
 
-<a name="c32">[32]</a> Li, G., & Chi, G. (2009, December). A new determining objective weights method-gini coefficient weight. In 2009 First International Conference on Information Science and Engineering (pp. 3726-3729). IEEE.
+<a name="c32">[32]</a> Li, G., & Chi, G. (2009, December). A new determining objective weights method-gini coefficient weight. In 2009 First International Conference on Information Science and Engineering (pp. 3726-3729). IEEE. https://doi.org/10.1109/ICISE.2009.84
 
-<a name="c33">[33]</a> Rao, R. V., & Patel, B. K. (2010). A subjective and objective integrated multiple attribute decision making method for material selection. Materials & Design, 31(10), 4738-4747.
+<a name="c33">[33]</a> Rao, R. V., & Patel, B. K. (2010). A subjective and objective integrated multiple attribute decision making method for material selection. Materials & Design, 31(10), 4738-4747. https://doi.org/10.1016/j.matdes.2010.05.014
 
 <a name="c34">[34]</a> Brauers, W. K., & Zavadskas, E. K. (2006). The MOORA method and its application to privatization in a transition economy. Control and cybernetics, 35, 445-469.
 
-<a name="c35">[35]</a> Jahan, A., & Edwards, K. L. (2015). A state-of-the-art survey on the influence of normalization techniques in ranking: Improving the materials selection process in engineering design. Materials & Design (1980-2015), 65, 335-342.
+<a name="c35">[35]</a> Jahan, A., & Edwards, K. L. (2015). A state-of-the-art survey on the influence of normalization techniques in ranking: Improving the materials selection process in engineering design. Materials & Design (1980-2015), 65, 335-342. https://doi.org/10.1016/j.matdes.2014.09.022
 
-<a name="c36">[36]</a> Gardziejczyk, W., & Zabicki, P. (2017). Normalization and variant assessment methods in selection of road alignment variants–case study. Journal of civil engineering and management, 23(4), 510-523.
+<a name="c36">[36]</a> Gardziejczyk, W., & Zabicki, P. (2017). Normalization and variant assessment methods in selection of road alignment variants–case study. Journal of civil engineering and management, 23(4), 510-523. https://doi.org/10.3846/13923730.2016.1210223
 
-<a name="c37">[37]</a> Zavadskas, E. K., & Turskis, Z. (2008). A new logarithmic normalization method in games theory. Informatica, 19(2), 303-314.
+<a name="c37">[37]</a> Zavadskas, E. K., & Turskis, Z. (2008). A new logarithmic normalization method in games theory. Informatica, 19(2), 303-314. https://doi.org/10.15388/Informatica.2008.215
 
-<a name="c38">[38]</a> Jahan, A., & Edwards, K. L. (2015). A state-of-the-art survey on the influence of normalization techniques in ranking: Improving the materials selection process in engineering design. Materials & Design (1980-2015), 65, 335-342.
+<a name="c38">[38]</a> Jahan, A., & Edwards, K. L. (2015). A state-of-the-art survey on the influence of normalization techniques in ranking: Improving the materials selection process in engineering design. Materials & Design (1980-2015), 65, 335-342. https://doi.org/10.1016/j.matdes.2014.09.022
 
 <a name="c39">[39]</a> Peldschus, F., Vaigauskas, E., & Zavadskas, E. K. (1983). Technologische entscheidungen bei der berücksichtigung mehrerer Ziehle. Bauplanung Bautechnik, 37(4), 173-175.
 
-<a name="c40">[40]</a> Zeng, Q. L., Li, D. D., & Yang, Y. B. (2013). VIKOR method with enhanced accuracy for multiple criteria decision making in healthcare management. Journal of medical systems, 37(2), 1-9.
+<a name="c40">[40]</a> Zeng, Q. L., Li, D. D., & Yang, Y. B. (2013). VIKOR method with enhanced accuracy for multiple criteria decision making in healthcare management. Journal of medical systems, 37(2), 1-9. https://doi.org/10.1007/s10916-012-9908-1
 
 <a name="c41">[41]</a> Binet, A., & Henri, V. (1898). La fatigue intellectuelle (Vol. 1). Schleicher frères.
 
-<a name="c42">[42]</a> Spearman, C. (1910). Correlation calculated from faulty data. British Journal of Psychology, 1904‐1920, 3(3), 271-295.
+<a name="c42">[42]</a> Spearman, C. (1910). Correlation calculated from faulty data. British Journal of Psychology, 1904‐1920, 3(3), 271-295. https://doi.org/10.1111/j.2044-8295.1910.tb00206.x
 
-<a name="c43">[43]</a> Pearson, K. (1895). VII. Note on regression and inheritance in the case of two parents. proceedings of the royal society of London, 58(347-352), 240-242.
+<a name="c43">[43]</a> Pearson, K. (1895). VII. Note on regression and inheritance in the case of two parents. proceedings of the royal society of London, 58(347-352), 240-242. https://doi.org/10.1098/rspl.1895.0041
 
-<a name="c44">[44]</a> Dancelli, L., Manisera, M., & Vezzoli, M. (2013). On two classes of Weighted Rank Correlation measures deriving from the Spearman’s ρ. In Statistical Models for Data Analysis (pp. 107-114). Springer, Heidelberg.
+<a name="c44">[44]</a> Dancelli, L., Manisera, M., & Vezzoli, M. (2013). On two classes of Weighted Rank Correlation measures deriving from the Spearman’s ρ. In Statistical Models for Data Analysis (pp. 107-114). Springer, Heidelberg. https://doi.org/10.1007/978-3-319-00032-9_13
 
-<a name="c45">[45]</a> Sałabun, W., & Urbaniak, K. (2020, June). A new coefficient of rankings similarity in decision-making problems. In International Conference on Computational Science (pp. 632-645). Springer, Cham.
+<a name="c45">[45]</a> Sałabun, W., & Urbaniak, K. (2020, June). A new coefficient of rankings similarity in decision-making problems. In International Conference on Computational Science (pp. 632-645). Springer, Cham. https://doi.org/10.1007/978-3-030-50417-5_47
 
-<a name="c46">[46]</a> Kendall, M. G. (1938). A new measure of rank correlation. Biometrika, 30(1/2), 81-93.
+<a name="c46">[46]</a> Kendall, M. G. (1938). A new measure of rank correlation. Biometrika, 30(1/2), 81-93. https://doi.org/10.1093/biomet/30.1-2.81
 
-<a name="c47">[47]</a> Goodman, L. A., & Kruskal, W. H. (1979). Measures of association for cross classifications. Measures of association for cross classifications, 2-34.
+<a name="c47">[47]</a> Goodman, L. A., & Kruskal, W. H. (1979). Measures of association for cross classifications. Measures of association for cross classifications, 2-34. https://doi.org/10.1007/978-1-4612-9995-0
 
-<a name="c48">[48]</a> Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10.
+<a name="c48">[48]</a> Cables, E., Lamata, M. T., & Verdegay, J. L. (2016). RIM-reference ideal method in multicriteria decision making. Information Sciences, 337, 1-10. https://doi.org/10.1016/j.ins.2015.12.011
 
-<a name="c49">[49]</a> Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315.
+<a name="c49">[49]</a> Shyur, H. J., Yin, L., Shih, H. S., & Cheng, C. B. (2015). A multiple criteria decision making method based on relative value distances. Foundations of Computing and Decision Sciences, 40(4), 299-315. https://doi.org/10.1515/fcds-2015-0017
 
-<a name="c50">[50]</a> Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230.
+<a name="c50">[50]</a> Wang, Z., Rangaiah, G. P., & Wang, X. (2021). Preference ranking on the basis of ideal-average distance method for multi-criteria decision-making. Industrial & Engineering Chemistry Research, 60(30), 11216-11230. https://doi.org/10.1021/acs.iecr.1c01413
 
-<a name="c51">[51]</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+<a name="c51">[51]</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267. https://doi.org/10.1287/opre.16.2.254
 
-<a name="c52">[52]</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267.
+<a name="c52">[52]</a> Fishburn, P. C., Murphy, A. H., & Isaacs, H. H. (1968). Sensitivity of decisions to probability estimation errors: A reexamination. Operations Research, 16(2), 254-267. https://doi.org/10.1287/opre.16.2.254
 
-<a name="c53">[53]</a> Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6.
+<a name="c53">[53]</a> Zavadskas, E. K., Turskis, Z., Antucheviciene, J., & Zakarevicius, A. (2012). Optimization of weighted aggregated sum product assessment. Elektronika ir elektrotechnika, 122(6), 3-6. https://doi.org/10.5755/j01.eee.122.6.1810
 
-<a name="c54">[54]</a> Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541.
+<a name="c54">[54]</a> Shekhovtsov, A., Kołodziejczyk, J., & Sałabun, W. (2020). Fuzzy model identification using monolithic and structured approaches in decision problems with partially incomplete data. Symmetry, 12(9), 1541. https://doi.org/10.3390/sym12091541
 
-<a name="c55">[55]</a> Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing.
+<a name="c55">[55]</a> Sałabun, W., Shekhovtsov, A., & Kizielewicz, B. (2021, June). A new consistency coefficient in the multi-criteria decision analysis domain. In Computational Science–ICCS 2021: 21st International Conference, Krakow, Poland, June 16–18, 2021, Proceedings, Part I (pp. 715-727). Cham: Springer International Publishing. https://doi.org/10.1007/978-3-030-77961-0_57
 
-<a name="c56">[56]</a> Paradowski, B., Bączkiewicz, A., & Watrąbski, J. (2021). Towards proper consumer choices-MCDM based product selection. Procedia Computer Science, 192, 1347-1358.
+<a name="c56">[56]</a> Paradowski, B., Bączkiewicz, A., & Watrąbski, J. (2021). Towards proper consumer choices-MCDM based product selection. Procedia Computer Science, 192, 1347-1358. https://doi.org/10.1016/j.procs.2021.08.138
 
-<a name="c57">[57]</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50.
+<a name="c57">[57]</a> Sałabun, W. (2015). The characteristic objects method: A new distance‐based approach to multicriteria decision‐making problems. Journal of Multi‐Criteria Decision Analysis, 22(1-2), 37-50. https://doi.org/10.1002/mcda.1525
 
-<a name="c58">[58]</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571.
+<a name="c58">[58]</a> Sałabun, W., & Piegat, A. (2017). Comparative analysis of MCDM methods for the assessment of mortality in patients with acute coronary syndrome. Artificial Intelligence Review, 48, 557-571. https://doi.org/10.1007/s10462-016-9511-9
 
-<a name="c59">[59]</a> Sałabun, W., & Shekhovtsov, A. (2023, September). An Innovative Drastic Metric for Ranking Similarity in Decision-Making Problems. In 2023 18th Conference on Computer Science and Intelligence Systems (FedCSIS) (pp. 731-738). IEEE.
+<a name="c59">[59]</a> Sałabun, W., & Shekhovtsov, A. (2023, September). An Innovative Drastic Metric for Ranking Similarity in Decision-Making Problems. In 2023 18th Conference on Computer Science and Intelligence Systems (FedCSIS) (pp. 731-738). IEEE. https://doi.org/10.15439/2023F6502
 
-<a name="c60">[60]</a> Shekhovtsov, A. (2023). Evaluating the Performance of Subjective Weighting Methods for Multi-Criteria Decision-Making using a novel Weights Similarity Coefficient. Procedia Computer Science, 225, 4785-4794.
+<a name="c60">[60]</a> Shekhovtsov, A. (2023). Evaluating the Performance of Subjective Weighting Methods for Multi-Criteria Decision-Making using a novel Weights Similarity Coefficient. Procedia Computer Science, 225, 4785-4794. https://doi.org/10.1016/j.procs.2023.10.478
 
-<a name="c61">[61]</a> Shekhovtsov, A., Kizielewicz, B., & Sałabun, W. (2023). Advancing individual decision-making: An extension of the characteristic objects method using expected solution point. Information Sciences, 647, 119456.
+<a name="c61">[61]</a> Shekhovtsov, A., Kizielewicz, B., & Sałabun, W. (2023). Advancing individual decision-making: An extension of the characteristic objects method using expected solution point. Information Sciences, 647, 119456. https://doi.org/10.1016/j.ins.2023.119456
 
-<a name="c62">[62]</a> Sotoudeh-Anvari, A. (2023). Root Assessment Method (RAM): a novel multi-criteria decision making method and its applications in sustainability challenges. Journal of Cleaner Production, 423, 138695.
+<a name="c62">[62]</a> Sotoudeh-Anvari, A. (2023). Root Assessment Method (RAM): a novel multi-criteria decision making method and its applications in sustainability challenges. Journal of Cleaner Production, 423, 138695. https://doi.org/10.1016/j.jclepro.2023.138695
 
-<a name="c63">[63]</a> Kizielewicz, B., Shekhovtsov, A., Więckowski, J., Wątróbski, J., & Sałabun, W. (2024). The Compromise-COMET method for identifying an adaptive multi-criteria decision model. IEEE Access.
+<a name="c63">[63]</a> Kizielewicz, B., Shekhovtsov, A., Więckowski, J., Wątróbski, J., & Sałabun, W. (2024). The Compromise-COMET method for identifying an adaptive multi-criteria decision model. IEEE Access, 12, 157083-157106. https://doi.org/10.1109/ACCESS.2024.3485798
 
-<a name="c64">[64]</a> Shekhovtsov, A., & Sałabun, W. (2023, September). The New Algorithm for Effective Reducing the Number of Pairwise Comparisons in the Decision Support Methods. In European Conference on Artificial Intelligence (pp. 243-254). Cham: Springer Nature Switzerland.
+<a name="c64">[64]</a> Shekhovtsov, A., & Sałabun, W. (2024). The New Algorithm for Effective Reducing the Number of Pairwise Comparisons in the Decision Support Methods. In M. Hernes & J. Wątróbski (Eds.), Emerging Challenges in Intelligent Management Information Systems (IMIS@ECAI 2023), Lecture Notes in Networks and Systems, 1079 (pp. 243-254). Springer, Cham. https://doi.org/10.1007/978-3-031-66761-9_20
 
-<a name="c65">[65]</a> Saaty, T. L. (1980). The analytic hierarchy process (AHP). The Journal of the Operational Research Society, 41(11), 1073–1076.
+<a name="c65">[65]</a> Saaty, T. L. (1980). The Analytic Hierarchy Process. McGraw-Hill, New York.
 
-<a name="c66">[66]</a> Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial Intelligence, 122, 106114.
+<a name="c66">[66]</a> Więckowski, J., Kizielewicz, B., Shekhovtsov, A., & Sałabun, W. (2023). RANCOM: A novel approach to identifying criteria relevance based on inaccuracy expert judgments. Engineering Applications of Artificial Intelligence, 122, 106114. https://doi.org/10.1016/j.engappai.2023.106114
 
-<a name="c67">[67]</a> Farag, M. M. (2020). Materials and process selection for engineering design. CRC press.
+<a name="c67">[67]</a> Farag, M. M. (2020). Materials and process selection for engineering design (4th ed.). CRC Press.
 
-<a name="c68">[68]</a> Shekhovtsov, A., Dezert, J. and Sałabun, W. (2025). Enhancing Personalized Decision-Making with the Balanced SPOTIS Algorithm. In Proceedings of the 17th International Conference on Agents and Artificial Intelligence - Volume 3: ICAART; ISBN 978-989-758-737-5; ISSN 2184-433X, SciTePress, pages 264-271. DOI: 10.5220/0013119800003890
+<a name="c68">[68]</a> Shekhovtsov, A., Dezert, J. and Sałabun, W. (2025). Enhancing Personalized Decision-Making with the Balanced SPOTIS Algorithm. In Proceedings of the 17th International Conference on Agents and Artificial Intelligence - Volume 3: ICAART; ISBN 978-989-758-737-5; ISSN 2184-433X, SciTePress, pages 264-271. DOI: 10.5220/0013119800003890 https://doi.org/10.5220/0013119800003890
 
-<a name="c69">[69]</a> Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020). Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method. Mathematics, 8(6), 1015.
+<a name="c69">[69]</a> Žižović, M., Pamučar, D., Albijanić, M., Chatterjee, P., & Pribićević, I. (2020). Eliminating rank reversal problem using a new multi-attribute model—the RAFSI method. Mathematics, 8(6), 1015. https://doi.org/10.3390/math8061015
 
-<a name="c70">[70]</a> Pamučar, D., Žižović, M., Biswas, S., & Božanić, D. (2021). A new logarithm methodology of additive weights (LMAW) for multi-criteria decision-making: Application in logistics. Facta universitatis, series: mechanical engineering, 19(3), 361-380.
+<a name="c70">[70]</a> Pamučar, D., Žižović, M., Biswas, S., & Božanić, D. (2021). A new logarithm methodology of additive weights (LMAW) for multi-criteria decision-making: Application in logistics. Facta universitatis, series: mechanical engineering, 19(3), 361-380. https://doi.org/10.22190/FUME210214031P
 
-<a name="c71">[71]</a> Ecer, F., & Pamucar, D. (2022). A novel LOPCOW‐DOBI multi‐criteria sustainability performance assessment methodology: An application in developing country banking sector. Omega, 112, 102690.
+<a name="c71">[71]</a> Ecer, F., & Pamucar, D. (2022). A novel LOPCOW‐DOBI multi‐criteria sustainability performance assessment methodology: An application in developing country banking sector. Omega, 112, 102690. https://doi.org/10.1016/j.omega.2022.102690
 
-<a name="c72">[72]</a> Bošković, S., Švadlenka, L., Jovčić, S., Dobrodolac, M., Simić, V., & Bacanin, N. (2023). An alternative ranking order method accounting for two-step normalization (AROMAN)—A case study of the electric vehicle selection problem. IEEE access, 11, 39496-39507.
+<a name="c72">[72]</a> Bošković, S., Švadlenka, L., Jovčić, S., Dobrodolac, M., Simić, V., & Bacanin, N. (2023). An alternative ranking order method accounting for two-step normalization (AROMAN)—A case study of the electric vehicle selection problem. IEEE access, 11, 39496-39507. https://doi.org/10.1109/ACCESS.2023.3265818
 
 <a name="c73">[73]</a> Kemeny, J. G., & Snell, J. L. (1962). Mathematical models in the social sciences. MIT Press.
 
-<a name="c74">[74]</a> Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10, e28265.
+<a name="c74">[74]</a> Dezert, J., Shekhovtsov, A., & Sałabun, W. (2024). A new distance between rankings. Heliyon, 10, e28265. https://doi.org/10.1016/j.heliyon.2024.e28265
 
-<a name="c75">[75]</a> Sałabun, W., & Shekhovtsov, A. (2023). An innovative drastic metric for ranking similarity in decision-making problems. Proceedings of the 18th Conference on Computer Science and Intelligence Systems, 731–738.
+<a name="c75">[75]</a> Sałabun, W., & Shekhovtsov, A. (2023). An innovative drastic metric for ranking similarity in decision-making problems. Proceedings of the 18th Conference on Computer Science and Intelligence Systems, 731–738. https://doi.org/10.15439/2023F6502
 
 <a name="c76">[76]</a> Dutta, V., & Haldar, S. (2025). Performance Comparison of TODIM and CPT-TODIM in Social Sustainability Assessment for G7 Countries. International Journal of Information Technology & Decision Making. https://doi.org/10.1142/S021962202550097X
 
