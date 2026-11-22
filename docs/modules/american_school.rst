@@ -710,6 +710,48 @@ suggest better alternatives.
 By comparing the merit values of the remaining alternatives after screening, we can identify the most
 suitable option for the specific application.
 
+GRA
+=======================
+
+``GRA`` (Grey Relational Analysis) evaluates the similarity of every alternative to the reference sequence of ideal
+values [#graref1]_. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`Y = [y_{ij}]` of dimension :math:`m \times n`.
+
+**Step 2.** Grey relational generating: translate the performance values into comparability sequences
+:math:`x_{ij} \in [0, 1]`. For the larger-the-better and the smaller-the-better criteria:
+
+.. math::
+        x_{ij} = \frac{y_{ij} - \min_i y_{ij}}{\max_i y_{ij} - \min_i y_{ij}}, \qquad
+        x_{ij} = \frac{\max_i y_{ij} - y_{ij}}{\max_i y_{ij} - \min_i y_{ij}}
+    :label: gra_gen
+
+For the closer-to-the-desired-value-the-better criteria with a desired value :math:`y_j^*` (parameter ``targets``):
+
+.. math::
+        x_{ij} = 1 - \frac{|y_{ij} - y_j^*|}{\max(\max_i y_{ij} - y_j^*, \; y_j^* - \min_i y_{ij})}
+    :label: gra_target
+
+**Step 3.** Calculate the grey relational coefficients with respect to the reference sequence :math:`x_{0j} = 1`,
+where :math:`\Delta_{ij} = |x_{0j} - x_{ij}|`, :math:`\Delta_{\min}` and :math:`\Delta_{\max}` are the smallest and
+the largest :math:`\Delta_{ij}` of the whole matrix, and :math:`\zeta \in (0, 1]` is the distinguishing coefficient
+(parameter ``zeta``, 0.5 by default):
+
+.. math::
+        \gamma(x_{0j}, x_{ij}) = \frac{\Delta_{\min} + \zeta \Delta_{\max}}{\Delta_{ij} + \zeta \Delta_{\max}}
+    :label: gra_coef
+
+**Step 4.** Calculate the grey relational grade:
+
+.. math::
+        \Gamma(X_0, X_i) = \sum_{j=1}^{n} w_j \gamma(x_{0j}, x_{ij})
+    :label: gra_grade
+
+The alternative with the highest grade is the best.
+
+.. [#graref1] Kuo, Y., Yang, T., & Huang, G. W. (2008). The use of grey relational analysis in solving multiple
+   attribute decision-making problems. Computers & Industrial Engineering, 55(1), 80-93.
+
 MABAC
 =======================
 ``MABAC`` is designed to evaluate decision alternatives according to the following steps:

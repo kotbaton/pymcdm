@@ -85,6 +85,7 @@ The library contains:
 | MULTIMOORA         	  | MOORA plus the Full Multiplicative Form with the dominance theory                                    |       [[102]](#c102),[[103]](#c103)        |
 | RIM                	  | Reference Ideal Method                                                                               |              [[48]](#c48)              |
 | ERVD               	  | Election Based on relative Value Distances                                                           |              [[49]](#c49)              |
+| GRA                	  | Grey Relational Analysis                                                                             |             [[106]](#c106)             |
 | PROBID                | Preference Ranking On the Basis of Ideal-average Distance                                            |              [[50]](#c50)              |
 | WSM                   | Weighted Sum Model                                                                                   |              [[51]](#c51)              |
 | WPM                   | Weighted Product Model                                                                               |              [[52]](#c52)              |
@@ -126,6 +127,7 @@ implemented.
 | CILOS   | Criterion Impact LOS                                      |               [[30]](#c30)               |
 | IDOCRIW | Integrated Determination of Objective CRIteria Weight     |               [[30]](#c30)               |
 | LOPCOW  | LOgarithmic Percentage Change-driven Objective Weighting  |               [[71]](#c71)               |
+| PSI     | Preference Selection Index                                |              [[107]](#c107)              |
 | -       | Angular/Angle weights                                     |               [[31]](#c31)               |
 | -       | Gini Coeficient weights                                   |               [[32]](#c32)               |
 | -       | Statistical variance weights                              |               [[33]](#c33)               |
@@ -143,6 +145,10 @@ implemented.
 | COBRAC  | COmparisons Between RAnked Criteria                       |               [[90]](#c90)               |
 | ITARA   | Indifference Threshold-based Attribute RAtio Analysis     |               [[91]](#c91)               |
 | OWCM    | Opinion Weight Criteria Method                            |               [[92]](#c92)               |
+| ROC     | Rank Order Centroid                                       |              [[108]](#c108)              |
+| RS      | Rank Sum                                                  |              [[109]](#c109)              |
+| RR      | Rank Reciprocal                                           |              [[109]](#c109)              |
+| RE      | Rank Exponent                                             |              [[109]](#c109)              |
 
 * Normalization methods:
 
@@ -471,3 +477,11 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c104">[104]</a> Yang, W., & Wu, Y. (2020). A new improvement method to avoid rank reversal in VIKOR. IEEE Access, 8, 21261-21271. https://doi.org/10.1109/ACCESS.2020.2969681
 
 <a name="c105">[105]</a> Puška, A., Stević, Ž., & Pamučar, D. (2022). Evaluation and selection of healthcare waste incinerators using extended sustainability criteria and multi-criteria analysis methods. Environment, Development and Sustainability, 24(9), 11195-11225. https://doi.org/10.1007/s10668-021-01902-2
+
+<a name="c106">[106]</a> Kuo, Y., Yang, T., & Huang, G. W. (2008). The use of grey relational analysis in solving multiple attribute decision-making problems. Computers & Industrial Engineering, 55(1), 80-93. https://doi.org/10.1016/j.cie.2007.12.002
+
+<a name="c107">[107]</a> Maniya, K., & Bhatt, M. G. (2010). A selection of material using a novel type decision-making method: Preference selection index method. Materials & Design, 31(4), 1785-1789. https://doi.org/10.1016/j.matdes.2009.11.020
+
+<a name="c108">[108]</a> Barron, F. H., & Barrett, B. E. (1996). Decision quality using ranked attribute weights. Management Science, 42(11), 1515-1523. https://doi.org/10.1287/mnsc.42.11.1515
+
+<a name="c109">[109]</a> Stillwell, W. G., Seaver, D. A., & Edwards, W. (1981). A comparison of weight approximation techniques in multiattribute utility decision making. Organizational Behavior and Human Performance, 28(1), 62-77. https://doi.org/10.1016/0030-5073(81)90015-5

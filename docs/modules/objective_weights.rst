@@ -314,6 +314,54 @@ where :math:`\sigma_{j}` denotes the standard deviation of criterion :math:`j`.
 
 where :math:`\sum_{j=1}^{n} w_{j} = 1`.
 
+PSI method
+=======================
+
+The Preference Selection Index (PSI) method [#psiref1]_ determines the weights from the dispersion of the normalized
+values of the criteria, without any judgments of the decision maker (``psi_weights``).
+
+**Step 1.** Normalize the decision matrix with the linear normalization:
+
+.. math::
+    :label: equ:psi1
+
+        r_{ij} = \begin{cases} \dfrac{x_{ij}}{\max_i x_{ij}} & \text{for benefit criteria} \\[2ex]
+        \dfrac{\min_i x_{ij}}{x_{ij}} & \text{for cost criteria} \end{cases}
+
+**Step 2.** Calculate the preference variation value of every criterion, where :math:`\bar{r}_j` is the mean of
+:math:`r_{ij}`:
+
+.. math::
+    :label: equ:psi2
+
+        PV_j = \sum_{i=1}^{m} (r_{ij} - \bar{r}_j)^2
+
+**Step 3.** Calculate the weights from the deviations :math:`1 - PV_j`:
+
+.. math::
+    :label: equ:psi3
+
+        w_j = \frac{1 - PV_j}{\sum_{k=1}^{n} (1 - PV_k)}
+
+The preference selection index of an alternative is the weighted sum of the same normalized matrix,
+:math:`I_i = \sum_j w_j r_{ij}`, which is obtained with ``WSM(linear_normalization)``:
+
+.. code-block:: python
+
+    from pymcdm.methods import WSM
+    from pymcdm.normalizations import linear_normalization
+    from pymcdm.weights import psi_weights
+
+    wsm = WSM(linear_normalization)
+    index = wsm(matrix, psi_weights(matrix, types), types)
+
+:math:`PV_j` grows with the number of alternatives and can exceed 1, which would give a negative weight; in such a
+case ``psi_weights`` raises a ``ValueError``. OWCM applies the same formulas to a matrix of opinions instead of the
+decision matrix.
+
+.. [#psiref1] Maniya, K., & Bhatt, M. G. (2010). A selection of material using a novel type decision-making method:
+   Preference selection index method. Materials & Design, 31(4), 1785-1789.
+
 References
 -----------------------
 

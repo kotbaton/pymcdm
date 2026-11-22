@@ -18,6 +18,13 @@
   thresholds per profile and veto), tests and documentation.
 * Add the MULTIMOORA method, with tests and documentation.
 * Add the CRADIS method, with tests and documentation.
+* Add the GRA (Grey Relational Analysis) method, with criteria with a desired value (`targets`), tests and
+  documentation.
+* Add `psi_weights` (Preference Selection Index), with tests and documentation; the PSI index is
+  `WSM(linear_normalization)` with these weights. `psi_weights` and `OWCM` raise a `ValueError` instead of returning
+  negative weights when a preference variation value exceeds 1.
+* Add rank-based subjective weights `ROC`, `RS`, `RR` and `RE` (rank order centroid, rank sum, rank reciprocal and
+  rank exponent), with tests and documentation.
 * Add the R-VIKOR method (`RVIKOR`), a rank-reversal-free VIKOR on the criteria domains, with tests and
   documentation.
 * Add the TOPSIS-Sort-B and TOPSIS-Sort-C sorting methods (`pymcdm.methods.sorting.TOPSIS_SORT`), based on R-TOPSIS,

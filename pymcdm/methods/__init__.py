@@ -13,6 +13,7 @@ from .cocoso import COCOSO
 from .cradis import CRADIS
 from .codas import CODAS
 from .edas import EDAS
+from .gra import GRA
 from .mabac import MABAC
 from .mairca import MAIRCA
 from .marcos import MARCOS

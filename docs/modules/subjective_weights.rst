@@ -752,3 +752,47 @@ difference on a five-point scale, which gives the crisp opinion matrix (paramete
     :label: owcm_w
 
     w_j = \frac{\Omega_j}{\sum_{j=1}^{n} \Omega_j}
+
+ROC, RS, RR and RE
+=======================
+
+Rank-based (surrogate) weights need only the ranking of the criteria from the most to the least important
+(parameter ``order``). With :math:`n` criteria, the weight of the criterion at position :math:`i` of the ranking is:
+
+* :class:`ROC` (Rank Order Centroid) [#rocref1]_: the centroid of all weight vectors consistent with the ranking,
+
+.. math::
+    :label: roc_w
+
+    w_i = \frac{1}{n} \sum_{k=i}^{n} \frac{1}{k}
+
+* :class:`RS` (Rank Sum) [#rocref2]_:
+
+.. math::
+    :label: rs_w
+
+    w_i = \frac{n - i + 1}{\sum_{k=1}^{n} (n - k + 1)} = \frac{2 (n - i + 1)}{n (n + 1)}
+
+* :class:`RR` (Rank Reciprocal) [#rocref2]_:
+
+.. math::
+    :label: rr_w
+
+    w_i = \frac{1 / i}{\sum_{k=1}^{n} 1 / k}
+
+* :class:`RE` (Rank Exponent) [#rocref2]_:
+
+.. math::
+    :label: re_w
+
+    w_i = \frac{(n - i + 1)^z}{\sum_{k=1}^{n} (n - k + 1)^z}
+
+The exponent :math:`z \geq 0` is given directly (parameter ``z``) or found numerically from the weight of the most
+important criterion judged by the decision maker (parameter ``w_top``). :math:`z = 0` gives equal weights and
+:math:`z = 1` gives rank sum weights.
+
+.. [#rocref1] Barron, F. H., & Barrett, B. E. (1996). Decision quality using ranked attribute weights. Management
+   Science, 42(11), 1515-1523.
+
+.. [#rocref2] Stillwell, W. G., Seaver, D. A., & Edwards, W. (1981). A comparison of weight approximation techniques
+   in multiattribute utility decision making. Organizational Behavior and Human Performance, 28(1), 62-77.

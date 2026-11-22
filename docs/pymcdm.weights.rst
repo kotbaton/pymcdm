@@ -70,6 +70,22 @@ pymcdm.weights.subjective
    :members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.weights.subjective.ROC
+   :members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.weights.subjective.RS
+   :members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.weights.subjective.RR
+   :members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.weights.subjective.RE
+   :members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.weights.subjective.PairwiseWeightsBase
    :members:
    :private-members:

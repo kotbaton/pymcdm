@@ -84,6 +84,10 @@ class OWCM(DecisionMatrixWeightsBase):
 
         # Step 5: Deviation of preference values (Eq. 7)
         omega = 1 - phi
+        if np.any(omega < 0):
+            raise ValueError(f'Preference variations exceed 1 for criteria with indices {np.flatnonzero(omega < 0)} '
+                             f'(phi = {np.round(phi[omega < 0], 4)}), which would give them negative weights. '
+                             'The OWCM weights are not applicable to this opinion matrix.')
 
         # Step 6: Normalize to final weights (Eq. 8)
         return omega / np.sum(omega)

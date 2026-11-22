@@ -19,6 +19,7 @@ from .vimm import VIMM
 from .cobrac import COBRAC
 from .itara import ITARA
 from .owcm import OWCM
+from .rank_order import ROC, RS, RR, RE
 
 __all__ = [
     'AHP',
@@ -42,4 +43,8 @@ __all__ = [
     'COBRAC',
     'ITARA',
     'OWCM',
+    'ROC',
+    'RS',
+    'RR',
+    'RE',
 ]

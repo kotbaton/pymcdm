@@ -6,7 +6,7 @@ from unittest import TestCase
 
 import numpy as np
 
-from pymcdm import weights
+from pymcdm import weights, methods, normalizations
 
 
 class TestEqualWeights(unittest.TestCase):
@@ -689,6 +689,12 @@ class TestOWCMWeights(unittest.TestCase):
         output_method = [round(weight, 7) for weight in owcm()]
         self.assertListEqual(output, output_method)
 
+    def test_negative_weights(self):
+        """ phi of the second criterion is 10 * 0.4^2 = 1.6 > 1, which would give it a negative weight. """
+        matrix = np.column_stack([np.tile([4, 5], 5), np.tile([5, 1], 5)])
+        with self.assertRaises(ValueError):
+            weights.subjective.OWCM(M=matrix)()
+
 
 class TestLBWAWeights(unittest.TestCase):
     """ Test output method with reference:
@@ -873,3 +879,121 @@ class TestLOPCOWWeights(unittest.TestCase):
                         0.0487, 0.0482, 0.0763, 0.0551, 0.0532, 0.0534]
 
             self.assertListEqual(list(w), expected)
+
+
+
+class TestPSIWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Maniya, K., & Bhatt, M. G. (2010). A selection of material using a novel type decision-making method:
+        Preference selection index method. Materials & Design, 31(4), 1785-1789.
+    """
+
+    matrix = np.array([[1650, 58.5, 2.3, 0.5],
+                       [1000, 45.4, 2.1, 0.335],
+                       [350, 21.7, 2.6, 0.335],
+                       [2150, 64.3, 2.4, 0.5],
+                       [700, 23, 1.71, 0.59]])
+    types = np.array([1, 1, -1, 1])
+
+    def test_output(self):
+        """ Example of Section 3 (Tables 1-2). The paper gives W4 = 0.2894, as its rounded weights sum to 1.0002. """
+        self.assertListEqual([0.184, 0.212, 0.315, 0.289],
+                             np.round(weights.psi_weights(self.matrix, self.types), 3).tolist())
+
+    def test_preference_selection_index(self):
+        """ Section 3, Step VI: the index is the weighted sum of the linearly normalized matrix. The paper uses its
+            rounded weights, which sum to 1.0002, so the validation is disabled.
+        """
+        wsm = methods.WSM(normalizations.linear_normalization)
+        index = wsm(self.matrix, np.array([0.1840, 0.2117, 0.3151, 0.2894]), self.types, validation=False)
+        self.assertListEqual([0.8133, 0.656, 0.473, 0.8655, 0.7401], np.round(index, 4).tolist())
+        self.assertListEqual([2, 4, 5, 1, 3], wsm.rank(index).astype(int).tolist())
+
+    def test_validation_gtma(self):
+        """ Section 4 (Tables 3-5): index values and the ranking 5-4-2-3-1-6. Corrosion resistance "very high" of
+            material 3 is 0.745 (Fig. 2, Table 4).
+        """
+        matrix = np.array([[420, 25, 5, 0.865],
+                           [350, 40, 3, 0.665],
+                           [390, 30, 3, 0.745],
+                           [250, 35, 1.3, 0.665],
+                           [600, 30, 2.2, 0.665],
+                           [230, 55, 4, 0.5]])
+        types = np.array([1, 1, -1, 1])
+        wsm = methods.WSM(normalizations.linear_normalization)
+        index = wsm(matrix, weights.psi_weights(matrix, types), types)
+        self.assertListEqual([0.63, 0.64, 0.64, 0.7, 0.73, 0.59], np.round(index, 2).tolist())
+        self.assertListEqual([5, 3, 4, 2, 1, 6], wsm.rank(index).astype(int).tolist())
+
+    def test_consistency_wind_turbine(self):
+        """ Section 5 (Tables 6-8): ranking A4 > A5 > A1 > A2 > A3. The maximum temperature in Table 7 is not
+            normalized consistently with Table 6, so only the ranking is compared.
+        """
+        matrix = np.array([[30, 190, 7.5, 15, 550],
+                           [10, 90, 2.7, 12, 400],
+                           [73, 3500, 2.54, 3, 350],
+                           [350, 4000, 1.75, 1.8, 550],
+                           [120, 3600, 1.45, 11, 250]])
+        types = np.array([1, 1, -1, 1, 1])
+        wsm = methods.WSM(normalizations.linear_normalization)
+        index = wsm(matrix, weights.psi_weights(matrix, types), types)
+        self.assertListEqual([3, 4, 5, 1, 2], wsm.rank(index).astype(int).tolist())
+
+    def test_negative_weights(self):
+        """ PV of the second criterion is 10 * 0.45^2 = 2.025 > 1, which would give it a negative weight. """
+        matrix = np.column_stack([np.arange(10, 20), np.tile([10, 1], 5)])
+        with self.assertRaises(ValueError):
+            weights.psi_weights(matrix, np.ones(2))
+
+class TestRankOrderWeights(unittest.TestCase):
+    """ Test output method with reference:
+        [1] Barron, F. H., & Barrett, B. E. (1996). Decision quality using ranked attribute weights. Management
+        Science, 42(11), 1515-1523.
+        [2] Stillwell, W. G., Seaver, D. A., & Edwards, W. (1981). A comparison of weight approximation techniques
+        in multiattribute utility decision making. Organizational Behavior and Human Performance, 28(1), 62-77.
+    """
+
+    def test_output_barron(self):
+        """ Table 1 of [1]: weights for n = 4 attributes. """
+        order = [0, 1, 2, 3]
+        self.assertListEqual([0.4, 0.3, 0.2, 0.1], np.round(weights.subjective.RS(order)(), 4).tolist())
+        self.assertListEqual([0.48, 0.24, 0.16, 0.12], np.round(weights.subjective.RR(order)(), 4).tolist())
+        self.assertListEqual([0.5208, 0.2708, 0.1458, 0.0625], np.round(weights.subjective.ROC(order)(), 4).tolist())
+
+    # Table 6 of [2]: public attitudes, distance from city, geospheric path length, proximity to natural resources,
+    # earthquake probability, migration of critical nuclide, transportation distance. The order is given by the
+    # transformed ratio weights [.246, .087, .088, .267, .103, .153, .055].
+    order = [3, 0, 5, 4, 2, 1, 6]
+
+    def test_output_stillwell(self):
+        """ Table 6 of [2]: rank sum, rank reciprocal and rank exponent weights (z = 1.16). """
+        self.assertListEqual([0.214, 0.071, 0.107, 0.25, 0.143, 0.179, 0.036],
+                             np.round(weights.subjective.RS(self.order)(), 3).tolist())
+        self.assertListEqual([0.193, 0.064, 0.077, 0.386, 0.096, 0.129, 0.055],
+                             np.round(weights.subjective.RR(self.order)(), 3).tolist())
+        self.assertListEqual([0.223, 0.062, 0.1, 0.267, 0.139, 0.181, 0.028],
+                             np.round(weights.subjective.RE(self.order, z=1.16)(), 3).tolist())
+
+    def test_rank_exponent_from_top_weight(self):
+        """ Table 6 of [2]: the exponent z = 1.16 follows from the weight .267 of the most important attribute. """
+        re = weights.subjective.RE(self.order, w_top=0.267)
+        self.assertEqual(1.16, round(re.z, 2))
+        self.assertListEqual([0.223, 0.062, 0.1, 0.267, 0.139, 0.181, 0.028], np.round(re(), 3).tolist())
+
+    def test_rank_exponent_special_cases(self):
+        """ z = 0 gives equal weights and z = 1 gives rank sum weights [2]. """
+        np.testing.assert_allclose(np.ones(7) / 7, weights.subjective.RE(self.order, z=0)())
+        np.testing.assert_allclose(weights.subjective.RS(self.order)(), weights.subjective.RE(self.order, z=1)())
+        self.assertEqual(0, weights.subjective.RE(self.order, w_top=1 / 7).z)
+
+    def test_validation(self):
+        with self.assertRaises(ValueError):
+            weights.subjective.RE(self.order)
+        with self.assertRaises(ValueError):
+            weights.subjective.RE(self.order, z=1, w_top=0.3)
+        with self.assertRaises(ValueError):
+            weights.subjective.RE(self.order, z=-1)
+        with self.assertRaises(ValueError):
+            weights.subjective.RE(self.order, w_top=0.1)
+        with self.assertRaises(ValueError):
+            weights.subjective.ROC([0, 1, 1])
