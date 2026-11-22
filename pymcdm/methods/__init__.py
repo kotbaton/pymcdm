@@ -15,7 +15,8 @@ from .darp import DARP
 from .codas import CODAS
 from .edas import EDAS
 from .gra import GRA
-from .hellwig import HELLWIG, MIDIA
+from .hellwig import HELLWIG
+from .midia import MIDIA
 from .mabac import MABAC
 from .mairca import MAIRCA
 from .marcos import MARCOS
