@@ -75,6 +75,7 @@ The library contains:
 | ARAS               	  | Additive Ratio ASsessment                                                                            |         [[7]](#c7),[[8]](#c8)          |
 | COCOSO             	  | COmbined COmpromise SOlution                                                                         |               [[9]](#c9)               |
 | CODAS              	  | COmbinative Distance-based ASsessment                                                                |              [[10]](#c10)              |
+| CRADIS             	  | Compromise Ranking of Alternatives from Distance to Ideal Solution                                   |             [[105]](#c105)             |
 | EDAS               	  | Evaluation based on Distance from Average Solution                                                   |       [[11]](#c11),[[12]](#c12)        |
 | MABAC              	  | Multi-Attributive Border Approximation area Comparison                                               |              [[13]](#c13)              |
 | MAIRCA             	  | MultiAttributive Ideal-Real Comparative Analysis                                                     | [[14]](#c14),[[15]](#c15),[[16]](#c16) |
@@ -468,3 +469,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c103">[103]</a> Brauers, W. K. M., & Zavadskas, E. K. (2011). MULTIMOORA optimization used to decide on a bank loan to buy property. Technological and Economic Development of Economy, 17(1), 174-188. https://doi.org/10.3846/13928619.2011.560632
 
 <a name="c104">[104]</a> Yang, W., & Wu, Y. (2020). A new improvement method to avoid rank reversal in VIKOR. IEEE Access, 8, 21261-21271. https://doi.org/10.1109/ACCESS.2020.2969681
+
+<a name="c105">[105]</a> Puška, A., Stević, Ž., & Pamučar, D. (2022). Evaluation and selection of healthcare waste incinerators using extended sustainability criteria and multi-criteria analysis methods. Environment, Development and Sustainability, 24(9), 11195-11225. https://doi.org/10.1007/s10668-021-01902-2

@@ -451,6 +451,55 @@ better alternative.
 Where :math:`Q^{max}_i` stands for maximum value of the utility function. Better alternatives has higher :math:`U_i`
 value.
 
+CRADIS
+=======================
+
+``CRADIS`` (Compromise Ranking of Alternatives from Distance to Ideal Solution) combines steps of the ARAS, MARCOS and
+TOPSIS methods [#cradisref1]_. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]` of dimension :math:`n \times m`.
+
+**Step 2.** Normalize the decision matrix:
+
+.. math::
+        n_{ij} = \begin{cases} \dfrac{x_{ij}}{\max_i x_{ij}} & \text{for benefit criteria} \\[2ex]
+        \dfrac{\min_i x_{ij}}{x_{ij}} & \text{for cost criteria} \end{cases}
+    :label: cradis_norm
+
+**Step 3.** Calculate the weighted normalized ("aggravated") decision matrix :math:`v_{ij} = w_j n_{ij}`.
+
+**Step 4.** Determine the ideal solution :math:`t` and the anti-ideal solution :math:`t_a` as the largest and the
+smallest element of the whole weighted normalized matrix (not of every criterion):
+
+.. math::
+        t = \max_{i, j} v_{ij}, \qquad t_a = \min_{i, j} v_{ij}
+    :label: cradis_ideal
+
+**Step 5.** Calculate the total deviations of every alternative from the ideal and the anti-ideal solution:
+
+.. math::
+        s_i^{+} = \sum_{j=1}^{m} (t - v_{ij}), \qquad s_i^{-} = \sum_{j=1}^{m} (v_{ij} - t_a)
+    :label: cradis_dev
+
+**Step 6.** Calculate the same deviations :math:`s_0^{+}` and :math:`s_0^{-}` for the optimal alternative, which has
+the largest value :math:`\max_i v_{ij}` of every criterion, and the utility functions:
+
+.. math::
+        K_i^{+} = \frac{s_0^{+}}{s_i^{+}}, \qquad K_i^{-} = \frac{s_i^{-}}{s_0^{-}}
+    :label: cradis_k
+
+**Step 7.** Calculate the final score as the average of the utility functions:
+
+.. math::
+        Q_i = \frac{K_i^{+} + K_i^{-}}{2}
+    :label: cradis_q
+
+The alternative with the highest value of :math:`Q_i` is the best.
+
+.. [#cradisref1] Puška, A., Stević, Ž., & Pamučar, D. (2022). Evaluation and selection of healthcare waste
+   incinerators using extended sustainability criteria and multi-criteria analysis methods. Environment, Development
+   and Sustainability, 24(9), 11195-11225.
+
 EDAS
 =======================
 

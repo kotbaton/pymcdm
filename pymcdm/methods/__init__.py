@@ -10,6 +10,7 @@ from .spotis import SPOTIS
 from .balanced_spotis import BalancedSPOTIS
 from .aras import ARAS
 from .cocoso import COCOSO
+from .cradis import CRADIS
 from .codas import CODAS
 from .edas import EDAS
 from .mabac import MABAC
