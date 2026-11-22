@@ -112,6 +112,7 @@ The library contains:
 | TOPSIS (García-Cascales & Lamata)\* | [[94]](#c94) |
 | IE-TOPSIS (domain)\* | [[95]](#c95) |
 | TOPSIS-RAD\* | [[96]](#c96) |
+| BP-TOPSIS\* | [[116]](#c116) |
 | TOPSIS-Sort-B, TOPSIS-Sort-C (sorting) | [[101]](#c101) |
 | R-VIKOR | [[104]](#c104) |
 
@@ -501,3 +502,5 @@ This will produce output that contains formatted decision matrix, intermediate r
 <a name="c114">[114]</a> Wierzbicki, A. P., Granat, J., & Makowski, M. (2007). Discrete decision problems with large number of criteria. IIASA Interim Report IR-07-025. International Institute for Applied Systems Analysis, Laxenburg. https://pure.iiasa.ac.at/8432/
 
 <a name="c115">[115]</a> Wierzbicki, A. P. (2007). Reference point approaches and objective ranking. In Practical Approaches to Multi-Objective Optimization, Dagstuhl Seminar Proceedings 06501 (pp. 1-20). https://doi.org/10.4230/DagSemProc.06501.2
+
+<a name="c116">[116]</a> Yang, W., Pang, X., Kong, D., & Shang, H. (2026). BP-TOPSIS: A Boxplot-Based Approach to Reducing Rank Reversal in the TOPSIS Method. International Journal of Information Technology & Decision Making, 25(10), 3509-3538. https://doi.org/10.1142/S0219622026500483

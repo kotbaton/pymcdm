@@ -25,6 +25,8 @@
   negative weights when a preference variation value exceeds 1.
 * Add Hellwig's method (`HELLWIG`, Euclidean or Mahalanobis distance, any normalization of the Euclidean variant) and its extension MIDIA
   (`MIDIA`, distances to the ideal and anti-ideal points), with tests and documentation.
+* Add `RTOPSIS.boxplot_bounds`, the domain of BP-TOPSIS (boxplot fences of every criterion), with tests and
+  documentation.
 * Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
 * Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration
   levels, importance factors and the overall achievement, Lorenz quantile and OWA aggregations, with tests and

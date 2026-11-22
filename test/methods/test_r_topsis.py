@@ -111,6 +111,70 @@ class TestRTOPSISExpandBounds(unittest.TestCase):
         self.assertListEqual(output, [round(b, 2) for b in bounds[:, 1]])
 
 
+class TestRTOPSISBoxplotBounds(unittest.TestCase):
+    """ Test output method with reference:
+    [1] Yang, W., Pang, X., Kong, D., & Shang, H. (2026). BP-TOPSIS: A Boxplot-Based Approach to Reducing Rank
+    Reversal in the TOPSIS Method. International Journal of Information Technology & Decision Making, 25(10),
+    3509-3538.
+
+    BP-TOPSIS is R-TOPSIS with the boxplot fences (e = 3) of the original decision matrix as the domain and the
+    Max-Min normalization. The domain is computed once and kept for the modified sets of alternatives. The paper
+    gives only the rankings.
+    """
+
+    @staticmethod
+    def ranks(bounds, matrix, weights, types):
+        body = methods.RTOPSIS(bounds, 'minmax', clip=True)
+        return body.rank(body(matrix, weights, types)).astype(int).tolist()
+
+    def test_case_1(self):
+        """ Case one (Table 6): rankings of the original, delete, add and replace sets. """
+        matrix = np.array([[36, 42, 43, 70],
+                           [25, 50, 45, 80],
+                           [28, 45, 50, 75],
+                           [24, 40, 47, 100]])
+        weights = np.array([1/6, 1/3, 1/3, 1/6])
+        types = np.ones(4)
+        bounds = methods.RTOPSIS.boxplot_bounds(matrix)
+
+        self.assertListEqual([4, 2, 1, 3], self.ranks(bounds, matrix, weights, types))
+        self.assertListEqual([3, 2, 1], self.ranks(bounds, matrix[:3], weights, types))
+        added = np.vstack([matrix, [21, 46, 42, 97]])
+        self.assertListEqual([5, 2, 1, 3, 4], self.ranks(bounds, added, weights, types))
+        replaced = np.vstack([matrix[:3], [29, 48, 43, 86]])
+        self.assertListEqual([4, 2, 1, 3], self.ranks(bounds, replaced, weights, types))
+
+    def test_case_2(self):
+        """ Case two (Table 7). Table 7 marks C5-C8 as cost criteria, but its rankings of all three methods are
+            reproduced only when all eight criteria are treated as benefit criteria: VIKOR, for instance, gives the
+            paper's rankings (5, 2, 4, 1, 3 for the original set) with benefit criteria and 5, 4, 2, 3, 1 with
+            C5-C8 as cost criteria. The test therefore uses benefit criteria. The added alternative E6 exceeds the
+            upper fence of C2 (13.94 > 11.19), which is clipped.
+        """
+        matrix = np.array([[4184.3, 2.41, 407.2, 251, 195, 244, 15, 2914],
+                           [5211.9, 1.41, 501.7, 308.3, 282, 346, 21, 3630],
+                           [5021.3, 4.42, 504, 278.6, 12, 56, 3, 3920.5],
+                           [5566.1, 3.36, 559.5, 335.3, 167, 268, 16, 3957.5],
+                           [5060.5, 4.04, 514.1, 284.2, 69, 90, 7, 3293.5]])
+        weights = np.ones(8) / 8
+        types = np.ones(8)
+        bounds = methods.RTOPSIS.boxplot_bounds(matrix)
+
+        self.assertListEqual([5, 2, 4, 1, 3], self.ranks(bounds, matrix, weights, types))
+        self.assertListEqual([4, 1, 3, 2], self.ranks(bounds, matrix[[0, 1, 2, 4]], weights, types))
+        added = np.vstack([matrix, [5387.0, 13.94, 528.8, 279.37, 51.2, 108, 22.23, 3672.45]])
+        self.assertListEqual([6, 3, 5, 2, 4, 1], self.ranks(bounds, added, weights, types))
+        replaced = matrix.copy()
+        replaced[3] = [4991.22, 5.45, 475.27, 332.14, 212.34, 223.60, 21.49, 2950.48]
+        self.assertListEqual([5, 1, 4, 2, 3], self.ranks(bounds, replaced, weights, types))
+
+    def test_quartiles(self):
+        """ Quartiles of Eq. (6), (n + 1) p-th order statistic with linear interpolation. """
+        values = np.array([[7.0], [1.0], [3.0], [5.0]])
+        bounds = methods.RTOPSIS.boxplot_bounds(values, e=0)
+        self.assertListEqual([[1.5, 6.5]], bounds.tolist())
+
+
 class TestRTOPSISHistoricalBounds(unittest.TestCase):
     """ Test output method with reference:
     [1] Yang, W. (2020). Ingenious solution for the rank reversal problem of TOPSIS method. Mathematical

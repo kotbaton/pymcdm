@@ -1964,7 +1964,11 @@ obtained with its parameters:
 * the domain of IE-TOPSIS: observed extremes extended by :math:`\alpha` sample standard deviations
   (:meth:`RTOPSIS.expand_bounds`) with the Max-Min normalization; the domain should be computed once and kept fixed;
 * TOPSIS-RAD: vetoed and desired performance levels as the domain, the Max-Min normalization and ``clip=True``, which
-  clips performances above the desired levels; vetoed alternatives are removed from the decision matrix beforehand.
+  clips performances above the desired levels; vetoed alternatives are removed from the decision matrix beforehand;
+* BP-TOPSIS: the boxplot fences :math:`Q_1 - e \cdot IQR` and :math:`Q_3 + e \cdot IQR` of every
+  criterion (:meth:`RTOPSIS.boxplot_bounds`, :math:`e = 3` by default) with the Max-Min normalization; the quartiles
+  are the :math:`(n + 1) p`-th order statistics with linear interpolation, so no distribution of the data is
+  assumed, and the domain should be computed once and kept fixed.
 
 TOPSIS-Sort
 =======================

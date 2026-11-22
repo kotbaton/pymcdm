@@ -53,6 +53,8 @@ class RTOPSIS(MCDA_method):
         - TOPSIS-RAD [#rtopsis5]_: vetoed and desired performance levels as the domain, the
           'minmax' normalization and ``clip=True``. Alternatives below the vetoed levels have to be
           removed from the decision matrix beforehand.
+        - BP-TOPSIS [#rtopsis6]_: the boxplot fences of every criterion as the domain, see
+          :meth:`boxplot_bounds`, with the 'minmax' normalization.
 
         References
         ----------
@@ -66,6 +68,9 @@ class RTOPSIS(MCDA_method):
             TOPSIS. Computers & Industrial Engineering, 174, 108776.
         .. [#rtopsis5] Costa, L. F., Costa, H. G., Lima, D., & Rodrigues, B. (2026). TOPSIS-RAD: Ranking
             According to Desires. arXiv preprint arXiv:2606.07253.
+        .. [#rtopsis6] Yang, W., Pang, X., Kong, D., & Shang, H. (2026). BP-TOPSIS: A Boxplot-Based Approach to
+            Reducing Rank Reversal in the TOPSIS Method. International Journal of Information Technology &
+            Decision Making, 25(10), 3509-3538.
 
         Examples
         --------
@@ -225,3 +230,58 @@ class RTOPSIS(MCDA_method):
         if floor is not None:
             lower = np.maximum(lower, floor)
         return np.column_stack((lower, upper))
+
+    @staticmethod
+    def boxplot_bounds(matrix, e=3):
+        """ Returns a domain given by the boxplot fences of every criterion (Section 3.1 of BP-TOPSIS
+            [#rtopsis6]_).
+
+            The bounds are ``Q1 - e * IQR`` and ``Q3 + e * IQR``, where ``IQR = Q3 - Q1`` and the quartiles
+            are computed from the sorted values ``T(1) <= ... <= T(n)`` of the criterion as
+            ``T(k) + (T(k+1) - T(k)) * ((n + 1) p - k)`` with ``k = floor((n + 1) p)`` (Eq. 6), clamped
+            to ``T(1)`` and ``T(n)``. No distribution of the data is assumed. As with :meth:`expand_bounds`,
+            the bounds should be computed once and kept fixed for later sets of alternatives.
+
+            Parameters
+            ----------
+                matrix : ndarray
+                    Decision matrix used to calibrate the domain.
+                    Alternatives are in rows and Criteria are in columns.
+                e : float
+                    Expansion coefficient of the interquartile range. Default is 3, the value used in
+                    BP-TOPSIS [#rtopsis6]_; 1.5 gives the usual fences for mild outliers.
+
+            Returns
+            -------
+                bounds : ndarray
+                    Lower and upper fences (bounds) for each criterion.
+
+            Examples
+            --------
+            >>> import numpy as np
+            >>> from pymcdm.methods import RTOPSIS
+            >>> matrix = np.array([[36, 42, 43, 70],
+            ...                    [25, 50, 45, 80],
+            ...                    [28, 45, 50, 75],
+            ...                    [24, 40, 47, 100]])
+            >>> RTOPSIS.boxplot_bounds(matrix)
+            array([[ -5.  ,  63.25],
+                   [ 15.75,  73.5 ],
+                   [ 26.25,  66.5 ],
+                   [  0.  , 166.25]])
+        """
+        matrix = np.sort(np.asarray(matrix, dtype='float'), axis=0)
+        n = matrix.shape[0]
+
+        def quantile(p):
+            position = (n + 1) * p
+            k = int(np.floor(position))
+            if k < 1:
+                return matrix[0]
+            if k >= n:
+                return matrix[-1]
+            return matrix[k - 1] + (matrix[k] - matrix[k - 1]) * (position - k)
+
+        q1, q3 = quantile(0.25), quantile(0.75)
+        iqr = q3 - q1
+        return np.column_stack((q1 - e * iqr, q3 + e * iqr))
