@@ -38,3 +38,109 @@ class TestPolarPlots(unittest.TestCase):
         plt.plot([0, 1], [0, 1])
         ax = visuals.polar_plot(np.array([[1, 2, 3], [2, 1, 3]]))
         self.assertEqual(ax.name, 'polar')
+
+
+class TestMIDIAPlane(unittest.TestCase):
+    """ midia_plane draws the alternatives in the (DI, DAI) plane, coloured or with contour lines only. """
+
+    def setUp(self):
+        from pymcdm.methods import MIDIA
+        matrix = np.array([[20, 3, 91, 50, 80], [16, 50, 100, 11, 62], [11, 50, 97, 25, 68],
+                           [10, 100, 85, 10, 50], [2, 36, 76, 5, 53]])
+        res = MIDIA(0.5)(matrix, np.ones(5) / 5, np.ones(5), verbose=True)
+        self.DI, self.DAI = res.results[1].data, res.results[2].data
+
+    def tearDown(self):
+        plt.close('all')
+
+    def test_fill_with_colorbar(self):
+        fig, ax = plt.subplots()
+        out = visuals.midia_plane(self.DI, self.DAI, ax=ax)
+        self.assertEqual(len(out), 2)
+        self.assertIs(out[0], ax)
+        self.assertEqual(out[1].get_ylim(), (0.0, 1.0))
+        self.assertEqual(len(ax.texts), 5)
+
+    def test_fill_without_colorbar(self):
+        fig, ax = plt.subplots()
+        self.assertIs(visuals.midia_plane(self.DI, self.DAI, colorbar=False, ax=ax), ax)
+        self.assertEqual(len(fig.axes), 1)
+
+    def test_lines_only(self):
+        fig, ax = plt.subplots()
+        self.assertIs(visuals.midia_plane(self.DI, self.DAI, fill=False, ax=ax), ax)
+        self.assertEqual(len(fig.axes), 1)
+        # 5 alternatives and 4 labelled lines
+        self.assertEqual(len(ax.texts), 9)
+
+    def test_extreme_alpha(self):
+        for alpha in (0, 1):
+            for fill in (True, False):
+                fig, ax = plt.subplots()
+                visuals.midia_plane(self.DI, self.DAI, alpha=alpha, fill=fill, ax=ax)
+
+    def test_invalid_alpha(self):
+        with self.assertRaises(ValueError):
+            visuals.midia_plane(self.DI, self.DAI, alpha=1.5)
+
+
+class TestFlowSortFlows(unittest.TestCase):
+    """ flowsort_flows draws the three flows of an alternative against the profiles. """
+
+    def setUp(self):
+        from pymcdm.methods.sorting import FLOWSORT
+        self.FLOWSORT = FLOWSORT
+        self.matrix = np.array([[54, 17, 71, 45, 63], [25, 25, 50, 75, 75]])
+        self.profiles = np.array([[0] * 5, [25] * 5, [50] * 5, [75] * 5, [100] * 5])
+
+    def tearDown(self):
+        plt.close('all')
+
+    def flows(self, **kwargs):
+        res = self.FLOWSORT(self.profiles, **kwargs)(self.matrix, np.ones(5) / 5, np.ones(5), verbose=True)
+        return [r.data for r in res.results[:4]]
+
+    def test_limiting(self):
+        fig, ax = plt.subplots()
+        p, m, n, a = self.flows()
+        self.assertIs(visuals.flowsort_flows(p[1], m[1], n[1], a[1], ax=ax), ax)
+        # 3 flows x 4 categories
+        self.assertEqual(len(ax.patches), 12)
+
+    def test_central(self):
+        fig, ax = plt.subplots()
+        p, m, n, a = self.flows(profiles_type='central')
+        visuals.flowsort_flows(p[0], m[0], n[0], a[0], profiles_type='central', ax=ax)
+        # 3 flows x 5 categories
+        self.assertEqual(len(ax.patches), 15)
+
+    def test_invalid_profiles_type(self):
+        p, m, n, a = self.flows()
+        with self.assertRaises(ValueError):
+            visuals.flowsort_flows(p[0], m[0], n[0], a[0], profiles_type='other')
+
+
+class TestSortingAssignments(unittest.TestCase):
+    """ sorting_assignments draws the assigned categories and optional intervals. """
+
+    def tearDown(self):
+        plt.close('all')
+
+    def test_categories(self):
+        fig, ax = plt.subplots()
+        self.assertIs(visuals.sorting_assignments([1, 3, 2], 4, ax=ax), ax)
+        self.assertEqual([t.get_text() for t in ax.get_yticklabels()], ['$A_{3}$', '$A_{2}$', '$A_{1}$'])
+        self.assertEqual(len(ax.get_xticks()), 4)
+
+    def test_intervals(self):
+        fig, ax = plt.subplots()
+        visuals.sorting_assignments([1, 3, 2], 3, intervals=[[1, 2], [3, 3], [1, 3]], labels=['a', 'b', 'c'],
+                                    ax=ax)
+        from matplotlib.patches import FancyBboxPatch
+        self.assertEqual(sum(isinstance(p, FancyBboxPatch) for p in ax.patches), 3)
+
+    def test_invalid(self):
+        with self.assertRaises(ValueError):
+            visuals.sorting_assignments([1, 5], 4)
+        with self.assertRaises(ValueError):
+            visuals.sorting_assignments([1, 2], 4, intervals=[[1, 2]])

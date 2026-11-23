@@ -18,6 +18,9 @@ from .comet_contourf import comet_contourf
 from .comet_2d_esp_plot import comet_2d_esp_plot
 from .comet_3d_esp_plot import comet_3d_esp_plot
 from .comet_tfns import comet_tfns
+from .midia_plane import midia_plane
+from .flowsort_flows import flowsort_flows
+from .sorting_assignments import sorting_assignments
 
 __all__ = [
     'promethee_I_flows',
@@ -39,5 +42,8 @@ __all__ = [
     'comet_contourf',
     'comet_2d_esp_plot',
     'comet_3d_esp_plot',
-    'comet_tfns'
+    'comet_tfns',
+    'midia_plane',
+    'flowsort_flows',
+    'sorting_assignments'
 ]
