@@ -9,8 +9,8 @@ from ..io import TableDesc
 class MIDIA(MCDA_method):
     """ Multi-criteria method Integrating Distances to Ideal and Anti-ideal points (MIDIA) [#midia1]_.
 
-        An extension of Hellwig's method, which combines the closeness to the ideal and to the anti-ideal solution,
-        both related to the distance between them.
+        An extension of Hellwig's method, which combines the closeness to the ideal solution and the distance from the
+        anti-ideal solution, both related to the distance between these solutions.
 
         Read more in the User Guide.
 
@@ -53,7 +53,7 @@ class MIDIA(MCDA_method):
                   label='wnmatrix', symbol=r'$\tilde{x}_{ij}$', rows='A', cols='C'),
         TableDesc(caption='Closeness to the ideal solution',
                   label='DI', symbol='$DI_i$', rows='A', cols=None),
-        TableDesc(caption='Closeness to the anti-ideal solution',
+        TableDesc(caption='Distance from the anti-ideal solution',
                   label='DAI', symbol='$DAI_i$', rows='A', cols=None),
         TableDesc(caption='Final preference values',
                   label='pref', symbol=r'$D(\alpha)_i$', rows='A', cols=None),

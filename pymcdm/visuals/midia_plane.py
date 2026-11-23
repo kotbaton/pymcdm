@@ -45,18 +45,19 @@ def midia_plane(DI, DAI,
                 scatter_kwargs=dict(),
                 text_kwargs=dict(),
                 ax=None):
-    """ Visualise the alternatives in the plane of the distances to the ideal (DI) and anti-ideal (DAI) points of
-        the MIDIA method, together with the lines of equal final preference
+    """ Visualise the alternatives in the plane of the closeness to the ideal point (DI) and the distance from the
+        anti-ideal point (DAI) of the MIDIA method, together with the lines of equal final preference
         D(alpha) = alpha DI + (1 - alpha) DAI. The lines can be drawn on a background coloured by D(alpha)
         (`fill=True`) or as labelled dashed lines only (`fill=False`).
 
         Parameters
         ----------
             DI : ndarray
-                Distances of the alternatives to the ideal point (the second table of the verbose MIDIA results).
+                Closeness of the alternatives to the ideal point, 1 - dI / d (the second table of the verbose MIDIA
+                results).
 
             DAI : ndarray
-                Distances of the alternatives to the anti-ideal point (the third table of the verbose MIDIA
+                Distance of the alternatives from the anti-ideal point, dAI / d (the third table of the verbose MIDIA
                 results).
 
             alpha : float

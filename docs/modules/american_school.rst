@@ -859,8 +859,8 @@ MIDIA
 Hellwig's method with the distance to the anti-ideal solution. After Steps 1-3 of Hellwig's method, which give the
 weighted normalized ideal :math:`\tilde{x}_j^{+}` and anti-ideal :math:`\tilde{x}_j^{-}` solutions, the Euclidean
 distances :math:`dI_i` and :math:`dAI_i` of the alternatives from them and the distance :math:`d^{+-}` between them
-are calculated. The closeness to the ideal and to the anti-ideal solution are aggregated with the coefficient
-:math:`\alpha \in [0, 1]` (parameter ``alpha``):
+are calculated. The closeness to the ideal solution and the distance from the anti-ideal solution, both related to
+:math:`d^{+-}`, are aggregated with the coefficient :math:`\alpha \in [0, 1]` (parameter ``alpha``):
 
 .. math::
         DI_i = 1 - \frac{dI_i}{d^{+-}}, \qquad DAI_i = \frac{dAI_i}{d^{+-}}, \qquad

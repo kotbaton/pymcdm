@@ -30,10 +30,12 @@
 * Add the FlowSort sorting method (`pymcdm.methods.sorting.FLOWSORT`) with limiting or central profiles and the
   positive, negative or net flow assignment rules, with tests and documentation.
 * Add the PIV (Proximity Indexed Value) method, with tests and documentation.
-* New visualizations in `pymcdm.visuals`: `midia_plane` (alternatives in the plane of the MIDIA distances to the
-  ideal and anti-ideal points with lines of equal preference, on a coloured background or as labelled lines only),
-  `flowsort_flows` (flows of an alternative against the flows of the FlowSort profiles) and `sorting_assignments`
-  (categories, and optionally intervals of categories, assigned by a sorting method), with tests.
+* New visualizations in `pymcdm.visuals`: `midia_plane` (alternatives in the plane of the MIDIA closeness to the
+  ideal point and distance from the anti-ideal point, with lines of equal preference, on a coloured background or as
+  labelled lines only), `flowsort_flows` (flows of an alternative against the flows of the FlowSort profiles) and
+  `sorting_assignments` (categories, and optionally intervals of categories, assigned by a sorting method), with
+  tests.
+* Fix the caption of the MIDIA `DAI` table: it is the distance from the anti-ideal solution, not the closeness to it.
 * Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
 * Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration
   levels, importance factors and the overall achievement, Lorenz quantile and OWA aggregations, with tests and
