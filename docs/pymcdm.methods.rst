@@ -31,6 +31,16 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.CRADIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.DARP
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.EDAS
    :members:
    :undoc-members:
@@ -47,6 +57,21 @@ pymcdm.methods
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.LMAW
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.GRA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.HELLWIG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.MIDIA
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +96,17 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.MULTIMOORA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.OCRA
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.PIV
    :members:
    :undoc-members:
    :show-inheritance:
@@ -101,6 +136,11 @@ pymcdm.methods
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: pymcdm.methods.RPM
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: pymcdm.methods.SPOTIS
    :members:
    :undoc-members:
@@ -117,6 +157,16 @@ pymcdm.methods
    :show-inheritance:
 
 .. autoclass:: pymcdm.methods.TOPSIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.RTOPSIS
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: pymcdm.methods.RVIKOR
    :members:
    :undoc-members:
    :show-inheritance:
@@ -163,3 +213,10 @@ pymcdm.methods.partial
    :undoc-members:
    :show-inheritance:
 
+pymcdm.methods.sorting
+--------------------------
+
+.. automodule:: pymcdm.methods.sorting
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -56,7 +56,7 @@ class TriadSupportExpert(ManualExpert):
         ...     )
         >>> # You will prompted to evaluate some of the CO and
         >>> # other CO will be completed using consistent triads.
-        >>> comet = COMET(cvalues, expert_function)
+        >>> comet = COMET(cvalues, expert_function)  # doctest: +SKIP
     """
     def __init__(self, criteria_names, criteria_types=None, show_MEJ=False,
                  tablefmt='simple_grid', filename='mej.csv',

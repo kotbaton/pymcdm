@@ -42,7 +42,7 @@ class WASPAS(MCDA_method):
         ...                    [16, 8, 14, 0.255, 0.500, 1500, 3000]])
         >>> weights = np.array([0.1181, 0.1181, 0.0445, 0.1181, 0.2861, 0.2861, 0.0445])
         >>> types = np.array([1, 1, 1, 1, 1, -1, -1])
-        >>> [round(preference, 3) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.8329, 0.7884, 0.6987, 0.8831, 0.7971, 0.7036, 0.8728, 0.5749]
     """
     _tables = [

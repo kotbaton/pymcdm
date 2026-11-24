@@ -63,7 +63,7 @@ class ARAS(MCDA_method):
         ...                    [2.62, 5.00, 4.22, 4.31, 5.00, 5.00]])
         >>> weights = np.array([0.28, 0.25, 0.19, 0.15, 0.08, 0.04])
         >>> types = np.array([1, 1, 1, 1, 1, 1])
-        >>> [round(preference, 2) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 2).tolist()
         [0.74, 0.86, 0.78, 0.86]
     """
     _tables = [

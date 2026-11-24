@@ -42,7 +42,7 @@ class ManualExpert:
         ...     show_MEJ=True
         ...     )
         >>> # You will prompted to evaluate all CO
-        >>> comet = COMET(cvalues, expert_function)
+        >>> comet = COMET(cvalues, expert_function)  # doctest: +SKIP
     """
 
     def __init__(self, criteria_names, show_MEJ=False,

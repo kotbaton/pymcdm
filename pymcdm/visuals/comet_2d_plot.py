@@ -49,7 +49,7 @@ def comet_2d_plot(cvalues,
             ...              [2, 4.9],
             ...              [3, 4.1],
             ...              [3, 4.2]])
-            >>> comet_2d_plot(cvalues, a)
+            >>> ax = comet_2d_plot(cvalues, a)
             >>> plt.show()
     """
 

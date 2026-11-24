@@ -53,7 +53,7 @@ def correlation_plot(cors,
         >>> import matplotlib.pyplot as plt
         >>> from pymcdm.visuals import correlation_plot
         >>> cors = [0.9, 0.85, 0.95, 0.89, 0.93]
-        >>> correlation_plot(cors, ylim=(0.7, 1))
+        >>> ax = correlation_plot(cors, ylim=(0.7, 1))
         >>> plt.show()
     """
     if ax is None:

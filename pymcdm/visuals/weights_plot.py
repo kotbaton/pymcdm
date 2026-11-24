@@ -57,7 +57,7 @@ def weights_plot(weights,
             >>> from pymcdm.visuals import weights_plot
             >>> w = np.array([[0.3, 0.2, 0.5],
             ...              [0.2, 0.5, 0.3]])
-            >>> weights_plot(w)
+            >>> ax = weights_plot(w)
             >>> plt.show()
     """
 

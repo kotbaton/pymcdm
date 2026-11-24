@@ -32,3 +32,11 @@ Subjective Weights Example
    :maxdepth: 2
 
    example/Subjective_Weights_Example
+
+Sorting Methods Example
+-----------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   example/Sorting_Example

@@ -31,7 +31,7 @@ class MOORA(MCDA_method):
         ...                    [2.775, 3, 5, 3.27]])
         >>> weights = np.array([0.3, 0.2, 0.1, 0.4])
         >>> types = np.array([-1, 1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.1801, 0.2345, 0.0625, 0.1757, 0.1683, 0.0742, 0.1197]
     """
     _tables = [

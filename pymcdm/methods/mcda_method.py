@@ -11,6 +11,9 @@ from ..io import MCDA_results
 
 class MCDA_method(ABC):
     _reverse_ranking = True
+    _produces_ranking = True
+    # Dominant or dominated alternatives can cause numerical errors in methods which compare alternatives
+    _check_dominance = True
     _tables = None
 
     def __call__(self, matrix: np.ndarray | list | tuple, weights: np.ndarray | list | tuple, types: np.ndarray | list | tuple,
@@ -48,7 +51,7 @@ class MCDA_method(ABC):
         types = np.asarray(types)
 
         if validation:
-            validate_decision_problem(matrix, weights, types)
+            validate_decision_problem(matrix, weights, types, check_dominance=self._check_dominance)
             self._additional_validation(matrix, weights, types)
 
         if verbose:

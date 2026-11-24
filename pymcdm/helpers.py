@@ -47,9 +47,9 @@ def rankdata(a, reverse=False):
     --------
     >>> from pymcdm.helpers import rankdata
     >>> rankdata([0, 3, 2, 5])
-    array([1, 3, 2, 4])
+    array([1., 3., 2., 4.])
     >>> rankdata([0, 3, 2, 5], reverse=True)
-    array([4, 2, 3, 1])
+    array([4., 2., 3., 1.])
     >>> rankdata([0, 3, 2, 3])
     array([1. , 3.5, 2. , 3.5])
     >>> rankdata([0, 3, 2, 3], reverse=True)
@@ -262,7 +262,18 @@ def leave_one_out_rr(method, matrix, weights, types,
         ...         types, 
         ...         pm.correlations.weighted_spearman,
         ...         only_rr=False)
-        >>> print(labels, cors, rankings)
+        >>> print(labels)
+        ['None', 'w/o $A_{1}$', 'w/o $A_{2}$', 'w/o $A_{3}$', 'w/o $A_{4}$', 'w/o $A_{5}$', 'None']
+        >>> print(np.round(cors, 2))
+        [1.   0.72 0.88 0.52 0.72 1.   1.  ]
+        >>> print(rankings)
+        [[2. 5. 3. 4. 1.]
+         [0. 4. 1. 3. 2.]
+         [2. 0. 4. 3. 1.]
+         [3. 2. 0. 4. 1.]
+         [1. 4. 3. 0. 2.]
+         [1. 4. 2. 3. 0.]
+         [2. 5. 3. 4. 1.]]
 
     """
     true_pref = method(matrix, weights, types)
@@ -344,20 +355,31 @@ def param_sensitivity(Method,
     >>> import numpy as np
     >>> import matplotlib.pyplot as plt
     >>> import pymcdm as pm
-    >>> matrix = np.array([...])
-    >>> bounds = np.array([...])
-    >>> types = np.array([...])
-    >>> esp = np.array([...])
+    >>> matrix = np.array([[ 96, 145, 200],
+    ...                    [100, 145, 200],
+    ...                    [120, 170,  80],
+    ...                    [140, 180, 140],
+    ...                    [100, 110,  30]], dtype=float)
+    >>> weights = np.ones(3) / 3
+    >>> types = np.ones(3)
+    >>> bounds = pm.methods.SPOTIS.make_bounds(matrix)
+    >>> esp = np.array([100, 145, 200], dtype=float)
     >>> values, prefs, ranks = param_sensitivity(
     ...     Method=pm.methods.BalancedSPOTIS,
     ...     matrix=matrix,
     ...     weights=weights,
     ...     types=types,
     ...     param_name='alpha',
-    ...     param_values=np.linspace(0, 1, 11),
+    ...     param_values=np.linspace(0, 1, 3),
     ...     bounds=bounds,
     ...     esp=esp)
-    >>> pm.visuals.ranking_flows(ranks, labels=values)
+    >>> print(values)
+    [0.  0.5 1. ]
+    >>> print(np.array(ranks))
+    [[4. 3. 2. 1. 5.]
+     [2. 1. 4. 3. 5.]
+     [2. 1. 4. 5. 3.]]
+    >>> ax = pm.visuals.ranking_flows(ranks, labels=values)
     >>> plt.show()
     """
     prefs = []

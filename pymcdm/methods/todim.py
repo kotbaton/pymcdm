@@ -56,7 +56,7 @@ class TODIM(MCDA_method):
         >>> weights = np.array([0.038095, 0.07619, 0.009524, 0.133333])
         >>> weights = weights / weights.sum()
         >>> types = np.array([1, 1, -1, 1])
-        >>> [round(p, 4) for p in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.0, 0.251, 1.0]
     """
     _tables = [

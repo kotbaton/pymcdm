@@ -13,5 +13,6 @@ __all__ = [
     'gini_weights',
     'variance_weights',
     'lopcow_weights',
+    'psi_weights',
     'subjective'
 ]

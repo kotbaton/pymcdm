@@ -1,5 +1,101 @@
 # Release history
 
+## Unreleased
+
+* New subjective weighting methods, available under `pymcdm.weights.subjective`:
+  - SWARA (Step-wise Weight Assessment Ratio Analysis), PIPRECIA (PIvot Pairwise RElative Criteria Importance
+    Assessment) and FUCOM (FUll COnsistency Method), based on ordered criteria.
+  - BWM (Best-Worst Method), BCM (Base-Criterion Method) and COBRAC (COmparisons Between RAnked Criteria), based on
+    optimization.
+  - SIMOS (Simos procedure) and SRF (revised Simos procedure), based on grouped ranks.
+  - LBWA (Level Based Weight Assessment) and VIMM (Vital-Immaterial-Mediocre Method).
+  - ITARA (Indifference Threshold-based Attribute RAtio Analysis) and OWCM (Opinion Weight Criteria Method), which
+    also use the decision matrix.
+* New base classes for subjective weighting methods: `SubjectiveWeightsBase`, `OrderedCriteriaWeightsBase`,
+  `GroupedRanksBase`, `OptimizationWeightsBase` and `DecisionMatrixWeightsBase`.
+* New module `pymcdm.methods.sorting` for sorting methods, which assign alternatives to predefined ordered
+  categories instead of ranking them, with the ELECTRE TRI method (pessimistic and optimistic procedures,
+  thresholds per profile and veto), tests and documentation.
+* Add the MULTIMOORA method, with tests and documentation.
+* Add the CRADIS method, with tests and documentation.
+* Add the GRA (Grey Relational Analysis) method, with criteria with a desired value (`targets`), tests and
+  documentation.
+* Add `psi_weights` (Preference Selection Index), with tests and documentation; the PSI index is
+  `WSM(linear_normalization)` with these weights. `psi_weights` and `OWCM` raise a `ValueError` instead of returning
+  negative weights when a preference variation value exceeds 1.
+* Add Hellwig's method (`HELLWIG`, Euclidean or Mahalanobis distance, any normalization of the Euclidean variant) and its extension MIDIA
+  (`MIDIA`, distances to the ideal and anti-ideal points), with tests and documentation.
+* Add `RTOPSIS.boxplot_bounds`, the domain of BP-TOPSIS (boxplot fences of every criterion), with tests and
+  documentation.
+* Add the FlowSort sorting method (`pymcdm.methods.sorting.FLOWSORT`) with limiting or central profiles and the
+  positive, negative or net flow assignment rules, with tests and documentation.
+* Add the PIV (Proximity Indexed Value) method, with tests and documentation.
+* New visualizations in `pymcdm.visuals`: `midia_plane` (alternatives in the plane of the MIDIA closeness to the
+  ideal point and distance from the anti-ideal point, with lines of equal preference, on a coloured background or as
+  labelled lines only), `flowsort_flows` (flows of an alternative against the flows of the FlowSort profiles) and
+  `sorting_assignments` (categories, and optionally intervals of categories, assigned by a sorting method), with
+  tests.
+* Fix the caption of the MIDIA `DAI` table: it is the distance from the anti-ideal solution, not the closeness to it.
+* New visualizations of subjective weights in `pymcdm.visuals`: `weights_intervals` (intervals of weights, e.g. all
+  optimal weights of BWM, with an optional vector of weights), `simos_cards` (cards of the Simos procedure) and
+  `pairwise_matrix` (heatmap of a pairwise comparison matrix, e.g. of AHP), with tests.
+* Validation of subjective weights: SIMOS, SRF and LBWA require every criterion exactly once and integer numbers of
+  white cards, COBRAC requires comparisons of different criteria which connect all criteria, SRF requires z >= 1,
+  BWM requires different best and worst criteria with the same a_BW in both vectors, and VIMM requires at least four
+  criteria. Changing a judgment of a subjective weighting method clears its cached weights.
+* CRADIS gives K+ = 1 instead of 0 / 0 for an alternative equal to the ideal solution (e.g. a dominant alternative
+  with equal weights), and the documentation explains that K+ = 0 for the other alternatives in this case.
+* Examples: the subjective weights example covers all subjective weighting methods (with the numerical examples of
+  their papers, a comparison of the methods and the `pairwise_matrix`, `weights_intervals` and `simos_cards` plots),
+  and a new example presents the sorting methods (ELECTRE TRI, TOPSIS-Sort and FlowSort) with the
+  `sorting_assignments` and `flowsort_flows` plots.
+* Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
+* Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration
+  levels, importance factors and the overall achievement, Lorenz quantile and OWA aggregations, with tests and
+  documentation.
+* Add rank-based subjective weights `ROC`, `RS`, `RR` and `RE` (rank order centroid, rank sum, rank reciprocal and
+  rank exponent), with tests and documentation.
+* Add the R-VIKOR method (`RVIKOR`), a rank-reversal-free VIKOR on the criteria domains, with tests and
+  documentation.
+* Add the TOPSIS-Sort-B and TOPSIS-Sort-C sorting methods (`pymcdm.methods.sorting.TOPSIS_SORT`), based on R-TOPSIS,
+  with tests and documentation.
+* Add `check_dominance` argument to `matrix_validator` and `validate_decision_problem`; it is disabled for sorting
+  methods, which compare alternatives with profiles instead of each other.
+* New MCDM method, with tests and documentation:
+  - R-TOPSIS (Robust TOPSIS), with `make_bounds` and `expand_bounds` helpers for the criteria domains and the `clip`
+    option. The documentation shows how NR-TOPSIS, the absolute mode of García-Cascales and Lamata, the domain of
+    IE-TOPSIS and TOPSIS-RAD are obtained with these parameters.
+* `PROMETHEE_I` and `PROMETHEE_II` accept a different preference function for each criterion (a list of names),
+  the Gaussian preference function (`'gaussian'`, parameter `s`) and `None` thresholds for criteria that do not
+  need them, as in Brans et al. (1986); missing thresholds raise a clear `ValueError`.
+* Add `model` argument to `BWM` with the linear BWM model, and `BWM.get_weight_intervals()` and
+  `BWM.get_interval_preference_degrees()` for multiple optimal solutions of the nonlinear model (Rezaei, 2016).
+* Add `comparison` argument to `PIPRECIA`: comparisons with the previous criterion (default) or with the first
+  criterion (Simplified PIPRECIA, PIPRECIA-S).
+* Add `prioritization` argument to `AHP`: weights from the principal eigenvector (default) or from the geometric mean
+  of rows (LLSM).
+* Fix `BWM` failing or returning a local optimum for some inputs: the model is now solved to its global optimum by
+  bisection with linear feasibility problems, and ties of the best or worst criterion are resolved by
+  a_BW = a_WB.
+* `FUCOM` is solved to its global optimum with linear feasibility problems, like `BWM`, instead of the nonlinear
+  SLSQP solver, which could emit warnings about values outside bounds.
+* Fix `COBRAC` failing for larger models (e.g. the 30 criteria of the reference paper): the model is solved to its
+  global optimum with linear feasibility problems, like `BWM` and `FUCOM`.
+* `BCM` is solved with linear feasibility problems, like `BWM`, `FUCOM` and `COBRAC`, instead of the nonlinear
+  SLSQP solver.
+* Fix examples in the documentation of MCDA methods so that they run as doctests (NumPy 2 output, syntax errors,
+  missing imports, outdated `SPOTIS.make_bounds` example).
+* Fix examples in the documentation of COMET and COMET tools (`COMET.make_cvalues`, `ESPExpert.make_cvalues_psi`);
+  interactive expert examples are skipped in doctests.
+* Fix typos in error messages of `matrix_ref_point_validator` and `types_validator`, and examples of helpers and
+  validators (warnings are captured, `param_sensitivity` has a complete example).
+* Fix `polar_plot` and `polar_weights` failing with Matplotlib 3.6 or newer (`plt.gca(projection=...)` was removed),
+  and examples of the visualizations (outdated COMET API, axes returned by the plots).
+* Fix `AHP` and `RANCOM` failing when the pairwise comparison matrix is given as a list.
+* Fix `AHP.get_cr()` not raising errors for a missing matrix and for matrices larger than the RI table.
+* Fix PROMETHEE I & II failing when the same object with `p` or `q` thresholds was called more than once, and
+  validate the number of thresholds against the number of criteria.
+
 ## Version 1.4.0
 
 * New MCDM methods, with test and documentation:

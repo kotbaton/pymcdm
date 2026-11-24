@@ -18,7 +18,8 @@ __all__ = [
     'angle_weights',
     'gini_weights',
     'variance_weights',
-    'lopcow_weights'
+    'lopcow_weights',
+    'psi_weights'
 ]
 
 
@@ -285,3 +286,60 @@ def lopcow_weights(matrix, types, *args, **kwargs):
     std = np.std(nmatrix, axis=0, ddof=1)
     pv = np.abs(np.log(mean_square / std) * 100)
     return pv / np.sum(pv)
+
+
+def psi_weights(matrix, types, *args, **kwargs):
+    """ Calculate weights for given `matrix` using the Preference Selection Index (PSI) method [#psi1]_.
+
+        The matrix is normalized with the linear normalization (`x / max` for profit and `min / x` for cost
+        criteria). The weights are proportional to `1 - PV_j`, where `PV_j` is the sum of squared deviations of the
+        normalized values of criterion `j` from their mean (preference variation value). The preference selection
+        index of the PSI method is the weighted sum of the same normalized matrix, i.e. ``WSM(linear_normalization)``
+        with these weights.
+
+        Parameters
+        ----------
+            matrix : ndarray
+                Decision matrix / alternatives data.
+                Alternatives are in rows and Criteria are in columns.
+            types : ndarray
+                Array with definitions of criteria types:
+                1 if criteria is profit and -1 if criteria is cost for each criteria in `matrix`.
+
+        Returns
+        -------
+            ndarray
+                Vector of weights.
+
+        Raises
+        ------
+            ValueError
+                If `PV_j` exceeds 1 for any criterion, which would give it a negative weight. `PV_j` is a sum over
+                the alternatives, so this happens for many alternatives or criteria with a large spread of values.
+
+        References
+        ----------
+        .. [#psi1] Maniya, K., & Bhatt, M. G. (2010). A selection of material using a novel type decision-making
+               method: Preference selection index method. Materials & Design, 31(4), 1785-1789.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> from pymcdm.weights import psi_weights
+        >>> matrix = np.array([[1650, 58.5, 2.3, 0.5],
+        ...                    [1000, 45.4, 2.1, 0.335],
+        ...                    [350, 21.7, 2.6, 0.335],
+        ...                    [2150, 64.3, 2.4, 0.5],
+        ...                    [700, 23, 1.71, 0.59]])
+        >>> types = np.array([1, 1, -1, 1])
+        >>> np.round(psi_weights(matrix, types), 4).tolist()
+        [0.184, 0.2117, 0.3151, 0.2892]
+    """
+    nmatrix = normalize_matrix(matrix, linear_normalization, types)
+    pv = np.sum((nmatrix - np.mean(nmatrix, axis=0)) ** 2, axis=0)
+    u = 1 - pv
+    if np.any(u < 0):
+        raise ValueError(f'Preference variation values exceed 1 for criteria with indices {np.flatnonzero(u < 0)} '
+                         f'(PV = {np.round(pv[u < 0], 4)}), which would give them negative weights. '
+                         'The PSI weights are not applicable to this decision matrix.')
+    return u / np.sum(u)

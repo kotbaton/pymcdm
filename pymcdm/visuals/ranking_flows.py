@@ -86,7 +86,7 @@ def ranking_flows(rankings,
     ...     [2, 3, 5, 1, 4],
     ...     [2, 3, 1, 5, 4],
     ... ])
-    >>> ranking_flows(rankings)
+    >>> ax = ranking_flows(rankings)
     >>> plt.show()
     >>> rankings = np.array([
     ...     [1, 2, 3, 4, 5],
@@ -96,7 +96,7 @@ def ranking_flows(rankings,
     ...     [2, 3, 1, 0, 4],
     ...     [1, 2, 3, 4, 5],
     ... ])
-    >>> ranking_flows(rankings, better_grid=True)
+    >>> ax = ranking_flows(rankings, better_grid=True)
     >>> plt.show()
     """
     if ax is None:

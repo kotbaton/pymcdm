@@ -47,8 +47,8 @@ class CODAS(MCDA_method):
         ...                    [28, 3000, 30, 0.6]])
         >>> weights = np.array([0.2857, 0.3036, 0.2321, 0.1786])
         >>> types = np.array([1, -1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
-        [1.3914, 0.3411, -0.2170, -0.5381, -0.7292, -0.2481]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
+        [1.3914, 0.3411, -0.217, -0.5381, -0.7292, -0.2481]
     """
     _tables = [
         TableDesc(caption='Normalized decision matrix',

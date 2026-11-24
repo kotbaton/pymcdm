@@ -32,7 +32,7 @@ def boxplot(data, labels=None, boxplot_kwargs=dict(), ax=None):
             >>> import matplotlib.pyplot as plt
             >>> from pymcdm.visuals import boxplot
             >>> data = [np.random.rand(100) for i in range(3)]
-            >>> boxplot(data)
+            >>> ax = boxplot(data)
             >>> plt.show()
     """
     if ax is None:

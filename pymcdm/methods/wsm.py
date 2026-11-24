@@ -37,7 +37,7 @@ class WSM(MCDA_method):
         ...                    [77, 21, 17, 11]])
         >>> weights = np.array([8/13, 5/13, 6/13, 7/13])
         >>> types = np.array([1, 1, -1, -1])
-        >>> [round(preference, 3) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 3).tolist()
         [0.609, 0.313, 0.334, 0.265, 0.479]
     """
     _tables = [

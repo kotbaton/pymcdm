@@ -31,10 +31,19 @@ class RANCOM(PairwiseWeightsBase):
     >>> from pymcdm.weights.subjective import RANCOM
     >>> rancom = RANCOM(ranking=[1, 2, 4, 3]) # Identify weights for four criteria based on ranking
     >>> weights = rancom()
+    >>> print(weights)
     [0.4375 0.3125 0.0625 0.1875]
-    >>> rancom = RANCOM(object_names=['Price', 'Mileage', 'HP', 'Year']) # Identify weights based on manual comparisons
-    >>> weights = rancom()
+
+    Weights from a comparison matrix (1 - more important, 0.5 - equally important, 0 - less important):
+
+    >>> rancom = RANCOM(matrix=[[0.5, 1, 1, 1], [0, 0.5, 1, 1], [0, 0, 0.5, 0], [0, 0, 1, 0.5]])
+    >>> print(rancom())
     [0.4375 0.3125 0.0625 0.1875]
+
+    Weights based on manual comparisons, asked interactively in the console:
+
+    >>> rancom = RANCOM(object_names=['Price', 'Mileage', 'HP', 'Year'])  # doctest: +SKIP
+    >>> weights = rancom()  # doctest: +SKIP
 
     References
     ----------

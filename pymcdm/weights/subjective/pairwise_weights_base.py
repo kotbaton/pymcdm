@@ -72,6 +72,7 @@ class PairwiseWeightsBase(ABC):
             matrix = np.loadtxt(filename, delimiter=',')
 
         if matrix is not None:
+            matrix = np.asarray(matrix, dtype=float)
             validate_pairwise_matrix(matrix, self.user_answer_map.values(), self._answer_mapper)
             self.matrix = matrix
         else:

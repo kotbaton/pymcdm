@@ -45,19 +45,19 @@ def promethee_I_flows(Fp, Fm,
         >>> N = 5
         >>> Fp = np.random.rand(N)
         >>> Fm = np.random.rand(N)
-        >>> promethee_I_flows(Fp, Fm)
+        >>> ax = promethee_I_flows(Fp, Fm)
         >>> plt.show()
 
         >>> fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
-        >>> promethee_I_flows(Fp, Fm, ax=ax)
+        >>> ax = promethee_I_flows(Fp, Fm, ax=ax)
         >>> plt.show()
 
         >>> fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
-        >>> promethee_I_flows(Fp, Fm, colors=['red', 'blue', 'green'], ax=ax)
+        >>> ax = promethee_I_flows(Fp, Fm, colors=['red', 'blue', 'green'], ax=ax)
         >>> plt.show()
 
         >>> fig, ax = plt.subplots(figsize=(6, 3), dpi=150)
-        >>> promethee_I_flows(Fp, Fm, text_kwargs=dict(fontsize=14), ax=ax)
+        >>> ax = promethee_I_flows(Fp, Fm, text_kwargs=dict(fontsize=14), ax=ax)
         >>> plt.show()
     """
     if ax is None:

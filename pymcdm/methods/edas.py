@@ -32,7 +32,7 @@ class EDAS(MCDA_method):
         ...                    [8312, 460.47, 0.05, 0.21, 25, 0.1, 25, 200]])
         >>> weights = np.array([0.131, 0.113, 0.126, 0.125, 0.126, 0.129, 0.132, 0.117])
         >>> types = np.array([-1, -1, -1, 1, 1, -1, 1, 1])
-        >>> [round(preference, 3) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 3).tolist()
         [0.841, 0.632, 0.883, 0.457, 0.104]
     """
     _tables = [

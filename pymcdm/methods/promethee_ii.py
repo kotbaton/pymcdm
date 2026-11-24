@@ -11,20 +11,32 @@ class PROMETHEE_II(PROMETHEE_I):
 
         Parameters
         ----------
-            preference_function: str
-                Name of the preference function ('usual', 'ushape', 'vshape', 'level', 'vshape_2')
+            preference_function: str or list of str
+                Name of the preference function ('usual', 'ushape', 'vshape', 'level', 'vshape_2', 'gaussian'),
+                used for all criteria, or a list with the name of the preference function for each criterion
+                (generalized criteria of types I-VI from [#promethee2b]_).
 
             p : ndarray or list
-                p values for each criterion. Can be either float values or function. If function, p value will be calculated based on difference table.
+                Preference thresholds for each criterion, required by 'vshape', 'level' and 'vshape_2'. Can be either
+                float values or functions. If function, p value will be calculated based on difference table. Use None
+                for criteria whose preference function does not need it.
 
             q : ndarray or list
-                q values for each criterion. Can be either float values or function. If function, q value will be calculated based on difference table.
+                Indifference thresholds for each criterion, required by 'ushape', 'level' and 'vshape_2'. Can be either
+                float values or functions. If function, q value will be calculated based on difference table. Use None
+                for criteria whose preference function does not need it.
+
+            s : ndarray or list
+                Parameters of the Gaussian preference function (standard deviation) for each criterion, required by
+                'gaussian'. Can be either float values or functions. Use None for other criteria.
 
         References
         ----------
             .. [#promethee2] Mareschal, B., De Smet, Y., & Nemery, P. (2008, December). Rank reversal in the PROMETHEE II method:
                    some new results. In 2008 IEEE International Conference on Industrial Engineering and Engineering
                    Management (pp. 959-963). IEEE.
+            .. [#promethee2b] Brans, J. P., Vincke, P., & Mareschal, B. (1986). How to select and how to rank projects:
+                   The PROMETHEE method. European Journal of Operational Research, 24(2), 228-238.
 
         Examples
         --------
@@ -36,8 +48,14 @@ class PROMETHEE_II(PROMETHEE_I):
         ...                     [5, 1, 3]])
         >>> weights = np.array([0.5, 0.3, 0.2])
         >>> types = np.ones(3)
-        >>> [round(preference, 2) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 2).tolist()
         [0.1, -0.3, 0.2]
+
+        Different preference function for each criterion:
+
+        >>> body = PROMETHEE_II(['ushape', 'vshape', 'gaussian'], q=[1, None, None], p=[None, 2, None], s=[None, None, 1])
+        >>> np.round(body(matrix, weights, types), 4).tolist()
+        [0.0992, -0.1242, 0.025]
     """
     _tables = PROMETHEE_I._tables[:-1] + [
         TableDesc(caption='Positive outrankig flows',

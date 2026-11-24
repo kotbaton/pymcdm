@@ -99,8 +99,8 @@ class COMET(MCDA_method):
         >>> types = np.array([1, 1, 1, 1, 1, -1, 1, 1, -1])
         >>> weights = np.array([1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9])
         >>> body = COMET(cvalues, MethodExpert(TOPSIS(), weights, types))
-        >>> [round(preference, 4) for preference in body(matrix)]
-        [0.5433, 0.3447, 0.6115, 0.6168, 0.6060, 0.4842, 0.5516, 0.6100, 0.5719, 0.4711, 0.4979, 0.1452]
+        >>> np.round(body(matrix), 4).tolist()
+        [0.5433, 0.3447, 0.6115, 0.6168, 0.606, 0.4842, 0.5516, 0.61, 0.5719, 0.4711, 0.4979, 0.1452]
     """
     _tables = [
         TableDesc(caption='Final preference value',
@@ -250,15 +250,19 @@ class COMET(MCDA_method):
             >>> from pymcdm.methods import COMET, TOPSIS
             >>> from pymcdm.methods.comet_tools import MethodExpert
             >>> matrix = np.array([[ 96, 145, 200],
-                                   [100, 145, 200],
-                                   [120, 170,  80],
-                                   [140, 180, 140],
-                                   [100, 110,  30]])
+            ...                    [100, 145, 200],
+            ...                    [120, 170,  80],
+            ...                    [140, 180, 140],
+            ...                    [100, 110,  30]])
             >>> types = np.ones(3)
             >>> weights = np.ones(3)/3
+            >>> cvalues = COMET.make_cvalues(matrix)
+            >>> print(cvalues)
+            [[ 96. 118. 140.]
+             [110. 145. 180.]
+             [ 30. 115. 200.]]
             >>> body = COMET(cvalues,
-                             MethodExpert(TOPSIS(), weights, types))
-
+            ...              MethodExpert(TOPSIS(), weights, types))
             >>> preferences = body(matrix)
             >>> np.round(preferences, 4)
             array([0.5   , 0.5455, 0.5902, 0.9118, 0.0227])

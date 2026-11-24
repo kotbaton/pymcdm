@@ -451,6 +451,101 @@ better alternative.
 Where :math:`Q^{max}_i` stands for maximum value of the utility function. Better alternatives has higher :math:`U_i`
 value.
 
+CRADIS
+=======================
+
+``CRADIS`` (Compromise Ranking of Alternatives from Distance to Ideal Solution) combines steps of the ARAS, MARCOS and
+TOPSIS methods [#cradisref1]_. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]` of dimension :math:`n \times m`.
+
+**Step 2.** Normalize the decision matrix:
+
+.. math::
+        n_{ij} = \begin{cases} \dfrac{x_{ij}}{\max_i x_{ij}} & \text{for benefit criteria} \\[2ex]
+        \dfrac{\min_i x_{ij}}{x_{ij}} & \text{for cost criteria} \end{cases}
+    :label: cradis_norm
+
+**Step 3.** Calculate the weighted normalized ("aggravated") decision matrix :math:`v_{ij} = w_j n_{ij}`.
+
+**Step 4.** Determine the ideal solution :math:`t` and the anti-ideal solution :math:`t_a` as the largest and the
+smallest element of the whole weighted normalized matrix (not of every criterion):
+
+.. math::
+        t = \max_{i, j} v_{ij}, \qquad t_a = \min_{i, j} v_{ij}
+    :label: cradis_ideal
+
+**Step 5.** Calculate the total deviations of every alternative from the ideal and the anti-ideal solution:
+
+.. math::
+        s_i^{+} = \sum_{j=1}^{m} (t - v_{ij}), \qquad s_i^{-} = \sum_{j=1}^{m} (v_{ij} - t_a)
+    :label: cradis_dev
+
+**Step 6.** Calculate the same deviations :math:`s_0^{+}` and :math:`s_0^{-}` for the optimal alternative, which has
+the largest value :math:`\max_i v_{ij}` of every criterion, and the utility functions:
+
+.. math::
+        K_i^{+} = \frac{s_0^{+}}{s_i^{+}}, \qquad K_i^{-} = \frac{s_i^{-}}{s_0^{-}}
+    :label: cradis_k
+
+**Step 7.** Calculate the final score as the average of the utility functions:
+
+.. math::
+        Q_i = \frac{K_i^{+} + K_i^{-}}{2}
+    :label: cradis_q
+
+The alternative with the highest value of :math:`Q_i` is the best. If all weights are equal, the optimal
+alternative reaches the ideal solution on every criterion, so :math:`s_0^{+} = 0` and :math:`K_i^{+} = 0` for every
+alternative: the ranking then depends on :math:`K_i^{-}` only. An alternative with :math:`s_i^{+} = 0` obtains
+:math:`K_i^{+} = 1`.
+
+.. [#cradisref1] Puška, A., Stević, Ž., & Pamučar, D. (2022). Evaluation and selection of healthcare waste
+   incinerators using extended sustainability criteria and multi-criteria analysis methods. Environment, Development
+   and Sustainability, 24(9), 11195-11225.
+
+DARP
+=======================
+
+``DARP`` (Distances to Aspiration Reference Points) measures the distance of every alternative from an aspiration
+reference point [#darpref1]_. The reference point can be common for all alternatives (the best performance of the
+alternatives, or external targets) or individual for each of them (e.g. national targets of countries), parameter
+``reference``. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]`, the weights and the aspiration reference points
+:math:`RP_i = [x_{i1}^{+}, \ldots, x_{im}^{+}]`.
+
+**Step 2.** Determine the worst performance :math:`x_j^{-}` of every criterion (the minimum for benefit and the
+maximum for cost criteria).
+
+**Step 3.** Normalize the decision matrix between the worst performance and the aspiration level:
+
+.. math::
+        \bar{x}_{ij} = \begin{cases} \dfrac{x_{ij} - x_j^{-}}{x_{ij}^{+} - x_j^{-}} &
+        \text{if } 0 \leq \dfrac{x_{ij} - x_j^{-}}{x_{ij}^{+} - x_j^{-}} < 1 \\[2ex] 1 & \text{otherwise} \end{cases}
+    :label: darp_norm
+
+The value 1 means that the aspiration level is reached, so a surplus on one criterion does not compensate
+shortages on the others.
+
+**Step 4.** Calculate the distance of the weighted normalized alternative from the weighted reference point
+:math:`[w_1, \ldots, w_m]`:
+
+.. math::
+        d_{i0} = \sqrt{\sum_{j=1}^{m} \left(w_j \bar{x}_{ij} - w_j\right)^2}
+    :label: darp_d
+
+**Step 5.** Calculate the measure, which lies in :math:`[0, 1]`:
+
+.. math::
+        DARP_i = 1 - \frac{d_{i0}}{\sqrt{\sum_{j=1}^{m} w_j^2}}
+    :label: darp_measure
+
+The alternative with the highest value is the best; it is equal to 1 if all aspiration levels are reached.
+
+.. [#darpref1] Roszkowska, E., Filipowicz-Chomko, M., & Wachowicz, T. (2020). Using individual and common reference
+   points to measure the performance of alternatives in multiple criteria evaluation. Operations Research and
+   Decisions, 30(3), 77-96.
+
 EDAS
 =======================
 
@@ -660,6 +755,126 @@ significant penalties in the calculation, driving their merit value up. In other
 suggest better alternatives.
 By comparing the merit values of the remaining alternatives after screening, we can identify the most
 suitable option for the specific application.
+
+GRA
+=======================
+
+``GRA`` (Grey Relational Analysis) evaluates the similarity of every alternative to the reference sequence of ideal
+values [#graref1]_. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`Y = [y_{ij}]` of dimension :math:`m \times n`.
+
+**Step 2.** Grey relational generating: translate the performance values into comparability sequences
+:math:`x_{ij} \in [0, 1]`. For the larger-the-better and the smaller-the-better criteria:
+
+.. math::
+        x_{ij} = \frac{y_{ij} - \min_i y_{ij}}{\max_i y_{ij} - \min_i y_{ij}}, \qquad
+        x_{ij} = \frac{\max_i y_{ij} - y_{ij}}{\max_i y_{ij} - \min_i y_{ij}}
+    :label: gra_gen
+
+For the closer-to-the-desired-value-the-better criteria with a desired value :math:`y_j^*` (parameter ``targets``):
+
+.. math::
+        x_{ij} = 1 - \frac{|y_{ij} - y_j^*|}{\max(\max_i y_{ij} - y_j^*, \; y_j^* - \min_i y_{ij})}
+    :label: gra_target
+
+**Step 3.** Calculate the grey relational coefficients with respect to the reference sequence :math:`x_{0j} = 1`,
+where :math:`\Delta_{ij} = |x_{0j} - x_{ij}|`, :math:`\Delta_{\min}` and :math:`\Delta_{\max}` are the smallest and
+the largest :math:`\Delta_{ij}` of the whole matrix, and :math:`\zeta \in (0, 1]` is the distinguishing coefficient
+(parameter ``zeta``, 0.5 by default):
+
+.. math::
+        \gamma(x_{0j}, x_{ij}) = \frac{\Delta_{\min} + \zeta \Delta_{\max}}{\Delta_{ij} + \zeta \Delta_{\max}}
+    :label: gra_coef
+
+**Step 4.** Calculate the grey relational grade:
+
+.. math::
+        \Gamma(X_0, X_i) = \sum_{j=1}^{n} w_j \gamma(x_{0j}, x_{ij})
+    :label: gra_grade
+
+The alternative with the highest grade is the best.
+
+.. [#graref1] Kuo, Y., Yang, T., & Huang, G. W. (2008). The use of grey relational analysis in solving multiple
+   attribute decision-making problems. Computers & Industrial Engineering, 55(1), 80-93.
+
+Hellwig's method
+=======================
+
+``HELLWIG`` (taxonomic measure of development) [#hellwigref1]_ ranks the alternatives by their distance from the
+pattern of development, built from the best value of every criterion. The method evaluates decision alternatives
+according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]` of dimension :math:`m \times n` and of the weights.
+
+**Step 2.** Normalize the decision matrix. The original method uses the standardization (default):
+
+.. math::
+        z_{ij} = \frac{x_{ij} - \bar{x}_j}{S_j}, \qquad
+        S_j = \sqrt{\frac{1}{m} \sum_{i=1}^{m} (x_{ij} - \bar{x}_j)^2}
+    :label: hellwig_std
+
+Other normalizations, e.g. the vector, max-min or sum normalization, can be used with the parameter
+``normalization_function``; they are applied to all criteria in the same way.
+
+**Step 3.** Calculate the weighted normalized matrix :math:`\tilde{x}_{ij} = w_j z_{ij}` and the pattern of
+development :math:`\tilde{x}_j^{+}`, the largest value for benefit and the smallest value for cost criteria.
+
+**Step 4.** Calculate the Euclidean distances of the alternatives from the pattern:
+
+.. math::
+        d_i = \sqrt{\sum_{j=1}^{n} \left(\tilde{x}_{ij} - \tilde{x}_j^{+}\right)^2}
+    :label: hellwig_d
+
+**Step 5.** Calculate the critical distance and Hellwig's measure:
+
+.. math::
+        d_0 = \bar{d} + 2 S_d, \qquad H_i = 1 - \frac{d_i}{d_0}
+    :label: hellwig_h
+
+where :math:`\bar{d}` and :math:`S_d` are the mean and the (population) standard deviation of the distances. The
+alternative with the highest value of :math:`H_i` is the best.
+
+With ``distance='mahalanobis'`` [#hellwigref2]_ the distance from the pattern takes into account the correlations
+between criteria:
+
+.. math::
+        d_i = \sqrt{(A_i - I) W C^{-1} W^T (A_i - I)^T}
+    :label: hellwig_mahalanobis
+
+where :math:`C` is the sample covariance matrix of the decision matrix and :math:`W = diag(\sqrt{w_1}, \ldots,
+\sqrt{w_n})`. This variant is computed on the decision matrix (the ``normalization_function`` is not used); by Property 2 of
+[#hellwigref2]_ its result is the same for the linear normalizations considered there. It requires more alternatives
+than criteria. Note that the two variants weight the criteria differently:
+the Euclidean distance of :math:`\tilde{x}_{ij} = w_j z_{ij}` weights the squared differences by :math:`w_j^2`, the
+Mahalanobis distance with :math:`W` by :math:`w_j`.
+
+.. [#hellwigref1] Hellwig, Z. (1968). Zastosowanie metody taksonomicznej do typologicznego podziału krajów ze
+   względu na poziom ich rozwoju oraz zasoby i strukturę wykwalifikowanych kadr. Przegląd Statystyczny, 4, 307-326.
+
+.. [#hellwigref2] Roszkowska, E. (2024). Modifying Hellwig's method for multi-criteria decision-making with
+   Mahalanobis distance for addressing asymmetrical relationships. Symmetry, 16(1), 77.
+
+MIDIA
+=======================
+
+``MIDIA`` (Multi-criteria method Integrating Distances to Ideal and Anti-ideal points) [#midiaref1]_ extends
+Hellwig's method with the distance to the anti-ideal solution. After Steps 1-3 of Hellwig's method, which give the
+weighted normalized ideal :math:`\tilde{x}_j^{+}` and anti-ideal :math:`\tilde{x}_j^{-}` solutions, the Euclidean
+distances :math:`dI_i` and :math:`dAI_i` of the alternatives from them and the distance :math:`d^{+-}` between them
+are calculated. The closeness to the ideal solution and the distance from the anti-ideal solution, both related to
+:math:`d^{+-}`, are aggregated with the coefficient :math:`\alpha \in [0, 1]` (parameter ``alpha``):
+
+.. math::
+        DI_i = 1 - \frac{dI_i}{d^{+-}}, \qquad DAI_i = \frac{dAI_i}{d^{+-}}, \qquad
+        D(\alpha)_i = \alpha DI_i + (1 - \alpha) DAI_i
+    :label: midia
+
+:math:`\alpha = 1` gives the pure aggressive (ideal-based) and :math:`\alpha = 0` the pure conservative
+(anti-ideal-based) strategy. The alternative with the highest value of :math:`D(\alpha)_i` is the best.
+
+.. [#midiaref1] Roszkowska, E., & Filipowicz-Chomko, M. (2024). A multi-criteria method integrating distances to
+   ideal and anti-ideal points. Symmetry, 16(8), 1025.
 
 MABAC
 =======================
@@ -1026,6 +1241,60 @@ follows :math:`j = 1, 2, \dots, g` and :math:`j = g + 1, g + 2,\dots,n`.
 
 Higher values of :math:`P_i` corresponds to better alternatives.
 
+MULTIMOORA
+=======================
+
+``MULTIMOORA`` combines three approaches on the matrix normalized as in MOORA [#multimooraref1]_ and aggregates their
+rankings with the dominance theory [#multimooraref2]_. It is designed to evaluate decision alternatives according to
+the following steps:
+
+**Step 1.** Normalize the decision matrix.
+
+.. math::
+    :label: multimoora1
+
+    x^*_{ij} = \frac{x_{ij}}{\sqrt{\sum_{i=1}^{m} x_{ij}^2}}
+
+**Step 2.** Calculate the ratio system: benefit criteria are added and cost criteria are subtracted.
+
+.. math::
+    :label: multimoora2
+
+    y^*_i = \sum_{j \in G^+} w_j x^*_{ij} - \sum_{j \in G^-} w_j x^*_{ij}
+
+**Step 3.** Calculate the reference point: the maximal (benefit criteria) or minimal (cost criteria) normalized
+values :math:`r_j`, and the largest weighted deviation from it (Min-Max metric of Tchebycheff).
+
+.. math::
+    :label: multimoora3
+
+    z_i = \max_j w_j \left| r_j - x^*_{ij} \right|
+
+**Step 4.** Calculate the full multiplicative form.
+
+.. math::
+    :label: multimoora4
+
+    U_i = \frac{\prod_{j \in G^+} x_{ij}^{w_j}}{\prod_{j \in G^-} x_{ij}^{w_j}}
+
+**Step 5.** Rank the alternatives in each part (descending :math:`y^*_i` and :math:`U_i`, ascending :math:`z_i`) and
+aggregate the three rankings with the dominance theory: alternative :math:`a` dominates :math:`b` if it is better in
+at least two of the three rankings (absolute dominance, better in all three, is a special case), and dominance is
+transitive: if :math:`a` dominates :math:`b` and :math:`b` dominates :math:`c`, then :math:`a` dominates :math:`c`.
+Alternatives in a circular dominance get the same rank. The preference :math:`P_i` is the number of alternatives
+minus the number of alternatives which dominate :math:`A_i`, directly or through transitivity, outside its circle;
+higher values correspond to better alternatives, so an alternative is always ranked above every alternative it
+dominates. Alternatives which neither dominate each other nor are in one circle (e.g. because of ties in the rankings)
+may share a position.
+
+The original method uses no weights; equal weights give the same rankings.
+
+.. [#multimooraref1] Brauers, W. K. M., & Zavadskas, E. K. (2010). Project management by MULTIMOORA as an instrument
+   for transition economies. Technological and Economic Development of Economy, 16(1), 5-24.
+
+.. [#multimooraref2] Brauers, W. K. M., & Zavadskas, E. K. (2011). MULTIMOORA optimization used to decide on a bank
+   loan to buy property. Technological and Economic Development of Economy, 17(1), 174-188.
+
 OCRA
 =======================
 
@@ -1081,6 +1350,42 @@ and :math:`\overline{O}_{i}` is a measure of of relative performance for the :ma
     P_i = \overline{\overline{I}}_{i} + \overline{\overline{O_{i}}} - \min \left ( \overline{\overline{I}}_{i} + \overline{\overline{O_{i}}}\right )
 
 Alternatives with the highest overall performance rating receives the first rank.
+
+PIV
+=======================
+
+``PIV`` (Proximity Indexed Value) [#pivref1]_ evaluates every alternative by its linear deviations from the best value
+of each criterion, which reduces the chances of rank reversal compared to the Euclidean distances of TOPSIS. The method
+evaluates decision alternatives according to the following steps:
+
+**Step 1.** Normalize the decision matrix with the vector normalization.
+
+.. math::
+    :label: piv1
+
+    r_{ij} = \frac{x_{ij}}{\sqrt{\sum_{i=1}^{m} x_{ij}^2}}
+
+**Step 2.** Calculate the weighted normalized decision matrix :math:`v_{ij} = w_j r_{ij}`.
+
+**Step 3.** Calculate the weighted proximity index, the deviation from the best value of each criterion.
+
+.. math::
+    :label: piv2
+
+    u_{ij} = \begin{cases} \max_i v_{ij} - v_{ij} & \text{for benefit criteria} \\
+    v_{ij} - \min_i v_{ij} & \text{for cost criteria} \end{cases}
+
+**Step 4.** Calculate the overall proximity value.
+
+.. math::
+    :label: piv3
+
+    d_i = \sum_{j=1}^{n} u_{ij}
+
+The alternative with the lowest value of :math:`d_i` is the best.
+
+.. [#pivref1] Mufazzal, S., & Muzakkir, S. M. (2018). A new multi-criterion decision making (MCDM) method based on
+   proximity indexed value for minimizing rank reversals. Computers & Industrial Engineering, 119, 427-438.
 
 PROBID
 =======================
@@ -1449,6 +1754,60 @@ Order the alternative :math:`A_i` in descending order with regard to :math:`P_i`
 of :math:`P_i` are more preferred ones.
 
 
+RPM
+=======================
+
+``RPM`` (Reference Point Method) with objective ranking [#rpmref1]_ [#rpmref2]_ evaluates every criterion with respect
+to the reservation and aspiration levels and aggregates the partial achievements in a way determined mostly by the
+worst of them. The method does not use weights; the importance of criteria is expressed by the parameters
+:math:`\alpha` and :math:`\beta`. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`Q = [q_{ij}]`, of the lower and upper bounds :math:`q_j^{lo}`,
+:math:`q_j^{up}` of the criteria (parameter ``bounds``, by default the minimum and the maximum of the data) and of
+the reservation :math:`r_j` and aspiration :math:`a_j` levels. By default, they are determined statistically
+(objective ranking), for benefit criteria:
+
+.. math::
+        q_j^{av} = \frac{1}{m} \sum_{i=1}^{m} q_{ij}, \qquad r_j = \frac{q_j^{lo} + q_j^{av}}{2}, \qquad
+        a_j = \frac{q_j^{up} + q_j^{av}}{2}
+    :label: rpm_levels
+
+**Step 2.** Calculate the partial achievements on the scale 0-10, for benefit criteria (cost criteria are mirrored):
+
+.. math::
+        \sigma_{ij} = \begin{cases} \alpha_j \dfrac{q_{ij} - q_j^{lo}}{r_j - q_j^{lo}} & q_j^{lo} \leq q_{ij} < r_j
+        \\[2ex] \alpha_j + (\beta_j - \alpha_j) \dfrac{q_{ij} - r_j}{a_j - r_j} & r_j \leq q_{ij} < a_j \\[2ex]
+        \beta_j + (10 - \beta_j) \dfrac{q_{ij} - a_j}{q_j^{up} - a_j} & a_j \leq q_{ij} \leq q_j^{up} \end{cases}
+    :label: rpm_partial
+
+:math:`\alpha = 3`, :math:`\beta = 7` are the default (normal importance); (5, 9), (4, 8), (2, 6) and (1, 5)
+express very low, low, high and very high importance of a criterion.
+
+**Step 3.** Aggregate the partial achievements (parameter ``aggregation``):
+
+* ``'achievement'`` (default), the overall achievement function with the regularizing coefficient :math:`\varepsilon`:
+
+.. math::
+        \sigma_i = \min_j \sigma_{ij} + \frac{\varepsilon}{n} \sum_{j=1}^{n} \sigma_{ij}
+    :label: rpm_achievement
+
+* ``'lorenz'``, the Lorenz quantile, the mean of the :math:`k` worst partial achievements :math:`\theta_{i1} \leq
+  \theta_{i2} \leq \ldots` (parameter ``quantile``, by default :math:`n / 3`):
+
+.. math::
+        L_{ik} = \frac{1}{k} \sum_{l=1}^{k} \theta_{il}
+    :label: rpm_lorenz
+
+* ``'owa'``, the ordered weighted average :math:`\sigma_i^{owa} = \sum_{l=1}^{n} 2^{-l} \theta_{il}`.
+
+The alternative with the highest value is the best.
+
+.. [#rpmref1] Wierzbicki, A. P., Granat, J., & Makowski, M. (2007). Discrete decision problems with large number of
+   criteria. IIASA Interim Report IR-07-025. International Institute for Applied Systems Analysis, Laxenburg.
+
+.. [#rpmref2] Wierzbicki, A. P. (2007). Reference point approaches and objective ranking. In Practical Approaches to
+   Multi-Objective Optimization, Dagstuhl Seminar Proceedings 06501.
+
 SPOTIS
 =======================
 
@@ -1592,6 +1951,99 @@ and :math:`NIS` (:eq:`sqrtNIS`) solution.
 
 Alternative with the highest value of :math:`P_i` considered the best.
 
+R-TOPSIS
+=======================
+
+``RTOPSIS`` (Robust TOPSIS) removes the dependence of TOPSIS on the set of alternatives. Every criterion is normalized
+on a domain :math:`[d_{1j}, d_{2j}]` given by the decision maker instead of on the values in the decision matrix, and the
+ideal solutions are fixed at the ends of that domain. The evaluation of an alternative therefore does not change when
+other alternatives are added or removed. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [x_{ij}]` of dimension :math:`n \times m` and of a domain
+:math:`D_j = [d_{1j}, d_{2j}]` for every criterion, where :math:`d_{1j} \leq x_{ij} \leq d_{2j}`.
+
+**Step 2.** Normalize the decision matrix with the Max (:eq:`rtopsis_max`) or the Max-Min (:eq:`rtopsis_minmax`)
+normalization. Both are applied in the same way to benefit and cost criteria.
+
+.. math::
+        n_{ij} = \frac{x_{ij}}{d_{2j}}
+    :label: rtopsis_max
+
+.. math::
+        n_{ij} = \frac{x_{ij} - d_{1j}}{d_{2j} - d_{1j}}
+    :label: rtopsis_minmax
+
+**Step 3.** Calculate the weighted normalized decision matrix :math:`r_{ij} = w_j n_{ij}`.
+
+**Step 4.** Set the positive and negative ideal solutions at the weighted normalized ends of the domain, where
+:math:`N(\cdot)` is the normalization from Step 2:
+
+.. math::
+        r_{j}^{+} = \begin{cases} w_j N(d_{2j}) & \text{for benefit criteria} \\ w_j N(d_{1j}) & \text{for cost criteria} \end{cases}
+        \qquad
+        r_{j}^{-} = \begin{cases} w_j N(d_{1j}) & \text{for benefit criteria} \\ w_j N(d_{2j}) & \text{for cost criteria} \end{cases}
+    :label: rtopsis_ideals
+
+For the Max normalization this gives :math:`w_j` and :math:`w_j d_{1j}/d_{2j}`, as in the original method, and for the
+Max-Min normalization :math:`w_j` and 0.
+
+**Step 5.** Determine the Euclidean distances :math:`S_i^{+}` and :math:`S_i^{-}` of every alternative from the
+:math:`PIS` and the :math:`NIS`, as in TOPSIS.
+
+**Step 6.** Calculate the closeness coefficient :math:`CC_i = S_i^{-} / (S_i^{+} + S_i^{-})`. The alternative with the
+highest value is the best.
+
+Several other rank-reversal-free variants of TOPSIS differ from R-TOPSIS only in the source of the domain and can be
+obtained with its parameters:
+
+* NR-TOPSIS: historical minimum and maximum of every criterion (:meth:`RTOPSIS.make_bounds`) with the Max-Min
+  normalization;
+* the absolute mode of García-Cascales and Lamata: one common scale :math:`[Z_0, Z_t]` for all criteria with the Max
+  normalization;
+* the domain of IE-TOPSIS: observed extremes extended by :math:`\alpha` sample standard deviations
+  (:meth:`RTOPSIS.expand_bounds`) with the Max-Min normalization; the domain should be computed once and kept fixed;
+* TOPSIS-RAD: vetoed and desired performance levels as the domain, the Max-Min normalization and ``clip=True``, which
+  clips performances above the desired levels; vetoed alternatives are removed from the decision matrix beforehand;
+* BP-TOPSIS: the boxplot fences :math:`Q_1 - e \cdot IQR` and :math:`Q_3 + e \cdot IQR` of every
+  criterion (:meth:`RTOPSIS.boxplot_bounds`, :math:`e = 3` by default) with the Max-Min normalization; the quartiles
+  are the :math:`(n + 1) p`-th order statistics with linear interpolation, so no distribution of the data is
+  assumed, and the domain should be computed once and kept fixed.
+
+TOPSIS-Sort
+=======================
+
+:class:`TOPSIS_SORT` (``pymcdm.methods.sorting.TOPSIS_SORT``) is a sorting method based on R-TOPSIS: it assigns the
+alternatives to predefined, ordered categories :math:`C_1, \ldots, C_q` (from the worst to the best) instead of
+ranking them [#topsissortref1]_. Because the ideal and anti-ideal solutions are fixed by the domain of the criteria,
+the category of an alternative does not depend on the other alternatives. Two variants are available (parameter
+``profiles_type``):
+
+* TOPSIS-Sort-B (``'boundary'``): :math:`q - 1` boundary profiles :math:`b_1, \ldots, b_{q-1}`, where :math:`b_h` is
+  the upper limit of :math:`C_h` and the lower limit of :math:`C_{h+1}`;
+* TOPSIS-Sort-C (``'characteristic'``): :math:`q` characteristic profiles :math:`p_1, \ldots, p_q`, where
+  :math:`p_h` is a typical alternative of :math:`C_h`.
+
+The profiles (parameter ``profiles``) are ordered from the worst category to the best one, and each profile should be
+at least as good as the previous one on every criterion.
+
+**Step 1.** Determine the domain of every criterion (parameter ``bounds``), as in Step 3 of R-TOPSIS.
+
+**Step 2.** Calculate the closeness coefficients :math:`Cl(a_i)` of the alternatives and :math:`Cl(P_h)` of the
+profiles with R-TOPSIS (normalization by the maximum or interval normalization, weighted normalized matrix,
+distances to the ideal and anti-ideal solutions fixed at the ends of the domain).
+
+**Step 3.** Assign the alternatives to the categories:
+
+* TOPSIS-Sort-B: :math:`a_i \in C_1` if :math:`Cl(a_i) < Cl(b_1)`, :math:`a_i \in C_h` if
+  :math:`Cl(b_{h-1}) \leq Cl(a_i) < Cl(b_h)`, and :math:`a_i \in C_q` if :math:`Cl(a_i) \geq Cl(b_{q-1})`;
+* TOPSIS-Sort-C: :math:`a_i` is assigned to the category of the profile with the closest coefficient,
+  :math:`\min_h |Cl(a_i) - Cl(p_h)|`; ties are resolved in favor of the better category.
+
+The closeness coefficients of the alternatives and the profiles are available with ``verbose=True``.
+
+.. [#topsissortref1] de Lima Silva, D. F., & de Almeida Filho, A. T. (2020). Sorting with TOPSIS through boundary and
+   characteristic profiles. Computers & Industrial Engineering, 141, 106328.
+
 VIKOR
 =======================
 
@@ -1665,6 +2117,47 @@ lists are the outcome.
 within the three vectors obtained in the previous step. The best alternative is the one with the lowest value
 of :math:`Q` and the leading position in the ranking :math:`Q`. In ``pymcdm`` only :math:`Q` ranking is returned by
 default.
+
+R-VIKOR
+=======================
+
+``RVIKOR`` (R-VIKOR) removes the dependence of VIKOR on the set of alternatives in the same way as R-TOPSIS does for
+TOPSIS [#rvikorref1]_. Every criterion is normalized on its domain :math:`[m_j, M_j]` (historical or admissible minimum
+and maximum, parameter ``bounds``) instead of on the values in the decision matrix, and the ideal solutions are fixed
+at the ends of that domain. The score of an alternative therefore does not change when other alternatives are added,
+removed or replaced, and the method is defined also when all alternatives have the same :math:`R_i` and classical
+VIKOR divides by zero. The method evaluates decision alternatives according to the following steps:
+
+**Step 1.** Definition of a decision matrix :math:`X = [f_{ij}]` of dimension :math:`n \times m` and of a domain
+:math:`[m_j, M_j]` for every criterion, where :math:`m_j \leq f_{ij} \leq M_j`.
+
+**Step 2.** Normalize the decision matrix on the domain:
+
+.. math::
+        n_{ij} = \begin{cases} \dfrac{f_{ij} - m_j}{M_j - m_j} & \text{for benefit criteria} \\[2ex]
+        \dfrac{M_j - f_{ij}}{M_j - m_j} & \text{for cost criteria} \end{cases}
+    :label: rvikor_norm
+
+**Step 3.** Calculate the group utility :math:`S_i` and the individual regret :math:`R_i`:
+
+.. math::
+        S_i = \sum_{j=1}^{m} w_j (1 - n_{ij}), \qquad R_i = \max_j w_j (1 - n_{ij})
+    :label: rvikor_sr
+
+**Step 4.** Calculate the score of every alternative, where :math:`v \in [0, 1]` is the weight of the strategy of the
+maximum group utility (parameter ``v``):
+
+.. math::
+        NQ_i = v S_i + (1 - v) \frac{R_i}{\max_j w_j}
+    :label: rvikor_nq
+
+For weights which sum to 1, both :math:`S_i` and :math:`R_i / \max_j w_j` lie in :math:`[0, 1]`, with 0 for the
+positive ideal solution (otherwise :math:`S_i` lies in :math:`[0, \sum_j w_j]`). The
+alternative with the lowest value of :math:`NQ_i` is the best. The domain can be obtained with
+:meth:`RTOPSIS.make_bounds` or :meth:`RTOPSIS.expand_bounds`, and ``clip=True`` clips values outside of it.
+
+.. [#rvikorref1] Yang, W., & Wu, Y. (2020). A new improvement method to avoid rank reversal in VIKOR. IEEE Access, 8,
+   21261-21271.
 
 WASPAS
 =======================

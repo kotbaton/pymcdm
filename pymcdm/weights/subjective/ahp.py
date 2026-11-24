@@ -27,19 +27,37 @@ class AHP(PairwiseWeightsBase):
         Predefined pairwise comparison matrix.
     filename : str, optional
         Path to a CSV file containing a pairwise comparison matrix.
+    prioritization : str, optional
+        Method used to derive weights from the pairwise comparison matrix.
+        'eigenvector' uses the principal right eigenvector [#ahp1]_ (default).
+        'geometric_mean' uses normalized geometric means of rows, i.e. the
+        Logarithmic Least Squares Method (LLSM) [#ahp3]_. Both give the same
+        weights for a fully consistent matrix. Can also be changed later by
+        setting the `prioritization` attribute, which clears cached weights.
 
     Examples
     --------
     >>> from pymcdm.weights.subjective import AHP
     >>> ahp = AHP(ranking=[1, 2, 4, 3]) # Identify weights for four criteria based on ranking
     >>> weights = ahp()
-    [0.48144852 0.21998235 0.13073309 0.16783605]
-    >>> ahp = AHP(object_names=['Price', 'Mileage', 'HP', 'Year']) # Identify weights based on manual comparisons
-    >>> weights = ahp()
-    >>> print(weights)
-    [0.52407767 0.26268171 0.03742414 0.17581648]
-    >>> print(ahp.get_cr())  # To calculate CR use get_cr() method
-    0.5021601824872032
+    >>> print(np.round(weights, 4))
+    [0.4814 0.22   0.1307 0.1678]
+    >>> ahp = AHP(ranking=[1, 2, 4, 3], prioritization='geometric_mean')  # LLSM weights
+    >>> print(np.round(ahp(), 4))
+    [0.4846 0.2189 0.1302 0.1663]
+
+    Weights from a pairwise comparison matrix on the Saaty scale:
+
+    >>> ahp = AHP(matrix=[[1, 3, 7, 5], [1/3, 1, 5, 3], [1/7, 1/5, 1, 1/3], [1/5, 1/3, 3, 1]])
+    >>> print(np.round(ahp(), 4))
+    [0.565  0.2622 0.0553 0.1175]
+    >>> print(round(ahp.get_cr(), 4))  # To calculate CR use get_cr() method
+    0.0437
+
+    Weights based on manual comparisons, asked interactively in the console:
+
+    >>> ahp = AHP(object_names=['Price', 'Mileage', 'HP', 'Year'])  # doctest: +SKIP
+    >>> weights = ahp()  # doctest: +SKIP
 
     References
     ----------
@@ -47,11 +65,39 @@ class AHP(PairwiseWeightsBase):
                Journal of systems science and systems engineering, 13, 1-35.
     .. [#ahp2] Rao Tummala, V. M., & Ling, H. (1998). A note on the computation of the mean random consistency index
                of the analytic hierarchy process (AHP). Theory and decision, 44(3), 221-230.
+    .. [#ahp3] Crawford, G., & Williams, C. (1985). A note on the analysis of subjective judgment matrices.
+               Journal of Mathematical Psychology, 29(4), 387-405.
     """
     tie_value = 1
     user_answer_map = {f'1/{v}': 1 / v for v in range(2, 10)} | {str(v): v for v in range(1, 10)}
     RI_M = [0, 0, 0.5799, 0.8921, 1.1159, 1.2358, 1.3322, 1.3952, 1.4537, 1.4882, 1.5117, 1.5356, 1.5571, 1.5714,
             1.5831]
+    PRIORITIZATION_METHODS = ('eigenvector', 'geometric_mean')
+
+    def __init__(self,
+                 ranking: np.ndarray | list | tuple = None,
+                 scoring: np.ndarray | list | tuple = None,
+                 object_names: list[str] = None,
+                 matrix: np.ndarray | list | tuple = None,
+                 filename: str = None,
+                 prioritization: str = 'eigenvector'):
+        super().__init__(ranking=ranking, scoring=scoring, object_names=object_names,
+                         matrix=matrix, filename=filename)
+        self.prioritization = prioritization
+
+    @property
+    def prioritization(self) -> str:
+        """ Method used to derive weights from the pairwise comparison matrix. """
+        return self._prioritization
+
+    @prioritization.setter
+    def prioritization(self, value: str):
+        if value not in self.PRIORITIZATION_METHODS:
+            raise ValueError(f'Unknown prioritization method {value!r}. '
+                             f'Available methods: {", ".join(self.PRIORITIZATION_METHODS)}.')
+        self._prioritization = value
+        # Cached weights were derived with the previous method
+        self.weights = None
 
     def get_cr(self):
         """
@@ -64,12 +110,12 @@ class AHP(PairwiseWeightsBase):
         """
         m = self.matrix
         if m is None:
-            ValueError('Matrix is not existed. Model if not identified yet!')
+            raise ValueError('Matrix does not exist. Model is not identified yet!')
 
         if m.shape[0] < 3:
             return 0
         if m.shape[0] > len(self.RI_M):
-            ValueError(f"Can't calculate CR for the matrix of this size. Max size is {len(self.RI_M)}.")
+            raise ValueError(f"Can't calculate CR for the matrix of this size. Max size is {len(self.RI_M)}.")
 
         eig, _ = np.linalg.eig(m)
         lambda_max = max(eig.real)
@@ -125,10 +171,15 @@ class AHP(PairwiseWeightsBase):
         Returns
         -------
         np.ndarray
-            The normalized weights derived from the pairwise comparison matrix.
+            The normalized weights derived from the pairwise comparison matrix
+            with the method selected by `prioritization`.
         """
-        eig, eig_w = np.linalg.eig(self.matrix)
-        w = eig_w[:, np.argmax(np.abs(eig))].real
+        if self.prioritization == 'geometric_mean':
+            # LLSM: geometric mean of each row, computed in log space for numerical stability
+            w = np.exp(np.mean(np.log(self.matrix), axis=1))
+        else:
+            eig, eig_w = np.linalg.eig(self.matrix)
+            w = eig_w[:, np.argmax(np.abs(eig))].real
         return w / w.sum()
 
     def _compare_ranking(self, i: int, j: int) -> float:

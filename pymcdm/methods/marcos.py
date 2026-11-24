@@ -67,8 +67,8 @@ class MARCOS(MCDA_method):
         ...                    [960, 2000, 1600, 12, 1150]])
         >>> weights = np.array([0.1061, 0.3476, 0.3330, 0.1185, 0.0949])
         >>> types = np.array([-1, 1, 1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
-        [0.5649, 0.5543, 0.6410, 0.6174, 0.6016, 0.5453, 0.6282, 0.6543]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
+        [0.5649, 0.5543, 0.641, 0.6174, 0.6016, 0.5453, 0.6282, 0.6543]
     """
     _tables = [
         TableDesc(caption='Extended decision matrix',

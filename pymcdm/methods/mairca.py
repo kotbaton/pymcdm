@@ -40,7 +40,7 @@ class MAIRCA(MCDA_method):
         ...                    [64, 233, 5.3, 17]])
         >>> weights = np.array([0.04744, 0.02464, 0.51357, 0.41435])
         >>> types = np.array([1, 1, 1, 1])
-        >>> [round(preference, 4) for preference in body(matrix, weights, types)]
+        >>> np.round(body(matrix, weights, types), 4).tolist()
         [0.0332, 0.1122, 0.0654, 0.1304, 0.1498]
     """
     _reverse_ranking = False
