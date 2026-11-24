@@ -46,8 +46,9 @@
 * CRADIS gives K+ = 1 instead of 0 / 0 for an alternative equal to the ideal solution (e.g. a dominant alternative
   with equal weights), and the documentation explains that K+ = 0 for the other alternatives in this case.
 * Examples: the subjective weights example covers all subjective weighting methods (with the numerical examples of
-  their papers and a comparison of the methods), and a new example presents the sorting methods (ELECTRE TRI,
-  TOPSIS-Sort and FlowSort) with the `sorting_assignments` and `flowsort_flows` plots.
+  their papers, a comparison of the methods and the `pairwise_matrix`, `weights_intervals` and `simos_cards` plots),
+  and a new example presents the sorting methods (ELECTRE TRI, TOPSIS-Sort and FlowSort) with the
+  `sorting_assignments` and `flowsort_flows` plots.
 * Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
 * Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration
   levels, importance factors and the overall achievement, Lorenz quantile and OWA aggregations, with tests and
