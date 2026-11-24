@@ -72,7 +72,10 @@ def sorting_assignments(categories, n_categories,
     if ax is None:
         ax = plt.gca()
 
-    categories = np.asarray(categories).astype(int)
+    categories = np.asarray(categories)
+    if np.any(categories != np.round(categories)):
+        raise ValueError('Categories should be integer numbers.')
+    categories = categories.astype(int)
     n = len(categories)
     if np.any(categories < 1) or np.any(categories > n_categories):
         raise ValueError(f'Categories should be between 1 and {n_categories}.')
@@ -84,6 +87,8 @@ def sorting_assignments(categories, n_categories,
         intervals = np.asarray(intervals)
         if intervals.shape != (n, 2):
             raise ValueError('intervals should have one row with two values for every alternative.')
+        if np.any(intervals[:, 0] > intervals[:, 1]):
+            raise ValueError('The lower category of every interval should not be greater than the upper one.')
 
     for h in range(n_categories):
         ax.axvspan(h + 0.5, h + 1.5, color='0.96' if h % 2 else 'white', zorder=0)

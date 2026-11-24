@@ -484,7 +484,7 @@ SRF
 =======================
 :class:`SRF` (the revised Simos procedure, Simos-Roy-Figueira) collects the same information as :class:`SIMOS`
 (parameters ``r`` and ``w_c``) and additionally asks how many times the most important criterion is more important
-than the least important one (parameter ``z``). The weights are determined according to the following steps:
+than the least important one (parameter ``z`` >= 1). The weights are determined according to the following steps:
 
 **Step 1.** Calculate the units.
 

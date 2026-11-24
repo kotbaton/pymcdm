@@ -61,6 +61,22 @@ class COBRAC(OptimizationWeightsBase):
             raise ValueError('Criterion indices in pairs must be in range [0, n_criteria).')
         if np.any(xis <= 0.0) or np.any(xis >= 1.0):
             raise ValueError('All xi values must be in the open interval (0, 1).')
+        if np.any(pairs[:, 0] == pairs[:, 1]):
+            raise ValueError('A criterion cannot be compared with itself.')
+
+        # Every criterion has to be connected with the others by comparisons, otherwise its weight is undefined
+        connected = {0}
+        changed = True
+        while changed:
+            changed = False
+            for i, j in pairs:
+                if (i in connected) != (j in connected):
+                    connected.update((int(i), int(j)))
+                    changed = True
+        if len(connected) != self.n_criteria:
+            missing = sorted(set(range(self.n_criteria)) - connected)
+            raise ValueError(f'The comparisons should connect all criteria, but criteria {missing} are not connected '
+                             'with criterion 0.')
 
         self.pairs = pairs
         self.xis = xis

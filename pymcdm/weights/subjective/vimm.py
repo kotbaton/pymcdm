@@ -19,7 +19,7 @@ class VIMM(SubjectiveWeightsBase):
     Parameters
     ----------
     n_criteria : int
-        Total number of criteria (>= 3).
+        Total number of criteria (>= 4).
     vital_index : int
         Index (0-based) of the initial vital criterion.
     immaterial_index : int
@@ -69,8 +69,10 @@ class VIMM(SubjectiveWeightsBase):
         self.c_vital = [np.asarray(c, dtype=float) for c in c_vital]
         self.c_immaterial = [np.asarray(c, dtype=float) for c in c_immaterial]
 
-        if n_criteria < 3:
-            raise ValueError('n_criteria must be at least 3.')
+        # With three criteria no comparison round is made (Phase 5 stops when one criterion remains), so the
+        # importance of the remaining criterion would not be expressed at all
+        if n_criteria < 4:
+            raise ValueError('n_criteria must be at least 4, so that at least one comparison round is made.')
 
         if not (0 <= vital_index < n_criteria):
             raise ValueError(

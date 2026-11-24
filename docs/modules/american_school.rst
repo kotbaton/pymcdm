@@ -494,7 +494,10 @@ the largest value :math:`\max_i v_{ij}` of every criterion, and the utility func
         Q_i = \frac{K_i^{+} + K_i^{-}}{2}
     :label: cradis_q
 
-The alternative with the highest value of :math:`Q_i` is the best.
+The alternative with the highest value of :math:`Q_i` is the best. If all weights are equal, the optimal
+alternative reaches the ideal solution on every criterion, so :math:`s_0^{+} = 0` and :math:`K_i^{+} = 0` for every
+alternative: the ranking then depends on :math:`K_i^{-}` only. An alternative with :math:`s_i^{+} = 0` obtains
+:math:`K_i^{+} = 1`.
 
 .. [#cradisref1] Puška, A., Stević, Ž., & Pamučar, D. (2022). Evaluation and selection of healthcare waste
    incinerators using extended sustainability criteria and multi-criteria analysis methods. Environment, Development

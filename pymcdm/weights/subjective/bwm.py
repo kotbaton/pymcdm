@@ -87,6 +87,12 @@ class BWM(OptimizationWeightsBase):
         if np.sum(np.isclose(self.a_w, 1.0)) < 1:
             raise ValueError('a_w must contain at least one value equal to 1 (the worst criterion).')
 
+        if len(self.a_b) < 2:
+            raise ValueError('At least two criteria are required.')
+
+        # Validates the best and the worst criterion
+        self._best_worst()
+
     @property
     def model(self) -> str:
         """ Optimization model ('nonlinear' or 'linear'). """
@@ -105,8 +111,7 @@ class BWM(OptimizationWeightsBase):
         """ Comparisons as ``(numerator, denominator, value)`` triples of weight indices. """
         a_b, a_w = self.a_b, self.a_w
         n = len(a_b)
-        best_idx = self._reference_index(a_b, a_w)
-        worst_idx = self._reference_index(a_w, a_b)
+        best_idx, worst_idx = self._best_worst()
         ratios = [(best_idx, j, a_b[j]) for j in range(n) if j != best_idx]
         ratios += [(j, worst_idx, a_w[j]) for j in range(n) if j != worst_idx]
         return ratios
@@ -142,6 +147,28 @@ class BWM(OptimizationWeightsBase):
         candidates = np.where(np.isclose(a_ref, 1.0))[0]
         return int(candidates[np.argmax(a_other[candidates])])
 
+    def _best_worst(self):
+        """ Indices of the best and the worst criterion, checked as in Rezaei (2015).
+
+            The best and the worst criterion are different criteria (if several criteria are the best or the worst,
+            one is chosen, footnote 4 of [#bwm1]_), and the preference of the best criterion over the worst one,
+            a_BW, is a single judgment, so it has to be the same in both vectors (Definition 3 of [#bwm1]_).
+        """
+        a_b, a_w = self.a_b, self.a_w
+        best = self._reference_index(a_b, a_w)
+        worst = self._reference_index(a_w, a_b)
+        if best == worst:
+            # Another candidate for the worst criterion, e.g. when all criteria are equally important
+            others = [j for j in np.where(np.isclose(a_w, 1.0))[0] if j != best]
+            if not others:
+                raise ValueError(f'Criterion {best} is both the best (a_b = 1) and the worst (a_w = 1) criterion; '
+                                 'the best and the worst criterion should be different.')
+            worst = int(others[0])
+        if not np.isclose(a_b[worst], a_w[best]):
+            raise ValueError(f'The preference of the best criterion ({best}) over the worst one ({worst}) should be '
+                             f'the same in a_b and a_w, but is {a_b[worst]:g} and {a_w[best]:g}.')
+        return best, worst
+
     def get_xi(self) -> float:
         """
         Return the optimal value of xi (consistency indicator).
@@ -161,8 +188,7 @@ class BWM(OptimizationWeightsBase):
             return self._xi
 
         n = len(self.a_b)
-        best_idx = int(np.where(np.isclose(self.a_b, 1.0))[0][0])
-        worst_idx = int(np.where(np.isclose(self.a_w, 1.0))[0][0])
+        best_idx, worst_idx = self._best_worst()
 
         xi = 0.0
         for j in range(n):

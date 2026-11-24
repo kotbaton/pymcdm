@@ -4,6 +4,20 @@ import numpy as np
 from .subjective_weights_base import SubjectiveWeightsBase
 
 
+def _validate_criteria(criteria, name):
+    """ Check that every criterion index from 0 to n - 1 is given exactly once. """
+    criteria = list(criteria)
+    if not criteria:
+        raise ValueError(f'{name} cannot be empty.')
+    if any(int(c) != c or c < 0 for c in criteria):
+        raise ValueError(f'Criterion indices in {name} must be non-negative integers.')
+    if len(set(criteria)) != len(criteria):
+        raise ValueError(f'{name} cannot contain duplicate criterion indices.')
+    if max(criteria) != len(criteria) - 1:
+        raise ValueError(f'{name} must contain every criterion index from 0 to {len(criteria) - 1} exactly once, '
+                         f'but got {sorted(criteria)}.')
+
+
 class GroupedRanksBase(SubjectiveWeightsBase):
     """
     Base class for subjective weighting methods that operate on ranked groups
@@ -50,8 +64,9 @@ class GroupedRanksBase(SubjectiveWeightsBase):
                 f'(number of rank groups - 1), '
                 f'but has length {len(self.gaps)}.'
             )
-        if np.any(self.gaps < 0):
-            raise ValueError('All values in gaps must be >= 0.')
+        if np.any(self.gaps < 0) or np.any(self.gaps != np.round(self.gaps)):
+            raise ValueError('All values in gaps (numbers of white cards) must be non-negative integers.')
+        _validate_criteria([c for group in self.positions for c in group], 'ranks')
 
     @property
     def n_criteria(self):

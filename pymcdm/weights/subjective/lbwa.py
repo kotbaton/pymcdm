@@ -1,6 +1,8 @@
 # Copyright (c) 2026 Bartłomiej Kizielewicz
 
 import numpy as np
+
+from .grouped_ranks_base import _validate_criteria
 from .subjective_weights_base import SubjectiveWeightsBase
 
 
@@ -51,6 +53,8 @@ class LBWA(SubjectiveWeightsBase):
         self.criteria_order = i
         self.internal_structure = np.asarray(l, dtype=float)
         self.r0 = r0
+
+        _validate_criteria([c for group in self.criteria_order for c in group], 'i')
 
         # Validate total number of l values
         total_criteria = sum(len(group) for group in self.criteria_order)

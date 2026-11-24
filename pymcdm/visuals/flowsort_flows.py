@@ -78,6 +78,8 @@ def flowsort_flows(phi_plus_r, phi_minus_r, phi_r, phi_a,
         raise ValueError(f"profiles_type should be 'limiting' or 'central', but is {profiles_type!r}.")
 
     phi_a = np.asarray(phi_a, dtype=float)
+    if phi_a.shape != (3,):
+        raise ValueError('phi_a should contain the positive, negative and net flow of the alternative.')
     n = len(phi_plus_r)
     k = n - 1 if profiles_type == 'limiting' else n
     if category_colors is None:

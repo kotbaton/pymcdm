@@ -13,6 +13,12 @@ class CRADIS(MCDA_method):
         the whole matrix), and the total deviations of every alternative are related to those of the optimal
         alternative, built from the best weighted normalized value of every criterion.
 
+        Since the best normalized value of every criterion is 1, the optimal alternative reaches the ideal value on
+        every criterion if all weights are equal. Its deviation from the ideal solution is then 0, and so is the
+        utility K+ of every alternative (Eq. 11 of [#cradis1]_): with equal weights the ranking depends on the
+        deviations from the anti-ideal solution only. An alternative with no deviation from the ideal solution
+        obtains K+ = 1.
+
         Read more in the User Guide.
 
         References
@@ -77,7 +83,9 @@ class CRADIS(MCDA_method):
         s0_minus = np.sum(optimal - anti_ideal)
 
         # Utility functions (Eqs. 11-12) and the final score (Eq. 13)
-        k_plus = s0_plus / s_plus
+        # An alternative equal to the ideal solution on every criterion is as good as the optimal alternative
+        with np.errstate(divide='ignore', invalid='ignore'):
+            k_plus = np.where(s_plus > 0, s0_plus / s_plus, 1.0)
         k_minus = s_minus / s0_minus
         pref = (k_plus + k_minus) / 2
 

@@ -23,7 +23,7 @@ class SRF(GroupedRanksBase):
         Number of white cards between consecutive rank positions.
         Length must be ``number_of_positions - 1``. All values >= 0.
     z : float
-        Ratio of the weight of the most important criterion to the least important. Must be > 0.
+        Ratio of the weight of the most important criterion to the least important. Must be >= 1.
     w : int, optional
         Decimal places for normalized output (0, 1, or 2). Default is 0.
 
@@ -53,8 +53,10 @@ class SRF(GroupedRanksBase):
         self.z = float(z)
         self.w = int(w)
 
-        if self.z <= 0:
-            raise ValueError('z must be positive.')
+        # z states how many times the most important criterion is more important than the least important one
+        # (Figueira & Roy, 2002, Section 3.2.1)
+        if self.z < 1:
+            raise ValueError(f'z must be at least 1, but is {self.z}.')
         if self.w not in (0, 1, 2):
             raise ValueError('w must be 0, 1, or 2.')
 

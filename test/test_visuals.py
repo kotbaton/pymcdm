@@ -118,6 +118,8 @@ class TestFlowSortFlows(unittest.TestCase):
         p, m, n, a = self.flows()
         with self.assertRaises(ValueError):
             visuals.flowsort_flows(p[0], m[0], n[0], a[0], profiles_type='other')
+        with self.assertRaises(ValueError):
+            visuals.flowsort_flows(p[0], m[0], n[0], a[0][:2])
 
 
 class TestSortingAssignments(unittest.TestCase):
@@ -144,6 +146,10 @@ class TestSortingAssignments(unittest.TestCase):
             visuals.sorting_assignments([1, 5], 4)
         with self.assertRaises(ValueError):
             visuals.sorting_assignments([1, 2], 4, intervals=[[1, 2]])
+        with self.assertRaises(ValueError):
+            visuals.sorting_assignments([1, 2.5], 4)
+        with self.assertRaises(ValueError):
+            visuals.sorting_assignments([2, 2], 4, intervals=[[3, 1], [1, 3]])
 
 
 class TestWeightsIntervals(unittest.TestCase):

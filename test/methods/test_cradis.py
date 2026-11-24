@@ -86,3 +86,17 @@ class TestCRADIS(unittest.TestCase):
             with self.subTest(removed=f'A{removed + 1}'):
                 pref = body(self.matrix[alternatives], self.weights, self.types)
                 self.assertListEqual(expected, body.rank(pref).astype(int).tolist())
+
+    def test_equal_weights(self):
+        """ With equal weights the optimal alternative reaches the ideal solution on every criterion (Eq. 11): K+ is
+            0 for every alternative and 1 for an alternative equal to the ideal solution, instead of 0 / 0.
+        """
+        matrix = np.array([[9, 1, 8], [5, 4, 6], [3, 6, 2], [7, 3, 5]], dtype=float)
+        types = np.array([1, -1, 1])
+        body = methods.CRADIS()
+        results = body(matrix, np.ones(3) / 3, types, verbose=True)
+        k_plus, pref = results.results[4].data, results.results[-1].data
+
+        self.assertListEqual([1.0, 0.0, 0.0, 0.0], k_plus.tolist())
+        self.assertTrue(np.all(np.isfinite(pref)))
+        self.assertListEqual([1.0, 3.0, 4.0, 2.0], body.rank(pref).tolist())

@@ -12,11 +12,18 @@ class SubjectiveWeightsBase(ABC):
     such as SWARA, FUCOM, BWM, PIPRECIA, SIMOS, LBWA, and others. Subclasses must implement the
     `_calculate_weights` method which contains the specific algorithm logic.
 
-    The weights are computed lazily on first call and cached for subsequent calls.
+    The weights are computed lazily on first call and cached for subsequent calls. Setting any public attribute
+    (e.g. new judgments) clears the cached weights.
     """
 
     def __init__(self):
         self._weights = None
+
+    def __setattr__(self, name, value):
+        super().__setattr__(name, value)
+        # Cached weights were derived from the previous judgments
+        if not name.startswith('_') and '_weights' in self.__dict__:
+            super().__setattr__('_weights', None)
 
     def __call__(self) -> np.ndarray:
         """

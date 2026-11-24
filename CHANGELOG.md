@@ -39,6 +39,12 @@
 * New visualizations of subjective weights in `pymcdm.visuals`: `weights_intervals` (intervals of weights, e.g. all
   optimal weights of BWM, with an optional vector of weights), `simos_cards` (cards of the Simos procedure) and
   `pairwise_matrix` (heatmap of a pairwise comparison matrix, e.g. of AHP), with tests.
+* Validation of subjective weights: SIMOS, SRF and LBWA require every criterion exactly once and integer numbers of
+  white cards, COBRAC requires comparisons of different criteria which connect all criteria, SRF requires z >= 1,
+  BWM requires different best and worst criteria with the same a_BW in both vectors, and VIMM requires at least four
+  criteria. Changing a judgment of a subjective weighting method clears its cached weights.
+* CRADIS gives K+ = 1 instead of 0 / 0 for an alternative equal to the ideal solution (e.g. a dominant alternative
+  with equal weights), and the documentation explains that K+ = 0 for the other alternatives in this case.
 * Examples: the subjective weights example covers all subjective weighting methods (with the numerical examples of
   their papers and a comparison of the methods), and a new example presents the sorting methods (ELECTRE TRI,
   TOPSIS-Sort and FlowSort) with the `sorting_assignments` and `flowsort_flows` plots.

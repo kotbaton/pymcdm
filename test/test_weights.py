@@ -997,3 +997,68 @@ class TestRankOrderWeights(unittest.TestCase):
             weights.subjective.RE(self.order, w_top=0.1)
         with self.assertRaises(ValueError):
             weights.subjective.ROC([0, 1, 1])
+
+
+class TestSubjectiveWeightsValidation(unittest.TestCase):
+    """ Validation of the judgments of the subjective weighting methods. """
+
+    def test_cached_weights_cleared(self):
+        """ Changing a judgment after the weights were calculated gives the new weights. """
+        swara = weights.subjective.SWARA(s=[0, 1, 2], s_v=[0.5, 0.5])
+        before = swara().copy()
+        swara.s_v = np.array([1.0, 1.0])
+        self.assertFalse(np.allclose(before, swara()))
+        np.testing.assert_allclose(swara(), np.array([4, 2, 1]) / 7)
+
+    def test_grouped_ranks_criteria(self):
+        """ SIMOS, SRF and LBWA need every criterion exactly once. """
+        for r in ([0, [0, 1], 2], [0, 2]):
+            with self.subTest(r=r):
+                with self.assertRaises(ValueError):
+                    weights.subjective.SIMOS(r=r, w_c=[0] * (len(r) - 1))
+                with self.assertRaises(ValueError):
+                    weights.subjective.SRF(r=r, w_c=[0] * (len(r) - 1), z=3)
+        with self.assertRaises(ValueError):
+            weights.subjective.LBWA(i=[[0, 1], [1]], l=[0, 1, 1])
+        with self.assertRaises(ValueError):
+            weights.subjective.LBWA(i=[[0, 2]], l=[0, 1])
+
+    def test_white_cards(self):
+        """ Numbers of white cards are non-negative integers. """
+        with self.assertRaises(ValueError):
+            weights.subjective.SIMOS(r=[0, 1, 2], w_c=[0.5, 0])
+
+    def test_srf_ratio(self):
+        """ z states how many times the most important criterion is more important than the least important one
+            (Figueira & Roy, 2002, Section 3.2.1), so it is at least 1; z = 1 gives equal weights.
+        """
+        with self.assertRaises(ValueError):
+            weights.subjective.SRF(r=[0, 1, 2], w_c=[0, 0], z=0.5)
+        np.testing.assert_allclose(weights.subjective.SRF(r=[0, 1, 2], w_c=[0, 0], z=1, w=2)(), np.ones(3) / 3,
+                                   atol=0.01)
+
+    def test_cobrac_pairs(self):
+        """ COBRAC pairs compare two different criteria and connect all criteria. """
+        with self.assertRaises(ValueError):
+            weights.subjective.COBRAC(n_criteria=3, pairs=[(0, 0), (1, 2)], xis=[0.6, 0.6])
+        with self.assertRaises(ValueError):
+            weights.subjective.COBRAC(n_criteria=3, pairs=[(0, 1)], xis=[0.6])
+        with self.assertRaises(ValueError):
+            weights.subjective.COBRAC(n_criteria=4, pairs=[(0, 1), (2, 3)], xis=[0.6, 0.6])
+        weights.subjective.COBRAC(n_criteria=3, pairs=[(2, 1), (0, 1)], xis=[0.6, 0.6])
+
+    def test_bwm_best_and_worst(self):
+        """ The best and the worst criterion differ, and a_BW is the same in both vectors (Rezaei, 2015,
+            Step 2 and Definition 3).
+        """
+        with self.assertRaises(ValueError):
+            weights.subjective.BWM(a_b=[1, 2, 3], a_w=[1, 2, 3])
+        with self.assertRaises(ValueError):
+            weights.subjective.BWM(a_b=[8, 2, 1], a_w=[1, 5, 6])
+        # All criteria equally important: any two different criteria are the best and the worst one
+        np.testing.assert_allclose(weights.subjective.BWM(a_b=[1, 1, 1], a_w=[1, 1, 1])(), np.ones(3) / 3)
+
+    def test_vimm_criteria(self):
+        """ With three criteria VIMM makes no comparison round (Phase 5 of Zakeri et al., 2023). """
+        with self.assertRaises(ValueError):
+            weights.subjective.VIMM(n_criteria=3, vital_index=0, immaterial_index=2, c_vital=[], c_immaterial=[])
