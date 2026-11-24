@@ -36,6 +36,9 @@
   `sorting_assignments` (categories, and optionally intervals of categories, assigned by a sorting method), with
   tests.
 * Fix the caption of the MIDIA `DAI` table: it is the distance from the anti-ideal solution, not the closeness to it.
+* Examples: the subjective weights example covers all subjective weighting methods (with the numerical examples of
+  their papers and a comparison of the methods), and a new example presents the sorting methods (ELECTRE TRI,
+  TOPSIS-Sort and FlowSort) with the `sorting_assignments` and `flowsort_flows` plots.
 * Add the DARP method (distances to common or individual aspiration reference points), with tests and documentation.
 * Add the reference point method of Wierzbicki (`RPM`) with statistical (objective) reservation and aspiration
   levels, importance factors and the overall achievement, Lorenz quantile and OWA aggregations, with tests and
