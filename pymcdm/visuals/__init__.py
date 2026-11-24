@@ -21,6 +21,8 @@ from .comet_tfns import comet_tfns
 from .midia_plane import midia_plane
 from .flowsort_flows import flowsort_flows
 from .sorting_assignments import sorting_assignments
+from .weights_intervals import weights_intervals
+from .simos_cards import simos_cards
 
 __all__ = [
     'promethee_I_flows',
@@ -45,5 +47,7 @@ __all__ = [
     'comet_tfns',
     'midia_plane',
     'flowsort_flows',
-    'sorting_assignments'
+    'sorting_assignments',
+    'weights_intervals',
+    'simos_cards'
 ]

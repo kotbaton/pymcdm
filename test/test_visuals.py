@@ -144,3 +144,63 @@ class TestSortingAssignments(unittest.TestCase):
             visuals.sorting_assignments([1, 5], 4)
         with self.assertRaises(ValueError):
             visuals.sorting_assignments([1, 2], 4, intervals=[[1, 2]])
+
+
+class TestWeightsIntervals(unittest.TestCase):
+    """ weights_intervals draws one bar for each interval and optional markers of the weights. """
+
+    def tearDown(self):
+        plt.close('all')
+
+    def test_intervals_and_weights(self):
+        from pymcdm.weights.subjective import BWM
+        bwm = BWM(a_b=[2, 1, 4, 3, 8], a_w=[4, 8, 4, 2, 1])
+        lower, upper = bwm.get_weight_intervals()
+        fig, ax = plt.subplots()
+        self.assertIs(visuals.weights_intervals(lower, upper, bwm(), ax=ax), ax)
+        self.assertEqual(len(ax.patches), 5)
+        np.testing.assert_allclose([p.get_y() for p in ax.patches], lower)
+        self.assertEqual([t.get_text() for t in ax.get_xticklabels()], [f'$C_{{{j}}}$' for j in range(1, 6)])
+        self.assertEqual(len(ax.lines), 1)
+
+    def test_without_weights(self):
+        fig, ax = plt.subplots()
+        visuals.weights_intervals([0.1, 0.2], [0.3, 0.2], labels=['a', 'b'], ax=ax)
+        self.assertEqual(len(ax.lines), 0)
+        # A degenerate interval is still visible
+        self.assertGreater(ax.patches[1].get_height(), 0)
+
+    def test_invalid(self):
+        with self.assertRaises(ValueError):
+            visuals.weights_intervals([0.3, 0.2], [0.2, 0.4])
+        with self.assertRaises(ValueError):
+            visuals.weights_intervals([0.1, 0.2], [0.2, 0.4, 0.5])
+        with self.assertRaises(ValueError):
+            visuals.weights_intervals([0.1, 0.2], [0.2, 0.4], weights=[0.5])
+
+
+class TestSimosCards(unittest.TestCase):
+    """ simos_cards draws a card for each criterion and each white card. """
+
+    r = [[2, 6, 11], [3], [1, 5, 8, 9], [4], [0, 7], [10]]
+    w_c = [0, 1, 0, 0, 0]
+
+    def tearDown(self):
+        plt.close('all')
+
+    def test_cards(self):
+        from pymcdm.weights.subjective import SRF
+        weights = SRF(r=self.r, w_c=self.w_c, z=6.5, w=1)()
+        fig, ax = plt.subplots()
+        self.assertIs(visuals.simos_cards(self.r, self.w_c, weights=weights, ax=ax), ax)
+        # 12 criteria and 1 white card
+        self.assertEqual(len(ax.patches), 13)
+        texts = [t.get_text() for t in ax.texts]
+        self.assertIn('15.3%', texts)
+        self.assertIn('$C_{11}$', texts)
+
+    def test_invalid(self):
+        with self.assertRaises(ValueError):
+            visuals.simos_cards(self.r, [0, 1])
+        with self.assertRaises(ValueError):
+            visuals.simos_cards(self.r, [0, 0.5, 0, 0, 0])
