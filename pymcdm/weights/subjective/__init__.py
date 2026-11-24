@@ -7,7 +7,6 @@ from .grouped_ranks_base import GroupedRanksBase
 from .optimization_base import OptimizationWeightsBase
 from .decision_matrix_base import DecisionMatrixWeightsBase
 from .swara import SWARA
-from .swan import SWAN
 from .piprecia import PIPRECIA
 from .fucom import FUCOM
 from .bwm import BWM
@@ -31,7 +30,6 @@ __all__ = [
     'OptimizationWeightsBase',
     'DecisionMatrixWeightsBase',
     'SWARA',
-    'SWAN',
     'PIPRECIA',
     'FUCOM',
     'BWM',
