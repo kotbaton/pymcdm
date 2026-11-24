@@ -159,16 +159,19 @@ class TestWeightsIntervals(unittest.TestCase):
         fig, ax = plt.subplots()
         self.assertIs(visuals.weights_intervals(lower, upper, bwm(), ax=ax), ax)
         self.assertEqual(len(ax.patches), 5)
-        np.testing.assert_allclose([p.get_y() for p in ax.patches], lower)
-        self.assertEqual([t.get_text() for t in ax.get_xticklabels()], [f'$C_{{{j}}}$' for j in range(1, 6)])
-        self.assertEqual(len(ax.lines), 1)
+        np.testing.assert_allclose([p.get_x() for p in ax.patches], lower)
+        np.testing.assert_allclose([p.get_x() + p.get_width() for p in ax.patches], upper)
+        # The first criterion is at the top
+        self.assertEqual([t.get_text() for t in ax.get_yticklabels()], [f'$C_{{{j}}}$' for j in range(1, 6)])
+        self.assertEqual(list(ax.get_yticks()), [4, 3, 2, 1, 0])
+        self.assertEqual(len(ax.collections), 1)
 
     def test_without_weights(self):
         fig, ax = plt.subplots()
         visuals.weights_intervals([0.1, 0.2], [0.3, 0.2], labels=['a', 'b'], ax=ax)
-        self.assertEqual(len(ax.lines), 0)
-        # A degenerate interval is still visible
-        self.assertGreater(ax.patches[1].get_height(), 0)
+        self.assertEqual(len(ax.collections), 0)
+        # Both ends of every interval are drawn, also of the degenerate one
+        self.assertEqual(len(ax.lines), 4)
 
     def test_invalid(self):
         with self.assertRaises(ValueError):
@@ -204,3 +207,31 @@ class TestSimosCards(unittest.TestCase):
             visuals.simos_cards(self.r, [0, 1])
         with self.assertRaises(ValueError):
             visuals.simos_cards(self.r, [0, 0.5, 0, 0, 0])
+
+
+class TestPairwiseMatrix(unittest.TestCase):
+    """ pairwise_matrix draws a heatmap of the comparisons with the Saaty scale fractions. """
+
+    matrix = [[1, 3, 7, 5], [1 / 3, 1, 5, 3], [1 / 7, 1 / 5, 1, 1 / 3], [1 / 5, 1 / 3, 3, 1]]
+
+    def tearDown(self):
+        plt.close('all')
+
+    def test_values(self):
+        fig, ax = plt.subplots()
+        self.assertIs(visuals.pairwise_matrix(self.matrix, ax=ax), ax)
+        texts = [t.get_text() for t in ax.texts]
+        self.assertEqual(texts[:4], ['1', '3', '7', '5'])
+        self.assertEqual(texts[8:12], ['1/7', '1/5', '1', '1/3'])
+
+    def test_decimals_and_colorbar(self):
+        fig, ax = plt.subplots()
+        out = visuals.pairwise_matrix([[1, 2.5], [0.4, 1]], fractions=False, colorbar=True, ax=ax)
+        self.assertEqual(len(out), 2)
+        self.assertEqual([t.get_text() for t in ax.texts], ['1', '2.50', '0.40', '1'])
+
+    def test_invalid(self):
+        with self.assertRaises(ValueError):
+            visuals.pairwise_matrix([[1, 2, 3], [0.5, 1, 2]])
+        with self.assertRaises(ValueError):
+            visuals.pairwise_matrix([[1, 0], [0, 1]])

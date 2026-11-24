@@ -23,6 +23,7 @@ from .flowsort_flows import flowsort_flows
 from .sorting_assignments import sorting_assignments
 from .weights_intervals import weights_intervals
 from .simos_cards import simos_cards
+from .pairwise_matrix import pairwise_matrix
 
 __all__ = [
     'promethee_I_flows',
@@ -49,5 +50,6 @@ __all__ = [
     'flowsort_flows',
     'sorting_assignments',
     'weights_intervals',
-    'simos_cards'
+    'simos_cards',
+    'pairwise_matrix'
 ]

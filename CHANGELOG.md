@@ -37,8 +37,8 @@
   tests.
 * Fix the caption of the MIDIA `DAI` table: it is the distance from the anti-ideal solution, not the closeness to it.
 * New visualizations of subjective weights in `pymcdm.visuals`: `weights_intervals` (intervals of weights, e.g. all
-  optimal weights of BWM, with an optional vector of weights) and `simos_cards` (cards of the Simos procedure), with
-  tests.
+  optimal weights of BWM, with an optional vector of weights), `simos_cards` (cards of the Simos procedure) and
+  `pairwise_matrix` (heatmap of a pairwise comparison matrix, e.g. of AHP), with tests.
 * Examples: the subjective weights example covers all subjective weighting methods (with the numerical examples of
   their papers and a comparison of the methods), and a new example presents the sorting methods (ELECTRE TRI,
   TOPSIS-Sort and FlowSort) with the `sorting_assignments` and `flowsort_flows` plots.
