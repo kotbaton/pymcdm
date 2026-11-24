@@ -260,8 +260,8 @@ FlowSort
 
 :class:`FLOWSORT` (``pymcdm.methods.sorting.FLOWSORT``) is a sorting method based on the flows of PROMETHEE
 [#flowsortref1]_. It assigns the alternatives to :math:`K` predefined, ordered categories :math:`C_1, \ldots, C_K`
-(from the worst to the best), defined either by :math:`K + 1` limiting profiles :math:`r_0, \ldots, r_K`
-(``profiles_type='limiting'``), where :math:`C_h` lies between :math:`r_{h-1}` and :math:`r_h`, or by :math:`K` central
+(from the worst to the best), defined either by :math:`K + 1` limiting profiles :math:`r_1, \ldots, r_{K+1}`
+(``profiles_type='limiting'``), where :math:`C_h` lies between :math:`r_h` and :math:`r_{h+1}`, or by :math:`K` central
 profiles :math:`r_1, \ldots, r_K` (``profiles_type='central'``), where :math:`r_h` is the centroid of :math:`C_h`. The
 profiles have to be ordered and each of them strictly preferred to the worse ones. Each alternative is compared only
 with the profiles, so its category does not depend on the other alternatives. The method returns the numbers of the
@@ -281,8 +281,8 @@ profiles and :math:`a_i`.
     \phi(x) = \phi^+(x) - \phi^-(x)
 
 **Step 3.** Assign :math:`a_i` to a category (parameter ``rule``). With limiting profiles, by the positive flow
-:math:`a_i \in C_h` if :math:`\phi^+(r_{h-1}) < \phi^+(a_i) \leq \phi^+(r_h)`, by the negative flow if
-:math:`\phi^-(r_h) < \phi^-(a_i) \leq \phi^-(r_{h-1})`, and by the net flow as by the positive one. With central
+:math:`a_i \in C_h` if :math:`\phi^+(r_h) < \phi^+(a_i) \leq \phi^+(r_{h+1})`, by the negative flow if
+:math:`\phi^-(r_{h+1}) < \phi^-(a_i) \leq \phi^-(r_h)`, and by the net flow as by the positive one. With central
 profiles, the bounds of :math:`C_h` are the midpoints between the flows of :math:`r_h` and of its neighbours, e.g.
 :math:`\frac{\phi^+(r_h) + \phi^+(r_{h-1})}{2} < \phi^+(a_i) \leq \frac{\phi^+(r_h) + \phi^+(r_{h+1})}{2}`.
 

@@ -107,7 +107,7 @@ def flowsort_flows(phi_plus_r, phi_minus_r, phi_r, phi_a,
         ax.plot([0, 1], [y, y], 'k', lw=1)
         for i, x in enumerate(p):
             ax.plot([x, x], [y - 0.18, y + 0.18], 'k', lw=1.5)
-            ax.text(x, y - 0.24, f'$r_{{{i if profiles_type == "limiting" else i + 1}}}$', ha='center',
+            ax.text(x, y - 0.24, f'$r_{{{i + 1}}}$', ha='center',
                     va='top', fontsize=8)
         ax.plot(pos(value), y, **marker_kwargs)
         ax.text(-0.09, y, name, ha='right', va='center', **text_kwargs)

@@ -16,9 +16,9 @@ class FLOWSORT(MCDA_method):
         category whose profiles have similar flows. The category of an alternative therefore does not depend on the
         other alternatives.
 
-        Categories are numbered from 1 (the worst) to K (the best). With limiting profiles (K + 1 profiles), profile
-        r_h is the lower limit of category h + 1 and the upper limit of category h, counting the profiles from 0.
-        With central profiles (K profiles), profile r_h is the centroid of category h.
+        Categories are numbered from 1 (the worst) to K (the best) and profiles from r_1 (the worst). With limiting
+        profiles (K + 1 profiles), category h lies between the profiles r_h and r_{h+1}. With central profiles
+        (K profiles), profile r_h is the centroid of category h.
 
         The positive and negative flows can give two different categories; the net flow gives one category between
         them [#flowsort1]_. The returned category is selected with `rule`, and all three assignments are available
@@ -136,7 +136,7 @@ class FLOWSORT(MCDA_method):
     def _assign(self, value, profiles, increasing):
         """ Category of a flow value compared with the flows of the profiles (ordered from the worst one). """
         if self.profiles_type == 'limiting':
-            # Category h lies between the profiles r_{h-1} and r_h
+            # Category h lies between the profiles r_h and r_{h+1}
             bounds = profiles[:-1]
         else:
             # Category h lies between the midpoints of its centroid and the neighbouring ones
@@ -144,10 +144,10 @@ class FLOWSORT(MCDA_method):
         # Flows equal up to rounding errors are treated as equal, e.g. for an alternative equal to a profile
         tolerance = 1e-9
         if increasing:
-            # Positive and net flows: phi(r_{h-1}) < phi(a) <= phi(r_h)
+            # Positive and net flows (limiting profiles): phi(r_h) < phi(a) <= phi(r_{h+1})
             category = int(np.sum(value > bounds + tolerance))
         else:
-            # Negative flow: phi(r_h) < phi(a) <= phi(r_{h-1})
+            # Negative flow (limiting profiles): phi(r_{h+1}) < phi(a) <= phi(r_h)
             category = int(np.sum(value <= bounds + tolerance))
         if self.profiles_type == 'limiting':
             # Alternatives outside the profiles go to the worst or the best category
