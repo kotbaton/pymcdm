@@ -96,7 +96,7 @@ def correlation_heatmap(corr_matrix,
 
         for i in range(len(labels)):
             for j in range(len(labels)):
-                text_kwargs['color'] = adapt_text_colors[corr_matrix[i, j] >= adapt_text_threshold]
+                text_kwargs['color'] = adapt_text_colors[int(corr_matrix[i, j] >= adapt_text_threshold)]
                 text = ax.text(j, i, float_fmt % corr_matrix[i, j], **text_kwargs)
     else:
         for i in range(len(labels)):
@@ -132,7 +132,7 @@ def correlation_heatmap(corr_matrix,
     if colorbar:
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.05)
-        cbar = plt.colorbar(im, cax=cax)
+        cbar = cax.figure.colorbar(im, cax=cax)
         return ax, cax
 
     return ax

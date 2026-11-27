@@ -54,7 +54,7 @@ class LoPM(MCDA_method):
         >>> print(lopm(matrix, weights, None).round(2))
         [0.77 1.08 0.81 0.66 0.78 0.68]
     """
-    reverse_ranking = False
+    _reverse_ranking = False
     _tables = [
         TableDesc(caption='Lower property score',
                   label='lower_profit', symbol='', rows='A', cols=None),
