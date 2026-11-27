@@ -209,8 +209,8 @@ def ranking_flows(rankings,
         ax.grid(alpha=0.5, axis='x', linestyle='--',
                 linewidth=0.9, color='#CCCCCC')
         for i in range(1, rankings.shape[1] + 1):
-            plt.plot([0, rankings.shape[0] - 1], [i, i], linewidth=0.9,
-                     linestyle='--', alpha=0.5, zorder=-1, color='#CCCCCC')
+            ax.plot([0, rankings.shape[0] - 1], [i, i], linewidth=0.9,
+                    linestyle='--', alpha=0.5, zorder=-1, color='#CCCCCC')
     else:
         ax.grid(alpha=0.5, linestyle='--')
 

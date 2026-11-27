@@ -68,6 +68,11 @@ def ranking_bar(rankings, labels=None, colors=None, compromise=None,
     rankings = np.array(rankings)
 
     width = 1 / rankings.shape[0] - spacing / 2
+    if width <= 0:
+        raise ValueError(
+            f'spacing ({spacing}) is too large for {rankings.shape[0]} rankings; '
+            f'must be smaller than {2 / rankings.shape[0]}.'
+        )
     if rankings.shape[0] % 2:
         pads = np.arange(- (rankings.shape[0] // 2 * width),
                          width * np.ceil(rankings.shape[0] / 2),
@@ -112,5 +117,8 @@ def ranking_bar(rankings, labels=None, colors=None, compromise=None,
 
     high = int(np.ceil(np.max(rankings)))
     ax.set_yticks(range(1, high + 1))
+
+    if invert_y:
+        ax.invert_yaxis()
 
     return ax
